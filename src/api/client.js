@@ -7,7 +7,7 @@
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 
-const BASE_URL = "http://localhost:8000"; // change if backend runs elsewhere
+const BASE_URL = "https://kuro-backend-svrs.onrender.com"; // change if backend runs elsewhere
 
 // This hook returns functions that already handle auth and baseURL.
 export function useApiClient() {
