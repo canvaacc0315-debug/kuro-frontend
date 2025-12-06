@@ -1,0 +1,483 @@
+/* Root layout */
+.create-editor-root {
+  display: flex;
+  gap: 16px;
+  height: 100%;
+  min-height: 540px;
+  padding: 16px 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+    "SF Pro Text", sans-serif;
+  color: #f5f5f7;
+}
+
+/* ---------- Sidebar ---------- */
+
+.create-editor-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  padding: 16px 14px 20px; /* ⬅ bottom padding a bit larger */
+  border-radius: 18px;
+  background: radial-gradient(circle at top left, #171623 0, #0a0a11 60%);
+  border: 1px solid rgba(120, 120, 150, 0.35);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebar-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #8b8da0;
+}
+
+.sidebar-primary-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(90deg, #ff5164, #ff9760);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  transition: transform 140ms ease-out, box-shadow 140ms ease-out,
+    filter 140ms ease-out;
+}
+
+.sidebar-primary-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
+}
+
+.sidebar-primary-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.text-style-card {
+  border-radius: 12px;
+  border: 1px solid rgba(120, 120, 150, 0.35);
+  background: radial-gradient(circle at top left, #1a1624 0, #0c0c13 80%);
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 140ms ease-out, border-color 140ms ease-out,
+    transform 120ms ease-out;
+}
+
+.text-style-card:hover {
+  background: radial-gradient(circle at top left, #221b31 0, #0d0d16 80%);
+  border-color: rgba(255, 115, 115, 0.65);
+  transform: translateY(-1px);
+}
+
+.text-style-main {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.text-style-sub {
+  font-size: 11px;
+  color: #a5a6ba;
+}
+
+.text-style-body .text-style-main {
+  font-weight: 500;
+}
+
+.sidebar-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 115, 115, 0.55);
+  background: rgba(255, 81, 100, 0.12);
+  font-size: 13px;
+  color: #ffd8da;
+  cursor: pointer;
+  transition: background 140ms ease-out, border-color 140ms ease-out,
+    transform 120ms ease-out;
+}
+
+.sidebar-pill-btn:hover {
+  background: rgba(255, 81, 100, 0.22);
+  border-color: rgba(255, 160, 160, 0.9);
+  transform: translateY(-0.5px);
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 0 6px 4px; /* ⬅ inset Export from border */
+}
+
+.sidebar-export-btn {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  background: linear-gradient(90deg, #ff5164, #ff9760);
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  transition: transform 140ms ease-out, box-shadow 140ms ease-out,
+    filter 140ms ease-out;
+  margin-bottom: 2px; /* ⬅ not glued to the frame */
+}
+
+.sidebar-export-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.75);
+}
+
+/* ---------- Main area ---------- */
+
+.create-editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Toolbar */
+
+.create-toolbar {
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: #2a222f;
+  border: 1px solid rgba(120, 120, 150, 0.55);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-group-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #b7b7cc;
+}
+
+.toolbar-input {
+  width: 56px;
+  border-radius: 999px;
+  border: none;
+  background: #3b343f;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #f5f5f7;
+  outline: none;
+}
+
+.toolbar-toggle-group {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 999px;
+  background: #3a313f;
+}
+
+.toolbar-toggle {
+  min-width: 26px;
+  height: 22px;
+  border-radius: 999px;
+  border: none;
+  font-size: 11px;
+  padding: 0 6px;
+  background: transparent;
+  color: #f5f5f7;
+  cursor: pointer;
+  transition: background 120ms ease-out, color 120ms ease-out,
+    transform 80ms ease-out;
+}
+
+.toolbar-toggle:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.toolbar-toggle.active {
+  background: linear-gradient(90deg, #ff5164, #ff9760);
+  color: #0b0507;
+}
+
+/* ---------- Page ---------- */
+
+.create-page-shell {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 14px 4px 8px;
+}
+
+.create-page {
+  position: relative;
+  width: min(780px, 100%);
+  aspect-ratio: 1 / 1.414;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.7);
+  padding: 32px 40px;
+  overflow: hidden;
+}
+
+/* Heading + body – NORMAL textareas (no frame) */
+
+.heading-textarea,
+.body-textarea {
+  width: 100%;
+  border: none !important;
+  outline: none !important;
+  resize: none;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #111111;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+.heading-textarea:focus,
+.body-textarea:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* heading at top */
+.heading-textarea {
+  min-height: 40px;
+  margin-bottom: 16px;
+  overflow: visible;
+}
+
+/* body fills rest of page */
+.body-textarea {
+  min-height: calc(100% - 60px);
+  overflow: visible; /* no inner scrollbar frame */
+}
+
+/* ---------- Images: multiple per page ---------- */
+
+.page-image {
+  position: absolute;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  cursor: move;
+  user-select: none;
+  z-index: 3;
+}
+
+.page-image:active {
+  cursor: grabbing;
+}
+
+.image-block-inner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image-block-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
+}
+
+/* little pink corner dot for resize */
+.resize-handle {
+  position: absolute;
+  right: -6px;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #ff6b6b;
+  cursor: nwse-resize;
+  z-index: 4;
+}
+
+/* ---------- Pages bar ---------- */
+
+.pages-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 0 18px 10px; /* ⬅ pushes both sides + bottom inside frame */
+}
+
+.pages-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.page-pill {
+  border-radius: 999px;
+  border: 1px solid rgba(140, 140, 170, 0.6);
+  background: #221c2a;
+  color: #eaeafb;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 120ms ease-out, border-color 120ms ease-out,
+    transform 80ms ease-out;
+}
+
+.page-pill:hover {
+  background: #2b2333;
+  transform: translateY(-0.5px);
+}
+
+.page-pill.active {
+  background: linear-gradient(90deg, #ff5164, #ff9760);
+  border-color: transparent;
+  color: #0b0507;
+}
+
+.add-page-pill {
+  border-style: dashed;
+}
+
+.delete-page-btn {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 116, 116, 0.8);
+  background: rgba(255, 77, 77, 0.15);
+  color: #ffd1d1;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 120ms ease-out, border-color 120ms ease-out,
+    opacity 80ms ease-out;
+  margin-right: 4px; /* ⬅ not stuck to the very edge */
+}
+
+.delete-page-btn:hover {
+  background: rgba(255, 77, 77, 0.25);
+}
+
+/* ---------- Context menu ---------- */
+
+.pdf-context-menu {
+  position: fixed;
+  z-index: 50;
+  min-width: 140px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #17131f;
+  border: 1px solid rgba(130, 130, 160, 0.65);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+}
+
+.context-item {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 7px;
+  font-size: 12px;
+  border: none;
+  background: transparent;
+  color: #f5f5f7;
+  text-align: left;
+  cursor: pointer;
+  transition: background 120ms ease-out, color 120ms ease-out;
+}
+
+.context-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.context-item.context-danger:hover {
+  background: rgba(255, 77, 77, 0.18);
+  color: #ffb4b4;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1024px) {
+  .create-editor-root {
+    flex-direction: column;
+  }
+
+  .create-editor-sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+    overflow-x: auto;
+  }
+
+  .create-editor-main {
+    width: 100%;
+  }
+
+  .create-page {
+    max-height: 70vh;
+  }
+}
+
+/* --- HARD REMOVE ANY TEXT FRAMES INSIDE THE PAGE --- */
+
+.create-page textarea,
+.create-page textarea:focus,
+.create-page textarea:active {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* also catch heading/body classes just in case */
+.create-page .heading-textarea,
+.create-page .body-textarea,
+.create-page .heading-textarea:focus,
+.create-page .body-textarea:focus {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* remove any debug/selection outline from anything in the page */
+.create-page * {
+  outline: 0 !important;
+}

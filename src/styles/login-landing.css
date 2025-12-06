@@ -1,0 +1,351 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* PAGE BACKGROUND */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+  color: #e0e0e0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    sans-serif;
+  padding: 0 16px;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 90vh;
+  margin: 32px auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* LEFT – HERO SECTION */
+
+.login-hero-section {
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-hero-section::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 107, 107, 0.12) 0%,
+    transparent 70%
+  );
+  animation: login-float 20s ease-in-out infinite;
+}
+
+@keyframes login-float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(30px, -30px);
+  }
+}
+
+.login-hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.login-hero-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.login-logo-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.3);
+}
+
+.login-logo-text {
+  font-size: 30px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.login-hero-title {
+  font-size: 44px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.login-hero-title-accent {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-hero-description {
+  font-size: 16px;
+  color: #b0b0b0;
+  margin-bottom: 32px;
+  line-height: 1.7;
+  max-width: 480px;
+}
+
+.login-hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.login-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.login-feature-icon {
+  width: 24px;
+  height: 24px;
+  background: rgba(255, 107, 107, 0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff6b6b;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.login-feature-text {
+  font-size: 14px;
+  color: #b0b0b0;
+  line-height: 1.5;
+}
+
+/* RIGHT – AUTH / CLERK SECTION */
+
+.login-auth-section {
+  background: rgba(20, 20, 30, 0.97);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* center vertically */
+  align-items: center;     /* center horizontally */
+}
+
+.login-auth-container {
+  width: 100%;
+  max-width: 420px; /* same for login & signup */
+}
+
+.login-auth-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-auth-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.login-auth-title-accent {
+  color: #ff6b6b;
+}
+
+.login-auth-subtitle {
+  font-size: 14px;
+  color: #888888;
+}
+
+.login-last-used {
+  font-size: 12px;
+  color: #666666;
+  margin-top: 6px;
+}
+
+/* Black card that contains the white Clerk card */
+
+.login-signin-wrapper {
+  width: 100%;
+  padding: 24px 24px 20px;
+  background: rgba(10, 10, 18, 0.96);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 107, 107, 0.25);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Let Clerk fill the wrapper; no weird extra spacing */
+.login-signin-wrapper > div {
+  width: 100%;
+}
+
+/* Security / footer badges */
+
+.login-security-badge {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 11px;
+  color: #666666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+}
+
+.login-security-icon {
+  font-size: 12px;
+}
+
+.login-clerk-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #666666;
+}
+
+.login-dev-mode {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 4px;
+  color: #ff6b6b;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* ===========================
+   RESPONSIVE
+   ============================ */
+
+@media (max-width: 1024px) {
+  .login-container {
+    grid-template-columns: 1fr;
+    margin: 16px auto;
+  }
+
+  .login-hero-section {
+    padding: 40px 30px;
+    min-height: auto;
+    border-bottom: 1px solid rgba(255, 107, 107, 0.15);
+  }
+
+  .login-hero-title {
+    font-size: 36px;
+  }
+
+  .login-auth-section {
+    padding: 40px 30px;
+  }
+
+  .login-auth-title {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-page {
+    padding: 0;
+  }
+
+  .login-container {
+    border-radius: 0;
+    min-height: 100vh;
+  }
+
+  .login-hero-section {
+    padding: 30px 20px;
+  }
+
+  .login-hero-title {
+    font-size: 28px;
+  }
+
+  .login-hero-description {
+    font-size: 14px;
+  }
+
+  .login-hero-features {
+    display: none; /* optional on small screens */
+  }
+
+  .login-auth-section {
+    padding: 30px 20px;
+  }
+
+  .login-auth-container {
+    max-width: 100%;
+  }
+
+  .login-auth-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-hero-logo {
+    margin-bottom: 20px;
+  }
+
+  .login-logo-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  .login-logo-text {
+    font-size: 20px;
+  }
+
+  .login-hero-title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .login-auth-section {
+    padding: 22px 16px;
+  }
+}

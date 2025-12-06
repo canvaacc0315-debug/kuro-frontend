@@ -1,0 +1,360 @@
+/* ===========================
+   RESET
+=========================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ===========================
+   BASE PAGE
+=========================== */
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+  color: #e0e0e0;
+}
+
+/* ===========================
+   DASHBOARD LAYOUT
+=========================== */
+
+.kuro-dashboard-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* scoped main container so it doesn't affect other pages */
+.kuro-dashboard-page .main-container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 60px 80px;
+  flex: 1;
+}
+
+/* ===========================
+   HERO SECTION
+=========================== */
+
+.hero-banner {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.15) 0%,
+    rgba(240, 68, 68, 0.1) 100%
+  );
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 16px;
+  padding: 50px;
+  margin-bottom: 60px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  width: 100%;
+}
+
+.hero-title {
+  font-size: 48px;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.hero-title-accent {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  color: #b0b0b0;
+  margin-bottom: 30px;
+}
+
+/* ===========================
+   SECTION HEADER
+=========================== */
+
+.section-header {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.section-title-accent {
+  color: #ff6b6b;
+}
+
+.section-subtitle {
+  font-size: 15px;
+  color: #888888;
+}
+
+/* ===========================
+   WORKSPACE GRID (3 x 2)
+=========================== */
+
+.workspace-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+/* Workspace Card */
+
+.workspace-card {
+  background: rgba(20, 20, 30, 0.6);
+  border: 1px solid rgba(255, 107, 107, 0.15);
+  border-radius: 16px;
+  padding: 40px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.workspace-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.workspace-card:hover {
+  background: rgba(20, 20, 30, 0.8);
+  border-color: rgba(255, 107, 107, 0.4);
+  transform: translateY(-8px);
+}
+
+.workspace-card:hover::before {
+  transform: scaleX(1);
+}
+
+.workspace-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.workspace-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.workspace-description {
+  font-size: 14px;
+  color: #888888;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.workspace-features {
+  list-style: none;
+  margin-bottom: 24px;
+}
+
+.workspace-features li {
+  font-size: 13px;
+  color: #888888;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.workspace-features li::before {
+  content: "✓";
+  color: #ff6b6b;
+  font-weight: 700;
+}
+
+.workspace-btn {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.workspace-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+}
+
+.workspace-btn:active {
+  transform: translateY(0);
+}
+
+/* ===========================
+   FEATURES SECTION
+=========================== */
+
+.features-section {
+  margin-bottom: 60px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 30px;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: rgba(255, 107, 107, 0.08);
+  border-color: rgba(255, 107, 107, 0.3);
+}
+
+.feature-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.feature-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.feature-desc {
+  font-size: 13px;
+  color: #888888;
+  line-height: 1.6;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  text-align: center;
+  color: #666666;
+  font-size: 13px;
+  margin-top: 40px;
+}
+
+/* ===========================
+   SCROLLBAR
+=========================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f0f0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #ff8787, #ff6b6b);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .kuro-dashboard-page .main-container {
+    padding: 40px 40px;
+  }
+
+  .workspace-grid,
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .section-title {
+    font-size: 28px;
+  }
+
+  .workspace-card {
+    padding: 30px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .kuro-dashboard-page .main-container {
+    padding: 40px 20px;
+  }
+
+  .workspace-grid,
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-card {
+    padding: 24px;
+  }
+
+  .workspace-icon {
+    font-size: 36px;
+  }
+
+  .workspace-name {
+    font-size: 20px;
+  }
+
+  .hero-title {
+    font-size: 24px;
+  }
+}

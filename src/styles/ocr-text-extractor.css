@@ -1,0 +1,313 @@
+/* src/styles/ocr-text-extractor.css */
+
+.ocr-root {
+  --color-primary: #2180a0;
+  --color-primary-hover: #1c7490;
+  --color-bg: #0f0f0f;
+  --color-surface: #111111;
+  --color-text: #f9fafb;
+  --color-text-secondary: #9ca3af;
+  --color-error: #f97373;
+  --color-success: #22c55e;
+  --color-border: rgba(148, 163, 184, 0.35);
+  --radius-base: 8px;
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--color-text);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* scope all children */
+.ocr-root * {
+  box-sizing: border-box;
+}
+
+.ocr-root header {
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.ocr-root h1 {
+  margin: 0 0 6px 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.ocr-root .subtitle {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  margin: 0;
+}
+
+.ocr-root .upload-section {
+  background: var(--color-surface);
+  border-radius: var(--radius-base);
+  border: 2px dashed var(--color-border);
+  padding: 26px;
+  text-align: center;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ocr-root .upload-section:hover {
+  border-color: var(--color-primary);
+  background: rgba(33, 128, 160, 0.05);
+}
+
+.ocr-root .upload-section.dragover {
+  border-color: var(--color-primary);
+  background: rgba(33, 128, 160, 0.08);
+}
+
+.ocr-root .upload-section input {
+  display: none;
+}
+
+.ocr-root .upload-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.ocr-root .upload-text {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.ocr-root .upload-subtext {
+  margin: 6px 0 0 0;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.ocr-root .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  border: none;
+  border-radius: var(--radius-base);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.ocr-root .btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.ocr-root .btn-primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.ocr-root .btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ocr-root .btn-secondary {
+  background: #111827;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.ocr-root .btn-secondary:hover {
+  background: #1f2937;
+}
+
+.ocr-root .file-info {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: 16px;
+  margin-bottom: 16px;
+  display: none;
+}
+
+.ocr-root .file-info.active {
+  display: block;
+}
+
+.ocr-root .file-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.ocr-root .file-info-row:last-child {
+  margin-bottom: 0;
+}
+
+.ocr-root .file-name {
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.ocr-root .file-type {
+  padding: 3px 8px;
+  background: rgba(33, 128, 160, 0.1);
+  color: var(--color-primary);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.ocr-root .controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.ocr-root .progress-section {
+  display: none;
+}
+
+.ocr-root .progress-section.active {
+  display: block;
+}
+
+.ocr-root .progress-bar {
+  width: 100%;
+  height: 7px;
+  background: #111827;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.ocr-root .progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  width: 0%;
+  transition: width 0.25s ease;
+}
+
+.ocr-root .progress-text {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  text-align: left;
+}
+
+.ocr-root .results-section {
+  display: none;
+}
+
+.ocr-root .results-section.active {
+  display: block;
+}
+
+.ocr-root .results-container {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.ocr-root .results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.ocr-root .results-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.ocr-root .char-count {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+}
+
+.ocr-root .extracted-text {
+  background: #020617;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: "SF Mono", "Menlo", monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  max-height: 260px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ocr-root .page-indicator {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  margin-bottom: 10px;
+}
+
+.ocr-root .download-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ocr-root .status-message {
+  padding: 10px 12px;
+  border-radius: var(--radius-base);
+  margin-bottom: 12px;
+  font-size: 13px;
+  display: none;
+}
+
+.ocr-root .status-message.active {
+  display: block;
+}
+
+.ocr-root .status-error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #fecaca;
+  border: 1px solid rgba(239, 68, 68, 0.5);
+}
+
+.ocr-root .status-success {
+  background: rgba(34, 197, 94, 0.1);
+  color: #bbf7d0;
+  border: 1px solid rgba(34, 197, 94, 0.5);
+}
+
+.ocr-root .status-info {
+  background: rgba(33, 128, 160, 0.1);
+  color: #7dd3fc;
+  border: 1px solid rgba(33, 128, 160, 0.5);
+}
+
+.ocr-root .reset-btn {
+  margin-top: 10px;
+}
+
+/* small screens */
+@media (max-width: 600px) {
+  .ocr-root .upload-section {
+    padding: 22px 18px;
+  }
+  .ocr-root h1 {
+    font-size: 20px;
+  }
+  .ocr-root .download-buttons {
+    flex-direction: column;
+  }
+  .ocr-root .btn {
+    width: 100%;
+  }
+}
