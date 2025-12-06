@@ -7,7 +7,7 @@
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 
-const BASE_URL = "https://kuro-backend-svrs.onrender.com"; // change if backend runs elsewhere
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // This hook returns functions that already handle auth and baseURL.
 export function useApiClient() {
