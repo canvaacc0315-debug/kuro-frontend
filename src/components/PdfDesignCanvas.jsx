@@ -1,9 +1,10 @@
 import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { jsPDF } from "jspdf"; // ✅ FIXED: named import
 
 export default function PdfDesignCanvas({ onCreated } = {}) {
   const { getToken } = useAuth();
@@ -84,7 +85,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
   }
 
   function updateElement(id, props) {
-    setElements((prev) => prev.map((el) => (el.id === id ? { ...el, ...props } : el)));
+    setElements((prev) =>
+      prev.map((el) => (el.id === id ? { ...el, ...props } : el))
+    );
   }
 
   function deleteSelected() {
@@ -135,7 +138,10 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       const form = new FormData();
       form.append("title", "Canvas design");
       form.append("body_text", "Generated from canvas");
-      form.append("images", new File([blob], "canvas.png", { type: "image/png" }));
+      form.append(
+        "images",
+        new File([blob], "canvas.png", { type: "image/png" })
+      );
 
       const res = await fetch(`${API_BASE}/api/pdf/create`, {
         method: "POST",
@@ -200,7 +206,11 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
           <button type="button" className="kuro-btn" onClick={saveToServer}>
             💾 Save to Server
           </button>
-          <button type="button" className="kuro-btn primary" onClick={exportToPdf}>
+          <button
+            type="button"
+            className="kuro-btn primary"
+            onClick={exportToPdf}
+          >
             📄 Export as PDF
           </button>
         </div>
@@ -214,7 +224,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
             <input
               type="text"
               value={selected.text || ""}
-              onChange={(e) => updateElement(selected.id, { text: e.target.value })}
+              onChange={(e) =>
+                updateElement(selected.id, { text: e.target.value })
+              }
               disabled={selected.type !== "text"}
             />
           </div>
@@ -226,7 +238,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
               max={72}
               value={selected.fontSize || 18}
               onChange={(e) =>
-                updateElement(selected.id, { fontSize: Number(e.target.value) || 12 })
+                updateElement(selected.id, {
+                  fontSize: Number(e.target.value) || 12,
+                })
               }
               disabled={selected.type !== "text"}
             />
@@ -235,7 +249,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
             <label>Font</label>
             <select
               value={selected.fontFamily || "system-ui"}
-              onChange={(e) => updateElement(selected.id, { fontFamily: e.target.value })}
+              onChange={(e) =>
+                updateElement(selected.id, { fontFamily: e.target.value })
+              }
               disabled={selected.type !== "text"}
             >
               <option value="system-ui">System</option>
@@ -249,7 +265,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
             <input
               type="color"
               value={selected.color || "#ffffff"}
-              onChange={(e) => updateElement(selected.id, { color: e.target.value })}
+              onChange={(e) =>
+                updateElement(selected.id, { color: e.target.value })
+              }
               disabled={selected.type !== "text"}
             />
           </div>
