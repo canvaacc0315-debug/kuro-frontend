@@ -1,7 +1,7 @@
 // src/components/PdfDesignCanvas.jsx
 import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas"; // still used for saveToServer
 import { jsPDF } from "jspdf";
 import { Rnd } from "react-rnd";
 
@@ -67,7 +67,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
   }
 
   function handleCanvasClick(e) {
-    // click-to-place new text if nothing selected
+    // click‑to‑place new text if nothing selected
     if (selectedId) return;
     if (!canvasRef.current) return;
 
@@ -113,39 +113,50 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
     updateElement(id, { x, y });
   }
 
-  // Export PDF of the whole canvas
-  async function exportToPdf() {
-    if (!canvasRef.current) return;
+  // ✅ Export PDF directly from `elements` (no html2canvas)
+  function exportToPdf() {
+    console.log("Export PDF clicked");
+
+    if (elements.length === 0) {
+      alert("Nothing to export – add some text or an image first.");
+      return;
+    }
 
     try {
-      console.log("Export PDF clicked");
-      const canvasEl = canvasRef.current;
-      const canvas = await html2canvas(canvasEl, {
-        backgroundColor: "#ffffff",
-        scale: 2,
-        useCORS: true,
-        allowTaint: false,
-        logging: false,
-      });
-
-      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "pt", "a4");
-
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
 
-      const ratio = Math.min(
-        pageWidth / canvas.width,
-        pageHeight / canvas.height
-      );
+      // simple margin
+      const marginX = 40;
+      const marginY = 40;
 
-      const imgWidth = canvas.width * ratio;
-      const imgHeight = canvas.height * ratio;
+      elements.forEach((el) => {
+        const x = marginX + el.x;
+        const y = marginY + el.y;
 
-      const offsetX = (pageWidth - imgWidth) / 2;
-      const offsetY = (pageHeight - imgHeight) / 2;
+        if (el.type === "text") {
+          pdf.setFontSize(el.fontSize || 18);
+          pdf.setTextColor(
+            parseInt(el.color?.slice(1, 3) || "ff", 16),
+            parseInt(el.color?.slice(3, 5) || "ff", 16),
+            parseInt(el.color?.slice(5, 7) || "ff", 16)
+          );
+          pdf.text(el.text || "", x, y);
+        }
 
-      pdf.addImage(imgData, "PNG", offsetX, offsetY, imgWidth, imgHeight);
+        if (el.type === "image") {
+          const w = el.width || 260;
+          const h = el.height || 160;
+
+          // keep inside page bounds
+          const safeX = Math.min(x, pageWidth - marginX - w);
+          const safeY = Math.min(y, pageHeight - marginY - h);
+
+          pdf.addImage(el.src, "PNG", safeX, safeY, w, h);
+        }
+      });
+
       pdf.save("rovexai-design.pdf");
     } catch (err) {
       console.error("Export PDF error:", err);
@@ -153,6 +164,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
     }
   }
 
+  // Still use html2canvas only for sending to backend
   async function saveToServer() {
     if (!canvasRef.current) return;
 
