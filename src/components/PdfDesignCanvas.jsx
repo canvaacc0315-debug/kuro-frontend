@@ -1,13 +1,10 @@
 import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-<<<<<<< HEAD
-=======
-
->>>>>>> eb1de5aec218d3f9d34e83b9b2645340bb393fd8
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf"; // ⬅️ back to your original named import
+
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 export default function PdfDesignCanvas({ onCreated } = {}) {
   const { getToken } = useAuth();

@@ -481,8 +481,7 @@
 .create-page * {
   outline: 0 !important;
 }
-<<<<<<< HEAD
-=======
+
 .pdf-canvas-wrapper {
   position: relative;
 }
@@ -496,4 +495,3 @@
   width: 40%;            /* or whatever width you like */
   z-index: 10;
 }
->>>>>>> eb1de5aec218d3f9d34e83b9b2645340bb393fd8

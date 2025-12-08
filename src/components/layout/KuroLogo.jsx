@@ -1,9 +1,4 @@
 // src/components/layout/KuroLogo.jsx
-import React from "react";
-import kuroLogo from "../../assets/kuro-logo.png"; // ✅ path: from layout → ../../assets
-import kuroLogo from "../../assets/kuro-logo.png";
-
-
 export default function KuroLogo({ size = 40 }) {
   return (
     <div
