@@ -1,8 +1,10 @@
 import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+
 import html2canvas from "html2canvas";
-import jsPDF from "jspdf"; // ✅ default import (works well with Vite)
+import { jsPDF } from "jspdf"; // ⬅️ back to your original named import
 
 export default function PdfDesignCanvas({ onCreated } = {}) {
   const { getToken } = useAuth();
@@ -61,9 +63,12 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
   function handleCanvasClick(e) {
     // click‑to‑place new text if nothing selected
     if (selectedId) return;
+    if (!canvasRef.current) return;
+
     const rect = canvasRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+
     const id = crypto.randomUUID();
     setElements((prev) => [
       ...prev,
@@ -95,32 +100,40 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
   }
 
   function onDrag(id, e) {
+    if (!canvasRef.current) return;
     const rect = canvasRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     updateElement(id, { x, y });
   }
 
-  // ✅ Export: robust html2canvas options + jsPDF
+  // ✅ robust export with images + prod builds
   async function exportToPdf() {
     if (!canvasRef.current) return;
 
-    const canvasEl = canvasRef.current;
-    const canvas = await html2canvas(canvasEl, {
-      backgroundColor: "#ffffff",
-      scale: 2,
-      useCORS: true,
-      allowTaint: false,
-      logging: false,
-    });
+    try {
+      const canvasEl = canvasRef.current;
+      const canvas = await html2canvas(canvasEl, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+      });
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "pt", "a4");
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = (canvas.height * pageWidth) / canvas.width;
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "pt", "a4");
 
-    pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
-    pdf.save("kuro-design.pdf");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = (canvas.height * pageWidth) / canvas.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
+      pdf.save("kuro-design.pdf");
+    } catch (err) {
+      // if anything explodes, at least you see it
+      console.error("Export PDF error:", err);
+      alert(`Export failed: ${err?.message || err}`);
+    }
   }
 
   async function saveToServer() {
@@ -166,7 +179,6 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       }
       const data = await res.json();
       alert(`PDF created: ${data.pdf}`);
-      // Call parent callback so the newly-created PDF can be added to the list
       if (onCreated && typeof onCreated === "function") {
         onCreated({ pdf_id: data.pdf, filename: data.pdf });
       }
@@ -281,12 +293,11 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       <div
         className="kuro-design-canvas"
         ref={canvasRef}
-        // ✅ make sure bottom controls / resize handle can scroll into view
         style={{
           minHeight: "80vh",
           maxHeight: "80vh",
           overflow: "auto",
-          paddingBottom: "160px",
+          paddingBottom: "260px", // ⬅️ extra space so the bottom handle/controls can scroll into view
         }}
         onClick={(e) => {
           if (e.target === canvasRef.current) setSelectedId(null);
@@ -330,7 +341,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
               <img
                 key={el.id}
                 src={el.src}
-                crossOrigin="anonymous" // ✅ needed so html2canvas can use it
+                crossOrigin="anonymous" // ⬅️ helps html2canvas use the image safely
                 alt=""
                 className={
                   "kuro-canvas-image" + (el.id === selectedId ? " selected" : "")
