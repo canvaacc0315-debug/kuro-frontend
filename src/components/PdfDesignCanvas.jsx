@@ -1,8 +1,6 @@
 import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
-
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf"; // ✅ FIXED: named import
 
@@ -103,6 +101,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
     updateElement(id, { x, y });
   }
 
+  // ✅ UPDATED: more robust export (works in deployment, with images)
   async function exportToPdf() {
     if (!canvasRef.current) return;
 
@@ -111,6 +110,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
     const canvas = await html2canvas(canvasEl, {
       backgroundColor: "#ffffff",
       scale: 2,
+      useCORS: true,
+      allowTaint: false,
+      logging: false,
     });
 
     const imgData = canvas.toDataURL("image/png");
@@ -278,6 +280,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       <div
         className="kuro-design-canvas"
         ref={canvasRef}
+        style={{ minHeight: "80vh", maxHeight: "80vh", overflow: "auto" }} // ✅ keep page + controls visible
         onClick={(e) => {
           if (e.target === canvasRef.current) setSelectedId(null);
           handleCanvasClick(e);
@@ -320,6 +323,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
               <img
                 key={el.id}
                 src={el.src}
+                crossOrigin="anonymous" // ✅ allows html2canvas to use the image
                 alt=""
                 className={
                   "kuro-canvas-image" + (el.id === selectedId ? " selected" : "")
