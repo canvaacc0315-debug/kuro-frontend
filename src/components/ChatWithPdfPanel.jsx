@@ -72,7 +72,7 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
     {
       role: "bot",
       content:
-        "Hi! I'm Kuro, your PDF chat assistant. Upload a PDF first to start asking questions about its content.",
+        "Hi! I'm Rovex, your PDF chat assistant. Upload a PDF first to start asking questions about its content.",
       timestamp: new Date().toLocaleTimeString(),
     },
   ]);
