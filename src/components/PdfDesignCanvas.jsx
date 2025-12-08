@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf"; // ✅ FIXED: named import
+import jsPDF from "jspdf"; // ✅ default import (works well with Vite)
 
 export default function PdfDesignCanvas({ onCreated } = {}) {
   const { getToken } = useAuth();
@@ -101,12 +101,11 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
     updateElement(id, { x, y });
   }
 
-  // ✅ UPDATED: more robust export (works in deployment, with images)
+  // ✅ Export: robust html2canvas options + jsPDF
   async function exportToPdf() {
     if (!canvasRef.current) return;
 
     const canvasEl = canvasRef.current;
-
     const canvas = await html2canvas(canvasEl, {
       backgroundColor: "#ffffff",
       scale: 2,
@@ -117,7 +116,6 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
 
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF("p", "pt", "a4");
-
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = (canvas.height * pageWidth) / canvas.width;
 
@@ -132,6 +130,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       const canvas = await html2canvas(canvasRef.current, {
         backgroundColor: "#ffffff",
         scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
       });
       const blob = await new Promise((res) => canvas.toBlob(res, "image/png"));
       if (!blob) throw new Error("Failed to render canvas to image");
@@ -280,7 +281,13 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       <div
         className="kuro-design-canvas"
         ref={canvasRef}
-        style={{ minHeight: "80vh", maxHeight: "80vh", overflow: "auto" }} // ✅ keep page + controls visible
+        // ✅ make sure bottom controls / resize handle can scroll into view
+        style={{
+          minHeight: "80vh",
+          maxHeight: "80vh",
+          overflow: "auto",
+          paddingBottom: "160px",
+        }}
         onClick={(e) => {
           if (e.target === canvasRef.current) setSelectedId(null);
           handleCanvasClick(e);
@@ -323,7 +330,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
               <img
                 key={el.id}
                 src={el.src}
-                crossOrigin="anonymous" // ✅ allows html2canvas to use the image
+                crossOrigin="anonymous" // ✅ needed so html2canvas can use it
                 alt=""
                 className={
                   "kuro-canvas-image" + (el.id === selectedId ? " selected" : "")
