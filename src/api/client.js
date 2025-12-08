@@ -7,14 +7,10 @@
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 
-<<<<<<< HEAD
 // 👇 Uses your HuggingFace URL from .env in production,
 //    and localhost:8000 when running locally if env is missing
 const BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-=======
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
->>>>>>> eb1de5aec218d3f9d34e83b9b2645340bb393fd8
 
 // This hook returns functions that already handle auth and baseURL.
 export function useApiClient() {

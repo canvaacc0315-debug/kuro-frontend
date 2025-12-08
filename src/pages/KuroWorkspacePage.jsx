@@ -211,22 +211,17 @@ export default function KuroWorkspacePage() {
     setIsSending(true);
     try {
       const mode = mapAnswerStyleToMode(answerStyle);
-<<<<<<< HEAD
-
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/chat`, {
-=======
-      const res = await fetch(`${API_BASE}/api/chat`, {
->>>>>>> eb1de5aec218d3f9d34e83b9b2645340bb393fd8
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          question: text,
-          mode,
-          pdfId: selectedPdfId || null,
-        }),
-      });
+const res = await fetch(`${API_BASE}/api/chat`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    question: text,
+    mode,
+    pdfId: selectedPdfId || null,
+  }),
+});
       if (!res.ok) {
         const errorText = await res.text();
         const botErr = {
