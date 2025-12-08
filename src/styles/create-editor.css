@@ -481,3 +481,19 @@
 .create-page * {
   outline: 0 !important;
 }
+<<<<<<< HEAD
+=======
+.pdf-canvas-wrapper {
+  position: relative;
+}
+
+/* keep the slider visible, pinned just below the page */
+.zoom-slider {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;          /* move it up from the very bottom */
+  transform: translateX(-50%);
+  width: 40%;            /* or whatever width you like */
+  z-index: 10;
+}
+>>>>>>> eb1de5aec218d3f9d34e83b9b2645340bb393fd8

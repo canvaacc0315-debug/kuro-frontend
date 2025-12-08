@@ -2,8 +2,12 @@ import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+<<<<<<< HEAD
+=======
+
+>>>>>>> eb1de5aec218d3f9d34e83b9b2645340bb393fd8
 import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+import { jsPDF } from "jspdf"; // ⬅️ back to your original named import
 
 export default function PdfDesignCanvas({ onCreated } = {}) {
   const { getToken } = useAuth();
@@ -62,9 +66,12 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
   function handleCanvasClick(e) {
     // click‑to‑place new text if nothing selected
     if (selectedId) return;
+    if (!canvasRef.current) return;
+
     const rect = canvasRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
+
     const id = crypto.randomUUID();
     setElements((prev) => [
       ...prev,
@@ -84,7 +91,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
   }
 
   function updateElement(id, props) {
-    setElements((prev) => prev.map((el) => (el.id === id ? { ...el, ...props } : el)));
+    setElements((prev) =>
+      prev.map((el) => (el.id === id ? { ...el, ...props } : el))
+    );
   }
 
   function deleteSelected() {
@@ -94,30 +103,40 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
   }
 
   function onDrag(id, e) {
+    if (!canvasRef.current) return;
     const rect = canvasRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     updateElement(id, { x, y });
   }
 
+  // ✅ robust export with images + prod builds
   async function exportToPdf() {
     if (!canvasRef.current) return;
 
-    const canvasEl = canvasRef.current;
+    try {
+      const canvasEl = canvasRef.current;
+      const canvas = await html2canvas(canvasEl, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+      });
 
-    const canvas = await html2canvas(canvasEl, {
-      backgroundColor: "#ffffff",
-      scale: 2,
-    });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "pt", "a4");
 
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF("p", "pt", "a4");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = (canvas.height * pageWidth) / canvas.width;
 
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = (canvas.height * pageWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
-    pdf.save("kuro-design.pdf");
+      pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
+      pdf.save("kuro-design.pdf");
+    } catch (err) {
+      // if anything explodes, at least you see it
+      console.error("Export PDF error:", err);
+      alert(`Export failed: ${err?.message || err}`);
+    }
   }
 
   async function saveToServer() {
@@ -127,6 +146,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       const canvas = await html2canvas(canvasRef.current, {
         backgroundColor: "#ffffff",
         scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
       });
       const blob = await new Promise((res) => canvas.toBlob(res, "image/png"));
       if (!blob) throw new Error("Failed to render canvas to image");
@@ -135,7 +157,10 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       const form = new FormData();
       form.append("title", "Canvas design");
       form.append("body_text", "Generated from canvas");
-      form.append("images", new File([blob], "canvas.png", { type: "image/png" }));
+      form.append(
+        "images",
+        new File([blob], "canvas.png", { type: "image/png" })
+      );
 
       const res = await fetch(`${API_BASE}/api/pdf/create`, {
         method: "POST",
@@ -157,7 +182,6 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       }
       const data = await res.json();
       alert(`PDF created: ${data.pdf}`);
-      // Call parent callback so the newly-created PDF can be added to the list
       if (onCreated && typeof onCreated === "function") {
         onCreated({ pdf_id: data.pdf, filename: data.pdf });
       }
@@ -200,7 +224,11 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
           <button type="button" className="kuro-btn" onClick={saveToServer}>
             💾 Save to Server
           </button>
-          <button type="button" className="kuro-btn primary" onClick={exportToPdf}>
+          <button
+            type="button"
+            className="kuro-btn primary"
+            onClick={exportToPdf}
+          >
             📄 Export as PDF
           </button>
         </div>
@@ -214,7 +242,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
             <input
               type="text"
               value={selected.text || ""}
-              onChange={(e) => updateElement(selected.id, { text: e.target.value })}
+              onChange={(e) =>
+                updateElement(selected.id, { text: e.target.value })
+              }
               disabled={selected.type !== "text"}
             />
           </div>
@@ -226,7 +256,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
               max={72}
               value={selected.fontSize || 18}
               onChange={(e) =>
-                updateElement(selected.id, { fontSize: Number(e.target.value) || 12 })
+                updateElement(selected.id, {
+                  fontSize: Number(e.target.value) || 12,
+                })
               }
               disabled={selected.type !== "text"}
             />
@@ -235,7 +267,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
             <label>Font</label>
             <select
               value={selected.fontFamily || "system-ui"}
-              onChange={(e) => updateElement(selected.id, { fontFamily: e.target.value })}
+              onChange={(e) =>
+                updateElement(selected.id, { fontFamily: e.target.value })
+              }
               disabled={selected.type !== "text"}
             >
               <option value="system-ui">System</option>
@@ -249,7 +283,9 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
             <input
               type="color"
               value={selected.color || "#ffffff"}
-              onChange={(e) => updateElement(selected.id, { color: e.target.value })}
+              onChange={(e) =>
+                updateElement(selected.id, { color: e.target.value })
+              }
               disabled={selected.type !== "text"}
             />
           </div>
@@ -260,6 +296,12 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       <div
         className="kuro-design-canvas"
         ref={canvasRef}
+        style={{
+          minHeight: "80vh",
+          maxHeight: "80vh",
+          overflow: "auto",
+          paddingBottom: "260px", // ⬅️ extra space so the bottom handle/controls can scroll into view
+        }}
         onClick={(e) => {
           if (e.target === canvasRef.current) setSelectedId(null);
           handleCanvasClick(e);
@@ -302,6 +344,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
               <img
                 key={el.id}
                 src={el.src}
+                crossOrigin="anonymous" // ⬅️ helps html2canvas use the image safely
                 alt=""
                 className={
                   "kuro-canvas-image" + (el.id === selectedId ? " selected" : "")
