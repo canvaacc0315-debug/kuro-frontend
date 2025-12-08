@@ -11,12 +11,11 @@ export default function KuroLogo({ size = 40 }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background:
-          "linear-gradient(135deg, #ff4b6e, #ff9a62)", // matches your UI
+        background: "linear-gradient(135deg, #ff4b6e, #ff9a62)",
       }}
     >
       <img
-        src={kuroLogo}
+        src="/kuro-logo.png"   // from public/kuro-logo.png
         alt="Kuro.ai logo"
         style={{
           width: "100%",
