@@ -1,10 +1,11 @@
+// src/components/PdfDesignCanvas.jsx
 import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf"; // keep your named import
-import { Rnd } from "react-rnd"; // ⬅️ NEW: for drag + resize
+import { jsPDF } from "jspdf";
+import { Rnd } from "react-rnd";
 
-// ⬅️ Safer API base: always https, with a sane fallback
+// Safe API base (force https in prod)
 const RAW_API_BASE =
   import.meta.env.VITE_API_BASE_URL ||
   "https://canvaacc0315-debug-canvaacc0315-debug.hf.space";
@@ -24,7 +25,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       {
         id,
         type: "text",
-        text: "Double‑click to edit",
+        text: "Double-click to edit",
         x: 80,
         y: 80,
         fontSize: 18,
@@ -55,8 +56,8 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
           src: reader.result,
           x: 100,
           y: 120,
-          width: 220,
-          height: 140, // ⬅️ NEW: store height for proper resize
+          width: 260,
+          height: 160,
         },
       ]);
       setSelectedId(id);
@@ -66,7 +67,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
   }
 
   function handleCanvasClick(e) {
-    // click‑to‑place new text if nothing selected
+    // click-to-place new text if nothing selected
     if (selectedId) return;
     if (!canvasRef.current) return;
 
@@ -112,11 +113,12 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
     updateElement(id, { x, y });
   }
 
-  // ✅ robust export with images + prod builds
+  // Export PDF of the whole canvas
   async function exportToPdf() {
     if (!canvasRef.current) return;
 
     try {
+      console.log("Export PDF clicked");
       const canvasEl = canvasRef.current;
       const canvas = await html2canvas(canvasEl, {
         backgroundColor: "#ffffff",
@@ -144,7 +146,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       const offsetY = (pageHeight - imgHeight) / 2;
 
       pdf.addImage(imgData, "PNG", offsetX, offsetY, imgWidth, imgHeight);
-      pdf.save("rovexai-design.pdf"); // ⬅️ renamed from kuro-design.pdf
+      pdf.save("rovexai-design.pdf");
     } catch (err) {
       console.error("Export PDF error:", err);
       alert(`Export failed: ${err?.message || err}`);
@@ -241,7 +243,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
             className="kuro-btn primary"
             onClick={exportToPdf}
           >
-            📄 Export as PDF
+            Export PDF
           </button>
         </div>
       </div>
@@ -312,7 +314,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
           minHeight: "80vh",
           maxHeight: "80vh",
           overflow: "auto",
-          paddingBottom: "260px", // extra space for bottom controls
+          paddingBottom: "260px",
           position: "relative",
         }}
         onClick={(e) => {
@@ -355,8 +357,8 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
           }
 
           if (el.type === "image") {
-            const width = el.width || 220;
-            const height = el.height || 140;
+            const width = el.width || 260;
+            const height = el.height || 160;
 
             return (
               <Rnd
@@ -382,7 +384,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
               >
                 <img
                   src={el.src}
-                  crossOrigin="anonymous" // helps html2canvas
+                  crossOrigin="anonymous"
                   alt=""
                   style={{
                     width: "100%",
