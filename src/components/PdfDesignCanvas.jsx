@@ -1,10 +1,14 @@
 import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf"; // ⬅️ back to your original named import
+import { jsPDF } from "jspdf"; // keep your named import
+import { Rnd } from "react-rnd"; // ⬅️ NEW: for drag + resize
 
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+// ⬅️ Safer API base: always https, with a sane fallback
+const RAW_API_BASE =
+  import.meta.env.VITE_API_BASE_URL ||
+  "https://canvaacc0315-debug-canvaacc0315-debug.hf.space";
+const API_BASE = RAW_API_BASE.replace("http://", "https://");
 
 export default function PdfDesignCanvas({ onCreated } = {}) {
   const { getToken } = useAuth();
@@ -52,6 +56,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
           x: 100,
           y: 120,
           width: 220,
+          height: 140, // ⬅️ NEW: store height for proper resize
         },
       ]);
       setSelectedId(id);
@@ -125,12 +130,22 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       const pdf = new jsPDF("p", "pt", "a4");
 
       const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = (canvas.height * pageWidth) / canvas.width;
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
-      pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
-      pdf.save("kuro-design.pdf");
+      const ratio = Math.min(
+        pageWidth / canvas.width,
+        pageHeight / canvas.height
+      );
+
+      const imgWidth = canvas.width * ratio;
+      const imgHeight = canvas.height * ratio;
+
+      const offsetX = (pageWidth - imgWidth) / 2;
+      const offsetY = (pageHeight - imgHeight) / 2;
+
+      pdf.addImage(imgData, "PNG", offsetX, offsetY, imgWidth, imgHeight);
+      pdf.save("rovexai-design.pdf"); // ⬅️ renamed from kuro-design.pdf
     } catch (err) {
-      // if anything explodes, at least you see it
       console.error("Export PDF error:", err);
       alert(`Export failed: ${err?.message || err}`);
     }
@@ -297,7 +312,8 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
           minHeight: "80vh",
           maxHeight: "80vh",
           overflow: "auto",
-          paddingBottom: "260px", // ⬅️ extra space so the bottom handle/controls can scroll into view
+          paddingBottom: "260px", // extra space for bottom controls
+          position: "relative",
         }}
         onClick={(e) => {
           if (e.target === canvasRef.current) setSelectedId(null);
@@ -319,6 +335,8 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
                   color: el.color,
                   fontFamily: el.fontFamily,
                   fontWeight: el.fontWeight,
+                  position: "absolute",
+                  cursor: "move",
                 }}
                 onMouseDown={(e) => {
                   e.stopPropagation();
@@ -337,31 +355,52 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
           }
 
           if (el.type === "image") {
+            const width = el.width || 220;
+            const height = el.height || 140;
+
             return (
-              <img
+              <Rnd
                 key={el.id}
-                src={el.src}
-                crossOrigin="anonymous" // ⬅️ helps html2canvas use the image safely
-                alt=""
-                className={
-                  "kuro-canvas-image" + (el.id === selectedId ? " selected" : "")
-                }
-                style={{
-                  top: el.y,
-                  left: el.x,
-                  width: el.width || 220,
-                }}
-                onMouseDown={(e) => {
+                size={{ width, height }}
+                position={{ x: el.x, y: el.y }}
+                bounds="parent"
+                onDragStart={(e) => {
                   e.stopPropagation();
                   setSelectedId(el.id);
                 }}
-                onMouseMove={(e) => {
-                  if (e.buttons === 1 && el.id === selectedId) {
-                    e.preventDefault();
-                    onDrag(el.id, e);
-                  }
+                onDragStop={(e, data) => {
+                  updateElement(el.id, { x: data.x, y: data.y });
                 }}
-              />
+                onResizeStop={(e, dir, ref, delta, position) => {
+                  updateElement(el.id, {
+                    x: position.x,
+                    y: position.y,
+                    width: parseInt(ref.style.width, 10),
+                    height: parseInt(ref.style.height, 10),
+                  });
+                }}
+              >
+                <img
+                  src={el.src}
+                  crossOrigin="anonymous" // helps html2canvas
+                  alt=""
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "contain",
+                    border:
+                      el.id === selectedId
+                        ? "2px solid #ff4b6e"
+                        : "2px solid transparent",
+                    borderRadius: 8,
+                    cursor: "move",
+                  }}
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                    setSelectedId(el.id);
+                  }}
+                />
+              </Rnd>
             );
           }
 
