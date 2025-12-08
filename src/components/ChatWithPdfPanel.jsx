@@ -3,7 +3,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import jsPDF from "jspdf";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 const DEFAULT_HISTORY = [
   {
@@ -207,7 +208,7 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
 
   // === EXPORT HELPERS ===
   const conversationText = useMemo(() => {
-    let text = "KURO.AI - CHAT CONVERSATION EXPORT\n";
+    let text = "RovexAI - CHAT CONVERSATION EXPORT\n";
     text += `Exported: ${new Date().toLocaleString()}\n`;
     text += "=".repeat(50) + "\n\n";
 
@@ -308,7 +309,7 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
     <div className="chat-section">
       <div className="chat-left">
         {/* header showing which PDF */}
-        <div className="section-label">CHAT KURO</div>
+        <div className="section-label">CHAT WITH ROVEXAI</div>
         <div className="pdf-selector">
           <div className="pdf-selector-icon">📄</div>
           <div className="pdf-selector-text">

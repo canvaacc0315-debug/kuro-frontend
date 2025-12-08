@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useAuth } from "@clerk/clerk-react";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 

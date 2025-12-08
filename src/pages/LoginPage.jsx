@@ -29,7 +29,7 @@ export default function LoginPage() {
               style={{ display: "flex", alignItems: "center", gap: "8px" }}
             >
               <KuroLogo size={60} />
-              <div className="login-logo-text">Kuro.ai</div>
+              <div className="login-logo-text">RovexAI</div>
             </div>
 
             <h1 className="login-hero-title">
@@ -38,7 +38,7 @@ export default function LoginPage() {
             </h1>
 
             <p className="login-hero-description">
-              Kuro.ai is your intelligent PDF companion. Upload documents, ask
+              RovexAI is your intelligent PDF companion. Upload documents, ask
               questions, generate summaries, extract data, and unlock insights
               in seconds.
             </p>
@@ -97,7 +97,7 @@ export default function LoginPage() {
             <div className="login-auth-header">
               <h2 className="login-auth-title">
                 Sign In to{" "}
-                <span className="login-auth-title-accent">Kuro.ai</span>
+                <span className="login-auth-title-accent">RovexAI</span>
               </h2>
 
               <p className="login-auth-subtitle">
@@ -121,15 +121,8 @@ export default function LoginPage() {
               <span className="login-security-icon">🔒</span>
               <span>Accounts protected with Clerk &amp; OAuth</span>
             </div>
-
-            <div className="login-clerk-badge">
-              Secured by Clerk{" "}
-              <span className="login-dev-mode">Development mode</span>
-            </div>
-
           </div>
         </section>
-
       </div>
     </div>
   );

@@ -80,7 +80,7 @@ export default function CreateCustomPdfPanel() {
       {resultFile && (
         <div className="mt-3">
           <a
-            href={`http://localhost:8000/api/pdf/download/${resultFile}`}
+            href={`${import.meta.env.VITE_API_BASE_URL}/api/pdf/download/${resultFile}`}
             target="_blank"
             rel="noreferrer"
             className="inline-block text-emerald-400 underline"

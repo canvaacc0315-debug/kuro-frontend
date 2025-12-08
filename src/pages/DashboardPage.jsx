@@ -24,7 +24,7 @@ export default function DashboardPage() {
         {/* LEFT: logo + brand text (same pattern as workspace page) */}
         <div className="navbar-brand">
           <KuroLogo size={36} />
-          <div className="navbar-brand-text">Kuro.ai</div>
+          <div className="navbar-brand-text">RovexAI</div>
         </div>
 
         {/* RIGHT: user info (unchanged) */}
@@ -44,7 +44,7 @@ export default function DashboardPage() {
         {/* HERO */}
         <section className="hero-banner">
           <h1 className="hero-title">
-            Welcome to <span className="hero-title-accent">Kuro.ai</span>
+            Welcome to <span className="hero-title-accent">RovexAI</span>
           </h1>
           <p className="hero-subtitle">
             Transform your PDF workflows with intelligent document processing
@@ -195,7 +195,7 @@ export default function DashboardPage() {
         <section className="features-section">
           <div className="section-header">
             <h2 className="section-title">
-              Why Choose <span className="section-title-accent">Kuro.ai</span>?
+              Why Choose <span className="section-title-accent">RovexAI</span>?
             </h2>
           </div>
 
@@ -227,7 +227,7 @@ export default function DashboardPage() {
             <div className="feature-card">
               <h3 className="feature-title">📱 Fully Responsive</h3>
               <p className="feature-desc">
-                Access Kuro.ai from any device. Work seamlessly on desktop,
+                Access RovexAI from any device. Work seamlessly on desktop,
                 tablet, or mobile.
               </p>
             </div>
@@ -235,7 +235,7 @@ export default function DashboardPage() {
             <div className="feature-card">
               <h3 className="feature-title">🔗 API Integration</h3>
               <p className="feature-desc">
-                Integrate Kuro.ai into your workflows with our REST API and
+                Integrate RovexAI into your workflows with our REST API and
                 webhooks.
               </p>
             </div>
@@ -253,7 +253,7 @@ export default function DashboardPage() {
 
       {/* Optional footer */}
       <footer className="footer">
-        © {new Date().getFullYear()} Kuro.ai. All rights reserved.
+        © {new Date().getFullYear()} RovexAI. All rights reserved.
       </footer>
     </div>
   );

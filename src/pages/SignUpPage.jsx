@@ -15,12 +15,12 @@ export default function SignUpPage() {
               <KuroLogo size={60} />
 
               {/* ✅ TEXT NEXT TO LOGO */}
-              <div className="login-logo-text">Kuro.ai</div>
+              <div className="login-logo-text">RovexAI</div>
             </div>
 
             <h1 className="login-hero-title">
               Join the{" "}
-              <span className="login-hero-title-accent">Kuro.ai community</span>
+              <span className="login-hero-title-accent">RovexAI community</span>
             </h1>
 
             <p className="login-hero-description">

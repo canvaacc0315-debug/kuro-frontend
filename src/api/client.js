@@ -7,7 +7,10 @@
 import axios from "axios";
 import { useAuth } from "@clerk/clerk-react";
 
-const BASE_URL = "https://kuro-backend-svrs.onrender.com"; // change if backend runs elsewhere
+// 👇 Uses your HuggingFace URL from .env in production,
+//    and localhost:8000 when running locally if env is missing
+const BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 // This hook returns functions that already handle auth and baseURL.
 export function useApiClient() {
@@ -78,7 +81,10 @@ export function useApiClient() {
       return res.data; // { result }
     } catch (err) {
       // try to extract server-provided error message
-      const serverMsg = err?.response?.data?.error || (err?.response?.data?.message) || err?.message;
+      const serverMsg =
+        err?.response?.data?.error ||
+        err?.response?.data?.message ||
+        err?.message;
       throw new Error(serverMsg || "Analysis failed");
     }
   }

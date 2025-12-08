@@ -70,7 +70,7 @@ export default function Navbar() {
           {/* 🔹 our image logo instead of emoji */}
           <KuroLogo size={42} />
 
-          <div className="kuro-navbar-brand-text">Kuro.ai</div>
+          <div className="kuro-navbar-brand-text">RovexAI</div>
 
           {/* invisible hit‑area button */}
           <button

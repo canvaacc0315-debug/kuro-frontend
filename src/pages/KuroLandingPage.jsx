@@ -131,7 +131,7 @@ export default function KuroLandingPage() {
           <h1 className="hero-title">Chat with Your PDFs Instantly</h1>
 
           <p className="hero-description">
-            Kuro.ai is an intelligent PDF chatbot that understands your
+            RovexAI is an intelligent PDF chatbot that understands your
             documents, answers questions, and extracts insights in seconds.
           </p>
 

@@ -250,7 +250,7 @@ export default function KuroWorkspacePage() {
     try {
       const mode = mapAnswerStyleToMode(answerStyle);
 
-      const res = await fetch("/api/chat", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -307,7 +307,7 @@ export default function KuroWorkspacePage() {
 
   const conversationAsPlainText = () => {
     if (!conversation.length) return "No active conversation.";
-    let txt = "KURO.AI - CHAT CONVERSATION EXPORT\n";
+    let txt = "RovexAI - CHAT CONVERSATION EXPORT\n";
     txt += `Exported: ${new Date().toLocaleString()}\n`;
     txt += "==================================================\n\n";
     conversation.forEach((m) => {
@@ -477,7 +477,7 @@ export default function KuroWorkspacePage() {
 <header className="navbar">
   <div className="navbar-brand">
     <KuroLogo size={36} />   {/* ✅ uses same logo */}
-    <div className="navbar-brand-text">Kuro.ai</div>
+    <div className="navbar-brand-text">RovexAI</div>
   </div>
 
   <div className="navbar-right">
@@ -513,7 +513,7 @@ export default function KuroWorkspacePage() {
           <div>
             <h1 className="workspace-title">
               Welcome to{" "}
-              <span className="workspace-title-accent">Chat Kuro</span>
+              <span className="workspace-title-accent">Chat Rovex</span>
             </h1>
             <div className="breadcrumb">
               Dashboard / Workspaces / PDF Chat
