@@ -17,8 +17,7 @@ const API_BASE =
 
 export default function KuroWorkspacePage() {
   const { user, isLoaded } = useUser();
-  const { uploadPdf } = useApiClient(); // 👈 NEW
-  // --- URL tab wiring ---
+  const { uploadPdf } = useApiClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const getInitialTab = () => {
     const tabFromUrl = searchParams.get("tab");
@@ -37,7 +36,6 @@ export default function KuroWorkspacePage() {
   const [activeChatSubTab, setActiveChatSubTab] = useState("current");
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedPdfId, setSelectedPdfId] = useState("");
-  // which file is currently being previewed in the Upload tab
   const [previewFile, setPreviewFile] = useState(null);
   const [chatInput, setChatInput] = useState("");
   const [answerStyle, setAnswerStyle] = useState("default");
@@ -52,25 +50,10 @@ export default function KuroWorkspacePage() {
   ]);
   const [exportStatus, setExportStatus] = useState(null);
   const [isSending, setIsSending] = useState(false);
-  // ✅ Real history state (replaces demoHistory)
   const [history, setHistory] = useState([]);
   const selectedFile =
     uploadedFiles.find((f) => f.id === selectedPdfId) || null;
 
-  // NEW: detect mobile viewport so we can render touch-friendly tab control
-  const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth <= 768 : false
-  );
-  useEffect(() => {
-    function onResize() {
-      setIsMobile(window.innerWidth <= 768);
-    }
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  // ---------------- helpers ----------------
   const showStatus = (message, type = "success") => {
     setExportStatus({ message, type });
     setTimeout(() => setExportStatus(null), 3000);
@@ -86,7 +69,7 @@ export default function KuroWorkspacePage() {
         return "detailed";
     }
   };
-  // ----- history <-> localStorage helpers -----
+
   const HISTORY_KEY = "kuroChatHistory";
   const loadHistoryFromStorage = () => {
     try {
@@ -106,14 +89,13 @@ export default function KuroWorkspacePage() {
       // ignore
     }
   };
-  // load history on mount
   useEffect(() => {
     const stored = loadHistoryFromStorage();
     if (stored.length) {
       setHistory(stored);
     }
   }, []);
-  // ---------------- tabs ----------------
+
   useEffect(() => {
     const tabFromUrl = searchParams.get("tab");
     if (
@@ -125,6 +107,7 @@ export default function KuroWorkspacePage() {
       if (tabFromUrl === "chat") setActiveChatSubTab("current");
     }
   }, [searchParams, activeTab]);
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (tab === "chat") setActiveChatSubTab("current");
@@ -137,27 +120,26 @@ export default function KuroWorkspacePage() {
   const handleChatSubTabClick = (sub) => {
     setActiveChatSubTab(sub);
   };
-  // ---------------- upload ----------------
+
+  /* ---------------- upload ---------------- */
   const handleFiles = async (fileList) => {
     const pdfs = Array.from(fileList).filter(
       (f) => f.type === "application/pdf"
     );
     if (!pdfs.length) return;
     try {
-      // ⬇️ real upload to backend so we get real pdf_id (UUID)
-      const res = await uploadPdf(pdfs); // { pdfs: [{ pdf_id, filename }, ...] }
+      const res = await uploadPdf(pdfs);
       const backendPdfs = res?.pdfs || [];
       setUploadedFiles((prev) => {
         const mapped = backendPdfs.map((info, idx) => {
           const file = pdfs[idx];
           return {
-            id: info.pdf_id, // 👈 this now matches backend pdf_id
+            id: info.pdf_id,
             name: info.filename,
             sizeMB: (file.size / 1024 / 1024).toFixed(2),
             url: URL.createObjectURL(file),
           };
         });
-        // auto‑select first pdf if none selected yet
         if (!selectedPdfId && mapped.length > 0) {
           setSelectedPdfId(mapped[0].id);
         }
@@ -177,7 +159,6 @@ export default function KuroWorkspacePage() {
   const handleRemoveFile = (id) => {
     setUploadedFiles((prev) => {
       const fileToRemove = prev.find((f) => f.id === id);
-      // clean up preview URL
       if (fileToRemove?.url) {
         URL.revokeObjectURL(fileToRemove.url);
       }
@@ -186,12 +167,12 @@ export default function KuroWorkspacePage() {
     if (id === selectedPdfId) {
       setSelectedPdfId("");
     }
-    // if we were previewing this file, close preview
     if (previewFile && previewFile.id === id) {
       setPreviewFile(null);
     }
   };
-  // ---------------- chat ----------------
+
+  /* ---------------- chat ---------------- */
   const handleChatKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -225,17 +206,17 @@ export default function KuroWorkspacePage() {
     setIsSending(true);
     try {
       const mode = mapAnswerStyleToMode(answerStyle);
-const res = await fetch(`${API_BASE}/api/chat`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    question: text,
-    mode,
-    pdfId: selectedPdfId || null,
-  }),
-});
+      const res = await fetch(`${API_BASE}/api/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question: text,
+          mode,
+          pdfId: selectedPdfId || null,
+        }),
+      });
       if (!res.ok) {
         const errorText = await res.text();
         const botErr = {
@@ -273,7 +254,8 @@ const res = await fetch(`${API_BASE}/api/chat`, {
       setIsSending(false);
     }
   };
-  // ---------------- export helpers ----------------
+
+  /* ---------------- export helpers ---------------- */
   const conversationAsPlainText = () => {
     if (!conversation.length) return "No active conversation.";
     let txt = "RovexAI - CHAT CONVERSATION EXPORT\n";
@@ -304,32 +286,44 @@ const res = await fetch(`${API_BASE}/api/chat`, {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
+
+  // ------ FIXED: handleExportPDF (minimal/safe changes) ------
   const handleExportPDF = () => {
     if (!conversation.length) {
       showStatus("No conversation to export.", "error");
       return;
     }
     try {
-      const doc = new jsPDF();
+      const doc = new jsPDF(); // defaults to 'pt' units and 'a4'
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
       const marginLeft = 10;
-      const maxWidth = 180; // page width (A4) minus margins
-      let cursorY = 15;
+      const marginTop = 15;
+      const marginBottom = 20;
+      const maxWidth = pageWidth - marginLeft * 2;
+
+      let cursorY = marginTop;
       const text = conversationAsPlainText();
-      const lines = text.split("\n");
-      doc.setFont("Courier", "Normal");
+
+      // use a safe built-in font (single arg). avoid calling setFontType.
+      doc.setFont("courier");
       doc.setFontSize(11);
+
+      const lines = text.split("\n");
       lines.forEach((line) => {
+        // splitTextToSize will wrap long lines to fit maxWidth
         const wrapped = doc.splitTextToSize(line, maxWidth);
         wrapped.forEach((wLine) => {
-          // start a new page if we overflow
-          if (cursorY > 280) {
+          // start a new page if we overflow the printable area
+          if (cursorY > pageHeight - marginBottom) {
             doc.addPage();
-            cursorY = 15;
+            cursorY = marginTop;
           }
           doc.text(wLine, marginLeft, cursorY);
           cursorY += 7;
         });
       });
+
       doc.save(`kuro-chat-${Date.now()}.pdf`);
       showStatus("Exported PDF.");
     } catch (err) {
@@ -337,7 +331,7 @@ const res = await fetch(`${API_BASE}/api/chat`, {
       showStatus("Failed to export PDF.", "error");
     }
   };
-  // ✅ These handlers were missing – used only in Export tab
+
   const handleExportDOCX = () => {
     const txt = conversationAsPlainText();
     downloadBlob(
@@ -366,9 +360,9 @@ const res = await fetch(`${API_BASE}/api/chat`, {
       showStatus("Clipboard permission denied.", "error");
     }
   };
-  // ---------------- history actions (save / load / delete / clear) ----------------
+
+  /* ---------------- history actions ---------------- */
   const handleSaveConversation = () => {
-    // ignore if only welcome message
     const realMessages = conversation.filter(
       (m) => m.role === "user" || m.role === "bot"
     );
@@ -417,41 +411,38 @@ const res = await fetch(`${API_BASE}/api/chat`, {
     }
     showStatus("All history cleared.");
   };
-  // ---------------- render ----------------
+
   return (
     <div className="workspace-root">
-      {/* TOP NAVBAR (same style as home) */}
-<header className="navbar">
-  <div className="navbar-brand">
-    <KuroLogo size={36} />   {/* ✅ uses same logo */}
-    <div className="navbar-brand-text">RovexAI</div>
-  </div>
-  <div className="navbar-right">
-    <div className="user-info">
-      <div className="user-avatar">
-        {isLoaded && user?.firstName
-          ? user.firstName[0].toUpperCase()
-          : "?"}
-      </div>
-      <div className="user-name">
-        {isLoaded && user
-          ? user.fullName ||
-            user.primaryEmailAddress?.emailAddress ||
-            "User"
-          : "Loading..."}
-      </div>
-    </div>
-    <UserButton
-      afterSignOutUrl="/"
-      appearance={{
-        elements: {
-          avatarBox: "navbar-profile-photo",
-        },
-      }}
-    />
-  </div>
-</header>
-      {/* MAIN */}
+      <header className="navbar">
+        <div className="navbar-brand">
+          <KuroLogo size={36} />
+          <div className="navbar-brand-text">RovexAI</div>
+        </div>
+        <div className="navbar-right">
+          <div className="user-info">
+            <div className="user-avatar">
+              {isLoaded && user?.firstName ? user.firstName[0].toUpperCase() : "?"}
+            </div>
+            <div className="user-name">
+              {isLoaded && user
+                ? user.fullName ||
+                  user.primaryEmailAddress?.emailAddress ||
+                  "User"
+                : "Loading..."}
+            </div>
+          </div>
+          <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                avatarBox: "navbar-profile-photo",
+              },
+            }}
+          />
+        </div>
+      </header>
+
       <main className="main-container">
         <header className="workspace-header">
           <div>
@@ -465,68 +456,38 @@ const res = await fetch(`${API_BASE}/api/chat`, {
           </div>
         </header>
 
-        {/* top‑level tabs */}
-        {/* On mobile we render a compact select (touch friendly) */}
-        {isMobile ? (
-          <div style={{ padding: "10px 16px" }}>
-            <label htmlFor="kuro-tab-select" style={{ display: "none" }}>
-              Select tab
-            </label>
-            <select
-              id="kuro-tab-select"
-              value={activeTab}
-              onChange={(e) => handleTabClick(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "10px 12px",
-                borderRadius: 10,
-                border: "1px solid rgba(120,120,150,0.25)",
-                background: "#1f1b24",
-                color: "#fff",
-                fontSize: 15,
-              }}
-            >
-              <option value="upload">📤 Upload PDFs</option>
-              <option value="chat">💬 Chat Rovex</option>
-              <option value="analysis">📊 Analysis</option>
-              <option value="ocr">🔍 OCR & Recognition</option>
-              <option value="create">✏️ Create & Edit</option>
-            </select>
-          </div>
-        ) : (
-          <div className="tabs-nav">
-            <button
-              className={`tab-btn ${activeTab === "upload" ? "active" : ""}`}
-              onClick={() => handleTabClick("upload")}
-            >
-              📤 Upload PDFs
-            </button>
-            <button
-              className={`tab-btn ${activeTab === "chat" ? "active" : ""}`}
-              onClick={() => handleTabClick("chat")}
-            >
-              💬 Chat Rovex
-            </button>
-            <button
-              className={`tab-btn ${activeTab === "analysis" ? "active" : ""}`}
-              onClick={() => handleTabClick("analysis")}
-            >
-              📊 Analysis
-            </button>
-            <button
-              className={`tab-btn ${activeTab === "ocr" ? "active" : ""}`}
-              onClick={() => handleTabClick("ocr")}
-            >
-              🔍 OCR & Recognition
-            </button>
-            <button
-              className={`tab-btn ${activeTab === "create" ? "active" : ""}`}
-              onClick={() => handleTabClick("create")}
-            >
-              ✏️ Create & Edit
-            </button>
-          </div>
-        )}
+        <div className="tabs-nav">
+          <button
+            className={`tab-btn ${activeTab === "upload" ? "active" : ""}`}
+            onClick={() => handleTabClick("upload")}
+          >
+            📤 Upload PDFs
+          </button>
+          <button
+            className={`tab-btn ${activeTab === "chat" ? "active" : ""}`}
+            onClick={() => handleTabClick("chat")}
+          >
+            💬 Chat Rovex
+          </button>
+          <button
+            className={`tab-btn ${activeTab === "analysis" ? "active" : ""}`}
+            onClick={() => handleTabClick("analysis")}
+          >
+            📊 Analysis
+          </button>
+          <button
+            className={`tab-btn ${activeTab === "ocr" ? "active" : ""}`}
+            onClick={() => handleTabClick("ocr")}
+          >
+            🔍 OCR & Recognition
+          </button>
+          <button
+            className={`tab-btn ${activeTab === "create" ? "active" : ""}`}
+            onClick={() => handleTabClick("create")}
+          >
+            ✏️ Create & Edit
+          </button>
+        </div>
 
         {/* UPLOAD TAB */}
         <section
@@ -534,7 +495,6 @@ const res = await fetch(`${API_BASE}/api/chat`, {
           className={`tab-content ${activeTab === "upload" ? "active" : ""}`}
         >
           <div className="upload-container">
-            {/* LEFT: either upload UI OR PDF preview */}
             {previewFile ? (
               <div className="pdf-preview-panel">
                 <div className="pdf-preview-header">
@@ -593,7 +553,7 @@ const res = await fetch(`${API_BASE}/api/chat`, {
                 />
               </div>
             )}
-            {/* RIGHT: uploaded files list */}
+
             <div className="uploaded-files">
               <div className="uploaded-files-title">📋 Uploaded Files</div>
               {uploadedFiles.length === 0 ? (
@@ -634,12 +594,12 @@ const res = await fetch(`${API_BASE}/api/chat`, {
             </div>
           </div>
         </section>
+
         {/* CHAT TAB */}
         <section
           id="chatTab"
           className={`tab-content ${activeTab === "chat" ? "active" : ""}`}
         >
-          {/* sub‑tabs */}
           <div className="chat-subtabs-nav">
             <button
               className={`chat-subtab-btn ${
@@ -666,10 +626,9 @@ const res = await fetch(`${API_BASE}/api/chat`, {
               📥 Export Conversation
             </button>
           </div>
-          {/* CURRENT CHAT */}
+
           {activeChatSubTab === "current" && (
             <div className="chat-subtab-content active">
-              {/* top row: PDF select (left), answer style (middle‑right), actions (right) */}
               <div className="chat-top-row">
                 <div className="chat-pdf-select">
                   <label className="form-label">PDF to chat with</label>
@@ -723,12 +682,13 @@ const res = await fetch(`${API_BASE}/api/chat`, {
                   </button>
                 </div>
               </div>
-              {/* banner with selected file */}
+
               {selectedFile && (
                 <div className="chat-selected-file-banner">
                   Chatting with: <strong>{selectedFile.name}</strong>
                 </div>
               )}
+
               <div className="chat-container">
                 <div className="chat-messages">
                   {conversation.map((m) => (
@@ -773,7 +733,7 @@ const res = await fetch(`${API_BASE}/api/chat`, {
               </div>
             </div>
           )}
-          {/* CHAT HISTORY */}
+
           {activeChatSubTab === "history" && (
             <div className="chat-subtab-content active">
               <div className="history-container">
@@ -827,7 +787,7 @@ const res = await fetch(`${API_BASE}/api/chat`, {
               </div>
             </div>
           )}
-          {/* EXPORT CONVERSATION */}
+
           {activeChatSubTab === "export" && (
             <div className="chat-subtab-content active">
               <div className="export-container">
@@ -854,6 +814,7 @@ const res = await fetch(`${API_BASE}/api/chat`, {
                       📥 Export PDF
                     </button>
                   </div>
+
                   <div className="export-card">
                     <span className="export-icon">📝</span>
                     <h4 className="export-card-title">
@@ -871,6 +832,7 @@ const res = await fetch(`${API_BASE}/api/chat`, {
                       📥 Export DOCX
                     </button>
                   </div>
+
                   <div className="export-card">
                     <span className="export-icon">📊</span>
                     <h4 className="export-card-title">Export as CSV</h4>
@@ -886,6 +848,7 @@ const res = await fetch(`${API_BASE}/api/chat`, {
                       📥 Export CSV
                     </button>
                   </div>
+
                   <div className="export-card">
                     <span className="export-icon">📋</span>
                     <h4 className="export-card-title">
@@ -902,6 +865,7 @@ const res = await fetch(`${API_BASE}/api/chat`, {
                       📥 Export TXT
                     </button>
                   </div>
+
                   <div className="export-card">
                     <span className="export-icon">📋</span>
                     <h4 className="export-card-title">Copy to Clipboard</h4>
@@ -917,6 +881,7 @@ const res = await fetch(`${API_BASE}/api/chat`, {
                     </button>
                   </div>
                 </div>
+
                 {exportStatus && (
                   <div className="export-status">
                     <div className="status-icon">
@@ -933,21 +898,20 @@ const res = await fetch(`${API_BASE}/api/chat`, {
             </div>
           )}
         </section>
-        {/* OTHER TABS */}
-        {/* ANALYSIS TAB → uses AnalysisPanel */}
+
+        {/* ANALYSIS */}
         <section
           id="analysisTab"
-          className={`tab-content ${
-            activeTab === "analysis" ? "active" : ""
-          }`}
+          className={`tab-content ${activeTab === "analysis" ? "active" : ""}`}
         >
           <AnalysisPanel
             pdfs={uploadedFiles}
             selectedPdfId={selectedPdfId}
-            onPdfChange={setSelectedPdfId} // 👈 prop name so dropdown works
+            onPdfChange={setSelectedPdfId}
           />
         </section>
-        {/* OCR TAB → uses OcrTextExtractor */}
+
+        {/* OCR */}
         <section
           id="ocrTab"
           className={`tab-content ${activeTab === "ocr" ? "active" : ""}`}
@@ -957,7 +921,8 @@ const res = await fetch(`${API_BASE}/api/chat`, {
             selectedPdfId={selectedPdfId}
           />
         </section>
-        {/* CREATE & EDIT TAB → uses PdfDesignCanvas */}
+
+        {/* CREATE */}
         <section
           id="createTab"
           className={`tab-content ${activeTab === "create" ? "active" : ""}`}
