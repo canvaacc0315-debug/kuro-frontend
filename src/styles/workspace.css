@@ -2183,3 +2183,234 @@ html, body {
     font-size: 12px !important;
   }
 }
+/* =========================
+   MOBILE FIXES — append only
+   (for Chat & Create tabs)
+   ========================= */
+
+/* Base mobile breakpoint */
+@media (max-width: 768px) {
+  /* --- Top-level layout --- */
+  .main-container {
+    padding: 12px;
+  }
+
+  /* Make tabs full width and scrollable horizontally */
+  .tabs-nav {
+    padding: 8px 6px;
+    gap: 6px;
+  }
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  /* --- CHAT TAB --- */
+  /* Stack chat controls vertically and make messages area full width */
+  .chat-top-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .chat-pdf-select,
+  .chat-answer-style {
+    flex: 1 1 100%;
+  }
+
+  .chat-container {
+    height: calc(100vh - 220px); /* give room for inputs and nav */
+    min-height: 380px;
+    border-radius: 12px;
+    padding-bottom: 12px;
+  }
+
+  .chat-messages {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .message-bubble {
+    max-width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .chat-input-area {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    background: linear-gradient(180deg, rgba(0,0,0,0.15), rgba(0,0,0,0.25));
+    padding: 10px;
+    gap: 8px;
+    box-shadow: 0 -6px 18px rgba(0,0,0,0.6);
+  }
+
+  .chat-input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .send-btn {
+    padding: 10px 14px;
+  }
+
+  /* ensure the chat messages container scrolls above the sticky input */
+  .chat-messages {
+    margin-bottom: 8px;
+  }
+
+  /* --- CREATE (PDF Designer) TAB --- */
+  .create-editor-root {
+    flex-direction: column;
+    gap: 8px;
+    padding-bottom: 140px; /* room for FAB + resize handles */
+  }
+
+  /* hide desktop sidebar on phones, toolbar becomes top compact bar */
+  .create-editor-sidebar,
+  .create-sidebar,
+  .create-properties {
+    display: none !important;
+  }
+
+  .create-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 10px;
+    align-items: center;
+  }
+
+  /* Canvas becomes full width and taller */
+  .create-canvas {
+    margin: 8px 12px;
+    min-height: calc(100vh - 260px);
+    border-radius: 12px;
+  }
+
+  .create-page {
+    width: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    padding: 18px !important;
+    margin: 6px 0;
+  }
+
+  /* ensure page has extra bottom padding so resize handles & slider aren't clipped */
+  .create-page,
+  .create-page-shell,
+  .create-editor-main {
+    padding-bottom: 140px !important;
+  }
+
+  /* image handles / react-rnd handles: make big and touch friendly */
+  .resize-handle,
+  .rnd-resize-handle,
+  .rnd-resize-handle * {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    right: -10px !important;
+    bottom: -10px !important;
+    border-radius: 6px !important;
+    background: #ff5164 !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35) !important;
+    z-index: 999 !important;
+    touch-action: none !important;
+  }
+
+  /* Allow overflow visible so handles aren't clipped */
+  .create-canvas, .create-page, .create-page-shell, .pdf-canvas-wrapper {
+    overflow: visible !important;
+  }
+
+  /* Image size slider (if present) should be pinned above FAB */
+  .image-size-controls,
+  .zoom-slider {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 86px !important;
+    width: calc(100% - 40px) !important;
+    max-width: 520px !important;
+    z-index: 995 !important;
+  }
+
+  .image-size-controls .image-size-range,
+  .zoom-slider input[type="range"] {
+    width: 100% !important;
+  }
+
+  /* --- Export FAB --- */
+  .sidebar-export-btn {
+    position: fixed !important;
+    right: 14px !important;
+    bottom: 18px !important;
+    width: 56px !important;
+    height: 56px !important;
+    padding: 0 !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.45) !important;
+    z-index: 9999 !important;
+    font-size: 20px !important;
+    overflow: visible !important;
+  }
+  /* hide text inside FAB so icon-only remains */
+  .sidebar-export-btn > *:not(.export-icon) {
+    display: none !important;
+  }
+
+  /* ensure pages bar is above export FAB */
+  .pages-bar {
+    z-index: 30;
+  }
+
+  /* safe area for devices with bottom nav (android) */
+  body, .main-container {
+    padding-bottom: env(safe-area-inset-bottom, 12px);
+  }
+
+  /* Small tweaks for buttons & pills */
+  .page-pill,
+  .delete-page-btn,
+  .clear-conversation-btn,
+  .export-btn,
+  .file-action-btn {
+    font-size: 13px;
+    padding: 8px 12px;
+  }
+}
+
+/* --- Tablet breakpoint improvements --- */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .create-editor-sidebar {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+  }
+
+  .create-canvas {
+    margin: 12px;
+    min-height: 420px;
+  }
+
+  .chat-container {
+    height: 520px;
+  }
+}
+
+/* Small helper to explicitly allow overflow where clipping occurs */
+.allow-overflow,
+.create-canvas,
+.create-page,
+.pdf-canvas-wrapper,
+.create-editor-root {
+  overflow: visible !important;
+}
