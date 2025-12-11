@@ -435,8 +435,19 @@ export default function CreatePdfPanel({ onExportPdf }) {
         // heading
         const headingStyle = p.heading.style || {};
         pdf.setFontSize(headingStyle.fontSize || 24);
-        pdf.setFont("helvetica", headingStyle.italic ? "italic" : "normal");
-        pdf.setFontType(headingStyle.bold ? "bold" : "normal");
+
+        // --- RELEVANT CHANGE: compute combined fontStyle and call setFont once ---
+        const computeFontStyle = (style) => {
+          const bold = !!style.bold;
+          const italic = !!style.italic;
+          if (bold && italic) return "bolditalic";
+          if (bold) return "bold";
+          if (italic) return "italic";
+          return "normal";
+        };
+        const headingFontStyle = computeFontStyle(headingStyle);
+        pdf.setFont("helvetica", headingFontStyle);
+        // --- end change ---
 
         const headingX = margin;
         let cursorY = margin + (headingStyle.fontSize || 24);
@@ -450,8 +461,11 @@ export default function CreatePdfPanel({ onExportPdf }) {
         // body
         const bodyStyle = p.body.style || {};
         pdf.setFontSize(bodyStyle.fontSize || 14);
-        pdf.setFont("helvetica", bodyStyle.italic ? "italic" : "normal");
-        pdf.setFontType(bodyStyle.bold ? "bold" : "normal");
+
+        // --- RELEVANT CHANGE: compute body font style and set it ---
+        const bodyFontStyle = computeFontStyle(bodyStyle);
+        pdf.setFont("helvetica", bodyFontStyle);
+        // --- end change ---
 
         const bodyLines = pdf.splitTextToSize(p.body.text || "", pageWidth - margin * 2);
         // start a bit below heading
