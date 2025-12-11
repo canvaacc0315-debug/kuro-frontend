@@ -1,7 +1,6 @@
-// src/components/PdfDesignCanvas.jsx
 import { useRef, useState, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-react";
-import html2canvas from "html2canvas"; // still used for saveToServer
+import html2canvas from "html2canvas"; // still used for fallback and saveToServer
 import { jsPDF } from "jspdf";
 import { Rnd } from "react-rnd";
 
@@ -113,55 +112,40 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
     updateElement(id, { x, y });
   }
 
-  // ----------------- helpers used by export -----------------
+  // NEW: helper to make an A4 sized PDF and place an image on it (used by fallback)
+  async function createPdfFromCanvasImage(imageDataUrl) {
+    // create PDF in points (pt)
+    const pdf = new jsPDF("p", "pt", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
 
-  // px -> pt conversion: 1px @96dpi = 0.75pt (72pt per inch)
-  const pxToPt = (px) => Number(px) * 0.75;
-
-  // parse hex color "#rrggbb" -> [r,g,b]
-  const hexToRgb = (hex) => {
-    if (!hex) return [0, 0, 0];
-    const h = hex.replace("#", "");
-    if (h.length === 3) {
-      return [
-        parseInt(h[0] + h[0], 16),
-        parseInt(h[1] + h[1], 16),
-        parseInt(h[2] + h[2], 16),
-      ];
-    }
-    return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
-  };
-
-  // Ensure image src is a data URL (PNG). If already data:, return as-is.
-  // Otherwise load image, draw to canvas and convert to dataURL.
-  const ensureImageDataUrl = (src, targetWidth, targetHeight) =>
-    new Promise((resolve, reject) => {
-      if (!src) return reject(new Error("No image source"));
-      if (String(src).startsWith("data:")) return resolve(src);
-
-      const img = new Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => {
-        try {
-          // if width/height given, draw to that size; else use natural size
-          const w = targetWidth || img.naturalWidth || 400;
-          const h = targetHeight || img.naturalHeight || (w * img.naturalHeight) / (img.naturalWidth || 1);
-          const c = document.createElement("canvas");
-          c.width = w;
-          c.height = h;
-          const ctx = c.getContext("2d");
-          ctx.drawImage(img, 0, 0, w, h);
-          const dataUrl = c.toDataURL("image/png");
-          resolve(dataUrl);
-        } catch (err) {
-          reject(err);
-        }
-      };
-      img.onerror = (err) => reject(new Error("Failed to load image"));
-      img.src = src;
+    // create an Image object to get dimensions
+    const img = new Image();
+    img.src = imageDataUrl;
+    await new Promise((res, rej) => {
+      img.onload = res;
+      img.onerror = rej;
     });
 
-  // ----------------- Export to PDF (robust) -----------------
+    // fit image to page while preserving aspect ratio and leave small margin
+    const margin = 24;
+    const maxW = pageWidth - margin * 2;
+    const maxH = pageHeight - margin * 2;
+    let w = img.width;
+    let h = img.height;
+    const ratio = Math.min(maxW / w, maxH / h, 1);
+    w = w * ratio;
+    h = h * ratio;
+    const x = (pageWidth - w) / 2;
+    const y = (pageHeight - h) / 2;
+
+    pdf.addImage(imageDataUrl, "PNG", x, y, w, h);
+    return pdf;
+  }
+
+  // Export PDF: attempt element-by-element export (fast & vector for text)
+  // If any error occurs (font methods missing in runtime) we gracefully fallback
+  // to rendering the canvas with html2canvas and embedding the resulting image.
   async function exportToPdf() {
     console.log("Export PDF clicked");
 
@@ -170,75 +154,99 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       return;
     }
 
+    // primary attempt: draw elements via jsPDF APIs
     try {
-      // create PDF in points
       const pdf = new jsPDF("p", "pt", "a4");
-      const pageWidth = pdf.internal.pageSize.getWidth(); // pts
-      const pageHeight = pdf.internal.pageSize.getHeight(); // pts
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
 
-      // margins in pts
+      // simple margin
       const marginX = 40;
       const marginY = 40;
 
-      // If canvasRef exists, compute a scale factor between DOM px and PDF pts
-      // We assume elements x/y/width/height are in px relative to the canvas.
-      // Convert px->pt with pxToPt so things line up roughly.
       for (const el of elements) {
-        const xPt = marginX + pxToPt(el.x || 0);
-        const yPt = marginY + pxToPt(el.y || 0);
+        const x = marginX + (el.x || 0);
+        const y = marginY + (el.y || 0);
 
         if (el.type === "text") {
-          const fontSize = el.fontSize || 18;
+          // Defensive: ensure font size number and a string for text
+          const fontSize = Number(el.fontSize) || 18;
           pdf.setFontSize(fontSize);
-          const [r, g, b] = hexToRgb(el.color || "#000000");
-          pdf.setTextColor(r, g, b);
-          // simple text placing; for long text we can split (keep minimal change)
-          // convert fontSize px->pt? jsPDF fontSize is in pt already; we used el.fontSize as pts assumption.
-          // If el.fontSize was px, this is an approximation; it still looks reasonable.
-          // For multi-line text, split by '\n'
-          const lines = String(el.text || "").split("\n");
-          lines.forEach((line, idx) => {
-            // if text goes beyond page bottom add a page
-            if (yPt + idx * (fontSize + 4) > pageHeight - marginY) {
-              pdf.addPage();
+
+          // Try to set a sensible font — avoid calling deprecated/absent methods.
+          // Use built-in fonts to minimize font-related code paths.
+          try {
+            // prefer 'helvetica' (builtin). If user selected monospace, map it.
+            const family = (el.fontFamily || "system-ui").toLowerCase();
+            if (family.includes("courier") || family.includes("mono")) {
+              pdf.setFont("Courier");
+            } else if (family.includes("times")) {
+              pdf.setFont("Times");
+            } else {
+              pdf.setFont("Helvetica");
             }
-            pdf.text(String(line), xPt, yPt + idx * (fontSize + 4));
-          });
+          } catch (e) {
+            // ignore font selection errors — continue with default font
+          }
+
+          // setTextColor accepts 3 numbers
+          const hex = (el.color || "#000000").replace("#", "");
+          const r = parseInt(hex.slice(0, 2) || "00", 16);
+          const g = parseInt(hex.slice(2, 4) || "00", 16);
+          const b = parseInt(hex.slice(4, 6) || "00", 16);
+          pdf.setTextColor(r, g, b);
+
+          // Use text() to write. If an error happens here (library internals),
+          // we will be caught by outer try and fall back to image rendering.
+          pdf.text(String(el.text || ""), x, y);
         }
 
         if (el.type === "image") {
-          // target width/height in px -> convert to pts
-          const wPx = el.width || 260;
-          const hPx = el.height || 160;
-          const wPt = pxToPt(wPx);
-          const hPt = pxToPt(hPx);
+          const w = el.width || 260;
+          const h = el.height || 160;
 
           // keep inside page bounds
-          const safeX = Math.min(xPt, pageWidth - marginX - wPt);
-          const safeY = Math.min(yPt, pageHeight - marginY - hPt);
+          const safeX = Math.min(x, pageWidth - marginX - w);
+          const safeY = Math.min(y, pageHeight - marginY - h);
 
-          // ensure we have a data URL (PNG)
-          let imgData;
-          try {
-            imgData = await ensureImageDataUrl(el.src, wPx, hPx);
-          } catch (err) {
-            // fallback: try adding the src directly (jsPDF can accept data URLs only)
-            console.warn("Image conversion failed, attempting to use src directly:", err);
-            imgData = el.src;
+          // Try to detect image type from data URL (data:image/png;base64,...)
+          let imgType = "PNG";
+          if (typeof el.src === "string" && el.src.startsWith("data:")) {
+            if (el.src.startsWith("data:image/jpeg")) imgType = "JPEG";
+            else if (el.src.startsWith("data:image/jpg")) imgType = "JPEG";
+            else imgType = "PNG";
           }
 
-          // addImage expects image data (dataURL), format, x, y, w, h (units pts)
-          // NOTE: jsPDF expects w/h in the same units as the pdf (pts here)
-          // if addImage fails because src not dataURL, it will throw and be caught by outer try/catch
-          pdf.addImage(imgData, "PNG", safeX, safeY, wPt, hPt);
+          // addImage may still throw on certain builds; let outer try catch handle it
+          pdf.addImage(el.src, imgType, safeX, safeY, w, h);
         }
       }
 
+      // Save if everything went well
       pdf.save("rovexai-design.pdf");
+      return;
     } catch (err) {
-      console.error("Export PDF error:", err);
-      // show a helpful alert
-      alert(`Export failed: ${err?.message || err}`);
+      // Primary method failed — fall back to rendering the visible canvas to an image
+      console.warn("Export via elements failed, falling back to canvas image export:", err);
+      try {
+        if (!canvasRef.current) throw new Error("Canvas not available for fallback export");
+
+        const canvas = await html2canvas(canvasRef.current, {
+          backgroundColor: "#ffffff",
+          scale: 2,
+          useCORS: true,
+          allowTaint: false,
+          logging: false,
+        });
+
+        const dataUrl = canvas.toDataURL("image/png");
+        const pdf = await createPdfFromCanvasImage(dataUrl);
+        pdf.save("rovexai-design.pdf");
+        return;
+      } catch (fallbackErr) {
+        console.error("Fallback export also failed:", fallbackErr);
+        alert(`Export failed: ${fallbackErr?.message || fallbackErr}`);
+      }
     }
   }
 
@@ -253,7 +261,7 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [elements, canvasRef.current]);
 
   // Still use html2canvas only for sending to backend
   async function saveToServer() {
