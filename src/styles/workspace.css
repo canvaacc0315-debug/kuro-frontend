@@ -1793,3 +1793,167 @@ body {
     height: 70vh;
   }
 }
+/* ========== Mobile / resize-handle fixes (append to workspace.css) ========== */
+
+/* Ensure editor/canvas parents don't clip resize handles from react-rnd */
+.create-editor-root,
+.create-canvas,
+.create-canvas-content,
+.create-page,
+.create-page-shell,
+.kuro-design-canvas,
+.pdf-preview-panel,
+.upload-container,
+.create-editor-body,
+.create-properties {
+  overflow: visible !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Make resize handles and dragged items visible above everything */
+.kuro-design-canvas * {
+  z-index: auto;
+}
+.kuro-design-canvas .react-rnd-resize-handle,
+.kuro-design-canvas .react-resizable-handle,
+.kuro-design-canvas .resize-handle,
+.kuro-design-canvas .rnd-resize-handle {
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure canvas area allows touch dragging and doesn't swallow gestures */
+.kuro-design-canvas,
+.create-canvas,
+.create-canvas-content {
+  touch-action: none; /* allow pointer events for custom drag handlers */
+}
+
+/* Pin export / action buttons on small screens so they won't be pushed below the fold */
+@media (max-width: 768px) {
+  /* Export/panel buttons: stick to bottom of screen (above on-screen keyboard) */
+  .sidebar-bottom,
+  .create-sidebar-footer,
+  .create-properties {
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(10,10,12,0.0), rgba(10,10,12,0.85));
+    margin-bottom: 0;
+    padding-bottom: 12px;
+    z-index: 30;
+  }
+
+  /* Make export / primary actions full width and tappable */
+  .sidebar-export-btn,
+  .create-action-btn.primary,
+  .export-btn,
+  .kuro-canvas-toolbar .kuro-btn.primary {
+    width: 100% !important;
+    padding: 14px 16px !important;
+    font-size: 15px !important;
+  }
+
+  /* Reduce big paddings so the canvas stays visible on phones */
+  .main-container,
+  .tab-content,
+  .create-canvas,
+  .create-page {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Make PDF preview and uploaded files stack vertically and use full width */
+  .upload-container {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .pdf-preview-panel {
+    height: 62vh !important;
+  }
+  .uploaded-files {
+    max-height: none !important;
+  }
+
+  /* Chat input area and send button stick to bottom of chat */
+  .chat-input-area {
+    position: sticky;
+    bottom: 0;
+    z-index: 40;
+    background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.3));
+    padding: 12px;
+  }
+
+  /* Keep inspector / properties compact */
+  .create-properties {
+    max-height: 220px;
+    overflow-y: auto !important;
+  }
+
+  /* Make images resize controls visible and above the canvas */
+  .image-size-controls,
+  .image-size-range,
+  .image-size-label {
+    position: sticky;
+    bottom: 64px;
+    left: 12px;
+    z-index: 9998;
+    background: transparent;
+    width: calc(100% - 24px);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 8px;
+  }
+
+  /* Ensure page images can be moved without getting clipped to the page */
+  .page-image,
+  .page-image-active,
+  .page-image .image-block-inner {
+    overflow: visible !important;
+    touch-action: none;
+  }
+}
+
+/* Desktop: allow some extra room for resize handle to show */
+@media (min-width: 769px) {
+  .kuro-design-canvas {
+    padding-bottom: 320px; /* keep bottom controls scrollable while leaving space for handles */
+    overflow: visible;
+  }
+}
+
+/* Accessibility: bigger hit targets for handles on touch devices */
+@media (pointer: coarse) {
+  .react-resizable-handle,
+  .react-rnd-resize-handle,
+  .resize-handle {
+    width: 22px !important;
+    height: 22px !important;
+    right: -12px !important;
+    bottom: -12px !important;
+    border-radius: 999px !important;
+  }
+}
+
+/* Safety: ensure PDF preview iframe sits above background but doesn't block handles */
+.pdf-preview-panel,
+.pdf-preview-frame {
+  position: relative;
+  z-index: 1;
+}
+
+/* Minor: ensure modals/menus used in create/edit (context menus) float above canvas */
+.pdf-context-menu,
+.kuro-inspector,
+.create-properties,
+.kuro-canvas-toolbar {
+  z-index: 10010;
+}
+
+/* If you still have any rule that forcibly hides overflow on body/html, make sure resize handles are allowed */
+html, body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

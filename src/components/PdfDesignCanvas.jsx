@@ -1,5 +1,5 @@
 // src/components/PdfDesignCanvas.jsx
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import html2canvas from "html2canvas"; // still used for saveToServer
 import { jsPDF } from "jspdf";
@@ -163,6 +163,19 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
       alert(`Export failed: ${err?.message || err}`);
     }
   }
+
+  // expose export function globally so other components/buttons can call it
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.exportCanvasToPdf = exportToPdf;
+    }
+    return () => {
+      if (typeof window !== "undefined" && window.exportCanvasToPdf === exportToPdf) {
+        delete window.exportCanvasToPdf;
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Still use html2canvas only for sending to backend
   async function saveToServer() {
@@ -378,6 +391,17 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
                 size={{ width, height }}
                 position={{ x: el.x, y: el.y }}
                 bounds="parent"
+                dragHandleClassName="drag-handle"
+                enableResizing={{
+                  top: true, right: true, bottom: true, left: true,
+                  topRight: true, bottomRight: true, bottomLeft: true, topLeft: true,
+                }}
+                resizeHandleStyles={{
+                  bottomRight: { width: 18, height: 18, borderRadius: 6 },
+                  bottomLeft:  { width: 18, height: 18, borderRadius: 6 },
+                  topRight:    { width: 18, height: 18, borderRadius: 6 },
+                  topLeft:     { width: 18, height: 18, borderRadius: 6 },
+                }}
                 onDragStart={(e) => {
                   e.stopPropagation();
                   setSelectedId(el.id);

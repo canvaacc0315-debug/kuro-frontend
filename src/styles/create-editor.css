@@ -495,3 +495,136 @@
   width: 40%;            /* or whatever width you like */
   z-index: 10;
 }
+/* ---------------- Mobile / handle fixes (APPEND ONLY) ---------------- */
+
+/* allow handles to be visible (parent containers) */
+.create-editor-root,
+.create-editor-main,
+.create-page,
+.create-page-shell,
+.pdf-canvas-wrapper {
+  position: relative !important;
+  overflow: visible !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* make the page allow extra room for handles at the bottom */
+.create-page {
+  padding-bottom: 56px; /* keeps bottom area free for handles / sliders */
+}
+
+/* enlarge the small pink handle and make it touch-friendly */
+.resize-handle {
+  right: -10px;
+  bottom: -10px;
+  width: 18px;
+  height: 18px;
+  border-radius: 6px;
+  background: #ff5164;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  z-index: 60;
+  touch-action: none;
+}
+
+/* react-rnd internal handle fallback (if used) */
+.rnd-resize-handle,
+.rnd-resize-handle * {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  background: #ff5164 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+  z-index: 60 !important;
+  touch-action: none !important;
+}
+
+/* ensure images / page-image elements don't clip handles */
+.page-image,
+.image-block-inner {
+  overflow: visible !important;
+}
+
+/* Floating export button on small screens:
+   Reuses the existing sidebar-export-btn visual style but becomes a small FAB */
+@media (max-width: 768px) {
+  /* hide the full sidebar so the canvas gets full width */
+  .create-editor-sidebar {
+    display: none !important;
+  }
+
+  /* toolbar stays but compact */
+  .create-toolbar {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  /* canvas takes full width & height */
+  .create-page {
+    width: 100% !important;
+    max-height: none;
+    aspect-ratio: auto;
+    padding: 16px !important;
+    margin: 8px 12px;
+    border-radius: 12px;
+  }
+
+  /* increase canvas bottom padding so handles / slider visible */
+  .create-page,
+  .create-page-shell,
+  .create-editor-main {
+    padding-bottom: 120px !important;
+  }
+
+  /* turn the sidebar export button into a floating action button (FAB) */
+  .sidebar-export-btn {
+    position: fixed !important;
+    right: 16px !important;
+    bottom: 18px !important;
+    width: 56px !important;
+    height: 56px !important;
+    padding: 0 !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35) !important;
+    z-index: 9999 !important;
+    font-size: 20px !important;
+  }
+
+  /* hide text of FAB (keeps icon visible if present) */
+  .sidebar-export-btn > *:not(.export-icon) {
+    display: none !important;
+  }
+
+  /* keep the export button reachable (no accidental overlap) */
+  .pages-bar,
+  .zoom-slider {
+    z-index: 30;
+  }
+}
+
+/* Slight improvement for medium screens (tablet) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .create-editor-sidebar {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .create-page {
+    max-height: 70vh;
+    padding: 20px;
+  }
+
+  .create-page-shell {
+    padding: 12px 4px 8px;
+  }
+}
+
+/* Small utility: ensure any element that might clip handles allows overflow visible */
+.allow-overflow {
+  overflow: visible !important;
+}

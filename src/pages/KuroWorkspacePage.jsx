@@ -8,8 +8,8 @@ import OcrTextExtractor from "../components/OcrTextExtractor.jsx";
 import PdfDesignCanvas from "../components/PdfDesignCanvas.jsx";
 import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
 import { useClerk } from "@clerk/clerk-react";
-import { useApiClient } from "../api/client"; 
-import { jsPDF } from "jspdf"; 
+import { useApiClient } from "../api/client";
+import { jsPDF } from "jspdf";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 
 const API_BASE =
@@ -56,6 +56,20 @@ export default function KuroWorkspacePage() {
   const [history, setHistory] = useState([]);
   const selectedFile =
     uploadedFiles.find((f) => f.id === selectedPdfId) || null;
+
+  // NEW: detect mobile viewport so we can render touch-friendly tab control
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= 768 : false
+  );
+  useEffect(() => {
+    function onResize() {
+      setIsMobile(window.innerWidth <= 768);
+    }
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   // ---------------- helpers ----------------
   const showStatus = (message, type = "success") => {
     setExportStatus({ message, type });
@@ -450,39 +464,70 @@ const res = await fetch(`${API_BASE}/api/chat`, {
             </div>
           </div>
         </header>
+
         {/* top‑level tabs */}
-        <div className="tabs-nav">
-          <button
-            className={`tab-btn ${activeTab === "upload" ? "active" : ""}`}
-            onClick={() => handleTabClick("upload")}
-          >
-            📤 Upload PDFs
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "chat" ? "active" : ""}`}
-            onClick={() => handleTabClick("chat")}
-          >
-            💬 Chat Rovex
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "analysis" ? "active" : ""}`}
-            onClick={() => handleTabClick("analysis")}
-          >
-            📊 Analysis
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "ocr" ? "active" : ""}`}
-            onClick={() => handleTabClick("ocr")}
-          >
-            🔍 OCR & Recognition
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "create" ? "active" : ""}`}
-            onClick={() => handleTabClick("create")}
-          >
-            ✏️ Create & Edit
-          </button>
-        </div>
+        {/* On mobile we render a compact select (touch friendly) */}
+        {isMobile ? (
+          <div style={{ padding: "10px 16px" }}>
+            <label htmlFor="kuro-tab-select" style={{ display: "none" }}>
+              Select tab
+            </label>
+            <select
+              id="kuro-tab-select"
+              value={activeTab}
+              onChange={(e) => handleTabClick(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px 12px",
+                borderRadius: 10,
+                border: "1px solid rgba(120,120,150,0.25)",
+                background: "#1f1b24",
+                color: "#fff",
+                fontSize: 15,
+              }}
+            >
+              <option value="upload">📤 Upload PDFs</option>
+              <option value="chat">💬 Chat Rovex</option>
+              <option value="analysis">📊 Analysis</option>
+              <option value="ocr">🔍 OCR & Recognition</option>
+              <option value="create">✏️ Create & Edit</option>
+            </select>
+          </div>
+        ) : (
+          <div className="tabs-nav">
+            <button
+              className={`tab-btn ${activeTab === "upload" ? "active" : ""}`}
+              onClick={() => handleTabClick("upload")}
+            >
+              📤 Upload PDFs
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "chat" ? "active" : ""}`}
+              onClick={() => handleTabClick("chat")}
+            >
+              💬 Chat Rovex
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "analysis" ? "active" : ""}`}
+              onClick={() => handleTabClick("analysis")}
+            >
+              📊 Analysis
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "ocr" ? "active" : ""}`}
+              onClick={() => handleTabClick("ocr")}
+            >
+              🔍 OCR & Recognition
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "create" ? "active" : ""}`}
+              onClick={() => handleTabClick("create")}
+            >
+              ✏️ Create & Edit
+            </button>
+          </div>
+        )}
+
         {/* UPLOAD TAB */}
         <section
           id="uploadTab"

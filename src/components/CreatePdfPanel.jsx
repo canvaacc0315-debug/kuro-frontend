@@ -1,6 +1,7 @@
 // src/components/CreatePdfPanel.jsx
 import { useState, useRef } from "react";
 import "../styles/create-editor.css";
+import { jsPDF } from "jspdf"; // ADDED: for frontend PDF export
 
 const defaultTextStyle = {
   fontSize: 16,
@@ -384,6 +385,132 @@ export default function CreatePdfPanel({ onExportPdf }) {
     };
   })();
 
+  /* ------------ FRONTEND PDF EXPORT (minimal, async-safe) ------------ */
+
+  // helper to load an image src into dataURL (canvas) so jsPDF can add it
+  const loadImageAsDataUrl = (src) =>
+    new Promise((resolve, reject) => {
+      try {
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+          const c = document.createElement("canvas");
+          c.width = img.naturalWidth;
+          c.height = img.naturalHeight;
+          const ctx = c.getContext("2d");
+          ctx.drawImage(img, 0, 0);
+          try {
+            const dataUrl = c.toDataURL("image/png");
+            resolve({ dataUrl, width: img.naturalWidth, height: img.naturalHeight });
+          } catch (err) {
+            resolve({ dataUrl: src, width: img.naturalWidth, height: img.naturalHeight }); // fallback
+          }
+        };
+        img.onerror = () => {
+          // fallback: resolve with original src (might be object URL)
+          resolve({ dataUrl: src, width: 0, height: 0 });
+        };
+        img.src = src;
+      } catch (err) {
+        resolve({ dataUrl: src, width: 0, height: 0 });
+      }
+    });
+
+  // export all pages to a PDF in the browser
+  const exportToPdf = async () => {
+    try {
+      if (!pages || pages.length === 0) {
+        alert("Nothing to export — add a page first.");
+        return;
+      }
+
+      const pdf = new jsPDF("p", "pt", "a4");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const margin = 36;
+
+      for (let i = 0; i < pages.length; i++) {
+        const p = pages[i];
+
+        // heading
+        const headingStyle = p.heading.style || {};
+        pdf.setFontSize(headingStyle.fontSize || 24);
+        pdf.setFont("helvetica", headingStyle.italic ? "italic" : "normal");
+        pdf.setFontType(headingStyle.bold ? "bold" : "normal");
+
+        const headingX = margin;
+        let cursorY = margin + (headingStyle.fontSize || 24);
+
+        // split heading if long
+        const headingLines = pdf.splitTextToSize(p.heading.text || "", pageWidth - margin * 2);
+        pdf.text(headingLines, headingX, cursorY);
+
+        cursorY += (headingLines.length + 0.5) * (headingStyle.fontSize || 24);
+
+        // body
+        const bodyStyle = p.body.style || {};
+        pdf.setFontSize(bodyStyle.fontSize || 14);
+        pdf.setFont("helvetica", bodyStyle.italic ? "italic" : "normal");
+        pdf.setFontType(bodyStyle.bold ? "bold" : "normal");
+
+        const bodyLines = pdf.splitTextToSize(p.body.text || "", pageWidth - margin * 2);
+        // start a bit below heading
+        cursorY += 8;
+        pdf.text(bodyLines, margin, cursorY);
+        cursorY += (bodyLines.length + 1) * (bodyStyle.fontSize || 14);
+
+        // images: render each image according to its scale (% of page width) and (x,y)
+        for (const img of p.images || []) {
+          try {
+            const { dataUrl, width: imgW, height: imgH } = await loadImageAsDataUrl(img.src);
+
+            // compute width on PDF based on scale% and page width inside margins
+            const targetW = ((img.scale || 60) / 100) * (pageWidth - margin * 2);
+            // maintain aspect ratio if image natural sizes available
+            let targetH = targetW * (imgH && imgW ? imgH / imgW : 0.6);
+
+            // If the computed height is zero, set a reasonable default
+            if (!targetH || Number.isNaN(targetH) || targetH <= 0) {
+              targetH = targetW * 0.6;
+            }
+
+            // compute x/y in PDF units: map img.x/img.y (px in editor) proportionally to page area
+            // We don't have the original page pixel dimensions here, so place images by stacking below current cursor
+            // This is a safe approximation for export without changing backend.
+            const imgX = margin + (img.x || 0) * 0.0; // keep left margin; do not attempt pixel-perfect positioning
+            const imgY = Math.max(cursorY + 8, margin + 100 + (img.y || 0) * 0.0);
+
+            pdf.addImage(dataUrl, "PNG", imgX, imgY, targetW, targetH);
+
+            // move cursor below image
+            cursorY = imgY + targetH + 12;
+          } catch (err) {
+            // ignore image addition errors, continue
+            console.warn("Failed to add image to PDF:", err);
+          }
+        }
+
+        // If not last page, add new page
+        if (i < pages.length - 1) {
+          pdf.addPage();
+        }
+      }
+
+      // trigger download
+      pdf.save("rovexai-created.pdf");
+
+      // still call the optional callback so parent can react (keeps backward compatibility)
+      if (typeof onExportPdf === "function") {
+        try {
+          onExportPdf(pages);
+        } catch {}
+      }
+    } catch (err) {
+      console.error("Export failed:", err);
+      alert("Export failed: " + (err?.message || err));
+    }
+  };
+
   /* ------------ render ------------ */
 
   return (
@@ -437,7 +564,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
           <button
             type="button"
             className="sidebar-export-btn"
-            onClick={() => onExportPdf?.(pages)}
+            onClick={exportToPdf} // <-- wired to frontend export (minimal change)
           >
             Export PDF
           </button>
