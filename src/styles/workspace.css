@@ -1957,3 +1957,229 @@ html, body {
   -ms-user-select: none;
   user-select: none;
 }
+/* =========================
+   Mobile fixes: Chat + Create tabs
+   Append to the end of workspace.css
+   ========================= */
+
+/* Scope: only for mobile phones */
+@media (max-width: 768px) {
+
+  /* Make the main page padding smaller so content fits */
+  .main-container {
+    padding: 12px;
+  }
+
+  /* Tabs: compress vertical spacing */
+  .tabs-nav {
+    padding: 6px 8px;
+  }
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  /* ---------- CHAT ---------- */
+  /* Stack top row controls and make buttons compact */
+  .chat-top-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    margin-bottom: 12px;
+  }
+
+  .chat-pdf-select,
+  .chat-answer-style {
+    width: 100%;
+    flex: 1 1 auto;
+  }
+
+  /* Place action buttons in a row that scrolls horizontally if needed */
+  .chat-top-row > div:last-child,
+  .chat-top-row > div[style] {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
+  .clear-conversation-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  /* Chat container: take full height available, reduce inner paddings */
+  .chat-container {
+    height: calc(100vh - 220px); /* fits under navbar + tabs + input */
+    border-radius: 12px;
+    padding: 0;
+  }
+
+  .chat-messages {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .message-bubble {
+    max-width: 88%;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .message-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  /* Input area: fixed to the bottom of the chat area and always visible */
+  .chat-input-area {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.04));
+    border-top: 1px solid rgba(255, 107, 107, 0.08);
+    gap: 8px;
+  }
+
+  .chat-input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .send-btn {
+    padding: 10px 14px;
+    min-width: 74px;
+  }
+
+  /* If the chat list gets very tall, make it scroll nicely */
+  .chat-messages::-webkit-scrollbar,
+  .uploaded-files::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  /* ---------- CREATE & EDIT (designer) ---------- */
+  /* Hide the large sidebars and give canvas full width */
+  .create-editor-root {
+    flex-direction: column;
+    gap: 6px;
+    min-height: auto;
+    padding: 0 8px 24px 8px;
+  }
+
+  .create-editor-sidebar,
+  .create-properties,
+  .create-sidebar {
+    display: none !important; /* hide side panels on small phones */
+  }
+
+  .create-editor-main,
+  .create-editor-body {
+    width: 100%;
+    padding: 0;
+  }
+
+  /* Canvas area: full width, smaller padding and keep bottom space for handles */
+  .create-page,
+  .create-canvas {
+    margin: 6px 0;
+    width: calc(100% - 0px) !important;
+    max-height: none;
+    aspect-ratio: auto;
+    padding: 14px !important;
+    border-radius: 12px;
+  }
+
+  .create-page-shell {
+    padding: 8px 0 14px;
+  }
+
+  /* enlarge the page area so the white document looks centered */
+  .create-canvas-content {
+    padding: 8px;
+  }
+
+  /* Make heading/body textareas larger and easier to tap */
+  .heading-textarea {
+    min-height: 48px;
+    font-size: 20px;
+    padding: 8px;
+  }
+
+  .body-textarea {
+    min-height: 180px;
+    font-size: 15px;
+    padding: 8px;
+  }
+
+  /* Page controls (pages-bar) move near the bottom and be reachable */
+  .pages-bar {
+    padding: 8px 6px;
+    gap: 8px;
+    position: relative;
+  }
+
+  .page-pill,
+  .delete-page-btn {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+
+  /* Floating export button: small FAB at bottom-right (reuses existing export styles) */
+  .sidebar-export-btn {
+    position: fixed !important;
+    right: 14px !important;
+    bottom: 16px !important;
+    width: 52px !important;
+    height: 52px !important;
+    padding: 0 !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    z-index: 9999 !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35) !important;
+    font-size: 18px !important;
+  }
+  .sidebar-export-btn > *:not(.export-icon) {
+    display: none !important;
+  }
+
+  /* Ensure resize handles & react-rnd handles are visible and touch-friendly */
+  .resize-handle,
+  .rnd-resize-handle,
+  .rnd-resize-handle * {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+    background: #ff5164 !important;
+    z-index: 80 !important;
+    touch-action: none !important;
+  }
+
+  /* Make bottom padding larger so handles are never clipped */
+  .create-page,
+  .create-page-shell,
+  .create-editor-main {
+    padding-bottom: 120px !important;
+  }
+
+  /* small utilities to prevent horizontal overflow */
+  html, body, .workspace-root {
+    overflow-x: hidden !important;
+  }
+
+  /* Reduce fonts for some heavy elements so layout stays stable */
+  .toolbar-toggle,
+  .toolbar-input,
+  .tab-btn {
+    font-size: 12px !important;
+  }
+}
