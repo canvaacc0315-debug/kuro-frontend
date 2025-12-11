@@ -113,8 +113,56 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
     updateElement(id, { x, y });
   }
 
-  // ✅ Export PDF directly from `elements` (no html2canvas)
-  function exportToPdf() {
+  // ----------------- helpers used by export -----------------
+
+  // px -> pt conversion: 1px @96dpi = 0.75pt (72pt per inch)
+  const pxToPt = (px) => Number(px) * 0.75;
+
+  // parse hex color "#rrggbb" -> [r,g,b]
+  const hexToRgb = (hex) => {
+    if (!hex) return [0, 0, 0];
+    const h = hex.replace("#", "");
+    if (h.length === 3) {
+      return [
+        parseInt(h[0] + h[0], 16),
+        parseInt(h[1] + h[1], 16),
+        parseInt(h[2] + h[2], 16),
+      ];
+    }
+    return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+  };
+
+  // Ensure image src is a data URL (PNG). If already data:, return as-is.
+  // Otherwise load image, draw to canvas and convert to dataURL.
+  const ensureImageDataUrl = (src, targetWidth, targetHeight) =>
+    new Promise((resolve, reject) => {
+      if (!src) return reject(new Error("No image source"));
+      if (String(src).startsWith("data:")) return resolve(src);
+
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.onload = () => {
+        try {
+          // if width/height given, draw to that size; else use natural size
+          const w = targetWidth || img.naturalWidth || 400;
+          const h = targetHeight || img.naturalHeight || (w * img.naturalHeight) / (img.naturalWidth || 1);
+          const c = document.createElement("canvas");
+          c.width = w;
+          c.height = h;
+          const ctx = c.getContext("2d");
+          ctx.drawImage(img, 0, 0, w, h);
+          const dataUrl = c.toDataURL("image/png");
+          resolve(dataUrl);
+        } catch (err) {
+          reject(err);
+        }
+      };
+      img.onerror = (err) => reject(new Error("Failed to load image"));
+      img.src = src;
+    });
+
+  // ----------------- Export to PDF (robust) -----------------
+  async function exportToPdf() {
     console.log("Export PDF clicked");
 
     if (elements.length === 0) {
@@ -123,43 +171,73 @@ export default function PdfDesignCanvas({ onCreated } = {}) {
     }
 
     try {
+      // create PDF in points
       const pdf = new jsPDF("p", "pt", "a4");
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
+      const pageWidth = pdf.internal.pageSize.getWidth(); // pts
+      const pageHeight = pdf.internal.pageSize.getHeight(); // pts
 
-      // simple margin
+      // margins in pts
       const marginX = 40;
       const marginY = 40;
 
-      elements.forEach((el) => {
-        const x = marginX + el.x;
-        const y = marginY + el.y;
+      // If canvasRef exists, compute a scale factor between DOM px and PDF pts
+      // We assume elements x/y/width/height are in px relative to the canvas.
+      // Convert px->pt with pxToPt so things line up roughly.
+      for (const el of elements) {
+        const xPt = marginX + pxToPt(el.x || 0);
+        const yPt = marginY + pxToPt(el.y || 0);
 
         if (el.type === "text") {
-          pdf.setFontSize(el.fontSize || 18);
-          pdf.setTextColor(
-            parseInt(el.color?.slice(1, 3) || "ff", 16),
-            parseInt(el.color?.slice(3, 5) || "ff", 16),
-            parseInt(el.color?.slice(5, 7) || "ff", 16)
-          );
-          pdf.text(el.text || "", x, y);
+          const fontSize = el.fontSize || 18;
+          pdf.setFontSize(fontSize);
+          const [r, g, b] = hexToRgb(el.color || "#000000");
+          pdf.setTextColor(r, g, b);
+          // simple text placing; for long text we can split (keep minimal change)
+          // convert fontSize px->pt? jsPDF fontSize is in pt already; we used el.fontSize as pts assumption.
+          // If el.fontSize was px, this is an approximation; it still looks reasonable.
+          // For multi-line text, split by '\n'
+          const lines = String(el.text || "").split("\n");
+          lines.forEach((line, idx) => {
+            // if text goes beyond page bottom add a page
+            if (yPt + idx * (fontSize + 4) > pageHeight - marginY) {
+              pdf.addPage();
+            }
+            pdf.text(String(line), xPt, yPt + idx * (fontSize + 4));
+          });
         }
 
         if (el.type === "image") {
-          const w = el.width || 260;
-          const h = el.height || 160;
+          // target width/height in px -> convert to pts
+          const wPx = el.width || 260;
+          const hPx = el.height || 160;
+          const wPt = pxToPt(wPx);
+          const hPt = pxToPt(hPx);
 
           // keep inside page bounds
-          const safeX = Math.min(x, pageWidth - marginX - w);
-          const safeY = Math.min(y, pageHeight - marginY - h);
+          const safeX = Math.min(xPt, pageWidth - marginX - wPt);
+          const safeY = Math.min(yPt, pageHeight - marginY - hPt);
 
-          pdf.addImage(el.src, "PNG", safeX, safeY, w, h);
+          // ensure we have a data URL (PNG)
+          let imgData;
+          try {
+            imgData = await ensureImageDataUrl(el.src, wPx, hPx);
+          } catch (err) {
+            // fallback: try adding the src directly (jsPDF can accept data URLs only)
+            console.warn("Image conversion failed, attempting to use src directly:", err);
+            imgData = el.src;
+          }
+
+          // addImage expects image data (dataURL), format, x, y, w, h (units pts)
+          // NOTE: jsPDF expects w/h in the same units as the pdf (pts here)
+          // if addImage fails because src not dataURL, it will throw and be caught by outer try/catch
+          pdf.addImage(imgData, "PNG", safeX, safeY, wPt, hPt);
         }
-      });
+      }
 
       pdf.save("rovexai-design.pdf");
     } catch (err) {
       console.error("Export PDF error:", err);
+      // show a helpful alert
       alert(`Export failed: ${err?.message || err}`);
     }
   }
