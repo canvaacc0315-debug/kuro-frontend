@@ -98,7 +98,6 @@ export default function SignUpPage() {
 
             <div className="login-clerk-badge">
               Secured by Clerk{" "}
-              <span className="login-dev-mode">Development mode</span>
             </div>
           </div>
         </section>
