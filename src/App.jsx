@@ -8,6 +8,7 @@ import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
+import ScrollToTop from "./components/utils/ScrollToTop";
 
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
@@ -39,6 +40,7 @@ export default function App() {
 
   return (
     <GlobalBackground>
+      <ScrollToTop />
       <Routes>
         {/* INDEX */}
         <Route index element={<Navigate to="/dashboard" replace />} />
