@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/kuro-dashboard.css";
 import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
+import Footer from "../components/layout/Footer";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -255,6 +256,7 @@ export default function DashboardPage() {
       <footer className="footer">
         © {new Date().getFullYear()} RovexAI. All rights reserved.
       </footer>
+      <Footer />
     </div>
   );
 }

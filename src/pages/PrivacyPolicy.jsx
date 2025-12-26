@@ -1,3 +1,5 @@
+import Footer from "../components/layout/Footer";
+
 export default function PrivacyPolicy() {
   return (
     <div style={{ padding: "40px" }}>
@@ -11,6 +13,8 @@ export default function PrivacyPolicy() {
         securely by third‑party services.
       </p>
       <p>Email: support@rovexai.com</p>
+      <p>Website: https://rovexai.com</p>
+      <Footer />
     </div>
   );
 }
