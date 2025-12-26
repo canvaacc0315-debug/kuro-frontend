@@ -1,16 +1,17 @@
 // src/App.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { useEffect } from "react";
 
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 
-// 👇 existing overlay component (UNCHANGED)
+// existing overlay component (UNCHANGED)
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
 
-// 🔽 NEW: simple legal pages
+// legal pages (NEW)
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -27,6 +28,16 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
+
+  // ✅ FIX: Always keep RovexAI title in browser tab
+  useEffect(() => {
+    const path = window.location.pathname;
+
+    if (path.includes("login")) document.title = "Login | RovexAI";
+    else if (path.includes("sign-up")) document.title = "Sign Up | RovexAI";
+    else document.title = "RovexAI";
+  }, []);
+
   return (
     <Routes>
 
@@ -55,7 +66,7 @@ export default function App() {
         element={
           <ProtectedRoute>
             <>
-              {/* 🔴 Invisible overlay button that sits over the Kuro.ai logo */}
+              {/* Invisible overlay button over logo */}
               <HomeOverlayButton />
               <KuroWorkspacePage />
             </>
@@ -63,7 +74,7 @@ export default function App() {
         }
       />
 
-      {/* 🔽 NEW: PUBLIC LEGAL PAGES (NO AUTH REQUIRED) */}
+      {/* ✅ PUBLIC LEGAL PAGES (AdSense required) */}
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
