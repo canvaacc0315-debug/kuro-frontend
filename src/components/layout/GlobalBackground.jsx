@@ -1,23 +1,23 @@
 const bgAnimation = `
 @keyframes bgCrazy {
   0% {
-    background-size: 100%;
+    transform: scale(1);
     background-position: 50% 50%;
   }
   25% {
-    background-size: 120%;
+    transform: scale(1.2);
     background-position: 60% 40%;
   }
   50% {
-    background-size: 130%;
+    transform: scale(1.3);
     background-position: 40% 60%;
   }
   75% {
-    background-size: 120%;
+    transform: scale(1.2);
     background-position: 55% 45%;
   }
   100% {
-    background-size: 100%;
+    transform: scale(1);
     background-position: 50% 50%;
   }
 }
@@ -28,23 +28,23 @@ export default function GlobalBackground({ children }) {
     <>
       <style>{bgAnimation}</style>
 
+      {/* 🔥 FIXED BACKGROUND LAYER */}
       <div
         style={{
-          /* 🔑 THIS FIXES FULL PAGE COVERAGE */
-          minHeight: "100dvh",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
+          position: "fixed",
+          inset: 0,
+          zIndex: -1,
 
           backgroundImage: "url('/public-bg.jpg')",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
-          backgroundSize: "cover",   // 🔥 IMPORTANT
+          backgroundSize: "cover",
           animation: "bgCrazy 18s ease-in-out infinite",
         }}
-      >
-        {children}
-      </div>
+      />
+
+      {/* APP CONTENT */}
+      <div style={{ minHeight: "100dvh" }}>{children}</div>
     </>
   );
 }
