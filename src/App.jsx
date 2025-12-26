@@ -7,8 +7,13 @@ import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 
-// 👇 NEW: import your existing overlay component
+// 👇 existing overlay component (UNCHANGED)
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
+
+// 🔽 NEW: simple legal pages
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 function ProtectedRoute({ children }) {
   return (
@@ -57,6 +62,11 @@ export default function App() {
           </ProtectedRoute>
         }
       />
+
+      {/* 🔽 NEW: PUBLIC LEGAL PAGES (NO AUTH REQUIRED) */}
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
 
       {/* Fallback */}
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
