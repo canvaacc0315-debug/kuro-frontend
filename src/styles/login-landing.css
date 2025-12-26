@@ -366,3 +366,21 @@
   backdrop-filter: blur(10px);
   z-index: 5;
 }
+/* =============================== */
+/* FIXED FOOTER FOR LOGIN & SIGNUP */
+/* =============================== */
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+
+  z-index: 20;
+}
+.login-page {
+  padding-bottom: 60px; /* height of footer */
+}
