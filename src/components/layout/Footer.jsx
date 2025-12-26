@@ -1,33 +1,34 @@
-import { Link } from "react-router-dom";
-
-export default function Footer() {
-  return (
-    <footer
-      style={{
-        width: "100%",
-        padding: "16px 0",
-        textAlign: "center",
-        fontSize: "13px",
-        color: "#aaa",
-        borderTop: "1px solid #222",
-        marginTop: "40px",
-      }}
-    >
-      © 2025 RovexAI ·{" "}
-      <Link to="/about" style={{ color: "#ff6b6b", textDecoration: "none" }}>
-        About
-      </Link>{" "}
-      ·{" "}
-      <Link to="/contact" style={{ color: "#ff6b6b", textDecoration: "none" }}>
-        Contact
-      </Link>{" "}
-      ·{" "}
-      <Link
-        to="/privacy-policy"
-        style={{ color: "#ff6b6b", textDecoration: "none" }}
-      >
-        Privacy Policy
-      </Link>
-    </footer>
-  );
-}
+<footer
+  style={{
+    width: "100%",
+    padding: "24px 0",        // ⬅ more height
+    textAlign: "center",
+    fontSize: "15px",         // ⬅ bigger text
+    color: "#bbb",
+    borderTop: "1px solid #222",
+    marginTop: "48px",
+    letterSpacing: "0.3px",   // ⬅ cleaner look
+  }}
+>
+  © 2025 RovexAI ·{" "}
+  <a
+    href="/about"
+    style={{ color: "#ff6b6b", textDecoration: "none", margin: "0 6px" }}
+  >
+    About
+  </a>
+  ·
+  <a
+    href="/contact"
+    style={{ color: "#ff6b6b", textDecoration: "none", margin: "0 6px" }}
+  >
+    Contact
+  </a>
+  ·
+  <a
+    href="/privacy-policy"
+    style={{ color: "#ff6b6b", textDecoration: "none", margin: "0 6px" }}
+  >
+    Privacy Policy
+  </a>
+</footer>
