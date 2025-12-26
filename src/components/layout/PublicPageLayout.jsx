@@ -35,7 +35,7 @@ export default function PublicPageLayout({ children }) {
           }}
         >
           <img
-            src="/logo.png"
+            src="/kuro.png"
             alt="RovexAI"
             style={{ height: "28px" }}
           />
