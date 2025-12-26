@@ -1,3 +1,5 @@
+// src/components/layout/GlobalBackground.jsx
+
 const bgAnimation = `
 @keyframes bgCrazy {
   0% {
@@ -5,16 +7,16 @@ const bgAnimation = `
     background-position: 50% 50%;
   }
   25% {
-    transform: scale(1.2);
-    background-position: 60% 40%;
+    transform: scale(1.05);
+    background-position: 52% 48%;
   }
   50% {
-    transform: scale(1.3);
-    background-position: 40% 60%;
+    transform: scale(1.08);
+    background-position: 48% 52%;
   }
   75% {
-    transform: scale(1.2);
-    background-position: 55% 45%;
+    transform: scale(1.05);
+    background-position: 51% 49%;
   }
   100% {
     transform: scale(1);
@@ -28,23 +30,33 @@ export default function GlobalBackground({ children }) {
     <>
       <style>{bgAnimation}</style>
 
-      {/* 🔥 FIXED BACKGROUND LAYER */}
+      {/* 🌌 FIXED ANIMATED BACKGROUND */}
       <div
         style={{
           position: "fixed",
           inset: 0,
           zIndex: -1,
 
-          backgroundImage: "url('/public-bg.jpg')",
-          backgroundRepeat: "no-repeat",
+          backgroundImage: `
+            linear-gradient(
+              rgba(0,0,0,0.55),
+              rgba(0,0,0,0.85)
+            ),
+            url('/public-bg.jpg')
+          `,
+          backgroundRepeat: "repeat",
+          backgroundSize: "1200px auto",
           backgroundPosition: "center",
-          backgroundSize: "cover",
-          animation: "bgCrazy 18s ease-in-out infinite",
+
+          /* 🧘 Smooth & slow animation */
+          animation: "bgCrazy 60s cubic-bezier(0.4, 0, 0.2, 1) infinite",
         }}
       />
 
       {/* APP CONTENT */}
-      <div style={{ minHeight: "100dvh" }}>{children}</div>
+      <div style={{ minHeight: "100dvh" }}>
+        {children}
+      </div>
     </>
   );
 }
