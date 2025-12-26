@@ -16,14 +16,23 @@ export default function LoginPage() {
   }, [isSignedIn, navigate]);
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-
+    /* ✅ IMPORTANT: transparent wrapper so global background shows */
+    <div
+      className="login-page"
+      style={{
+        background: "transparent",
+        minHeight: "100dvh",
+      }}
+    >
+      <div
+        className="login-container"
+        style={{
+          background: "transparent",
+        }}
+      >
         {/* LEFT – Hero / marketing */}
         <section className="login-hero-section">
           <div className="login-hero-content">
-
-            {/* ✅ FIXED LOGO ROW */}
             <div
               className="login-hero-logo"
               style={{ display: "flex", alignItems: "center", gap: "8px" }}
@@ -34,7 +43,9 @@ export default function LoginPage() {
 
             <h1 className="login-hero-title">
               Chat with your PDFs{" "}
-              <span className="login-hero-title-accent">like never before</span>
+              <span className="login-hero-title-accent">
+                like never before
+              </span>
             </h1>
 
             <p className="login-hero-description">
@@ -44,56 +55,26 @@ export default function LoginPage() {
             </p>
 
             <div className="login-hero-features">
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  Instant Q&amp;A from any PDF
+              {[
+                "Instant Q&A from any PDF",
+                "AI‑powered summarization",
+                "Smart data extraction",
+                "Chart & image understanding",
+                "Question paper generation",
+                "Screenshot OCR support",
+              ].map((text) => (
+                <div key={text} className="login-feature-item">
+                  <div className="login-feature-icon">✓</div>
+                  <div className="login-feature-text">{text}</div>
                 </div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  AI‑powered summarization
-                </div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  Smart data extraction
-                </div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  Chart &amp; image understanding
-                </div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  Question paper generation
-                </div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  Screenshot OCR support
-                </div>
-              </div>
+              ))}
             </div>
-
           </div>
         </section>
 
         {/* RIGHT – Clerk SignIn */}
         <section className="login-auth-section">
           <div className="login-auth-container">
-
             <div className="login-auth-header">
               <h2 className="login-auth-title">
                 Sign In to{" "}
@@ -109,12 +90,22 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* ✅ Clerk appearance fix */}
             <SignIn
               routing="path"
               path="/login"
               signUpUrl="/sign-up"
               afterSignInUrl="/dashboard"
               afterSignUpUrl="/dashboard"
+              appearance={{
+                elements: {
+                  rootBox: { background: "transparent" },
+                  card: {
+                    borderRadius: "14px",
+                    boxShadow: "0 30px 80px rgba(0,0,0,0.7)",
+                  },
+                },
+              }}
             />
 
             <div className="login-security-badge">

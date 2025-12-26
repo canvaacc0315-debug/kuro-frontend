@@ -1,26 +1,40 @@
 // src/pages/SignUpPage.jsx
 import { SignUp } from "@clerk/clerk-react";
 import "../styles/login-landing.css";
-import KuroLogo from "../components/layout/KuroLogo.jsx"; // ✅ ADD THIS
+import KuroLogo from "../components/layout/KuroLogo.jsx";
 
 export default function SignUpPage() {
   return (
-    <div className="login-page">
-      <div className="login-container">
+    /* ✅ IMPORTANT: transparent wrapper so global background shows */
+    <div
+      className="login-page"
+      style={{
+        background: "transparent",
+        minHeight: "100dvh",
+      }}
+    >
+      <div
+        className="login-container"
+        style={{
+          background: "transparent",
+        }}
+      >
         {/* LEFT – Hero / marketing (sign‑up flavor) */}
         <section className="login-hero-section">
           <div className="login-hero-content">
-            <div className="login-hero-logo">
-              {/* ✅ REAL LOGO IMAGE */}
+            <div
+              className="login-hero-logo"
+              style={{ display: "flex", alignItems: "center", gap: "8px" }}
+            >
               <KuroLogo size={60} />
-
-              {/* ✅ TEXT NEXT TO LOGO */}
               <div className="login-logo-text">RovexAI</div>
             </div>
 
             <h1 className="login-hero-title">
               Join the{" "}
-              <span className="login-hero-title-accent">RovexAI community</span>
+              <span className="login-hero-title-accent">
+                RovexAI community
+              </span>
             </h1>
 
             <p className="login-hero-description">
@@ -29,66 +43,52 @@ export default function SignUpPage() {
             </p>
 
             <div className="login-hero-features">
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">Unlimited PDF uploads</div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  Advanced AI chat &amp; analysis
+              {[
+                "Unlimited PDF uploads",
+                "Advanced AI chat & analysis",
+                "Export & share conversations",
+                "OCR & data extraction",
+                "24/7 support & updates",
+                "100% secure & private",
+              ].map((text) => (
+                <div key={text} className="login-feature-item">
+                  <div className="login-feature-icon">✓</div>
+                  <div className="login-feature-text">{text}</div>
                 </div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  Export &amp; share conversations
-                </div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">OCR &amp; data extraction</div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  24/7 support &amp; updates
-                </div>
-              </div>
-
-              <div className="login-feature-item">
-                <div className="login-feature-icon">✓</div>
-                <div className="login-feature-text">
-                  100% secure &amp; private
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
 
-        {/* RIGHT – Clerk SignUp directly, no black card */}
+        {/* RIGHT – Clerk SignUp */}
         <section className="login-auth-section">
           <div className="login-auth-container">
             <div className="login-auth-header">
               <h2 className="login-auth-title">
-                Create <span className="login-auth-title-accent">Account</span>
+                Create{" "}
+                <span className="login-auth-title-accent">Account</span>
               </h2>
               <p className="login-auth-subtitle">
                 Join thousands of users leveraging AI for PDF intelligence
               </p>
             </div>
 
-            {/* Clerk card */}
+            {/* ✅ Clerk appearance fix */}
             <SignUp
               routing="path"
               path="/sign-up"
               signInUrl="/login"
               afterSignUpUrl="/dashboard"
               afterSignInUrl="/dashboard"
+              appearance={{
+                elements: {
+                  rootBox: { background: "transparent" },
+                  card: {
+                    borderRadius: "14px",
+                    boxShadow: "0 30px 80px rgba(0,0,0,0.7)",
+                  },
+                },
+              }}
             />
 
             <div className="login-security-badge">
@@ -96,9 +96,7 @@ export default function SignUpPage() {
               <span>256-bit encryption · Accounts protected with Clerk</span>
             </div>
 
-            <div className="login-clerk-badge">
-              Secured by Clerk{" "}
-            </div>
+            <div className="login-clerk-badge">Secured by Clerk</div>
           </div>
         </section>
       </div>
