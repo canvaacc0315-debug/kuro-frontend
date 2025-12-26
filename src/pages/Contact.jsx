@@ -21,7 +21,7 @@ export default function Contact() {
 
       <p>
         <strong>Email:</strong>{" "}
-        <a href="mailto:support@rovexai.com">support@rovexai.com</a>
+        <a href="mailto:support@rovexai.com">RovexAi.HelpDesk@2025</a>
       </p>
 
       <p>
