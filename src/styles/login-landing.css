@@ -349,3 +349,20 @@
     padding: 22px 16px;
   }
 }
+/* =============================== */
+/* STICKY FOOTER FOR AUTH PAGES */
+/* =============================== */
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.login-page > footer {
+  position: sticky;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  z-index: 5;
+}
