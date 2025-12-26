@@ -10,7 +10,7 @@ import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
 
-// public legal pages
+// Public legal pages
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -27,6 +27,19 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
+
+  // ✅ ADD GOOGLE ADSENSE SCRIPT (YOUR CODE)
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src =
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5203867874990287";
+    script.crossOrigin = "anonymous";
+
+    document.head.appendChild(script);
+  }, []);
+
+  // ✅ Keep correct tab title
   useEffect(() => {
     const path = window.location.pathname;
     if (path.includes("login")) document.title = "Login | RovexAI";
@@ -37,19 +50,19 @@ export default function App() {
   return (
     <Routes>
 
-      {/* ✅ INDEX ROUTE (instead of path="/") */}
+      {/* INDEX */}
       <Route index element={<Navigate to="/dashboard" replace />} />
 
-      {/* Public routes (NO AUTH) */}
+      {/* PUBLIC LEGAL PAGES (NO AUTH) */}
       <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
 
-      {/* Auth routes */}
+      {/* AUTH */}
       <Route path="/login/*" element={<LoginPage />} />
       <Route path="/sign-up/*" element={<SignUpPage />} />
 
-      {/* Protected dashboard */}
+      {/* DASHBOARD */}
       <Route
         path="/dashboard"
         element={
@@ -59,7 +72,7 @@ export default function App() {
         }
       />
 
-      {/* App workspace */}
+      {/* WORKSPACE */}
       <Route
         path="/app"
         element={
@@ -72,7 +85,7 @@ export default function App() {
         }
       />
 
-      {/* ✅ Fallback MUST BE LAST */}
+      {/* FALLBACK */}
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
 
     </Routes>
