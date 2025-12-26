@@ -39,8 +39,8 @@ export default function GlobalBackground({ children }) {
 
           backgroundImage: `
             linear-gradient(
-              rgba(0,0,0,0.55),
-              rgba(0,0,0,0.85)
+              rgba(0, 0, 0, 0.55),
+              rgba(0, 0, 0, 0.85)
             ),
             url('/public-bg.jpg')
           `,
@@ -48,8 +48,8 @@ export default function GlobalBackground({ children }) {
           backgroundSize: "1200px auto",
           backgroundPosition: "center",
 
-          /* 🧘 Smooth & slow animation */
-          animation: "bgCrazy 60s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+          /* ⭐ BALANCED SPEED */
+          animation: "bgCrazy 40s cubic-bezier(0.4, 0, 0.2, 1) infinite",
         }}
       />
 
