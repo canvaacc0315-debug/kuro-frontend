@@ -78,7 +78,7 @@ export default function PrivacyPolicy() {
           out to us at:
         </p>
         <p style={{ color: "#ff5a5a", fontWeight: 600 }}>
-          support@rovexai.com
+          RovexAi.HelpDesk@2025
         </p>
       </div>
     </PublicPageLayout>

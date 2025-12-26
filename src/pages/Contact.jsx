@@ -29,7 +29,7 @@ export default function Contact() {
         <div className="feature-card">
           <span>✉️</span>
           <h3>Email</h3>
-          <p>support@rovexai.com</p>
+          <p>RovexAi.HelpDesk@2025</p>
         </div>
 
         <div className="feature-card">
