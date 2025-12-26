@@ -4,23 +4,23 @@ const bgAnimation = `
 @keyframes bgCrazy {
   0% {
     transform: scale(1);
-    background-position: 50% 50%;
+    background-position: 50% 0%;
   }
   25% {
-    transform: scale(1.05);
-    background-position: 52% 48%;
+    transform: scale(1.12);
+    background-position: 65% 35%;
   }
   50% {
-    transform: scale(1.08);
-    background-position: 48% 52%;
+    transform: scale(1.18);
+    background-position: 35% 65%;
   }
   75% {
-    transform: scale(1.05);
-    background-position: 51% 49%;
+    transform: scale(1.12);
+    background-position: 60% 40%;
   }
   100% {
     transform: scale(1);
-    background-position: 50% 50%;
+    background-position: 50% 0%;
   }
 }
 `;
@@ -39,17 +39,17 @@ export default function GlobalBackground({ children }) {
 
           backgroundImage: `
             linear-gradient(
-              rgba(0, 0, 0, 0.55),
-              rgba(0, 0, 0, 0.85)
+              rgba(0,0,0,0.55),
+              rgba(0,0,0,0.85)
             ),
             url('/public-bg.jpg')
           `,
           backgroundRepeat: "repeat",
-          backgroundSize: "1200px auto",
+          backgroundSize: "1400px auto",
           backgroundPosition: "center",
 
-          /* ⭐ BALANCED SPEED */
-          animation: "bgCrazy 20s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+          /* 🔥 NOTICEABLE animation */
+          animation: "bgCrazy 20s ease-in-out infinite",
         }}
       />
 
