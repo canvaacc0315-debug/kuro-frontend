@@ -1,12 +1,11 @@
-import Footer from "../components/layout/Footer";
+import PublicPageLayout from "../components/layout/PublicPageLayout";
 
 export default function Contact() {
   return (
-    <div style={{ padding: "40px" }}>
+    <PublicPageLayout>
       <h1>Contact Us</h1>
       <p>Email: support@rovexai.com</p>
       <p>Website: https://rovexai.com</p>
-      <Footer />
-    </div>
+    </PublicPageLayout>
   );
 }
