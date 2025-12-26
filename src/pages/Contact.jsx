@@ -1,51 +1,64 @@
 import PublicPageLayout from "../components/layout/PublicPageLayout";
+import "../styles/public-pages.css";
 
 export default function Contact() {
   return (
     <PublicPageLayout>
-      <h1>Contact Us</h1>
+      {/* HERO */}
+      <section className="public-hero">
+        <h1>Contact Us</h1>
+        <p className="public-hero-subtitle">
+          We’d love to hear from you. Our team is always here to help.
+        </p>
+      </section>
 
-      <p>
-        We’d love to hear from you. Whether you have a question, feedback,
-        feature request, or need help using RovexAI, our team is here to assist
-        you.
-      </p>
+      {/* INTRO */}
+      <div className="public-card">
+        <p>
+          Whether you have a question, feedback, feature request, or need help
+          using RovexAI, our support team is ready to assist you.
+        </p>
+        <p>
+          We’re committed to providing reliable support and continuously
+          improving our platform based on user feedback.
+        </p>
+      </div>
 
-      <p>
-        RovexAI is committed to providing reliable support and continuously
-        improving our platform based on user feedback. If you experience any
-        issues or have suggestions, please don’t hesitate to reach out.
-      </p>
+      {/* CONTACT INFO GRID */}
+      <section className="features-grid">
+        <div className="feature-card">
+          <span>✉️</span>
+          <h3>Email</h3>
+          <p>support@rovexai.com</p>
+        </div>
 
-      <h2>Get in Touch</h2>
+        <div className="feature-card">
+          <span>🌐</span>
+          <h3>Website</h3>
+          <p>https://rovexai.com</p>
+        </div>
 
-      <p>
-        <strong>Email:</strong>{" "}
-        <a href="mailto:support@rovexai.com">RovexAi.HelpDesk@2025</a>
-      </p>
+        <div className="feature-card">
+          <span>⏰</span>
+          <h3>Support Hours</h3>
+          <p>24/7 Availability</p>
+        </div>
 
-      <p>
-        <strong>Website:</strong>{" "}
-        <a
-          href="https://rovexai.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          https://rovexai.com
-        </a>
-      </p>
+        <div className="feature-card">
+          <span>🎯</span>
+          <h3>Response Time</h3>
+          <p>Most inquiries answered within 24 hours</p>
+        </div>
+      </section>
 
-      <h2>Support Hours</h2>
-
-      <p>
-        Our support team is available <strong>24/7</strong>. Most inquiries are
-        responded to within <strong>24 hours</strong>.
-      </p>
-
-      <p>
-        Thank you for choosing RovexAI. We’re excited to help you unlock deeper
-        insights from your documents.
-      </p>
+      {/* NOTE */}
+      <div className="public-card vision-card">
+        <h2>We’re Here to Help</h2>
+        <p>
+          Thank you for choosing RovexAI. Your feedback helps us build a better
+          document intelligence platform for everyone.
+        </p>
+      </div>
     </PublicPageLayout>
   );
 }
