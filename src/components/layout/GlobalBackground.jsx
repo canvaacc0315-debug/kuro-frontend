@@ -49,7 +49,7 @@ export default function GlobalBackground({ children }) {
           backgroundPosition: "center",
 
           /* ⭐ BALANCED SPEED */
-          animation: "bgCrazy 50s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+          animation: "bgCrazy 30s cubic-bezier(0.4, 0, 0.2, 1) infinite",
         }}
       />
 
