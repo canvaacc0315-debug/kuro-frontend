@@ -8,10 +8,9 @@ import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 
-// existing overlay component (UNCHANGED)
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
 
-// legal pages (NEW)
+// public legal pages
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -28,11 +27,8 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
-
-  // ✅ FIX: Always keep RovexAI title in browser tab
   useEffect(() => {
     const path = window.location.pathname;
-
     if (path.includes("login")) document.title = "Login | RovexAI";
     else if (path.includes("sign-up")) document.title = "Sign Up | RovexAI";
     else document.title = "RovexAI";
@@ -41,16 +37,19 @@ export default function App() {
   return (
     <Routes>
 
-      {/* Root */}
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      {/* ✅ INDEX ROUTE (instead of path="/") */}
+      <Route index element={<Navigate to="/dashboard" replace />} />
 
-      {/* LOGIN — wildcard so Clerk's internal routes work */}
+      {/* Public routes (NO AUTH) */}
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+
+      {/* Auth routes */}
       <Route path="/login/*" element={<LoginPage />} />
-
-      {/* SIGN UP — wildcard required */}
       <Route path="/sign-up/*" element={<SignUpPage />} />
 
-      {/* Dashboard */}
+      {/* Protected dashboard */}
       <Route
         path="/dashboard"
         element={
@@ -66,7 +65,6 @@ export default function App() {
         element={
           <ProtectedRoute>
             <>
-              {/* Invisible overlay button over logo */}
               <HomeOverlayButton />
               <KuroWorkspacePage />
             </>
@@ -74,12 +72,7 @@ export default function App() {
         }
       />
 
-      {/* ✅ PUBLIC LEGAL PAGES (AdSense required) */}
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
-
-      {/* Fallback */}
+      {/* ✅ Fallback MUST BE LAST */}
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
 
     </Routes>
