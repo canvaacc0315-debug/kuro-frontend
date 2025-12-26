@@ -251,11 +251,6 @@ export default function DashboardPage() {
           </div>
         </section>
       </main>
-
-      {/* Optional footer */}
-      <footer className="footer">
-        © {new Date().getFullYear()} RovexAI. All rights reserved.
-      </footer>
       <Footer />
     </div>
   );
