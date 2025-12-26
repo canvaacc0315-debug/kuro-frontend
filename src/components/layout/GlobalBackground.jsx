@@ -30,11 +30,16 @@ export default function GlobalBackground({ children }) {
 
       <div
         style={{
-          minHeight: "100vh",
+          /* 🔑 THIS FIXES FULL PAGE COVERAGE */
+          minHeight: "100dvh",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+
           backgroundImage: "url('/public-bg.jpg')",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
-          backgroundSize: "100%",
+          backgroundSize: "cover",   // 🔥 IMPORTANT
           animation: "bgCrazy 18s ease-in-out infinite",
         }}
       >
