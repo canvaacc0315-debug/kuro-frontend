@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import "../styles/grid-fix.css";
 
 export default function DashboardPanel({ pdfs }) {
   const totalPdfs = pdfs.length;

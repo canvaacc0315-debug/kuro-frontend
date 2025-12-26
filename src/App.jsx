@@ -32,7 +32,7 @@ export default function App() {
     const script = document.createElement("script");
     script.async = true;
     script.src =
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5203867874990287";
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9545152753392718";
     script.crossOrigin = "anonymous";
     document.head.appendChild(script);
   }, []);
