@@ -7,14 +7,8 @@ export default function PublicPageLayout({ children }) {
       style={{
         minHeight: "100vh",
 
-        /* 🔥 BACKGROUND IMAGE + DARK OVERLAY */
-        backgroundImage: `
-          linear-gradient(
-            rgba(0, 0, 0, 0.75),
-            rgba(0, 0, 0, 0.85)
-          ),
-          url("/public-bg.jpg")
-        `,
+        /* 🖼️ BACKGROUND IMAGE — NO OVERLAY */
+        backgroundImage: "url('/public-bg.jpg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -30,10 +24,8 @@ export default function PublicPageLayout({ children }) {
           display: "flex",
           alignItems: "center",
           padding: "18px 28px",
-
-          /* softer, premium header */
           background:
-            "linear-gradient(180deg, rgba(20,20,25,0.9), rgba(10,10,15,0.6))",
+            "linear-gradient(180deg, rgba(15,15,20,0.85), rgba(10,10,15,0.6))",
           backdropFilter: "blur(6px)",
           borderBottom: "1px solid rgba(255,255,255,0.08)",
         }}
@@ -48,10 +40,7 @@ export default function PublicPageLayout({ children }) {
             color: "#fff",
             fontSize: "20px",
             fontWeight: "600",
-            opacity: 0.9,
           }}
-          onMouseOver={(e) => (e.currentTarget.style.opacity = "1")}
-          onMouseOut={(e) => (e.currentTarget.style.opacity = "0.9")}
         >
           <img
             src="/kuro.png"
@@ -70,10 +59,10 @@ export default function PublicPageLayout({ children }) {
           padding: "32px",
           flex: 1,
 
-          /* glass card effect */
-          background: "rgba(0,0,0,0.55)",
+          /* light glass so bg is still visible */
+          background: "rgba(0,0,0,0.25)",
           borderRadius: "12px",
-          boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
         }}
       >
         {children}
