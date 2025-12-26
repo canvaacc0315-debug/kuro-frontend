@@ -57,7 +57,3 @@ html, body {
   height: 100%;
   overflow-y: auto;
 }
-
-body {
-  padding-top: 64px; /* height of header */
-}
