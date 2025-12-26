@@ -13,6 +13,8 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 
+import GlobalBackground from "./components/layout/GlobalBackground";
+
 function ProtectedRoute({ children }) {
   return (
     <>
@@ -25,8 +27,7 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
-
-  // ✅ AdSense script (OK to keep)
+  // ✅ Google AdSense (keep as-is)
   useEffect(() => {
     const script = document.createElement("script");
     script.async = true;
@@ -37,38 +38,46 @@ export default function App() {
   }, []);
 
   return (
-    <Routes>
-      <Route index element={<Navigate to="/dashboard" replace />} />
+    <GlobalBackground>
+      <Routes>
+        {/* INDEX */}
+        <Route index element={<Navigate to="/dashboard" replace />} />
 
-      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contact" element={<Contact />} />
+        {/* PUBLIC PAGES */}
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
 
-      <Route path="/login/*" element={<LoginPage />} />
-      <Route path="/sign-up/*" element={<SignUpPage />} />
+        {/* AUTH */}
+        <Route path="/login/*" element={<LoginPage />} />
+        <Route path="/sign-up/*" element={<SignUpPage />} />
 
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute>
-            <DashboardPage />
-          </ProtectedRoute>
-        }
-      />
+        {/* DASHBOARD */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
 
-      <Route
-        path="/app"
-        element={
-          <ProtectedRoute>
-            <>
-              <HomeOverlayButton />
-              <KuroWorkspacePage />
-            </>
-          </ProtectedRoute>
-        }
-      />
+        {/* WORKSPACE */}
+        <Route
+          path="/app"
+          element={
+            <ProtectedRoute>
+              <>
+                <HomeOverlayButton />
+                <KuroWorkspacePage />
+              </>
+            </ProtectedRoute>
+          }
+        />
 
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
-    </Routes>
+        {/* FALLBACK */}
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      </Routes>
+    </GlobalBackground>
   );
 }
