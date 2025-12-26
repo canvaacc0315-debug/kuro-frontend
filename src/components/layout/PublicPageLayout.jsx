@@ -1,17 +1,28 @@
 import { Link } from "react-router-dom";
 import Footer from "./Footer";
 
-/* 🎥 Slow zoom background animation */
+/* 🔥 HIGH-IMPACT ANIMATION */
 const bgAnimation = `
-@keyframes bgZoom {
+@keyframes bgCrazy {
   0% {
     background-size: 100%;
+    background-position: 50% 50%;
+  }
+  25% {
+    background-size: 120%;
+    background-position: 60% 40%;
   }
   50% {
-    background-size: 110%;
+    background-size: 130%;
+    background-position: 40% 60%;
+  }
+  75% {
+    background-size: 120%;
+    background-position: 55% 45%;
   }
   100% {
     background-size: 100%;
+    background-position: 50% 50%;
   }
 }
 `;
@@ -24,29 +35,25 @@ export default function PublicPageLayout({ children }) {
       <div
         style={{
           minHeight: "100vh",
-
-          /* 🖼️ Animated background (zoom effect) */
           backgroundImage: "url('/public-bg.jpg')",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "100%",
-          animation: "bgZoom 40s ease-in-out infinite",
+          animation: "bgCrazy 18s ease-in-out infinite",
 
           color: "#fff",
           display: "flex",
           flexDirection: "column",
         }}
       >
-        {/* 🔝 HEADER */}
+        {/* HEADER */}
         <header
           style={{
             display: "flex",
             alignItems: "center",
             padding: "18px 28px",
-            background:
-              "linear-gradient(180deg, rgba(15,15,20,0.85), rgba(10,10,15,0.6))",
-            backdropFilter: "blur(6px)",
-            borderBottom: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(0,0,0,0.55)",
+            backdropFilter: "blur(8px)",
           }}
         >
           <Link
@@ -58,36 +65,29 @@ export default function PublicPageLayout({ children }) {
               textDecoration: "none",
               color: "#fff",
               fontSize: "20px",
-              fontWeight: "600",
+              fontWeight: "700",
             }}
           >
-            <img
-              src="/kuro.png"
-              alt="RovexAI"
-              style={{ height: "28px", display: "block" }}
-            />
+            <img src="/kuro.png" alt="RovexAI" style={{ height: "30px" }} />
             <span>RovexAI</span>
           </Link>
         </header>
 
-        {/* 📄 CONTENT */}
+        {/* CONTENT */}
         <main
           style={{
             maxWidth: "900px",
             margin: "60px auto",
             padding: "32px",
             flex: 1,
-
-            /* subtle glass effect */
-            background: "rgba(0,0,0,0.25)",
-            borderRadius: "12px",
-            boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+            background: "rgba(0,0,0,0.35)",
+            borderRadius: "14px",
+            boxShadow: "0 30px 80px rgba(0,0,0,0.7)",
           }}
         >
           {children}
         </main>
 
-        {/* 🔻 FOOTER */}
         <Footer />
       </div>
     </>
