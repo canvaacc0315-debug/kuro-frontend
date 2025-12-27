@@ -696,15 +696,21 @@ export default function KuroWorkspacePage() {
                       }`}
                     >
                       {m.role === "bot" && (
-                        <div className="message-avatar">🤖</div>
+                        <img
+                          src="\kuro.png"
+                          alt="kuro"
+                          className="message-avatar"
+                        />
                       )}
-                      <div className="message-bubble">
-                        {m.content.split("\n").map((line, i) => (
-                          <p key={i}>{line}</p>
-                        ))}
-                      </div>
+
+                      <div className="message-bubble">{m.content}</div>
+
                       {m.role === "user" && (
-                        <div className="message-avatar">👤</div>
+                        <img
+                          src={user?.imageUrl}
+                          alt="User"
+                          className="message-avatar"
+                        />
                       )}
                     </div>
                   ))}
