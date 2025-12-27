@@ -2,6 +2,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAuth } from "@clerk/clerk-react";
 import jsPDF from "jspdf";
+import "../styles/chat-panel.css";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
@@ -63,6 +64,7 @@ const DEFAULT_HISTORY = [
 
 export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
   const { getToken } = useAuth();
+  const { user } = useUser();
 
   const [activeSubTab, setActiveSubTab] = useState("current"); // current | history | export
   const [question, setQuestion] = useState("");
@@ -368,11 +370,21 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
                   className={"message " + (m.role === "user" ? "user" : "bot")}
                 >
                   {m.role === "bot" && (
-                    <div className="message-avatar">🤖</div>
+                    <img
+                      src="/rovex-ai-logo.png"
+                      alt="RovexAI"
+                      className="message-avatar"
+                    />
                   )}
+
                   <div className="message-bubble">{m.content}</div>
+
                   {m.role === "user" && (
-                    <div className="message-avatar">👤</div>
+                    <img
+                      src={user?.imageUrl}
+                      alt="User"
+                      className="message-avatar"
+                    />
                   )}
                 </div>
               ))}
