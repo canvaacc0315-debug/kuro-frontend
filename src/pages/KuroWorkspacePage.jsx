@@ -697,12 +697,11 @@ export default function KuroWorkspacePage() {
                     >
                       {m.role === "bot" && (
                         <img
-                          src="\kuro.png"
-                          alt="kuro"
+                          src="\kuro-logo.png"
+                          alt="kuro-logo"
                           className="message-avatar"
                         />
                       )}
-
                       <div className="message-bubble">{m.content}</div>
 
                       {m.role === "user" && (
