@@ -371,8 +371,8 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
                 >
                   {m.role === "bot" && (
                     <img
-                      src="\kuro-logo.png"
-                      alt="RovexAI"
+                      src="\kuro.png"
+                      alt="kuro"
                       className="message-avatar"
                     />
                   )}
