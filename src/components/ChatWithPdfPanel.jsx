@@ -362,7 +362,7 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
             (activeSubTab === "current" ? " active" : "")
           }
         >
-          <div className="chat-container">
+          <div className="chat-container chat-panel">
             <div className="chat-messages">
               {messages.map((m, idx) => (
                 <div

@@ -1,23 +1,23 @@
 /* ===============================
-   CHAT AVATARS
+   CHAT PANEL (SCOPED)
    =============================== */
 
-.message {
+.chat-panel .message {
   display: flex;
   align-items: flex-end;
   gap: 10px;
   margin-bottom: 14px;
 }
 
-.message.user {
+.chat-panel .message.user {
   justify-content: flex-end;
 }
 
-.message.bot {
+.chat-panel .message.bot {
   justify-content: flex-start;
 }
 
-.message-avatar {
+.chat-panel .message-avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -25,17 +25,17 @@
   flex-shrink: 0;
 }
 
-.message-bubble {
+.chat-panel .message-bubble {
   max-width: 70%;
   padding: 12px 14px;
   border-radius: 14px;
   line-height: 1.6;
 }
 
-.message.user .message-bubble {
+.chat-panel .message.user .message-bubble {
   background: rgba(255, 90, 90, 0.15);
 }
 
-.message.bot .message-bubble {
+.chat-panel .message.bot .message-bubble {
   background: rgba(0, 0, 0, 0.45);
 }
