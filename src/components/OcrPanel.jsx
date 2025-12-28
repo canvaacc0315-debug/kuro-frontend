@@ -37,33 +37,31 @@ export default function OcrPanel() {
     }
   }
 
-/* ---------------- OCR START ---------------- */
 async function startOcr() {
   if (!files.length || selectedFileIndex === null) {
     alert("Please select a file to run OCR on");
     return;
   }
 
-  setIsRunning(true);
-  setProgress(5);
-  setOcrResult("");
-
-  let fake = 5;
-  const timer = setInterval(() => {
-    fake += 8;
-    setProgress((p) => (p < 90 ? fake : p));
-  }, 300);
-
   try {
+    setIsRunning(true);
+    setProgress(10);
+    setOcrResult("");
+
+    // ✅ DEFINE IT FIRST (THIS FIXES THE ERROR)
     const selectedFile = files[selectedFileIndex];
 
-    // ⚠️ pdf_id must come from BACKEND upload response
-    // example: selectedFile.backendPdfId
+    if (!selectedFile || !selectedFile.pdf_id) {
+      alert("PDF not uploaded yet. Upload via PDF upload first.");
+      setIsRunning(false);
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("pdf_id", selectedFile.backendPdfId);
+    formData.append("pdf_id", selectedFile.pdf_id);
 
     const response = await fetch(
-      "http://localhost:8000/api/pdf/ocr",
+      "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
       {
         method: "POST",
         credentials: "include",
@@ -71,21 +69,19 @@ async function startOcr() {
       }
     );
 
-    const data = await response.json();
+    if (!response.ok) {
+      throw new Error("OCR API failed");
+    }
 
-    clearInterval(timer);
+    const data = await response.json();
+    setOcrResult(data.text);
     setProgress(100);
 
-    setOcrResult(data.text);
-
-    window.dispatchEvent(
-      new CustomEvent("ocr-result-ready", { detail: data.text })
-    );
   } catch (err) {
     console.error(err);
-    alert("OCR failed");
+    alert("OCR failed. Check console.");
   } finally {
-    setTimeout(() => setIsRunning(false), 600);
+    setIsRunning(false);
   }
 }
   /* ---------------- UI ---------------- */
