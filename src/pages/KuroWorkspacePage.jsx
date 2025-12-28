@@ -477,7 +477,13 @@ export default function KuroWorkspacePage() {
             className={`tab-btn ${activeTab === "ocr" ? "active" : ""}`}
             onClick={() => handleTabClick("ocr")}
           >
-            🔍 OCR & Recognition
+            🔍 OCR(PDF)
+          </button>
+          <button
+            className={`tab-btn ${activeTab === "ocr" ? "active" : ""}`}
+            onClick={() => handleTabClick("ocr")}
+          >
+            🔍 OCR(Images)
           </button>
           <button
             className={`tab-btn ${activeTab === "create" ? "active" : ""}`}
