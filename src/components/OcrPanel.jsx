@@ -10,20 +10,20 @@ export default function OcrPanel() {
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
 
-  /* ALWAYS SAFE */
+  /* ---------- SELECTED FILE ---------- */
   const selectedFile = useMemo(() => {
     if (selectedFileIndex === null) return null;
     return files[selectedFileIndex] || null;
   }, [files, selectedFileIndex]);
 
-  /* ---------------- FILE UPLOAD ---------------- */
+  /* ---------- FILE UPLOAD ---------- */
   async function handleFiles(e) {
     const selected = Array.from(e.target.files || []);
     if (!selected.length) return;
 
     const file = selected[0];
     if (!file.type.includes("pdf")) {
-      alert("Only PDF files are supported");
+      alert("Only PDF OCR is supported");
       return;
     }
 
@@ -44,17 +44,14 @@ export default function OcrPanel() {
         }
       );
 
-      if (!res.ok) throw new Error("Upload failed");
-
       const data = await res.json();
       file.pdf_id = data.pdfs[0].pdf_id;
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert("PDF upload failed");
     }
   }
 
-  /* ---------------- OCR ---------------- */
+  /* ---------- OCR ---------- */
   async function startOcr() {
     if (!selectedFile?.pdf_id) {
       alert("Upload PDF first");
@@ -63,7 +60,7 @@ export default function OcrPanel() {
 
     try {
       setIsRunning(true);
-      setProgress(10);
+      setProgress(20);
       setOcrResult("");
 
       const formData = new FormData();
@@ -78,47 +75,58 @@ export default function OcrPanel() {
         }
       );
 
-      if (!res.ok) throw new Error("OCR failed");
-
       const data = await res.json();
       setOcrResult(data.text || "");
       setProgress(100);
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert("OCR failed");
     } finally {
       setIsRunning(false);
     }
   }
 
-  /* ---------------- EXPORT ACTIONS ---------------- */
+  /* ---------- RESET ---------- */
+  function resetOcr() {
+    setFiles([]);
+    setSelectedFileIndex(null);
+    setShowPreview(false);
+    setOcrResult("");
+    setProgress(0);
+    setIsRunning(false);
+    const input = document.getElementById("ocrFileInput");
+    if (input) input.value = "";
+  }
+
+  /* ---------- EXPORT HELPERS ---------- */
   function downloadTxt() {
     const blob = new Blob([ocrResult], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ocr-result.txt";
-    a.click();
+    downloadBlob(blob, "ocr-result.txt");
   }
 
   function downloadCsv() {
-    const csv =
-      "line\n" +
-      ocrResult
-        .split("\n")
-        .map((l) => `"${l.replace(/"/g, '""')}"`)
-        .join("\n");
-
+    const lines = ocrResult.split("\n");
+    const csv = "line\n" + lines.map(l => `"${l.replace(/"/g, '""')}"`).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ocr-result.csv";
-    a.click();
+    downloadBlob(blob, "ocr-result.csv");
   }
 
   function downloadPdf() {
-    const doc = new jsPDF();
-    const lines = doc.splitTextToSize(ocrResult, 180);
-    doc.text(lines, 10, 10);
+    const doc = new jsPDF("p", "mm", "a4");
+    const margin = 10;
+    const pageHeight = doc.internal.pageSize.height;
+    const width = doc.internal.pageSize.width - margin * 2;
+    const lines = doc.splitTextToSize(ocrResult, width);
+
+    let y = margin;
+    lines.forEach(line => {
+      if (y > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+      doc.text(line, margin, y);
+      y += 7;
+    });
+
     doc.save("ocr-result.pdf");
   }
 
@@ -127,124 +135,81 @@ export default function OcrPanel() {
     alert("Copied to clipboard");
   }
 
-  /* ---------------- RESET ---------------- */
-  function resetOcr() {
-    setFiles([]);
-    setSelectedFileIndex(null);
-    setShowPreview(false);
-    setOcrResult("");
-    setProgress(0);
-    setIsRunning(false);
-
-    const input = document.getElementById("ocrFileInput");
-    if (input) input.value = "";
+  function downloadBlob(blob, filename) {
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(a.href);
   }
 
-  /* ---------------- UI ---------------- */
+  /* ---------- UI ---------- */
   return (
     <div className="ocr-root">
       <div className="ocr-header">
-        <h2>
-          OCR & <span>Recognition</span>
-        </h2>
+        <h2>OCR & <span>Recognition</span></h2>
         <p>Extract text from PDFs</p>
       </div>
 
-      <div className="ocr-content">
-        <div
-          className="ocr-upload"
-          onClick={() => document.getElementById("ocrFileInput").click()}
-        >
-          <div className="ocr-upload-icon">📄</div>
-          <div className="ocr-upload-title">Upload PDF</div>
-
-          <button
-            type="button"
-            className="ocr-upload-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              document.getElementById("ocrFileInput").click();
-            }}
+      <div className="ocr-layout">
+        {/* LEFT */}
+        <div className="ocr-left">
+          <div
+            className="ocr-upload"
+            onClick={() => document.getElementById("ocrFileInput").click()}
           >
-            Select PDF
-          </button>
+            <div className="ocr-upload-icon">📄</div>
+            <div className="ocr-upload-title">Upload PDF</div>
+            <button className="ocr-upload-btn">Select PDF</button>
+            <input
+              id="ocrFileInput"
+              type="file"
+              accept=".pdf"
+              hidden
+              onChange={handleFiles}
+            />
+          </div>
 
-          <input
-            id="ocrFileInput"
-            type="file"
-            accept=".pdf"
-            hidden
-            onChange={handleFiles}
-          />
+          {showPreview && selectedFile && (
+            <iframe
+              className="ocr-preview-frame"
+              src={URL.createObjectURL(selectedFile)}
+              title="preview"
+            />
+          )}
+        </div>
+
+        {/* RIGHT */}
+        <div className="ocr-right">
+          {!ocrResult && (
+            <div className="ocr-placeholder">
+              📄 OCR result will appear here
+            </div>
+          )}
+
+          {ocrResult && (
+            <>
+              <div className="ocr-actions">
+                <button onClick={downloadTxt}>TXT</button>
+                <button onClick={downloadCsv}>CSV</button>
+                <button onClick={downloadPdf}>PDF</button>
+                <button onClick={copyText}>Copy</button>
+              </div>
+
+              <pre className="ocr-text">{ocrResult}</pre>
+
+              <button className="ocr-reset-btn" onClick={resetOcr}>
+                🔁 Process Another File
+              </button>
+            </>
+          )}
         </div>
       </div>
 
-      {/* PREVIEW */}
-      {showPreview && selectedFile && (
-        <div className="ocr-preview">
-          <div className="ocr-preview-header">
-            <h4>PDF Preview</h4>
-            <button onClick={() => setShowPreview(false)}>✕</button>
-          </div>
-          <iframe
-            src={URL.createObjectURL(selectedFile)}
-            title="preview"
-            className="ocr-preview-frame"
-          />
-        </div>
-      )}
-
-      {/* START OCR */}
       {selectedFile && !ocrResult && (
-        <button
-          className="ocr-start-btn"
-          onClick={startOcr}
-          disabled={isRunning}
-        >
+        <button className="ocr-start-btn" onClick={startOcr}>
           {isRunning ? "Processing..." : "🚀 Start OCR"}
         </button>
-      )}
-
-      {/* PROGRESS */}
-      {isRunning && (
-        <div className="ocr-progress-wrapper">
-          <div className="ocr-progress-bar">
-            <div
-              className="ocr-progress-fill"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <div className="ocr-progress-text">{progress}%</div>
-        </div>
-      )}
-
-      {/* OUTPUT LAYOUT */}
-      {ocrResult && (
-        <div className="ocr-output-layout">
-          {/* LEFT */}
-          <div className="ocr-output-left">
-            <div className="ocr-result-preview">
-              <h4>OCR Result</h4>
-              <pre>{ocrResult}</pre>
-            </div>
-          </div>
-
-          {/* RIGHT */}
-          <div className="ocr-output-right">
-            <h4>📤 Export</h4>
-            <button onClick={downloadTxt}>TXT</button>
-            <button onClick={downloadCsv}>CSV</button>
-            <button onClick={downloadPdf}>PDF</button>
-            <button onClick={copyText}>Copy</button>
-
-            <button
-              className="process-another-btn"
-              onClick={resetOcr}
-            >
-              🔁 Process Another File
-            </button>
-          </div>
-        </div>
       )}
     </div>
   );
