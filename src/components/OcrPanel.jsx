@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import jsPDF from "jspdf";
 import "../styles/ocr-override.css";
 
 export default function OcrPanel() {
@@ -9,7 +10,7 @@ export default function OcrPanel() {
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
 
-  /* ---------------- SELECTED FILE ---------------- */
+  /* ALWAYS SAFE */
   const selectedFile = useMemo(() => {
     if (selectedFileIndex === null) return null;
     return files[selectedFileIndex] || null;
@@ -21,14 +22,14 @@ export default function OcrPanel() {
     if (!selected.length) return;
 
     const file = selected[0];
-    setFiles([file]);
-    setSelectedFileIndex(0);
-    setShowPreview(true);
-
     if (!file.type.includes("pdf")) {
       alert("Only PDF files are supported");
       return;
     }
+
+    setFiles([file]);
+    setSelectedFileIndex(0);
+    setShowPreview(true);
 
     const formData = new FormData();
     formData.append("files", file);
@@ -47,16 +48,15 @@ export default function OcrPanel() {
 
       const data = await res.json();
       file.pdf_id = data.pdfs[0].pdf_id;
-      console.log("PDF uploaded:", file.pdf_id);
     } catch (err) {
       console.error(err);
       alert("PDF upload failed");
     }
   }
 
-  /* ---------------- OCR START ---------------- */
+  /* ---------------- OCR ---------------- */
   async function startOcr() {
-    if (!selectedFile || !selectedFile.pdf_id) {
+    if (!selectedFile?.pdf_id) {
       alert("Upload PDF first");
       return;
     }
@@ -91,7 +91,7 @@ export default function OcrPanel() {
     }
   }
 
-  /* ---------------- EXPORT HELPERS ---------------- */
+  /* ---------------- EXPORT ACTIONS ---------------- */
   function downloadTxt() {
     const blob = new Blob([ocrResult], { type: "text/plain" });
     const a = document.createElement("a");
@@ -116,11 +116,10 @@ export default function OcrPanel() {
   }
 
   function downloadPdf() {
-    const blob = new Blob([ocrResult], { type: "application/pdf" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "ocr-result.pdf";
-    a.click();
+    const doc = new jsPDF();
+    const lines = doc.splitTextToSize(ocrResult, 180);
+    doc.text(lines, 10, 10);
+    doc.save("ocr-result.pdf");
   }
 
   function copyText() {
@@ -136,6 +135,7 @@ export default function OcrPanel() {
     setOcrResult("");
     setProgress(0);
     setIsRunning(false);
+
     const input = document.getElementById("ocrFileInput");
     if (input) input.value = "";
   }
@@ -150,31 +150,33 @@ export default function OcrPanel() {
         <p>Extract text from PDFs</p>
       </div>
 
-      {/* UPLOAD */}
-      <div
-        className="ocr-upload"
-        onClick={() => document.getElementById("ocrFileInput").click()}
-      >
-        <div className="ocr-upload-icon">📄</div>
-        <div className="ocr-upload-title">Upload PDF</div>
-        <button
-          type="button"
-          className="ocr-upload-btn"
-          onClick={(e) => {
-            e.stopPropagation();
-            document.getElementById("ocrFileInput").click();
-          }}
+      <div className="ocr-content">
+        <div
+          className="ocr-upload"
+          onClick={() => document.getElementById("ocrFileInput").click()}
         >
-          Select PDF
-        </button>
+          <div className="ocr-upload-icon">📄</div>
+          <div className="ocr-upload-title">Upload PDF</div>
 
-        <input
-          id="ocrFileInput"
-          type="file"
-          accept=".pdf"
-          hidden
-          onChange={handleFiles}
-        />
+          <button
+            type="button"
+            className="ocr-upload-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              document.getElementById("ocrFileInput").click();
+            }}
+          >
+            Select PDF
+          </button>
+
+          <input
+            id="ocrFileInput"
+            type="file"
+            accept=".pdf"
+            hidden
+            onChange={handleFiles}
+          />
+        </div>
       </div>
 
       {/* PREVIEW */}
@@ -216,7 +218,7 @@ export default function OcrPanel() {
         </div>
       )}
 
-      {/* RESULT + RIGHT PANEL */}
+      {/* OUTPUT LAYOUT */}
       {ocrResult && (
         <div className="ocr-output-layout">
           {/* LEFT */}
@@ -230,7 +232,6 @@ export default function OcrPanel() {
           {/* RIGHT */}
           <div className="ocr-output-right">
             <h4>📤 Export</h4>
-
             <button onClick={downloadTxt}>TXT</button>
             <button onClick={downloadCsv}>CSV</button>
             <button onClick={downloadPdf}>PDF</button>
