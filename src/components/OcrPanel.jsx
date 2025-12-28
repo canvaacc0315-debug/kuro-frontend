@@ -1,13 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import "../styles/ocr-override.css";
 
 export default function OcrPanel() {
   const [language, setLanguage] = useState("English");
   const [outputFormat, setOutputFormat] = useState("text");
   const [mode, setMode] = useState("fast");
-  const [cleanText, setCleanText] = useState(true);
-  const [detectTables, setDetectTables] = useState(true);
-  const [preserveLayout, setPreserveLayout] = useState(false);
 
   const [files, setFiles] = useState([]);
   const [selectedFileIndex, setSelectedFileIndex] = useState(null);
@@ -22,7 +19,6 @@ export default function OcrPanel() {
   function handleFiles(e) {
     const selected = Array.from(e.target.files || []);
     setFiles((prev) => [...prev, ...selected]);
-
     if (selected.length && selectedFileIndex === null) {
       setSelectedFileIndex(0);
       setShowPreview(true);
@@ -37,68 +33,87 @@ export default function OcrPanel() {
     }
   }
 
-async function startOcr() {
-  if (!files.length || selectedFileIndex === null) {
-    alert("Please select a file to run OCR on");
-    return;
-  }
+  const selectedFile = useMemo(() => {
+    return selectedFileIndex !== null ? files[selectedFileIndex] : null;
+  }, [files, selectedFileIndex]);
 
-  try {
-    setIsRunning(true);
-    setProgress(10);
-    setOcrResult("");
+  /* ---------------- OCR START ---------------- */
 
-    // ✅ DEFINE IT FIRST (THIS FIXES THE ERROR)
-    const selectedFile = files[selectedFileIndex];
-
-    if (!selectedFile || !selectedFile.pdf_id) {
-      alert("PDF not uploaded yet. Upload via PDF upload first.");
-      setIsRunning(false);
+  async function startOcr() {
+    if (!selectedFile) {
+      alert("Please select a file");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("pdf_id", selectedFile.pdf_id);
+    try {
+      setIsRunning(true);
+      setProgress(10);
+      setOcrResult("");
 
-    const response = await fetch(
-      "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
-      {
-        method: "POST",
-        credentials: "include",
-        body: formData,
+      const formData = new FormData();
+
+      // ✅ IMAGE OCR
+      if (selectedFile.type.startsWith("image/")) {
+        formData.append("file", selectedFile);
+
+        const res = await fetch(
+          "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/image/ocr",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (!res.ok) throw new Error("Image OCR failed");
+        const data = await res.json();
+        setOcrResult(data.text || "");
       }
-    );
 
-    if (!response.ok) {
-      throw new Error("OCR API failed");
+      // ✅ PDF OCR (needs pdf_id from upload)
+      else {
+        if (!selectedFile.pdf_id) {
+          alert("This PDF must be uploaded via PDF upload first.");
+          setIsRunning(false);
+          return;
+        }
+
+        formData.append("pdf_id", selectedFile.pdf_id);
+
+        const res = await fetch(
+          "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
+          {
+            method: "POST",
+            credentials: "include",
+            body: formData,
+          }
+        );
+
+        if (!res.ok) throw new Error("PDF OCR failed");
+        const data = await res.json();
+        setOcrResult(data.text || "");
+      }
+
+      setProgress(100);
+    } catch (err) {
+      console.error(err);
+      alert("OCR failed. Check console.");
+    } finally {
+      setIsRunning(false);
     }
-
-    const data = await response.json();
-    setOcrResult(data.text);
-    setProgress(100);
-
-  } catch (err) {
-    console.error(err);
-    alert("OCR failed. Check console.");
-  } finally {
-    setIsRunning(false);
   }
-}
+
   /* ---------------- UI ---------------- */
 
   return (
     <div className="ocr-root">
-      {/* HEADER */}
       <div className="ocr-header">
         <h2>
           OCR & <span>Recognition</span>
         </h2>
-        <p>Extract text from images and PDFs using powerful OCR</p>
+        <p>Extract text from images and PDFs</p>
       </div>
 
-      {/* MAIN GRID */}
       <div className="ocr-content">
-        {/* UPLOAD */}
         <div
           className="ocr-upload"
           onClick={() => document.getElementById("ocrFileInput").click()}
@@ -106,7 +121,7 @@ async function startOcr() {
           <div className="ocr-upload-icon">📄</div>
           <div className="ocr-upload-title">Upload Files</div>
           <div className="ocr-upload-desc">
-            PDF, JPG, PNG supported (multiple allowed)
+            PDF, JPG, PNG supported
           </div>
 
           <button
@@ -130,22 +145,12 @@ async function startOcr() {
           />
         </div>
 
-        {/* SETTINGS */}
         <div className="ocr-settings">
           <h3>OCR Settings</h3>
 
           <label>Language</label>
           <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-            {[
-              "English",
-              "Hindi",
-              "Spanish",
-              "French",
-              "German",
-              "Chinese",
-              "Japanese",
-              "Arabic",
-            ].map((l) => (
+            {["English", "Hindi", "French", "German"].map((l) => (
               <option key={l}>{l}</option>
             ))}
           </select>
@@ -155,52 +160,16 @@ async function startOcr() {
             value={outputFormat}
             onChange={(e) => setOutputFormat(e.target.value)}
           >
-            <option value="pdf">PDF (Searchable)</option>
-            <option value="text">Text File</option>
+            <option value="text">Text</option>
             <option value="json">JSON</option>
             <option value="csv">CSV</option>
           </select>
-
-          <label>Processing Mode</label>
-          <select value={mode} onChange={(e) => setMode(e.target.value)}>
-            <option value="fast">Fast</option>
-            <option value="standard">Standard</option>
-            <option value="accurate">High Accuracy</option>
-          </select>
-
-          <div className="ocr-checks">
-            <label>
-              <input
-                type="checkbox"
-                checked={cleanText}
-                onChange={() => setCleanText(!cleanText)}
-              />
-              Clean & Format Text
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={detectTables}
-                onChange={() => setDetectTables(!detectTables)}
-              />
-              Detect Tables
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={preserveLayout}
-                onChange={() => setPreserveLayout(!preserveLayout)}
-              />
-              Preserve Layout
-            </label>
-          </div>
         </div>
       </div>
 
-      {/* FILE SELECT */}
       {files.length > 0 && (
         <div className="ocr-settings" style={{ marginTop: 20 }}>
-          <label>Select file to run OCR on</label>
+          <label>Select file</label>
           <select
             value={selectedFileIndex ?? ""}
             onChange={(e) => {
@@ -209,7 +178,7 @@ async function startOcr() {
             }}
           >
             <option value="" disabled>
-              Select a file
+              Select
             </option>
             {files.map((f, i) => (
               <option key={i} value={i}>
@@ -220,64 +189,40 @@ async function startOcr() {
         </div>
       )}
 
-      {/* FILE PREVIEW */}
       {showPreview && selectedFile && (
         <div className="ocr-preview">
           <div className="ocr-preview-header">
-            <h4>👁 File Preview</h4>
-            <button
-              className="ocr-preview-close"
-              onClick={() => setShowPreview(false)}
-            >
-              ✕ Close
-            </button>
+            <h4>Preview</h4>
+            <button onClick={() => setShowPreview(false)}>✕</button>
           </div>
 
           {selectedFile.type.startsWith("image/") ? (
-            <div className="ocr-image-preview">
-              <img
-                src={URL.createObjectURL(selectedFile)}
-                alt="Preview"
-              />
-            </div>
+            <img
+              src={URL.createObjectURL(selectedFile)}
+              alt="preview"
+              style={{ maxWidth: "100%" }}
+            />
           ) : (
             <iframe
               src={URL.createObjectURL(selectedFile)}
-              title="OCR Preview"
+              title="preview"
               className="ocr-preview-frame"
             />
           )}
         </div>
       )}
 
-      {/* START BUTTON */}
       <button
         className="ocr-start-btn"
         onClick={startOcr}
         disabled={isRunning}
       >
-        {isRunning ? "Processing..." : "🚀 Start OCR Extraction"}
+        {isRunning ? "Processing..." : "🚀 Start OCR"}
       </button>
 
-      {/* PROGRESS */}
-      {isRunning && (
-        <div className="ocr-progress-wrapper">
-          <div className="ocr-progress-bar">
-            <div
-              className="ocr-progress-fill"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <div className="ocr-progress-text">
-            Processing… {progress}%
-          </div>
-        </div>
-      )}
-
-      {/* OCR RESULT */}
       {ocrResult && (
         <div className="ocr-result-preview">
-          <h4>📄 OCR Result Preview</h4>
+          <h4>OCR Result</h4>
           <pre>{ocrResult}</pre>
         </div>
       )}
