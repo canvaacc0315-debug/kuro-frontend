@@ -11,7 +11,6 @@ export default function OcrPanel() {
 
   const [files, setFiles] = useState([]);
   const [selectedFileIndex, setSelectedFileIndex] = useState(null);
-
   const [showPreview, setShowPreview] = useState(true);
 
   const [isRunning, setIsRunning] = useState(false);
@@ -56,34 +55,26 @@ export default function OcrPanel() {
       setProgress((p) => (p < 90 ? fake : p));
     }, 300);
 
-    try {
-      // BACKEND READY (selected file only)
-      // const formData = new FormData();
-      // formData.append("file", files[selectedFileIndex]);
-      // formData.append("language", language);
-      // formData.append("mode", mode);
+    await new Promise((r) => setTimeout(r, 2000));
 
-      await new Promise((r) => setTimeout(r, 2000));
+    clearInterval(timer);
+    setProgress(100);
 
-      clearInterval(timer);
-      setProgress(100);
+    const extractedText =
+      "This is a sample OCR extracted text.\n\n" +
+      `File processed: ${files[selectedFileIndex].name}`;
 
-      const extractedText =
-        "This is a sample OCR extracted text.\n\n" +
-        `File processed: ${files[selectedFileIndex].name}`;
+    setOcrResult(extractedText);
 
-      setOcrResult(extractedText);
+    window.dispatchEvent(
+      new CustomEvent("ocr-result-ready", { detail: extractedText })
+    );
 
-      window.dispatchEvent(
-        new CustomEvent("ocr-result-ready", { detail: extractedText })
-      );
-    } catch (err) {
-      alert("OCR failed");
-      console.error(err);
-    } finally {
-      setTimeout(() => setIsRunning(false), 600);
-    }
+    setTimeout(() => setIsRunning(false), 600);
   }
+
+  const selectedFile =
+    selectedFileIndex !== null ? files[selectedFileIndex] : null;
 
   /* ---------------- UI ---------------- */
 
@@ -198,7 +189,7 @@ export default function OcrPanel() {
         </div>
       </div>
 
-      {/* FILE SELECT DROPDOWN */}
+      {/* FILE SELECT */}
       {files.length > 0 && (
         <div className="ocr-settings" style={{ marginTop: 20 }}>
           <label>Select file to run OCR on</label>
@@ -206,7 +197,7 @@ export default function OcrPanel() {
             value={selectedFileIndex ?? ""}
             onChange={(e) => {
               setSelectedFileIndex(Number(e.target.value));
-              setShowPreview(true); // ✅ reopen preview
+              setShowPreview(true);
             }}
           >
             <option value="" disabled>
@@ -222,7 +213,7 @@ export default function OcrPanel() {
       )}
 
       {/* FILE PREVIEW */}
-      {showPreview && selectedFileIndex !== null && files[selectedFileIndex] && (
+      {showPreview && selectedFile && (
         <div className="ocr-preview">
           <div className="ocr-preview-header">
             <h4>👁 File Preview</h4>
@@ -234,11 +225,20 @@ export default function OcrPanel() {
             </button>
           </div>
 
-          <iframe
-            src={URL.createObjectURL(files[selectedFileIndex])}
-            title="OCR Preview"
-            className="ocr-preview-frame"
-          />
+          {selectedFile.type.startsWith("image/") ? (
+            <div className="ocr-image-preview">
+              <img
+                src={URL.createObjectURL(selectedFile)}
+                alt="Preview"
+              />
+            </div>
+          ) : (
+            <iframe
+              src={URL.createObjectURL(selectedFile)}
+              title="OCR Preview"
+              className="ocr-preview-frame"
+            />
+          )}
         </div>
       )}
 
