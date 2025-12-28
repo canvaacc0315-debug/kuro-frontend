@@ -1,118 +1,130 @@
-// src/components/OcrPanel.jsx
 import { useState } from "react";
-import "../styles/ocr-panel.css";
 
 export default function OcrPanel() {
   const [language, setLanguage] = useState("English");
-  const [format, setFormat] = useState("PDF");
-  const [mode, setMode] = useState("Standard");
+  const [outputFormat, setOutputFormat] = useState("text");
+  const [mode, setMode] = useState("fast");
+  const [cleanText, setCleanText] = useState(true);
+  const [detectTables, setDetectTables] = useState(true);
+  const [preserveLayout, setPreserveLayout] = useState(false);
+  const [files, setFiles] = useState([]);
+
+  function handleFiles(e) {
+    setFiles(Array.from(e.target.files || []));
+  }
+
+  function startOcr() {
+    if (!files.length) {
+      alert("Please upload files first");
+      return;
+    }
+    alert("OCR started (backend hookup next step)");
+  }
 
   return (
     <div className="ocr-root">
-      {/* STATS */}
-      <div className="ocr-stats">
-        <div className="ocr-stat">
-          <div className="ocr-stat-value">0</div>
-          <div className="ocr-stat-label">Files Processed</div>
-        </div>
-        <div className="ocr-stat">
-          <div className="ocr-stat-value">0</div>
-          <div className="ocr-stat-label">Characters Extracted</div>
-        </div>
-        <div className="ocr-stat">
-          <div className="ocr-stat-value">0%</div>
-          <div className="ocr-stat-label">Average Accuracy</div>
-        </div>
-        <div className="ocr-stat">
-          <div className="ocr-stat-value">0</div>
-          <div className="ocr-stat-label">Languages Detected</div>
-        </div>
+      {/* HEADER */}
+      <div className="ocr-header">
+        <h2>
+          OCR & <span>Recognition</span>
+        </h2>
+        <p>Extract text from images and PDFs using powerful OCR</p>
       </div>
 
       {/* MAIN GRID */}
       <div className="ocr-grid">
-        {/* UPLOAD CARD */}
-        <div className="ocr-upload-card">
+        {/* UPLOAD */}
+        <div
+          className="ocr-upload"
+          onClick={() => document.getElementById("ocrFileInput").click()}
+        >
           <div className="ocr-upload-icon">📄</div>
-          <h3>OCR Text Extractor</h3>
-          <p>
-            Convert images (JPG / PNG) and PDFs into searchable text documents
-          </p>
+          <div className="ocr-upload-title">Upload Files</div>
+          <div className="ocr-upload-desc">
+            PDF, JPG, PNG supported (multiple allowed)
+          </div>
 
-          <button className="ocr-upload-btn">Click to Upload</button>
-
-          <span className="ocr-upload-hint">
-            Supported: PDF, JPG, PNG (Max 50MB)
-          </span>
+          <input
+            id="ocrFileInput"
+            type="file"
+            multiple
+            accept=".pdf,.jpg,.jpeg,.png"
+            hidden
+            onChange={handleFiles}
+          />
         </div>
 
         {/* SETTINGS */}
-        <div className="ocr-settings-card">
+        <div className="ocr-settings">
           <h3>OCR Settings</h3>
 
           <label>Language</label>
           <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-            <option>English</option>
-            <option>Hindi</option>
-            <option>Spanish</option>
-            <option>French</option>
-            <option>German</option>
-            <option>Arabic</option>
-            <option>Chinese</option>
-            <option>Japanese</option>
+            {[
+              "English",
+              "Hindi",
+              "Spanish",
+              "French",
+              "German",
+              "Chinese",
+              "Japanese",
+              "Arabic",
+            ].map((l) => (
+              <option key={l}>{l}</option>
+            ))}
           </select>
 
           <label>Output Format</label>
-          <select value={format} onChange={(e) => setFormat(e.target.value)}>
-            <option value="PDF">PDF (Searchable)</option>
-            <option value="TXT">Text File</option>
-            <option value="JSON">JSON</option>
-            <option value="CSV">CSV</option>
+          <select
+            value={outputFormat}
+            onChange={(e) => setOutputFormat(e.target.value)}
+          >
+            <option value="pdf">PDF (Searchable)</option>
+            <option value="text">Text File</option>
+            <option value="json">JSON</option>
+            <option value="csv">CSV</option>
           </select>
 
           <label>Processing Mode</label>
           <select value={mode} onChange={(e) => setMode(e.target.value)}>
-            <option>Standard</option>
-            <option>High Accuracy</option>
-            <option>Fast</option>
+            <option value="fast">Fast</option>
+            <option value="standard">Standard</option>
+            <option value="accurate">High Accuracy</option>
           </select>
 
-          <div className="ocr-checkbox">
-            <input type="checkbox" defaultChecked />
-            <span>Clean & Format Text</span>
-          </div>
-
-          <div className="ocr-checkbox">
-            <input type="checkbox" defaultChecked />
-            <span>Detect Tables</span>
-          </div>
-
-          <div className="ocr-checkbox">
-            <input type="checkbox" />
-            <span>Preserve Layout</span>
+          <div className="ocr-checks">
+            <label>
+              <input
+                type="checkbox"
+                checked={cleanText}
+                onChange={() => setCleanText(!cleanText)}
+              />
+              Clean & Format Text
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={detectTables}
+                onChange={() => setDetectTables(!detectTables)}
+              />
+              Detect Tables
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={preserveLayout}
+                onChange={() => setPreserveLayout(!preserveLayout)}
+              />
+              Preserve Layout
+            </label>
           </div>
         </div>
       </div>
 
-      {/* RECENT FILES */}
-      <div className="ocr-recent">
-        <h3>Recent Uploads</h3>
-
-        <div className="ocr-file">
-          <span>📄 sample_document.pdf</span>
-          <span className="ocr-file-meta">Processed · 95%</span>
-        </div>
-
-        <div className="ocr-file">
-          <span>🖼️ invoice_scan.jpg</span>
-          <span className="ocr-file-meta">Processing · 92%</span>
-        </div>
-
-        <div className="ocr-file">
-          <span>🖼️ receipt_photo.png</span>
-          <span className="ocr-file-meta">Pending</span>
-        </div>
-      </div>
+      {/* START OCR BUTTON */}
+      <button className="ocr-start-btn" onClick={startOcr}>
+        🚀 Start OCR Extraction
+      </button>
     </div>
   );
 }

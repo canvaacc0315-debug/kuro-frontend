@@ -2415,70 +2415,95 @@ html, body {
   overflow: visible !important;
 }
 /* OCR PANEL */
-.ocr-container {
+.ocr-root {
   max-width: 1100px;
-  margin: auto;
+  margin: 0 auto;
 }
 
-.ocr-title {
+.ocr-header h2 {
   font-size: 32px;
-  font-weight: 700;
 }
-
-.ocr-title span {
+.ocr-header span {
   color: #ef4444;
 }
-
-.ocr-subtitle {
+.ocr-header p {
   color: #aaa;
-  margin-bottom: 24px;
+  margin-top: 4px;
 }
 
-.ocr-card {
-  background: rgba(15, 20, 40, 0.7);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 14px;
-  padding: 24px;
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.ocr-card input,
-.ocr-card select {
-  background: #0a0e27;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 10px;
-  border-radius: 8px;
-}
-
-.ocr-card button {
-  background: linear-gradient(135deg, #dc2626, #ef4444);
-  color: #fff;
-  border: none;
-  padding: 10px 22px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.ocr-card button:disabled {
-  opacity: 0.6;
-}
-
-.ocr-output {
+.ocr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
   margin-top: 30px;
 }
 
-.ocr-output textarea {
+.ocr-upload {
+  background: rgba(10, 15, 35, 0.7);
+  border: 1px dashed rgba(239, 68, 68, 0.5);
+  border-radius: 14px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.ocr-upload-icon {
+  font-size: 48px;
+}
+.ocr-upload-title {
+  font-size: 18px;
+  margin-top: 10px;
+}
+.ocr-upload-desc {
+  font-size: 12px;
+  color: #888;
+}
+
+.ocr-settings {
+  background: rgba(10, 15, 35, 0.7);
+  border-radius: 14px;
+  padding: 24px;
+}
+
+.ocr-settings h3 {
+  margin-bottom: 20px;
+}
+
+.ocr-settings label {
+  font-size: 12px;
+  margin-top: 14px;
+  display: block;
+  color: #bbb;
+}
+
+.ocr-settings select {
   width: 100%;
-  min-height: 260px;
-  background: #0a0e27;
-  color: #e5e5e5;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 6px;
+  padding: 10px;
+  background: #0b102a;
+  border: 1px solid #222;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.ocr-checks {
+  margin-top: 16px;
+}
+.ocr-checks label {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.ocr-start-btn {
+  margin-top: 30px;
+  width: 100%;
   padding: 16px;
-  border-radius: 12px;
-  resize: vertical;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
 }
