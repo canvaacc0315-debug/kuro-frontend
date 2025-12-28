@@ -2414,107 +2414,175 @@ html, body {
 .create-editor-root {
   overflow: visible !important;
 }
-/* OCR PANEL */
+/* =========================
+   OCR PANEL – FINAL THEME
+   ========================= */
+
 .ocr-root {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
+  background: transparent; /* inherit main workspace */
 }
+
+/* ---------- HEADER ---------- */
 
 .ocr-header h2 {
   font-size: 32px;
+  color: #ffffff;
 }
+
 .ocr-header span {
   color: #ef4444;
 }
+
 .ocr-header p {
-  color: #aaa;
+  color: #9ca3af;
   margin-top: 4px;
+  font-size: 14px;
 }
+
+/* ---------- MAIN LAYOUT ---------- */
 
 .ocr-content {
   display: grid;
-  grid-template-columns: 1.6fr 1fr; /* 👈 upload bigger */
+  grid-template-columns: 1.6fr 1fr; /* upload bigger */
   gap: 40px;
   align-items: stretch;
 }
 
+/* ---------- UPLOAD CARD ---------- */
+
 .ocr-upload {
-  background: rgba(10, 15, 35, 0.7);
-  border: 1px dashed rgba(239, 68, 68, 0.5);
-  border-radius: 14px;
-  padding: 40px;
+  background: rgba(15, 15, 20, 0.9); /* 🔥 neutral dark */
+  border: 2px dashed rgba(239, 68, 68, 0.45);
+  border-radius: 16px;
+  padding: 48px;
   text-align: center;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ocr-upload:hover {
+  border-color: rgba(239, 68, 68, 0.75);
+  background: rgba(18, 18, 25, 0.95);
 }
 
 .ocr-upload-icon {
-  font-size: 48px;
+  font-size: 56px;
+  margin-bottom: 12px;
 }
+
 .ocr-upload-title {
-  font-size: 18px;
-  margin-top: 10px;
-}
-.ocr-upload-desc {
-  font-size: 12px;
-  color: #888;
-}
-
-.ocr-settings {
-  background: rgba(10, 15, 35, 0.7);
-  border-radius: 14px;
-  padding: 24px;
-}
-
-.ocr-settings h3 {
-  margin-bottom: 20px;
-}
-
-.ocr-settings label {
-  font-size: 12px;
-  margin-top: 14px;
-  display: block;
-  color: #bbb;
-}
-
-.ocr-settings select {
-  width: 100%;
+  font-size: 20px;
   margin-top: 6px;
-  padding: 10px;
-  background: #0b102a;
-  border: 1px solid #222;
-  color: #fff;
-  border-radius: 6px;
+  color: #ffffff;
+  font-weight: 600;
 }
 
-.ocr-checks {
-  margin-top: 16px;
-}
-.ocr-checks label {
-  display: flex;
-  gap: 8px;
+.ocr-upload-desc {
   font-size: 13px;
-  margin-top: 8px;
+  color: #9ca3af;
+  margin-top: 6px;
 }
 
-.ocr-start-btn {
-  margin-top: 30px;
-  width: 100%;
-  padding: 16px;
-  background: linear-gradient(135deg, #dc2626, #ef4444);
-  border: none;
-  color: white;
-  font-size: 16px;
-  border-radius: 10px;
-  cursor: pointer;
-}
+/* Upload button */
 .ocr-upload-btn {
-  margin-top: 18px;
-  padding: 10px 26px;
+  margin-top: 22px;
+  padding: 12px 30px;
   background: linear-gradient(135deg, #dc2626, #ef4444);
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   color: white;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ocr-upload-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.45);
+}
+
+/* ---------- SETTINGS CARD ---------- */
+
+.ocr-settings {
+  background: rgba(15, 15, 20, 0.9); /* 🔥 same as analysis cards */
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ocr-settings h3 {
+  margin-bottom: 18px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* labels */
+.ocr-settings label {
+  font-size: 12px;
+  margin-top: 14px;
+  display: block;
+  color: #cbd5f5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* selects */
+.ocr-settings select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 14px;
+  background: rgba(10, 10, 15, 0.95); /* 🔥 neutral */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e5e7eb;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.ocr-settings select:focus {
+  outline: none;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+}
+
+/* ---------- CHECKBOXES ---------- */
+
+.ocr-checks {
+  margin-top: 18px;
+}
+
+.ocr-checks label {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  margin-top: 10px;
+  color: #d1d5db;
+}
+
+.ocr-checks input {
+  accent-color: #ef4444;
+}
+
+/* ---------- START OCR BUTTON ---------- */
+
+.ocr-start-btn {
+  margin-top: 36px;
+  width: 100%;
+  padding: 18px;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ocr-start-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 40px rgba(239, 68, 68, 0.5);
 }
