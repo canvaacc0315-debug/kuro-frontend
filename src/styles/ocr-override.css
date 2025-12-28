@@ -378,3 +378,22 @@
   border-radius: 12px;
   background: #000;
 }
+.ocr-actions-panel {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px dashed #ff4d4f;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 280px;
+}
+
+.ocr-actions-panel button {
+  padding: 10px;
+  background: #ff4d4f;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}

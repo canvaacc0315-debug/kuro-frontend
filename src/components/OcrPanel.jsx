@@ -5,7 +5,6 @@ export default function OcrPanel() {
   const [files, setFiles] = useState([]);
   const [selectedFileIndex, setSelectedFileIndex] = useState(null);
   const [showPreview, setShowPreview] = useState(true);
-
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
@@ -45,10 +44,8 @@ export default function OcrPanel() {
       );
 
       if (!res.ok) throw new Error("Upload failed");
-
       const data = await res.json();
       file.pdf_id = data.pdfs[0].pdf_id;
-      console.log("Uploaded PDF ID:", file.pdf_id);
     } catch (err) {
       console.error(err);
       alert("PDF upload failed");
@@ -92,6 +89,45 @@ export default function OcrPanel() {
     }
   }
 
+  /* ---------------- DOWNLOAD HELPERS ---------------- */
+  function downloadTxt() {
+    const blob = new Blob([ocrResult], { type: "text/plain" });
+    triggerDownload(blob, "ocr-result.txt");
+  }
+
+  function downloadCsv() {
+    const lines = ocrResult.split("\n").map(l => `"${l.replace(/"/g, '""')}"`);
+    const csv = "text\n" + lines.join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    triggerDownload(blob, "ocr-result.csv");
+  }
+
+  function downloadPdf() {
+    const html = `
+      <html>
+        <body style="font-family: Arial; white-space: pre-wrap;">
+          ${ocrResult.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+        </body>
+      </html>
+    `;
+    const blob = new Blob([html], { type: "application/pdf" });
+    triggerDownload(blob, "ocr-result.pdf");
+  }
+
+  function triggerDownload(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function copyToClipboard() {
+    navigator.clipboard.writeText(ocrResult);
+    alert("Copied to clipboard");
+  }
+
   /* ---------------- RESET ---------------- */
   function resetOcr() {
     setFiles([]);
@@ -100,7 +136,6 @@ export default function OcrPanel() {
     setOcrResult("");
     setProgress(0);
     setIsRunning(false);
-
     const input = document.getElementById("ocrFileInput");
     if (input) input.value = "";
   }
@@ -184,12 +219,19 @@ export default function OcrPanel() {
         </div>
       )}
 
-      {/* RESULT */}
+      {/* RESULT + DOWNLOADS */}
       {ocrResult && (
         <>
           <div className="ocr-result-preview">
             <h4>OCR Result</h4>
             <pre>{ocrResult}</pre>
+          </div>
+
+          <div className="ocr-download-actions">
+            <button onClick={downloadTxt}>⬇ TXT</button>
+            <button onClick={downloadCsv}>⬇ CSV</button>
+            <button onClick={downloadPdf}>⬇ PDF</button>
+            <button onClick={copyToClipboard}>📋 Copy</button>
           </div>
 
           <button
