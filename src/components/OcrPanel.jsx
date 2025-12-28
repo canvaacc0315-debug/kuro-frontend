@@ -9,16 +9,20 @@ export default function OcrPanel() {
   const [preserveLayout, setPreserveLayout] = useState(false);
   const [files, setFiles] = useState([]);
 
-  // ✅ NEW STATES (IMPORTANT)
+  // Progress + result
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
 
   function handleFiles(e) {
-    setFiles(Array.from(e.target.files || []));
+    const selected = Array.from(e.target.files || []);
+    setFiles((prev) => [...prev, ...selected]);
   }
 
-  // ✅ START OCR (UI + backend-ready)
+  function removeFile(index) {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  }
+
   async function startOcr() {
     if (!files.length) {
       alert("Please upload files first");
@@ -29,36 +33,27 @@ export default function OcrPanel() {
     setProgress(5);
     setOcrResult("");
 
-    // Fake progress animation
     let fake = 5;
     const timer = setInterval(() => {
-      fake += 8;
+      fake += 10;
       setProgress((p) => (p < 90 ? fake : p));
     }, 300);
 
-    try {
-      // ⛔ Backend will be connected later
-      await new Promise((r) => setTimeout(r, 2000));
+    await new Promise((r) => setTimeout(r, 2000));
 
-      const extractedText =
-        "This is a sample OCR extracted text.\n\nOnce backend is connected, real OCR output will appear here.";
+    clearInterval(timer);
+    setProgress(100);
 
-      clearInterval(timer);
-      setProgress(100);
-      setOcrResult(extractedText);
+    const extractedText =
+      "This is a sample OCR extracted text.\n\nReal OCR output will appear once backend is connected.";
 
-      // 🔥 Send OCR output to Analysis tab
-      window.dispatchEvent(
-        new CustomEvent("ocr-result-ready", {
-          detail: extractedText,
-        })
-      );
-    } catch (err) {
-      alert("OCR failed");
-      console.error(err);
-    } finally {
-      setTimeout(() => setIsRunning(false), 600);
-    }
+    setOcrResult(extractedText);
+
+    window.dispatchEvent(
+      new CustomEvent("ocr-result-ready", { detail: extractedText })
+    );
+
+    setTimeout(() => setIsRunning(false), 600);
   }
 
   return (
@@ -181,7 +176,7 @@ export default function OcrPanel() {
         {isRunning ? "Processing..." : "🚀 Start OCR Extraction"}
       </button>
 
-      {/* PROGRESS BAR */}
+      {/* PROGRESS */}
       {isRunning && (
         <div className="ocr-progress-wrapper">
           <div className="ocr-progress-bar">
@@ -196,7 +191,36 @@ export default function OcrPanel() {
         </div>
       )}
 
-      {/* RESULT PREVIEW */}
+      {/* 🔥 UPLOADED FILES (LIKE IMAGE 2) */}
+      {files.length > 0 && (
+        <div className="ocr-files">
+          <h4>📂 Uploaded Files</h4>
+
+          {files.map((file, index) => (
+            <div key={index} className="ocr-file-item">
+              <div>
+                <div className="ocr-file-name">📄 {file.name}</div>
+                <div className="ocr-file-size">
+                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                </div>
+              </div>
+
+              <div className="ocr-file-actions">
+                <button
+                  onClick={() =>
+                    window.open(URL.createObjectURL(file), "_blank")
+                  }
+                >
+                  View
+                </button>
+                <button onClick={() => removeFile(index)}>Remove</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* OCR RESULT */}
       {ocrResult && (
         <div className="ocr-result-preview">
           <h4>📄 OCR Result Preview</h4>
