@@ -2431,11 +2431,11 @@ html, body {
   margin-top: 4px;
 }
 
-.ocr-grid {
+.ocr-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-top: 30px;
+  grid-template-columns: 1.6fr 1fr; /* 👈 upload bigger */
+  gap: 40px;
+  align-items: stretch;
 }
 
 .ocr-upload {
