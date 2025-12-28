@@ -9,6 +9,8 @@ import DashboardPage from "./pages/DashboardPage";
 import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
 import ScrollToTop from "./components/utils/ScrollToTop";
+import ImageOcrPanel from "./pages/ImageOcrPanel";
+
 
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
@@ -44,6 +46,9 @@ export default function App() {
       <Routes>
         {/* INDEX */}
         <Route index element={<Navigate to="/dashboard" replace />} />
+
+        {/* IMAGE OCR PANEL */}
+        <Route path="/ocr-image" element={<ImageOcrPanel />} />
 
         {/* PUBLIC PAGES */}
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
