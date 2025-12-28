@@ -2507,3 +2507,14 @@ html, body {
   border-radius: 10px;
   cursor: pointer;
 }
+.ocr-upload-btn {
+  margin-top: 18px;
+  padding: 10px 26px;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}

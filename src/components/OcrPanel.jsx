@@ -42,8 +42,17 @@ export default function OcrPanel() {
           <div className="ocr-upload-title">Upload Files</div>
           <div className="ocr-upload-desc">
             PDF, JPG, PNG supported (multiple allowed)
-          </div>
-
+        </div>
+        <button
+          type="button"
+          className="ocr-upload-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            document.getElementById("ocrFileInput").click();
+         }}
+        >
+          Select Files
+        </button>
           <input
             id="ocrFileInput"
             type="file"
