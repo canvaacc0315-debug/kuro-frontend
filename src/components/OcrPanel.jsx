@@ -16,31 +16,47 @@ export default function OcrPanel() {
 
   /* ---------------- FILE HANDLING ---------------- */
 
-  function handleFiles(e) {
-    const selected = Array.from(e.target.files || []);
-    setFiles((prev) => [...prev, ...selected]);
-    if (selected.length && selectedFileIndex === null) {
-      setSelectedFileIndex(0);
-      setShowPreview(true);
-    }
-  }
+  async function handleFiles(e) {
+  const selected = Array.from(e.target.files || []);
+  if (!selected.length) return;
 
-  function removeFile(index) {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-    if (index === selectedFileIndex) {
-      setSelectedFileIndex(null);
-      setShowPreview(false);
-    }
-  }
+  const file = selected[0]; // only 1 PDF for now
+  setFiles([file]);
+  setSelectedFileIndex(0);
+  setShowPreview(true);
 
-  const selectedFile = useMemo(() => {
-    return selectedFileIndex !== null ? files[selectedFileIndex] : null;
-  }, [files, selectedFileIndex]);
+  // ✅ UPLOAD PDF TO BACKEND
+  const formData = new FormData();
+  formData.append("files", file);
+
+  try {
+    const res = await fetch(
+      "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/upload",
+      {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      }
+    );
+
+    if (!res.ok) throw new Error("Upload failed");
+
+    const data = await res.json();
+
+    // ✅ SAVE pdf_id ON FILE OBJECT
+    file.pdf_id = data.pdfs[0].pdf_id;
+
+    console.log("PDF uploaded. pdf_id =", file.pdf_id);
+  } catch (err) {
+    console.error(err);
+    alert("PDF upload failed");
+  }
+}
 
   /* ---------------- OCR START ---------------- */
   async function startOcr() {
     if (!files.length || selectedFileIndex === null) {
-      alert("Please select a PDF");
+      alert("Select a PDF first");
       return;
     }
 
@@ -53,7 +69,7 @@ export default function OcrPanel() {
 
     try {
       setIsRunning(true);
-      setProgress(10);
+      setProgress(20);
       setOcrResult("");
 
       const formData = new FormData();
@@ -81,7 +97,6 @@ export default function OcrPanel() {
       setIsRunning(false);
     }
   }
-
   /* ---------------- UI ---------------- */
 
   return (
