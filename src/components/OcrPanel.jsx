@@ -2,10 +2,6 @@ import { useState, useMemo } from "react";
 import "../styles/ocr-override.css";
 
 export default function OcrPanel() {
-  const [language, setLanguage] = useState("English");
-  const [outputFormat, setOutputFormat] = useState("text");
-  const [mode, setMode] = useState("fast");
-
   const [files, setFiles] = useState([]);
   const [selectedFileIndex, setSelectedFileIndex] = useState(null);
   const [showPreview, setShowPreview] = useState(true);
@@ -25,14 +21,13 @@ export default function OcrPanel() {
     const selected = Array.from(e.target.files || []);
     if (!selected.length) return;
 
-    const file = selected[0]; // PDF only for now
+    const file = selected[0]; // PDF only
     setFiles([file]);
     setSelectedFileIndex(0);
     setShowPreview(true);
 
-    // 🔴 Only PDF supported
     if (!file.type.includes("pdf")) {
-      alert("Only PDF OCR is supported right now");
+      alert("Only PDF OCR is supported");
       return;
     }
 
@@ -52,8 +47,6 @@ export default function OcrPanel() {
       if (!res.ok) throw new Error("Upload failed");
 
       const data = await res.json();
-
-      // ✅ SAVE pdf_id
       file.pdf_id = data.pdfs[0].pdf_id;
       console.log("Uploaded PDF ID:", file.pdf_id);
     } catch (err) {
@@ -64,8 +57,8 @@ export default function OcrPanel() {
 
   /* ---------------- OCR START ---------------- */
   async function startOcr() {
-    if (!selectedFile) {
-      alert("Select a file first");
+    if (!selectedFile || !selectedFile.pdf_id) {
+      alert("Upload PDF first");
       return;
     }
 
@@ -74,19 +67,9 @@ export default function OcrPanel() {
       setProgress(10);
       setOcrResult("");
 
-      // ✅ CREATE FORMDATA
       const formData = new FormData();
       formData.append("pdf_id", selectedFile.pdf_id);
 
-      // ✅ ADD SETTINGS HERE (THIS IS STEP 3)
-      formData.append("output_format", outputFormat);   // text | json | csv
-      formData.append("language", language);             // English | Hindi | etc
-      formData.append("mode", mode);                     // fast | standard | accurate
-      formData.append("clean_text", false);       // true / false
-      formData.append("detect_tables", false);    // true / false
-      formData.append("preserve_layout", false);// true / false
-
-      // ✅ CALL BACKEND
       const res = await fetch(
         "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
         {
@@ -96,10 +79,11 @@ export default function OcrPanel() {
         }
       );
 
+      if (!res.ok) throw new Error("OCR failed");
+
       const data = await res.json();
       setOcrResult(data.text || "");
       setProgress(100);
-
     } catch (err) {
       console.error(err);
       alert("OCR failed");
@@ -108,6 +92,18 @@ export default function OcrPanel() {
     }
   }
 
+  /* ---------------- RESET ---------------- */
+  function resetOcr() {
+    setFiles([]);
+    setSelectedFileIndex(null);
+    setShowPreview(false);
+    setOcrResult("");
+    setProgress(0);
+    setIsRunning(false);
+
+    const input = document.getElementById("ocrFileInput");
+    if (input) input.value = "";
+  }
 
   /* ---------------- UI ---------------- */
   return (
@@ -146,27 +142,6 @@ export default function OcrPanel() {
             onChange={handleFiles}
           />
         </div>
-
-        <div className="ocr-settings">
-          <h3>OCR Settings</h3>
-
-          <label>Language</label>
-          <select value={language} onChange={(e) => setLanguage(e.target.value)}>
-            {["English", "Hindi", "French", "German"].map((l) => (
-              <option key={l}>{l}</option>
-            ))}
-          </select>
-
-          <label>Output Format</label>
-          <select
-            value={outputFormat}
-            onChange={(e) => setOutputFormat(e.target.value)}
-          >
-            <option value="text">Text</option>
-            <option value="json">JSON</option>
-            <option value="csv">CSV</option>
-          </select>
-        </div>
       </div>
 
       {/* PREVIEW */}
@@ -185,14 +160,16 @@ export default function OcrPanel() {
         </div>
       )}
 
-      {/* START */}
-      <button
-        className="ocr-start-btn"
-        onClick={startOcr}
-        disabled={isRunning}
-      >
-        {isRunning ? "Processing..." : "🚀 Start OCR"}
-      </button>
+      {/* START OCR */}
+      {selectedFile && !ocrResult && (
+        <button
+          className="ocr-start-btn"
+          onClick={startOcr}
+          disabled={isRunning}
+        >
+          {isRunning ? "Processing..." : "🚀 Start OCR"}
+        </button>
+      )}
 
       {/* PROGRESS */}
       {isRunning && (
@@ -209,10 +186,20 @@ export default function OcrPanel() {
 
       {/* RESULT */}
       {ocrResult && (
-        <div className="ocr-result-preview">
-          <h4>OCR Result</h4>
-          <pre>{ocrResult}</pre>
-        </div>
+        <>
+          <div className="ocr-result-preview">
+            <h4>OCR Result</h4>
+            <pre>{ocrResult}</pre>
+          </div>
+
+          <button
+            className="ocr-start-btn"
+            style={{ marginTop: 16, background: "#333" }}
+            onClick={resetOcr}
+          >
+            🔁 Process Another File
+          </button>
+        </>
       )}
     </div>
   );
