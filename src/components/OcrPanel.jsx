@@ -8,6 +8,8 @@ export default function OcrPanel() {
   const [cleanText, setCleanText] = useState(true);
   const [detectTables, setDetectTables] = useState(true);
   const [preserveLayout, setPreserveLayout] = useState(false);
+  const [showPreview, setShowPreview] = useState(true);
+
 
   const [files, setFiles] = useState([]);
 
@@ -221,32 +223,28 @@ export default function OcrPanel() {
         </div>
       )}
 
-      {/* 🖼️ NEW: FILE PREVIEW PANEL */}
-      {selectedFile && (
-        <div className="ocr-result-preview">
-          <h4>👁️ File Preview</h4>
+      {/* FILE PREVIEW */}
+      {showPreview && files.length > 0 && (
+        <div className="ocr-preview">
+          <div className="ocr-preview-header">
+            <h4>👁 File Preview</h4>
 
-          {selectedFile.type.startsWith("image") ? (
-            <img
-              src={URL.createObjectURL(selectedFile)}
-              alt="preview"
-              style={{ maxWidth: "100%", borderRadius: 10 }}
-            />
-          ) : (
-            <iframe
-              src={URL.createObjectURL(selectedFile)}
-              title="pdf-preview"
-              style={{
-                width: "100%",
-                height: "400px",
-                borderRadius: 10,
-                border: "1px solid #1f2937",
-              }}
-            />
-          )}
+            {/* ✅ CLOSE BUTTON */}
+            <button
+              className="ocr-preview-close"
+              onClick={() => setShowPreview(false)}
+            >
+              ✕ Close
+            </button>
+          </div>
+
+          <iframe
+            src={URL.createObjectURL(files[0])}
+            title="OCR Preview"
+            className="ocr-preview-frame"
+          />
         </div>
       )}
-
       {/* START BUTTON */}
       <button
         className="ocr-start-btn"
