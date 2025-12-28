@@ -45,10 +45,7 @@ export default function App() {
       <Routes>
         {/* INDEX */}
         <Route index element={<Navigate to="/dashboard" replace />} />
-
-        {/* IMAGE OCR PANEL */}
-        <Route path="/ocr-image" element={<ImageOcrPanel />} />
-
+        
         {/* PUBLIC PAGES */}
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/about" element={<About />} />
