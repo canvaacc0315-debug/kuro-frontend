@@ -1,10 +1,10 @@
 import { useState, useMemo } from "react";
+import jsPDF from "jspdf";
 import "../styles/ocr-override.css";
 
 export default function OcrPanel() {
   const [files, setFiles] = useState([]);
   const [selectedFileIndex, setSelectedFileIndex] = useState(null);
-  const [showPreview, setShowPreview] = useState(true);
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
@@ -26,7 +26,6 @@ export default function OcrPanel() {
 
     setFiles([file]);
     setSelectedFileIndex(0);
-    setShowPreview(true);
     setOcrResult("");
 
     const formData = new FormData();
@@ -71,7 +70,7 @@ export default function OcrPanel() {
     setIsRunning(false);
   }
 
-  /* ================= ACTIONS ================= */
+  /* ================= EXPORT ACTIONS ================= */
   function downloadTxt() {
     const blob = new Blob([ocrResult], { type: "text/plain" });
     const a = document.createElement("a");
@@ -88,6 +87,31 @@ export default function OcrPanel() {
     a.click();
   }
 
+  function downloadPdf() {
+    const doc = new jsPDF("p", "mm", "a4");
+
+    const margin = 15;
+    const pageWidth = doc.internal.pageSize.width;
+    const pageHeight = doc.internal.pageSize.height;
+
+    const lines = doc.splitTextToSize(
+      ocrResult,
+      pageWidth - margin * 2
+    );
+
+    let y = margin;
+    lines.forEach((line) => {
+      if (y > pageHeight - margin) {
+        doc.addPage();
+        y = margin;
+      }
+      doc.text(line, margin, y);
+      y += 7;
+    });
+
+    doc.save("ocr-result.pdf");
+  }
+
   function copyText() {
     navigator.clipboard.writeText(ocrResult);
     alert("Copied to clipboard");
@@ -96,7 +120,6 @@ export default function OcrPanel() {
   function resetOcr() {
     setFiles([]);
     setSelectedFileIndex(null);
-    setShowPreview(false);
     setOcrResult("");
     setProgress(0);
     setIsRunning(false);
@@ -112,7 +135,7 @@ export default function OcrPanel() {
       </div>
 
       <div className="ocr-output-layout">
-        {/* LEFT SIDE */}
+        {/* LEFT */}
         <div className="ocr-output-left">
           <div
             className="ocr-upload"
@@ -130,33 +153,29 @@ export default function OcrPanel() {
             />
           </div>
 
-          {selectedFile && showPreview && (
-            <div className="ocr-preview">
-              <iframe
-                src={URL.createObjectURL(selectedFile)}
-                className="ocr-preview-frame"
-                title="preview"
-              />
-            </div>
+          {selectedFile && (
+            <iframe
+              src={URL.createObjectURL(selectedFile)}
+              className="ocr-preview-frame"
+              title="preview"
+            />
           )}
         </div>
 
-        {/* RIGHT SIDE */}
+        {/* RIGHT */}
         <div className="ocr-output-right">
           <h4>Actions</h4>
 
-          <button
-            onClick={startOcr}
-            disabled={!selectedFile || isRunning}
-          >
+          <button onClick={startOcr} disabled={!selectedFile || isRunning}>
             {isRunning ? "Processing..." : "🚀 Start OCR"}
           </button>
 
           <button disabled={!ocrResult} onClick={downloadTxt}>TXT</button>
           <button disabled={!ocrResult} onClick={downloadCsv}>CSV</button>
+          <button disabled={!ocrResult} onClick={downloadPdf}>PDF</button>
           <button disabled={!ocrResult} onClick={copyText}>Copy</button>
 
-          <div className="ocr-result-preview right-panel-result">
+          <div className="ocr-result-preview">
             <h5>Extracted Text</h5>
             {ocrResult ? (
               <pre>{ocrResult}</pre>
