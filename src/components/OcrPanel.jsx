@@ -65,12 +65,7 @@ export default function OcrPanel() {
   /* ---------------- OCR START ---------------- */
   async function startOcr() {
     if (!selectedFile) {
-      alert("Select a PDF first");
-      return;
-    }
-
-    if (!selectedFile.pdf_id) {
-      alert("PDF not uploaded yet. Upload again.");
+      alert("Select a file first");
       return;
     }
 
@@ -79,14 +74,19 @@ export default function OcrPanel() {
       setProgress(10);
       setOcrResult("");
 
-      // 🔁 Fake progress while backend works
-      const timer = setInterval(() => {
-        setProgress((p) => (p < 90 ? p + 5 : p));
-      }, 400);
-
+      // ✅ CREATE FORMDATA
       const formData = new FormData();
       formData.append("pdf_id", selectedFile.pdf_id);
 
+      // ✅ ADD SETTINGS HERE (THIS IS STEP 3)
+      formData.append("output_format", outputFormat);   // text | json | csv
+      formData.append("language", language);             // English | Hindi | etc
+      formData.append("mode", mode);                     // fast | standard | accurate
+      formData.append("clean_text", cleanText);          // true / false
+      formData.append("detect_tables", detectTables);    // true / false
+      formData.append("preserve_layout", preserveLayout);// true / false
+
+      // ✅ CALL BACKEND
       const res = await fetch(
         "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
         {
@@ -96,20 +96,18 @@ export default function OcrPanel() {
         }
       );
 
-      clearInterval(timer);
-
-      if (!res.ok) throw new Error("OCR failed");
-
       const data = await res.json();
       setOcrResult(data.text || "");
       setProgress(100);
+
     } catch (err) {
       console.error(err);
-      alert("OCR failed. Check console.");
+      alert("OCR failed");
     } finally {
-      setTimeout(() => setIsRunning(false), 500);
+      setIsRunning(false);
     }
   }
+
 
   /* ---------------- UI ---------------- */
   return (
