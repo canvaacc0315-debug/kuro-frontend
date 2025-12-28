@@ -283,3 +283,51 @@
   border-radius: 12px;
   background: #000;
 }
+/* FILE SELECT */
+.ocr-file-selector {
+  margin-top: 24px;
+  background: rgba(0,0,0,0.55);
+  padding: 16px;
+  border-radius: 14px;
+}
+
+.ocr-file-selector label {
+  display: block;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.ocr-file-selector select {
+  width: 100%;
+  padding: 12px;
+  background: #0b0f19;
+  color: white;
+  border: 1px solid #ef4444;
+  border-radius: 10px;
+}
+
+/* PREVIEW */
+.ocr-preview {
+  margin-top: 24px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.ocr-preview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ocr-preview-close {
+  background: none;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+}
