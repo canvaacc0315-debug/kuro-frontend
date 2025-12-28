@@ -38,58 +38,49 @@ export default function OcrPanel() {
   }, [files, selectedFileIndex]);
 
   /* ---------------- OCR START ---------------- */
-
   async function startOcr() {
-  if (!selectedFile) {
-    alert("Please select a PDF file");
-    return;
-  }
-
-  // 🚫 Image OCR disabled for now
-  if (selectedFile.type !== "application/pdf") {
-    alert("Image OCR will be added later. Please upload a PDF.");
-    return;
-  }
-
-  // 🚨 pdf_id must exist (from /api/pdf/upload)
-  if (!selectedFile.pdf_id) {
-    alert("This PDF must be uploaded first.");
-    return;
-  }
-
-  try {
-    setIsRunning(true);
-    setProgress(10);
-    setOcrResult("");
-
-    const formData = new FormData();
-    formData.append("pdf_id", selectedFile.pdf_id);
-
-    const res = await fetch(
-      "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
-      {
-        method: "POST",
-        credentials: "include",
-        body: formData,
-      }
-    );
-
-    if (!res.ok) {
-      throw new Error("PDF OCR failed");
+    if (!files.length || selectedFileIndex === null) {
+      alert("Please select a PDF");
+      return;
     }
 
-    const data = await res.json();
-    setOcrResult(data.text || "No text extracted");
-    setProgress(100);
+    const selectedFile = files[selectedFileIndex];
 
-  } catch (err) {
-    console.error(err);
-    alert("OCR failed. Check console.");
-  } finally {
-    setIsRunning(false);
+    if (!selectedFile.pdf_id) {
+      alert("PDF not uploaded yet. Upload again.");
+      return;
+    }
+
+    try {
+      setIsRunning(true);
+      setProgress(10);
+      setOcrResult("");
+
+      const formData = new FormData();
+      formData.append("pdf_id", selectedFile.pdf_id);
+
+      const res = await fetch(
+        "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
+
+      if (!res.ok) throw new Error("OCR failed");
+
+      const data = await res.json();
+      setOcrResult(data.text || "");
+      setProgress(100);
+
+    } catch (err) {
+      console.error(err);
+      alert("OCR failed. Check console.");
+    } finally {
+      setIsRunning(false);
+    }
   }
-}
-
 
   /* ---------------- UI ---------------- */
 
