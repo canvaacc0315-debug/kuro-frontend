@@ -40,67 +40,56 @@ export default function OcrPanel() {
   /* ---------------- OCR START ---------------- */
 
   async function startOcr() {
-    if (!selectedFile) {
-      alert("Please select a file");
-      return;
-    }
-
-    try {
-      setIsRunning(true);
-      setProgress(10);
-      setOcrResult("");
-
-      const formData = new FormData();
-
-      // ✅ IMAGE OCR
-      if (selectedFile.type.startsWith("image/")) {
-        formData.append("file", selectedFile);
-
-        const res = await fetch(
-          "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/image/ocr",
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        if (!res.ok) throw new Error("Image OCR failed");
-        const data = await res.json();
-        setOcrResult(data.text || "");
-      }
-
-      // ✅ PDF OCR (needs pdf_id from upload)
-      else {
-        if (!selectedFile.pdf_id) {
-          alert("This PDF must be uploaded via PDF upload first.");
-          setIsRunning(false);
-          return;
-        }
-
-        formData.append("pdf_id", selectedFile.pdf_id);
-
-        const res = await fetch(
-          "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
-          {
-            method: "POST",
-            credentials: "include",
-            body: formData,
-          }
-        );
-
-        if (!res.ok) throw new Error("PDF OCR failed");
-        const data = await res.json();
-        setOcrResult(data.text || "");
-      }
-
-      setProgress(100);
-    } catch (err) {
-      console.error(err);
-      alert("OCR failed. Check console.");
-    } finally {
-      setIsRunning(false);
-    }
+  if (!selectedFile) {
+    alert("Please select a PDF file");
+    return;
   }
+
+  // 🚫 Image OCR disabled for now
+  if (selectedFile.type !== "application/pdf") {
+    alert("Image OCR will be added later. Please upload a PDF.");
+    return;
+  }
+
+  // 🚨 pdf_id must exist (from /api/pdf/upload)
+  if (!selectedFile.pdf_id) {
+    alert("This PDF must be uploaded first.");
+    return;
+  }
+
+  try {
+    setIsRunning(true);
+    setProgress(10);
+    setOcrResult("");
+
+    const formData = new FormData();
+    formData.append("pdf_id", selectedFile.pdf_id);
+
+    const res = await fetch(
+      "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
+      {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error("PDF OCR failed");
+    }
+
+    const data = await res.json();
+    setOcrResult(data.text || "No text extracted");
+    setProgress(100);
+
+  } catch (err) {
+    console.error(err);
+    alert("OCR failed. Check console.");
+  } finally {
+    setIsRunning(false);
+  }
+}
+
 
   /* ---------------- UI ---------------- */
 
