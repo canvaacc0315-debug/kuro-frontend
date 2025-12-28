@@ -2586,3 +2586,46 @@ html, body {
   transform: translateY(-1px);
   box-shadow: 0 14px 40px rgba(239, 68, 68, 0.5);
 }
+.ocr-progress-wrapper {
+  margin-top: 20px;
+}
+
+.ocr-progress-bar {
+  height: 8px;
+  width: 100%;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.ocr-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+  transition: width 0.4s ease;
+}
+
+.ocr-progress-text {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #9ca3af;
+}
+.ocr-result-preview {
+  margin-top: 30px;
+  background: rgba(15,15,20,0.9);
+  border: 1px solid rgba(239,68,68,0.25);
+  border-radius: 12px;
+  padding: 20px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.ocr-result-preview h4 {
+  margin-bottom: 10px;
+  color: #ef4444;
+}
+
+.ocr-result-preview pre {
+  white-space: pre-wrap;
+  font-size: 13px;
+  color: #e5e7eb;
+}
