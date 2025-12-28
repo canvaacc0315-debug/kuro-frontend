@@ -37,45 +37,57 @@ export default function OcrPanel() {
     }
   }
 
-  /* ---------------- OCR START ---------------- */
+/* ---------------- OCR START ---------------- */
+async function startOcr() {
+  if (!files.length || selectedFileIndex === null) {
+    alert("Please select a file to run OCR on");
+    return;
+  }
 
-  async function startOcr() {
-    if (!files.length || selectedFileIndex === null) {
-      alert("Please select a file to run OCR on");
-      return;
-    }
+  setIsRunning(true);
+  setProgress(5);
+  setOcrResult("");
 
-    setIsRunning(true);
-    setProgress(5);
-    setOcrResult("");
+  let fake = 5;
+  const timer = setInterval(() => {
+    fake += 8;
+    setProgress((p) => (p < 90 ? fake : p));
+  }, 300);
 
-    let fake = 5;
-    const timer = setInterval(() => {
-      fake += 8;
-      setProgress((p) => (p < 90 ? fake : p));
-    }, 300);
+  try {
+    const selectedFile = files[selectedFileIndex];
 
-    await new Promise((r) => setTimeout(r, 2000));
+    // ⚠️ pdf_id must come from BACKEND upload response
+    // example: selectedFile.backendPdfId
+    const formData = new FormData();
+    formData.append("pdf_id", selectedFile.backendPdfId);
+
+    const response = await fetch(
+      "http://localhost:8000/api/pdf/ocr",
+      {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      }
+    );
+
+    const data = await response.json();
 
     clearInterval(timer);
     setProgress(100);
 
-    const extractedText =
-      "This is a sample OCR extracted text.\n\n" +
-      `File processed: ${files[selectedFileIndex].name}`;
-
-    setOcrResult(extractedText);
+    setOcrResult(data.text);
 
     window.dispatchEvent(
-      new CustomEvent("ocr-result-ready", { detail: extractedText })
+      new CustomEvent("ocr-result-ready", { detail: data.text })
     );
-
+  } catch (err) {
+    console.error(err);
+    alert("OCR failed");
+  } finally {
     setTimeout(() => setIsRunning(false), 600);
   }
-
-  const selectedFile =
-    selectedFileIndex !== null ? files[selectedFileIndex] : null;
-
+}
   /* ---------------- UI ---------------- */
 
   return (
