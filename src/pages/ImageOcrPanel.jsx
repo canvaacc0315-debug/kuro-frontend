@@ -4,32 +4,31 @@ import "../styles/ocr-override.css";
 
 export default function ImageOcrPanel() {
   const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const [ocrResult, setOcrResult] = useState("");
-  const [isRunning, setIsRunning] = useState(false);
+  const [preview, setPreview] = useState(null);
+  const [ocrText, setOcrText] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  /* ================= UPLOAD ================= */
-  function handleFile(e) {
+  /* ---------- Upload ---------- */
+  function handleImage(e) {
     const img = e.target.files?.[0];
     if (!img) return;
 
-    if (!img.type.match(/image\/(png|jpeg|jpg)/)) {
-      alert("Only PNG or JPG images are supported");
+    if (!img.type.match(/image\/(png|jpg|jpeg)/)) {
+      alert("Only PNG / JPG supported");
       return;
     }
 
     setFile(img);
-    setPreviewUrl(URL.createObjectURL(img));
-    setOcrResult("");
+    setPreview(URL.createObjectURL(img));
+    setOcrText("");
   }
 
-  /* ================= OCR ================= */
+  /* ---------- OCR ---------- */
   async function startOcr() {
     if (!file) return;
 
     try {
-      setIsRunning(true);
-
+      setLoading(true);
       const formData = new FormData();
       formData.append("file", file);
 
@@ -43,18 +42,17 @@ export default function ImageOcrPanel() {
       );
 
       const data = await res.json();
-      setOcrResult(data.text || "");
-    } catch (err) {
-      console.error(err);
+      setOcrText(data.text || "");
+    } catch (e) {
       alert("Image OCR failed");
     } finally {
-      setIsRunning(false);
+      setLoading(false);
     }
   }
 
-  /* ================= EXPORTS ================= */
+  /* ---------- EXPORTS ---------- */
   function downloadTxt() {
-    const blob = new Blob([ocrResult], { type: "text/plain" });
+    const blob = new Blob([ocrText], { type: "text/plain" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "image-ocr.txt";
@@ -62,7 +60,7 @@ export default function ImageOcrPanel() {
   }
 
   function downloadCsv() {
-    const blob = new Blob(["text\n" + ocrResult], { type: "text/csv" });
+    const blob = new Blob(["text\n" + ocrText], { type: "text/csv" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = "image-ocr.csv";
@@ -75,7 +73,7 @@ export default function ImageOcrPanel() {
     const pageHeight = doc.internal.pageSize.height;
     const width = doc.internal.pageSize.width - margin * 2;
 
-    const lines = doc.splitTextToSize(ocrResult, width);
+    const lines = doc.splitTextToSize(ocrText, width);
     let y = margin;
 
     lines.forEach((line) => {
@@ -91,29 +89,28 @@ export default function ImageOcrPanel() {
   }
 
   function copyText() {
-    navigator.clipboard.writeText(ocrResult);
-    alert("Copied to clipboard");
+    navigator.clipboard.writeText(ocrText);
   }
 
   function resetAll() {
     setFile(null);
-    setPreviewUrl(null);
-    setOcrResult("");
+    setPreview(null);
+    setOcrText("");
     document.getElementById("imageOcrInput").value = "";
   }
 
-  /* ================= UI ================= */
+  /* ---------- UI ---------- */
   return (
     <div className="ocr-root">
       <div className="ocr-header">
         <h2>
           OCR & <span>Images</span>
         </h2>
-        <p>Extract text from PNG and JPG images</p>
+        <p>Extract text from PNG & JPG images</p>
       </div>
 
       <div className="ocr-output-layout">
-        {/* ================= LEFT ================= */}
+        {/* LEFT */}
         <div className="ocr-output-left">
           <div
             className="ocr-upload"
@@ -130,48 +127,40 @@ export default function ImageOcrPanel() {
               type="file"
               accept=".png,.jpg,.jpeg"
               hidden
-              onChange={handleFile}
+              onChange={handleImage}
             />
           </div>
 
-          {previewUrl && (
+          {preview && (
             <div className="ocr-preview">
               <div className="ocr-preview-header">
                 <h4>Image Preview</h4>
               </div>
 
               <div className="ocr-image-preview">
-                <img src={previewUrl} alt="preview" />
+                <img src={preview} alt="preview" />
               </div>
             </div>
           )}
         </div>
 
-        {/* ================= RIGHT ================= */}
+        {/* RIGHT */}
         <div className="ocr-output-right">
           <h4>Actions</h4>
 
-          <button onClick={startOcr} disabled={!file || isRunning}>
-            {isRunning ? "Processing..." : "🚀 Start OCR"}
+          <button onClick={startOcr} disabled={!file || loading}>
+            {loading ? "Processing..." : "🚀 Start OCR"}
           </button>
 
-          <button disabled={!ocrResult} onClick={downloadTxt}>
-            TXT
-          </button>
-          <button disabled={!ocrResult} onClick={downloadCsv}>
-            CSV
-          </button>
-          <button disabled={!ocrResult} onClick={downloadPdf}>
-            PDF
-          </button>
-          <button disabled={!ocrResult} onClick={copyText}>
-            Copy
-          </button>
+          <button disabled={!ocrText} onClick={downloadTxt}>TXT</button>
+          <button disabled={!ocrText} onClick={downloadCsv}>CSV</button>
+          <button disabled={!ocrText} onClick={downloadPdf}>PDF</button>
+          <button disabled={!ocrText} onClick={copyText}>Copy</button>
 
           <div className="ocr-result-preview">
             <h4>Extracted Text</h4>
-            {ocrResult ? (
-              <pre>{ocrResult}</pre>
+            {ocrText ? (
+              <pre>{ocrText}</pre>
             ) : (
               <div className="ocr-placeholder">
                 OCR result will appear here
@@ -179,11 +168,8 @@ export default function ImageOcrPanel() {
             )}
           </div>
 
-          {ocrResult && (
-            <button
-              className="process-another-btn"
-              onClick={resetAll}
-            >
+          {ocrText && (
+            <button className="process-another-btn" onClick={resetAll}>
               🔁 Process Another Image
             </button>
           )}
