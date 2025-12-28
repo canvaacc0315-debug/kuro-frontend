@@ -11,6 +11,9 @@ export default function OcrPanel() {
 
   const [files, setFiles] = useState([]);
 
+  // 🔹 NEW: selected file for OCR + preview
+  const [selectedFileIndex, setSelectedFileIndex] = useState(null);
+
   // Progress + result
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -21,17 +24,25 @@ export default function OcrPanel() {
   function handleFiles(e) {
     const selected = Array.from(e.target.files || []);
     setFiles((prev) => [...prev, ...selected]);
+
+    // auto-select first file
+    if (selected.length && selectedFileIndex === null) {
+      setSelectedFileIndex(0);
+    }
   }
 
   function removeFile(index) {
     setFiles((prev) => prev.filter((_, i) => i !== index));
+    if (index === selectedFileIndex) {
+      setSelectedFileIndex(null);
+    }
   }
 
   /* ---------------- OCR START ---------------- */
 
   async function startOcr() {
-    if (!files.length) {
-      alert("Please upload files first");
+    if (!files.length || selectedFileIndex === null) {
+      alert("Please select a file to run OCR on");
       return;
     }
 
@@ -39,7 +50,6 @@ export default function OcrPanel() {
     setProgress(5);
     setOcrResult("");
 
-    // Fake progress (safe for live site)
     let fake = 5;
     const timer = setInterval(() => {
       fake += 8;
@@ -47,13 +57,11 @@ export default function OcrPanel() {
     }, 300);
 
     try {
-      // 🔗 BACKEND READY (connect HuggingFace / FastAPI here)
+      // 🔗 BACKEND READY (only selected file)
       // const formData = new FormData();
-      // files.forEach(f => formData.append("files", f));
+      // formData.append("file", files[selectedFileIndex]);
       // formData.append("language", language);
       // formData.append("mode", mode);
-      // const res = await fetch("/api/ocr", { method: "POST", body: formData });
-      // const data = await res.json();
 
       await new Promise((r) => setTimeout(r, 2000));
 
@@ -62,11 +70,10 @@ export default function OcrPanel() {
 
       const extractedText =
         "This is a sample OCR extracted text.\n\n" +
-        "Once the backend is connected, real OCR output will appear here.";
+        `File processed: ${files[selectedFileIndex].name}`;
 
       setOcrResult(extractedText);
 
-      // 🔥 Send OCR output to Analysis tab
       window.dispatchEvent(
         new CustomEvent("ocr-result-ready", { detail: extractedText })
       );
@@ -79,6 +86,9 @@ export default function OcrPanel() {
   }
 
   /* ---------------- UI ---------------- */
+
+  const selectedFile =
+    selectedFileIndex !== null ? files[selectedFileIndex] : null;
 
   return (
     <div className="ocr-root">
@@ -191,6 +201,52 @@ export default function OcrPanel() {
         </div>
       </div>
 
+      {/* 🔽 NEW: FILE SELECT DROPDOWN */}
+      {files.length > 0 && (
+        <div className="ocr-settings" style={{ marginTop: 20 }}>
+          <label>Select file to run OCR on</label>
+          <select
+            value={selectedFileIndex ?? ""}
+            onChange={(e) => setSelectedFileIndex(Number(e.target.value))}
+          >
+            <option value="" disabled>
+              Select a file
+            </option>
+            {files.map((f, i) => (
+              <option key={i} value={i}>
+                {f.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {/* 🖼️ NEW: FILE PREVIEW PANEL */}
+      {selectedFile && (
+        <div className="ocr-result-preview">
+          <h4>👁️ File Preview</h4>
+
+          {selectedFile.type.startsWith("image") ? (
+            <img
+              src={URL.createObjectURL(selectedFile)}
+              alt="preview"
+              style={{ maxWidth: "100%", borderRadius: 10 }}
+            />
+          ) : (
+            <iframe
+              src={URL.createObjectURL(selectedFile)}
+              title="pdf-preview"
+              style={{
+                width: "100%",
+                height: "400px",
+                borderRadius: 10,
+                border: "1px solid #1f2937",
+              }}
+            />
+          )}
+        </div>
+      )}
+
       {/* START BUTTON */}
       <button
         className="ocr-start-btn"
@@ -200,7 +256,7 @@ export default function OcrPanel() {
         {isRunning ? "Processing..." : "🚀 Start OCR Extraction"}
       </button>
 
-      {/* PROGRESS BAR */}
+      {/* PROGRESS */}
       {isRunning && (
         <div className="ocr-progress-wrapper">
           <div className="ocr-progress-bar">
@@ -215,36 +271,7 @@ export default function OcrPanel() {
         </div>
       )}
 
-      {/* UPLOADED FILES UI */}
-      {files.length > 0 && (
-        <div className="ocr-files">
-          <h4>📂 Uploaded Files</h4>
-
-          {files.map((file, index) => (
-            <div key={index} className="ocr-file-item">
-              <div>
-                <div className="ocr-file-name">📄 {file.name}</div>
-                <div className="ocr-file-size">
-                  {(file.size / 1024 / 1024).toFixed(2)} MB
-                </div>
-              </div>
-
-              <div className="ocr-file-actions">
-                <button
-                  onClick={() =>
-                    window.open(URL.createObjectURL(file), "_blank")
-                  }
-                >
-                  View
-                </button>
-                <button onClick={() => removeFile(index)}>Remove</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* OCR RESULT PREVIEW */}
+      {/* OCR RESULT */}
       {ocrResult && (
         <div className="ocr-result-preview">
           <h4>📄 OCR Result Preview</h4>

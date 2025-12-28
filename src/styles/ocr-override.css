@@ -1,15 +1,16 @@
 /* ================================
-   OCR OVERRIDE STYLES (FORCE LOAD)
+   OCR OVERRIDE STYLES (FINAL)
    ================================ */
 
 .ocr-root {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 24px;
   color: #e5e7eb;
 }
 
-/* HEADER */
+/* ---------- HEADER ---------- */
+
 .ocr-header h2 {
   font-size: 34px;
   font-weight: 700;
@@ -25,27 +26,30 @@
   font-size: 14px;
 }
 
-/* GRID */
+/* ---------- GRID ---------- */
+
 .ocr-content {
-  display: grid !important;
+  display: grid;
   grid-template-columns: 1.6fr 1fr;
   gap: 32px;
-  margin-top: 24px;
+  margin-top: 28px;
 }
 
-/* UPLOAD BOX */
+/* ---------- UPLOAD ---------- */
+
 .ocr-upload {
-  border: 2px dashed #ef4444 !important;
-  border-radius: 16px;
-  padding: 60px 20px;
+  border: 2px dashed rgba(239, 68, 68, 0.6);
+  border-radius: 18px;
+  padding: 60px 24px;
   text-align: center;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(17, 24, 39, 0.65);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .ocr-upload:hover {
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(17, 24, 39, 0.85);
+  border-color: #ef4444;
 }
 
 .ocr-upload-icon {
@@ -55,17 +59,17 @@
 .ocr-upload-title {
   font-size: 20px;
   font-weight: 600;
-  margin-top: 12px;
+  margin-top: 14px;
 }
 
 .ocr-upload-desc {
   font-size: 13px;
   color: #9ca3af;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .ocr-upload-btn {
-  margin-top: 18px;
+  margin-top: 20px;
   padding: 12px 30px;
   background: linear-gradient(135deg, #dc2626, #ef4444);
   border: none;
@@ -75,10 +79,11 @@
   cursor: pointer;
 }
 
-/* SETTINGS */
+/* ---------- SETTINGS ---------- */
+
 .ocr-settings {
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 16px;
+  background: rgba(17, 24, 39, 0.65);
+  border-radius: 18px;
   padding: 24px;
 }
 
@@ -99,7 +104,7 @@
   margin-top: 6px;
   padding: 10px;
   border-radius: 8px;
-  background: #0b0f19;
+  background: #0b102a;
   color: white;
   border: 1px solid #1f2937;
 }
@@ -112,21 +117,35 @@
   margin-top: 10px;
 }
 
-/* START BUTTON */
+/* ---------- FILE DROPDOWN ---------- */
+
+.ocr-settings select option {
+  background: #0b102a;
+  color: white;
+}
+
+/* ---------- START BUTTON ---------- */
+
 .ocr-start-btn {
-  margin-top: 28px;
+  margin-top: 32px;
   width: 100%;
   padding: 18px;
   font-size: 16px;
   font-weight: 700;
   background: linear-gradient(135deg, #dc2626, #ef4444);
   border: none;
-  border-radius: 14px;
+  border-radius: 16px;
   color: white;
   cursor: pointer;
 }
 
-/* PROGRESS */
+.ocr-start-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ---------- PROGRESS ---------- */
+
 .ocr-progress-wrapper {
   margin-top: 20px;
 }
@@ -150,20 +169,29 @@
   color: #9ca3af;
 }
 
-/* FILE LIST */
+/* ---------- UPLOADED FILES ---------- */
+
 .ocr-files {
-  margin-top: 24px;
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 14px;
-  padding: 16px;
+  margin-top: 28px;
+  background: rgba(17, 24, 39, 0.65);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.ocr-files h4 {
+  margin-bottom: 12px;
 }
 
 .ocr-file-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 10px 6px;
   border-bottom: 1px solid #1f2937;
+}
+
+.ocr-file-item:last-child {
+  border-bottom: none;
 }
 
 .ocr-file-name {
@@ -176,26 +204,54 @@
 }
 
 .ocr-file-actions button {
-  background: none;
+  background: rgba(17, 24, 39, 0.8);
   border: 1px solid #374151;
   color: #e5e7eb;
   font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 8px;
   margin-left: 6px;
   cursor: pointer;
 }
 
-/* RESULT */
+.ocr-file-actions button:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* ---------- PREVIEW PANEL ---------- */
+
 .ocr-result-preview {
-  margin-top: 24px;
-  background: rgba(0, 0, 0, 0.7);
-  border-radius: 14px;
-  padding: 16px;
+  margin-top: 28px;
+  background: rgba(17, 24, 39, 0.75);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.ocr-result-preview h4 {
+  margin-bottom: 12px;
 }
 
 .ocr-result-preview pre {
   font-size: 12px;
   white-space: pre-wrap;
   color: #d1d5db;
+  line-height: 1.5;
+}
+
+/* ---------- IMAGE / PDF PREVIEW ---------- */
+
+.ocr-result-preview img,
+.ocr-result-preview iframe {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #1f2937;
+}
+
+/* ---------- RESPONSIVE ---------- */
+
+@media (max-width: 900px) {
+  .ocr-content {
+    grid-template-columns: 1fr;
+  }
 }
