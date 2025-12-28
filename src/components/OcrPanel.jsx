@@ -7,12 +7,15 @@ export default function OcrPanel() {
   const [cleanText, setCleanText] = useState(true);
   const [detectTables, setDetectTables] = useState(true);
   const [preserveLayout, setPreserveLayout] = useState(false);
+
   const [files, setFiles] = useState([]);
 
   // Progress + result
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
+
+  /* ---------------- FILE HANDLING ---------------- */
 
   function handleFiles(e) {
     const selected = Array.from(e.target.files || []);
@@ -22,6 +25,8 @@ export default function OcrPanel() {
   function removeFile(index) {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   }
+
+  /* ---------------- OCR START ---------------- */
 
   async function startOcr() {
     if (!files.length) {
@@ -33,29 +38,46 @@ export default function OcrPanel() {
     setProgress(5);
     setOcrResult("");
 
+    // Fake progress (safe for live site)
     let fake = 5;
     const timer = setInterval(() => {
       fake += 8;
       setProgress((p) => (p < 90 ? fake : p));
     }, 300);
 
-    await new Promise((r) => setTimeout(r, 2000));
+    try {
+      // 🔗 BACKEND READY (connect HuggingFace / FastAPI here)
+      // const formData = new FormData();
+      // files.forEach(f => formData.append("files", f));
+      // formData.append("language", language);
+      // formData.append("mode", mode);
+      // const res = await fetch("/api/ocr", { method: "POST", body: formData });
+      // const data = await res.json();
 
-    clearInterval(timer);
-    setProgress(100);
+      await new Promise((r) => setTimeout(r, 2000));
 
-    const extractedText =
-      "This is a sample OCR extracted text.\n\nOnce backend is connected, real OCR output will appear here.";
+      clearInterval(timer);
+      setProgress(100);
 
-    setOcrResult(extractedText);
+      const extractedText =
+        "This is a sample OCR extracted text.\n\n" +
+        "Once the backend is connected, real OCR output will appear here.";
 
-    // send to Analysis tab later
-    window.dispatchEvent(
-      new CustomEvent("ocr-result-ready", { detail: extractedText })
-    );
+      setOcrResult(extractedText);
 
-    setTimeout(() => setIsRunning(false), 600);
+      // 🔥 Send OCR output to Analysis tab
+      window.dispatchEvent(
+        new CustomEvent("ocr-result-ready", { detail: extractedText })
+      );
+    } catch (err) {
+      alert("OCR failed");
+      console.error(err);
+    } finally {
+      setTimeout(() => setIsRunning(false), 600);
+    }
   }
+
+  /* ---------------- UI ---------------- */
 
   return (
     <div className="ocr-root">
@@ -168,7 +190,7 @@ export default function OcrPanel() {
         </div>
       </div>
 
-      {/* START OCR */}
+      {/* START BUTTON */}
       <button
         className="ocr-start-btn"
         onClick={startOcr}
@@ -192,43 +214,32 @@ export default function OcrPanel() {
         </div>
       )}
 
-      {/* ✅ UPLOADED FILES UI (MATCHES IMAGE 2) */}
+      {/* UPLOADED FILES UI */}
       {files.length > 0 && (
-        <div className="ocr-files-section">
-          <h4 className="ocr-files-title">📁 Uploaded Files</h4>
+        <div className="ocr-files">
+          <h4>📂 Uploaded Files</h4>
 
-          <div className="ocr-files-list">
-            {files.map((file, index) => (
-              <div key={index} className="ocr-file-card">
-                <div className="ocr-file-info">
-                  <div className="ocr-file-icon">📄</div>
-                  <div>
-                    <div className="ocr-file-name">{file.name}</div>
-                    <div className="ocr-file-size">
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
-                    </div>
-                  </div>
-                </div>
-
-                <div className="ocr-file-actions">
-                  <button
-                    className="ocr-file-btn"
-                    onClick={() =>
-                      window.open(URL.createObjectURL(file), "_blank")
-                    }
-                  >
-                    View
-                  </button>
-                  <button
-                    className="ocr-file-btn danger"
-                    onClick={() => removeFile(index)}
-                  >
-                    Remove
-                  </button>
+          {files.map((file, index) => (
+            <div key={index} className="ocr-file-item">
+              <div>
+                <div className="ocr-file-name">📄 {file.name}</div>
+                <div className="ocr-file-size">
+                  {(file.size / 1024 / 1024).toFixed(2)} MB
                 </div>
               </div>
-            ))}
-          </div>
+
+              <div className="ocr-file-actions">
+                <button
+                  onClick={() =>
+                    window.open(URL.createObjectURL(file), "_blank")
+                  }
+                >
+                  View
+                </button>
+                <button onClick={() => removeFile(index)}>Remove</button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
