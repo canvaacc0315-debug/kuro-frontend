@@ -170,10 +170,10 @@ export default function OcrPanel() {
             {isRunning ? "Processing..." : "🚀 Start OCR"}
           </button>
 
-          <button disabled={!ocrResult} onClick={downloadTxt}>TXT</button>
-          <button disabled={!ocrResult} onClick={downloadCsv}>CSV</button>
-          <button disabled={!ocrResult} onClick={downloadPdf}>PDF</button>
-          <button disabled={!ocrResult} onClick={copyText}>Copy</button>
+          <button disabled={!ocrResult} onClick={downloadTxt}>Save as TXT</button>
+          <button disabled={!ocrResult} onClick={downloadCsv}>Save as CSV</button>
+          <button disabled={!ocrResult} onClick={downloadPdf}>Save as PDF</button>
+          <button disabled={!ocrResult} onClick={copyText}>Copy To Clipboard</button>
 
           <div className="ocr-result-preview">
             <h5>Extracted Text</h5>
