@@ -11,6 +11,8 @@ import { useClerk } from "@clerk/clerk-react";
 import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
+import OcrPanel from "../components/OcrPanel";
+
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
@@ -909,15 +911,12 @@ export default function KuroWorkspacePage() {
             onPdfChange={setSelectedPdfId} // 👈 prop name so dropdown works
           />
         </section>
-        {/* OCR TAB → uses OcrTextExtractor */}
+        {/* OCR TAB → NEW ADVANCED OCR PANEL */}
         <section
           id="ocrTab"
           className={`tab-content ${activeTab === "ocr" ? "active" : ""}`}
         >
-          <OcrTextExtractor
-            pdfs={uploadedFiles}
-            selectedPdfId={selectedPdfId}
-          />
+          <OcrPanel />
         </section>
         {/* CREATE & EDIT TAB → uses PdfDesignCanvas */}
         <section

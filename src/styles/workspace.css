@@ -2414,3 +2414,71 @@ html, body {
 .create-editor-root {
   overflow: visible !important;
 }
+/* OCR PANEL */
+.ocr-container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.ocr-title {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.ocr-title span {
+  color: #ef4444;
+}
+
+.ocr-subtitle {
+  color: #aaa;
+  margin-bottom: 24px;
+}
+
+.ocr-card {
+  background: rgba(15, 20, 40, 0.7);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ocr-card input,
+.ocr-card select {
+  background: #0a0e27;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.ocr-card button {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.ocr-card button:disabled {
+  opacity: 0.6;
+}
+
+.ocr-output {
+  margin-top: 30px;
+}
+
+.ocr-output textarea {
+  width: 100%;
+  min-height: 260px;
+  background: #0a0e27;
+  color: #e5e5e5;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  border-radius: 12px;
+  resize: vertical;
+}
