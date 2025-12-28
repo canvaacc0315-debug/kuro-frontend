@@ -50,7 +50,7 @@ export default function OcrPanel() {
     if (!selectedFile?.pdf_id) return;
 
     setIsRunning(true);
-    setProgress(20);
+    setProgress(15);
     setOcrResult("");
 
     const formData = new FormData();
@@ -90,7 +90,7 @@ export default function OcrPanel() {
 
   function copyText() {
     navigator.clipboard.writeText(ocrResult);
-    alert("Copied");
+    alert("Copied to clipboard");
   }
 
   function resetOcr() {
@@ -112,7 +112,7 @@ export default function OcrPanel() {
       </div>
 
       <div className="ocr-output-layout">
-        {/* LEFT */}
+        {/* LEFT SIDE */}
         <div className="ocr-output-left">
           <div
             className="ocr-upload"
@@ -141,32 +141,39 @@ export default function OcrPanel() {
           )}
         </div>
 
-        {/* RIGHT */}
+        {/* RIGHT SIDE */}
         <div className="ocr-output-right">
           <h4>Actions</h4>
 
-          {!ocrResult && selectedFile && (
-            <button onClick={startOcr} disabled={isRunning}>
-              {isRunning ? "Processing..." : "🚀 Start OCR"}
-            </button>
-          )}
+          <button
+            onClick={startOcr}
+            disabled={!selectedFile || isRunning}
+          >
+            {isRunning ? "Processing..." : "🚀 Start OCR"}
+          </button>
 
-          {ocrResult && (
-            <>
-              <button onClick={downloadTxt}>TXT</button>
-              <button onClick={downloadCsv}>CSV</button>
-              <button onClick={copyText}>Copy</button>
+          <button disabled={!ocrResult} onClick={downloadTxt}>TXT</button>
+          <button disabled={!ocrResult} onClick={downloadCsv}>CSV</button>
+          <button disabled={!ocrResult} onClick={copyText}>Copy</button>
 
-              <div className="ocr-result-preview right-panel-result">
-                <h5>Extracted Text</h5>
-                <pre>{ocrResult}</pre>
+          <div className="ocr-result-preview right-panel-result">
+            <h5>Extracted Text</h5>
+            {ocrResult ? (
+              <pre>{ocrResult}</pre>
+            ) : (
+              <div className="ocr-placeholder">
+                OCR result will appear here
               </div>
+            )}
+          </div>
 
-              <button className="process-another-btn" onClick={resetOcr}>
-                🔁 Process Another File
-              </button>
-            </>
-          )}
+          <button
+            className="process-another-btn"
+            disabled={!ocrResult}
+            onClick={resetOcr}
+          >
+            🔁 Process Another File
+          </button>
 
           {isRunning && (
             <div className="ocr-progress-wrapper">
