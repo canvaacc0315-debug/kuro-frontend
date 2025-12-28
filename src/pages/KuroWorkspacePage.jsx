@@ -4,7 +4,6 @@ import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams } from "react-router-dom";
 import "../styles/workspace.css";
 import AnalysisPanel from "../components/AnalysisPanel.jsx";
-import OcrTextExtractor from "../components/OcrTextExtractor.jsx";
 import PdfDesignCanvas from "../components/PdfDesignCanvas.jsx";
 import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
 import { useClerk } from "@clerk/clerk-react";
