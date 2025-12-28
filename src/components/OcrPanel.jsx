@@ -35,7 +35,7 @@ export default function OcrPanel() {
 
     let fake = 5;
     const timer = setInterval(() => {
-      fake += 10;
+      fake += 8;
       setProgress((p) => (p < 90 ? fake : p));
     }, 300);
 
@@ -45,10 +45,11 @@ export default function OcrPanel() {
     setProgress(100);
 
     const extractedText =
-      "This is a sample OCR extracted text.\n\nReal OCR output will appear once backend is connected.";
+      "This is a sample OCR extracted text.\n\nOnce backend is connected, real OCR output will appear here.";
 
     setOcrResult(extractedText);
 
+    // send to Analysis tab later
     window.dispatchEvent(
       new CustomEvent("ocr-result-ready", { detail: extractedText })
     );
@@ -167,7 +168,7 @@ export default function OcrPanel() {
         </div>
       </div>
 
-      {/* START BUTTON */}
+      {/* START OCR */}
       <button
         className="ocr-start-btn"
         onClick={startOcr}
@@ -176,7 +177,7 @@ export default function OcrPanel() {
         {isRunning ? "Processing..." : "🚀 Start OCR Extraction"}
       </button>
 
-      {/* PROGRESS */}
+      {/* PROGRESS BAR */}
       {isRunning && (
         <div className="ocr-progress-wrapper">
           <div className="ocr-progress-bar">
@@ -191,36 +192,47 @@ export default function OcrPanel() {
         </div>
       )}
 
-      {/* 🔥 UPLOADED FILES (LIKE IMAGE 2) */}
+      {/* ✅ UPLOADED FILES UI (MATCHES IMAGE 2) */}
       {files.length > 0 && (
-        <div className="ocr-files">
-          <h4>📂 Uploaded Files</h4>
+        <div className="ocr-files-section">
+          <h4 className="ocr-files-title">📁 Uploaded Files</h4>
 
-          {files.map((file, index) => (
-            <div key={index} className="ocr-file-item">
-              <div>
-                <div className="ocr-file-name">📄 {file.name}</div>
-                <div className="ocr-file-size">
-                  {(file.size / 1024 / 1024).toFixed(2)} MB
+          <div className="ocr-files-list">
+            {files.map((file, index) => (
+              <div key={index} className="ocr-file-card">
+                <div className="ocr-file-info">
+                  <div className="ocr-file-icon">📄</div>
+                  <div>
+                    <div className="ocr-file-name">{file.name}</div>
+                    <div className="ocr-file-size">
+                      {(file.size / 1024 / 1024).toFixed(2)} MB
+                    </div>
+                  </div>
+                </div>
+
+                <div className="ocr-file-actions">
+                  <button
+                    className="ocr-file-btn"
+                    onClick={() =>
+                      window.open(URL.createObjectURL(file), "_blank")
+                    }
+                  >
+                    View
+                  </button>
+                  <button
+                    className="ocr-file-btn danger"
+                    onClick={() => removeFile(index)}
+                  >
+                    Remove
+                  </button>
                 </div>
               </div>
-
-              <div className="ocr-file-actions">
-                <button
-                  onClick={() =>
-                    window.open(URL.createObjectURL(file), "_blank")
-                  }
-                >
-                  View
-                </button>
-                <button onClick={() => removeFile(index)}>Remove</button>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
 
-      {/* OCR RESULT */}
+      {/* OCR RESULT PREVIEW */}
       {ocrResult && (
         <div className="ocr-result-preview">
           <h4>📄 OCR Result Preview</h4>
