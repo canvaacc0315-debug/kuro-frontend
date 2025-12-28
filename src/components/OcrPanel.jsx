@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../styles/ocr-override.css";
 
 export default function OcrPanel() {
   const [language, setLanguage] = useState("English");
