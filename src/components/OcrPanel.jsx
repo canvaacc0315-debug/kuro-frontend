@@ -9,7 +9,7 @@ export default function OcrPanel() {
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
 
-  /* ✅ ALWAYS DEFINED */
+  /* ---------------- SELECTED FILE ---------------- */
   const selectedFile = useMemo(() => {
     if (selectedFileIndex === null) return null;
     return files[selectedFileIndex] || null;
@@ -20,13 +20,13 @@ export default function OcrPanel() {
     const selected = Array.from(e.target.files || []);
     if (!selected.length) return;
 
-    const file = selected[0]; // PDF only
+    const file = selected[0];
     setFiles([file]);
     setSelectedFileIndex(0);
     setShowPreview(true);
 
     if (!file.type.includes("pdf")) {
-      alert("Only PDF OCR is supported");
+      alert("Only PDF files are supported");
       return;
     }
 
@@ -44,8 +44,10 @@ export default function OcrPanel() {
       );
 
       if (!res.ok) throw new Error("Upload failed");
+
       const data = await res.json();
       file.pdf_id = data.pdfs[0].pdf_id;
+      console.log("PDF uploaded:", file.pdf_id);
     } catch (err) {
       console.error(err);
       alert("PDF upload failed");
@@ -89,41 +91,39 @@ export default function OcrPanel() {
     }
   }
 
-  /* ---------------- DOWNLOAD HELPERS ---------------- */
+  /* ---------------- EXPORT HELPERS ---------------- */
   function downloadTxt() {
     const blob = new Blob([ocrResult], { type: "text/plain" });
-    triggerDownload(blob, "ocr-result.txt");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ocr-result.txt";
+    a.click();
   }
 
   function downloadCsv() {
-    const lines = ocrResult.split("\n").map(l => `"${l.replace(/"/g, '""')}"`);
-    const csv = "text\n" + lines.join("\n");
+    const csv =
+      "line\n" +
+      ocrResult
+        .split("\n")
+        .map((l) => `"${l.replace(/"/g, '""')}"`)
+        .join("\n");
+
     const blob = new Blob([csv], { type: "text/csv" });
-    triggerDownload(blob, "ocr-result.csv");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ocr-result.csv";
+    a.click();
   }
 
   function downloadPdf() {
-    const html = `
-      <html>
-        <body style="font-family: Arial; white-space: pre-wrap;">
-          ${ocrResult.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
-        </body>
-      </html>
-    `;
-    const blob = new Blob([html], { type: "application/pdf" });
-    triggerDownload(blob, "ocr-result.pdf");
-  }
-
-  function triggerDownload(blob, filename) {
-    const url = URL.createObjectURL(blob);
+    const blob = new Blob([ocrResult], { type: "application/pdf" });
     const a = document.createElement("a");
-    a.href = url;
-    a.download = filename;
+    a.href = URL.createObjectURL(blob);
+    a.download = "ocr-result.pdf";
     a.click();
-    URL.revokeObjectURL(url);
   }
 
-  function copyToClipboard() {
+  function copyText() {
     navigator.clipboard.writeText(ocrResult);
     alert("Copied to clipboard");
   }
@@ -150,33 +150,31 @@ export default function OcrPanel() {
         <p>Extract text from PDFs</p>
       </div>
 
-      <div className="ocr-content">
-        <div
-          className="ocr-upload"
-          onClick={() => document.getElementById("ocrFileInput").click()}
+      {/* UPLOAD */}
+      <div
+        className="ocr-upload"
+        onClick={() => document.getElementById("ocrFileInput").click()}
+      >
+        <div className="ocr-upload-icon">📄</div>
+        <div className="ocr-upload-title">Upload PDF</div>
+        <button
+          type="button"
+          className="ocr-upload-btn"
+          onClick={(e) => {
+            e.stopPropagation();
+            document.getElementById("ocrFileInput").click();
+          }}
         >
-          <div className="ocr-upload-icon">📄</div>
-          <div className="ocr-upload-title">Upload PDF</div>
+          Select PDF
+        </button>
 
-          <button
-            type="button"
-            className="ocr-upload-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              document.getElementById("ocrFileInput").click();
-            }}
-          >
-            Select PDF
-          </button>
-
-          <input
-            id="ocrFileInput"
-            type="file"
-            accept=".pdf"
-            hidden
-            onChange={handleFiles}
-          />
-        </div>
+        <input
+          id="ocrFileInput"
+          type="file"
+          accept=".pdf"
+          hidden
+          onChange={handleFiles}
+        />
       </div>
 
       {/* PREVIEW */}
@@ -186,7 +184,6 @@ export default function OcrPanel() {
             <h4>PDF Preview</h4>
             <button onClick={() => setShowPreview(false)}>✕</button>
           </div>
-
           <iframe
             src={URL.createObjectURL(selectedFile)}
             title="preview"
@@ -219,29 +216,34 @@ export default function OcrPanel() {
         </div>
       )}
 
-      {/* RESULT + DOWNLOADS */}
+      {/* RESULT + RIGHT PANEL */}
       {ocrResult && (
-        <>
-          <div className="ocr-result-preview">
-            <h4>OCR Result</h4>
-            <pre>{ocrResult}</pre>
+        <div className="ocr-output-layout">
+          {/* LEFT */}
+          <div className="ocr-output-left">
+            <div className="ocr-result-preview">
+              <h4>OCR Result</h4>
+              <pre>{ocrResult}</pre>
+            </div>
           </div>
 
-          <div className="ocr-download-actions">
-            <button onClick={downloadTxt}>⬇ TXT</button>
-            <button onClick={downloadCsv}>⬇ CSV</button>
-            <button onClick={downloadPdf}>⬇ PDF</button>
-            <button onClick={copyToClipboard}>📋 Copy</button>
-          </div>
+          {/* RIGHT */}
+          <div className="ocr-output-right">
+            <h4>📤 Export</h4>
 
-          <button
-            className="ocr-start-btn"
-            style={{ marginTop: 16, background: "#333" }}
-            onClick={resetOcr}
-          >
-            🔁 Process Another File
-          </button>
-        </>
+            <button onClick={downloadTxt}>TXT</button>
+            <button onClick={downloadCsv}>CSV</button>
+            <button onClick={downloadPdf}>PDF</button>
+            <button onClick={copyText}>Copy</button>
+
+            <button
+              className="process-another-btn"
+              onClick={resetOcr}
+            >
+              🔁 Process Another File
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
