@@ -82,9 +82,9 @@ export default function OcrPanel() {
       formData.append("output_format", outputFormat);   // text | json | csv
       formData.append("language", language);             // English | Hindi | etc
       formData.append("mode", mode);                     // fast | standard | accurate
-      formData.append("clean_text", cleanText);          // true / false
-      formData.append("detect_tables", detectTables);    // true / false
-      formData.append("preserve_layout", preserveLayout);// true / false
+      formData.append("clean_text", false);       // true / false
+      formData.append("detect_tables", false);    // true / false
+      formData.append("preserve_layout", false);// true / false
 
       // ✅ CALL BACKEND
       const res = await fetch(
