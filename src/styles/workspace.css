@@ -2629,3 +2629,86 @@ html, body {
   font-size: 13px;
   color: #e5e7eb;
 }
+/* UPLOADED FILES PANEL */
+.ocr-files-panel {
+  margin-top: 40px;
+  background: rgba(10, 15, 35, 0.65);
+  border-radius: 14px;
+  padding: 24px;
+  border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.ocr-files-title {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* FILE LIST */
+.ocr-files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* FILE CARD */
+.ocr-file-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(5, 8, 20, 0.9);
+  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* LEFT */
+.ocr-file-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.ocr-file-icon {
+  font-size: 22px;
+}
+
+.ocr-file-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.ocr-file-size {
+  font-size: 12px;
+  color: #888;
+}
+
+/* ACTIONS */
+.ocr-file-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.ocr-view-btn,
+.ocr-remove-btn {
+  padding: 6px 14px;
+  font-size: 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(239, 68, 68, 0.6);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+}
+
+.ocr-view-btn:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.ocr-remove-btn {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ccc;
+}
+
+.ocr-remove-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
