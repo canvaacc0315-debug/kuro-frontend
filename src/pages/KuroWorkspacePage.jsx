@@ -446,11 +446,8 @@ export default function KuroWorkspacePage() {
           <div>
             <h1 className="workspace-title">
               Welcome to{" "}
-              <span className="workspace-title-accent">Chat Rovex</span>
+              <span className="workspace-title-accent">RovexAI</span>
             </h1>
-            <div className="breadcrumb">
-              Dashboard / Workspaces / PDF Chat
-            </div>
           </div>
         </header>
         {/* top‑level tabs */}
