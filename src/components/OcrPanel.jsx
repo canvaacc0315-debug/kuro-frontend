@@ -8,7 +8,6 @@ export default function OcrPanel() {
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
-  const [txtPreview, setTxtPreview] = useState("");
 
   const selectedFile = useMemo(() => {
     if (selectedFileIndex === null) return null;
@@ -20,104 +19,55 @@ export default function OcrPanel() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const isPdf = file.type.includes("pdf");
-    const isImage = file.type.includes("image");
-    const isTxt = file.type === "text/plain";
-
-    if (!isPdf && !isImage && !isTxt) {
-      alert("Only PDF, PNG, JPG or TXT files are supported");
+    if (!file.type.includes("pdf")) {
+      alert("Only PDF supported");
       return;
     }
 
     setFiles([file]);
     setSelectedFileIndex(0);
     setOcrResult("");
-    setTxtPreview("");
 
-    // TXT → read directly (NO OCR)
-    if (isTxt) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setOcrResult(reader.result);
-        setTxtPreview(reader.result);
-      };
-      reader.readAsText(file);
-      return;
-    }
+    const formData = new FormData();
+    formData.append("files", file);
 
-    // PDF → upload first (existing flow)
-    if (isPdf) {
-      const formData = new FormData();
-      formData.append("files", file);
+    const res = await fetch(
+      "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/upload",
+      {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      }
+    );
 
-      const res = await fetch(
-        "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/upload",
-        {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        }
-      );
-
-      const data = await res.json();
-      file.pdf_id = data.pdfs[0].pdf_id;
-    }
+    const data = await res.json();
+    file.pdf_id = data.pdfs[0].pdf_id;
   }
 
   /* ================= OCR ================= */
   async function startOcr() {
-    if (!selectedFile) return;
-
-    const isPdf = selectedFile.type.includes("pdf");
-    const isImage = selectedFile.type.includes("image");
+    if (!selectedFile?.pdf_id) return;
 
     setIsRunning(true);
-    setProgress(20);
+    setProgress(15);
     setOcrResult("");
 
-    try {
-      // PDF OCR
-      if (isPdf) {
-        const formData = new FormData();
-        formData.append("pdf_id", selectedFile.pdf_id);
+    const formData = new FormData();
+    formData.append("pdf_id", selectedFile.pdf_id);
 
-        const res = await fetch(
-          "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
-          {
-            method: "POST",
-            credentials: "include",
-            body: formData,
-          }
-        );
-
-        const data = await res.json();
-        setOcrResult(data.text || "");
+    const res = await fetch(
+      "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
+      {
+        method: "POST",
+        credentials: "include",
+        body: formData,
       }
+    );
 
-      // IMAGE OCR
-      if (isImage) {
-        const formData = new FormData();
-        formData.append("file", selectedFile);
-
-        const res = await fetch(
-          "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/image/ocr",
-          {
-            method: "POST",
-            credentials: "include",
-            body: formData,
-          }
-        );
-
-        const data = await res.json();
-        setOcrResult(data.text || "");
-      }
-
-      setProgress(100);
-    } catch (e) {
-      alert("OCR failed");
-    } finally {
-      setIsRunning(false);
-    }
+    const data = await res.json();
+    setOcrResult(data.text || "");
+    setProgress(100);
+    setIsRunning(false);
   }
 
   /* ================= EXPORT ACTIONS ================= */
@@ -139,6 +89,7 @@ export default function OcrPanel() {
 
   function downloadPdf() {
     const doc = new jsPDF("p", "mm", "a4");
+
     const margin = 15;
     const pageWidth = doc.internal.pageSize.width;
     const pageHeight = doc.internal.pageSize.height;
@@ -170,7 +121,6 @@ export default function OcrPanel() {
     setFiles([]);
     setSelectedFileIndex(null);
     setOcrResult("");
-    setTxtPreview("");
     setProgress(0);
     setIsRunning(false);
     document.getElementById("ocrFileInput").value = "";
@@ -181,7 +131,7 @@ export default function OcrPanel() {
     <div className="ocr-root">
       <div className="ocr-header">
         <h2>OCR & <span>Recognition</span></h2>
-        <p>Extract text from PDF, Images & TXT</p>
+        <p>Extract text from PDFs</p>
       </div>
 
       <div className="ocr-output-layout">
@@ -192,34 +142,23 @@ export default function OcrPanel() {
             onClick={() => document.getElementById("ocrFileInput").click()}
           >
             <div className="ocr-upload-icon">📄</div>
-            <div className="ocr-upload-title">Upload File</div>
-            <button className="ocr-upload-btn">Select File</button>
+            <div className="ocr-upload-title">Upload PDF</div>
+            <button className="ocr-upload-btn">Select PDF</button>
             <input
               id="ocrFileInput"
               type="file"
-              accept=".pdf,.png,.jpg,.jpeg,.txt"
+              accept=".pdf"
               hidden
               onChange={handleFiles}
             />
           </div>
 
-          {/* PREVIEW */}
-          {selectedFile && selectedFile.type.includes("pdf") && (
+          {selectedFile && (
             <iframe
               src={URL.createObjectURL(selectedFile)}
               className="ocr-preview-frame"
               title="preview"
             />
-          )}
-
-          {selectedFile && selectedFile.type.includes("image") && (
-            <div className="ocr-image-preview">
-              <img src={URL.createObjectURL(selectedFile)} alt="preview" />
-            </div>
-          )}
-
-          {selectedFile && selectedFile.type === "text/plain" && (
-            <pre className="ocr-result-preview">{txtPreview}</pre>
           )}
         </div>
 
@@ -227,14 +166,7 @@ export default function OcrPanel() {
         <div className="ocr-output-right">
           <h4>Actions</h4>
 
-          <button
-            onClick={startOcr}
-            disabled={
-              !selectedFile ||
-              selectedFile.type === "text/plain" ||
-              isRunning
-            }
-          >
+          <button onClick={startOcr} disabled={!selectedFile || isRunning}>
             {isRunning ? "Processing..." : "🚀 Start OCR"}
           </button>
 
