@@ -153,8 +153,7 @@ export default function DashboardPage() {
             <div className="workspace-icon">🔍</div>
             <h3 className="workspace-name">OCR &amp; Recognition</h3>
             <p className="workspace-description">
-              Convert scanned documents to editable text. Extract data from
-              images and complex layouts.
+              Convert scanned documents to editable text.Extract data from complex layouts.
             </p>
             <ul className="workspace-features">
               <li>Text Recognition</li>
