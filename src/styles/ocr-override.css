@@ -17,69 +17,77 @@
   color: #9ca3af;
 }
 
-/* LAYOUT - Adapted to match chat layout (flex instead of grid) */
+/* LAYOUT - Simple flex layout matching chat */
 .ocr-output-layout {
   display: flex;
   gap: 24px;
   margin-top: 24px;
 }
 
-/* LEFT SIDE - Adapted to match .chat-main */
+/* LEFT SIDE - Simple main area */
 .ocr-main {
   flex: 2;
 }
 
 .ocr-upload {
   border: 1px solid #ef4444;
-  border-radius: 16px;
-  padding: 56px;
+  border-radius: 12px;
+  padding: 40px;
   text-align: center;
   cursor: pointer;
+  background: rgba(15, 15, 18, 0.5);
 }
 
 .ocr-upload-icon {
   font-size: 48px;
+  margin-bottom: 16px;
 }
 
 .ocr-upload-title {
   font-size: 20px;
-  margin-top: 10px;
+  margin-bottom: 8px;
 }
 
 .ocr-upload-btn {
-  margin-top: 16px;
-  padding: 10px 28px;
+  padding: 12px 24px;
   background: #ef4444;
   border: none;
   color: white;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
-  min-height: 44px; /* Touch-friendly */
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.2s ease;
 }
 
-/* PDF PREVIEW (A4) - Adapted to match .chat-container */
+.ocr-upload-btn:hover {
+  background: #dc2626;
+}
+
+/* PDF PREVIEW - Simple container matching chat */
 .ocr-preview-container {
   display: flex;
   flex-direction: column;
   height: 520px;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(20, 20, 30, 0.6);
+  border: 1px solid #ef4444;
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid #ef4444;
+  margin-top: 16px;
 }
 
 .ocr-preview-frame {
   flex: 1;
   width: 100%;
   border: none;
-  border-radius: 12px;
   background: black;
 }
 
-/* RIGHT PANEL - Adapted to match .chat-assist */
+/* RIGHT PANEL - Simple assist area */
 .ocr-assist {
   flex: 1;
   min-width: 280px;
@@ -87,51 +95,63 @@
 
 .ocr-output-right {
   background: rgba(15, 15, 18, 0.95);
-  border-radius: 16px;
+  border: 1px solid #ef4444;
+  border-radius: 12px;
   padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   height: 520px;
 }
 
 .ocr-output-right h4 {
-  margin-bottom: 6px;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #e5e7eb;
 }
 
-/* BUTTONS */
+/* BUTTONS - Clean, no glow */
 .ocr-output-right button {
-  padding: 10px;
+  padding: 12px;
   background: #ef4444;
   border: none;
   border-radius: 6px;
   color: white;
   cursor: pointer;
-  min-height: 44px; /* Touch-friendly */
+  font-size: 14px;
+  font-weight: 500;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.ocr-output-right button:hover:not(:disabled) {
+  background: #dc2626;
 }
 
 .ocr-output-right button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  background: #333;
 }
 
-/* OCR RESULT (A4 MATCH) - Integrated into right panel */
+/* OCR RESULT - Simple preview area */
 .ocr-result-preview {
   flex: 1;
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid #ef4444;
-  border-radius: 12px;
+  border-radius: 8px;
   padding: 16px;
   overflow-y: auto;
-  margin-top: 10px;
 }
 
 .ocr-result-preview pre {
   font-size: 13px;
   white-space: pre-wrap;
+  color: #e5e7eb;
+  line-height: 1.5;
 }
 
 /* PLACEHOLDER */
@@ -139,36 +159,41 @@
   color: #9ca3af;
   font-size: 14px;
   text-align: center;
-  margin-top: 45%;
+  padding: 40px;
 }
 
-/* PROGRESS */
+/* PROGRESS - Simple bar */
 .ocr-progress-bar {
-  height: 8px;
-  background: #222;
-  border-radius: 99px;
+  height: 6px;
+  background: #333;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 8px;
 }
 
 .ocr-progress-fill {
   height: 100%;
   background: #ef4444;
+  transition: width 0.3s ease;
 }
 
 .ocr-progress-text {
   font-size: 12px;
   color: #9ca3af;
+  margin-top: 4px;
 }
 
-/* RESET */
+/* RESET BUTTON */
 .process-another-btn {
   background: #333 !important;
+  border: 1px solid #555 !important;
 }
 .process-another-btn:hover {
   background: #444 !important;
 }
 
 /* ===========================
-   RESPONSIVE - Enhanced Breakpoints (Adapted to match chat responsive)
+   RESPONSIVE - Clean and simple
 =========================== */
 
 /* Tablet */
@@ -179,7 +204,7 @@
 
   .ocr-output-layout {
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
   }
 
   .ocr-header h2 {
@@ -187,7 +212,7 @@
   }
 
   .ocr-upload {
-    padding: 40px 24px;
+    padding: 32px;
   }
 
   .ocr-upload-icon {
@@ -199,7 +224,7 @@
   }
 
   .ocr-upload-btn {
-    padding: 12px 24px;
+    padding: 12px 20px;
   }
 
   .ocr-preview-container,
@@ -211,16 +236,12 @@
     padding: 16px;
   }
 
-  .ocr-result-preview {
-    padding: 12px;
-  }
-
   .ocr-result-preview pre {
     font-size: 12px;
   }
 }
 
-/* Mobile Landscape */
+/* Mobile */
 @media (max-width: 768px) {
   .ocr-root {
     padding: 16px 12px;
@@ -242,8 +263,7 @@
   }
 
   .ocr-upload {
-    padding: 32px 16px;
-    border-width: 1px;
+    padding: 24px 16px;
   }
 
   .ocr-upload-icon {
@@ -255,7 +275,7 @@
   }
 
   .ocr-upload-btn {
-    padding: 12px 20px;
+    padding: 12px 16px;
     font-size: 14px;
   }
 
@@ -265,13 +285,9 @@
   }
 
   .ocr-output-right {
+    height: auto;
     padding: 12px;
     gap: 8px;
-    height: auto;
-  }
-
-  .ocr-output-right h4 {
-    font-size: 16px;
   }
 
   .ocr-output-right button {
@@ -281,22 +297,16 @@
 
   .ocr-result-preview {
     padding: 12px;
-    border-radius: 12px;
-    margin-top: 0;
   }
 
   .ocr-result-preview pre {
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.4;
   }
 
   .ocr-placeholder {
     font-size: 13px;
-    margin-top: 30%;
-  }
-
-  .ocr-progress-text {
-    font-size: 11px;
+    padding: 32px;
   }
 
   .process-another-btn {
@@ -321,7 +331,7 @@
   }
 
   .ocr-upload {
-    padding: 24px 12px;
+    padding: 20px 12px;
   }
 
   .ocr-upload-icon {
@@ -333,19 +343,17 @@
   }
 
   .ocr-upload-btn {
-    padding: 10px 16px;
+    padding: 10px 14px;
     font-size: 13px;
   }
 
   .ocr-preview-container,
   .ocr-result-preview {
     height: 380px;
-    border-radius: 8px;
   }
 
   .ocr-output-right {
     padding: 10px;
-    height: auto;
   }
 
   .ocr-output-right button {
@@ -354,16 +362,16 @@
   }
 
   .ocr-result-preview pre {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .ocr-placeholder {
     font-size: 12px;
-    margin-top: 25%;
+    padding: 24px;
   }
 }
 
-/* Extra Small Mobile (e.g., iPhone SE) */
+/* Extra Small Mobile */
 @media (max-width: 360px) {
   .ocr-root {
     padding: 8px 4px;
@@ -378,7 +386,7 @@
   }
 
   .ocr-upload {
-    padding: 20px 8px;
+    padding: 16px 8px;
   }
 
   .ocr-upload-icon {
@@ -399,7 +407,7 @@
   }
 
   .ocr-result-preview pre {
-    font-size: 9px;
+    font-size: 10px;
   }
 }
 
@@ -417,10 +425,9 @@
 
 /* High contrast enhancements */
 @media (prefers-contrast: high) {
-  .ocr-upload {
-    border-width: 2px;
-  }
-
+  .ocr-upload,
+  .ocr-preview-container,
+  .ocr-output-right,
   .ocr-result-preview {
     border-width: 2px;
   }
