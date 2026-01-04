@@ -1,51 +1,49 @@
-/* Global Scrollbar Hider - Overrides all scrollbars across the entire app */
+/* Global Scrollbar Hider - Refined to Preserve Animations & Backgrounds */
 
-/* Target the root elements */
+/* Target only html and body for core scrolling */
 html,
 body {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+  overflow-x: hidden !important; /* Prevent horizontal scroll, but allow vertical */
+  overflow-y: auto !important; /* Preserve vertical scrolling */
 }
 
-/* WebKit browsers (Chrome, Safari, Opera) */
+/* WebKit browsers (Chrome, Safari, Opera) for html and body */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  display: none;
+  display: none !important;
 }
 
-/* Universal selector to catch any scrollable element */
-* {
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* IE and Edge */
-}
-
-*::-webkit-scrollbar {
-  display: none;
-}
-
-/* Ensure it applies to specific common scrollable containers (e.g., modals, sidebars, chats) */
+/* Global pseudo-elements for scrollbars (non-universal to avoid conflicts) */
 ::-webkit-scrollbar,
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-thumb,
 ::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-corner {
-  display: none;
+  display: none !important;
+  background: transparent !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
-/* Fallback for any overflow-auto or overflow-scroll elements */
+/* Targeted fallback for common overflow classes (avoid universal *) */
 .overflow-auto,
-.overflow-scroll {
+.overflow-scroll,
+.overflow-y-auto,
+.overflow-x-auto {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
 
 .overflow-auto::-webkit-scrollbar,
-.overflow-scroll::-webkit-scrollbar {
+.overflow-scroll::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
   display: none !important;
 }
 
-/* Specific overrides for common app components (adjust selectors as needed for your app) */
-/* Example for chat, sidebar, lists, etc. - customize these if your classes differ */
+/* App-specific scrollable containers (expand as needed for login/signup/pages) */
 .chat-messages,
 .sidebar,
 .pages-list,
@@ -55,11 +53,26 @@ body::-webkit-scrollbar {
 .modal-content,
 .login-form,
 .signup-form,
-.workspace-root,
-.main-container,
+.workspace-root > .main-container,
 .tab-content,
 .history-list,
-.export-options-grid {
+.export-options-grid,
+.uploaded-files,
+.scope-options,
+.chat-subtabs-nav,
+.tabs-nav,
+.pages-bar,
+.public-hero,
+.features-grid,
+.hero-cta,
+.public-card,
+.feature-card,
+.vision-card,
+/* Add login/signup specific if needed */
+.login-container,
+.signup-container,
+.auth-form,
+.form-group {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
@@ -73,153 +86,64 @@ body::-webkit-scrollbar {
 .modal-content::-webkit-scrollbar,
 .login-form::-webkit-scrollbar,
 .signup-form::-webkit-scrollbar,
-.workspace-root::-webkit-scrollbar,
-.main-container::-webkit-scrollbar,
+.workspace-root > .main-container::-webkit-scrollbar,
 .tab-content::-webkit-scrollbar,
 .history-list::-webkit-scrollbar,
-.export-options-grid::-webkit-scrollbar {
+.export-options-grid::-webkit-scrollbar,
+.uploaded-files::-webkit-scrollbar,
+.scope-options::-webkit-scrollbar,
+.chat-subtabs-nav::-webkit-scrollbar,
+.tabs-nav::-webkit-scrollbar,
+.pages-bar::-webkit-scrollbar,
+.public-hero::-webkit-scrollbar,
+.features-grid::-webkit-scrollbar,
+.hero-cta::-webkit-scrollbar,
+.public-card::-webkit-scrollbar,
+.feature-card::-webkit-scrollbar,
+.vision-card::-webkit-scrollbar,
+.login-container::-webkit-scrollbar,
+.signup-container::-webkit-scrollbar,
+.auth-form::-webkit-scrollbar,
+.form-group::-webkit-scrollbar {
   display: none !important;
 }
 
-/* Ensure mobile/touch scrolling remains smooth */
-* {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Prevent any horizontal scrollbars globally */
+/* Ensure smooth touch scrolling on mobile (non-universal) */
 html,
 body {
-  overflow-x: hidden !important;
-}
-/* HERO */
-.public-hero {
-  text-align: center;
-  margin-bottom: 80px;
+  -webkit-overflow-scrolling: touch !important;
 }
 
-.public-hero h1 {
-  font-size: 56px;
-  font-weight: 800;
-  letter-spacing: -1px;
-}
-
-.public-hero-subtitle {
-  font-size: 22px;
-  opacity: 0.75;
-  margin-top: 12px;
-}
-
-.hero-cta {
-  margin-top: 32px;
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-/* BUTTONS */
-.btn-primary {
-  padding: 14px 28px;
-  border-radius: 10px;
-  background: #ff5a5a;
-  color: #fff;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.btn-secondary {
-  padding: 14px 28px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  text-decoration: none;
-}
-
-/* GLASS CARDS */
-.public-card {
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(16px);
-  border-radius: 20px;
-  padding: 48px;
-  margin-bottom: 48px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  animation: fadeUp 0.8s ease forwards;
-}
-
-.public-card h2 {
-  color: #ff5a5a;
-  margin-bottom: 16px;
-}
-
-.public-card p {
-  font-size: 18px;
-  line-height: 1.8;
-  opacity: 0.9;
-}
-
-/* ============================= */
-/* FEATURES GRID – FIXED VERSION */
-/* ============================= */
-
+/* PROTECT ANIMATED BACKGROUNDS: Explicitly preserve animations and backgrounds */
+body,
+html,
+body::before,
+body::after,
+html::before,
+html::after,
+.global-background,
+.global-background > div,
+.animated-background,
+.public-hero,
 .features-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* ✅ FIX: FORCE 3 COLUMNS */
-  gap: 28px;
-  margin-bottom: 80px;
+  animation: inherit !important;
+  background: inherit !important;
+  background-image: inherit !important;
+  background-position: inherit !important;
+  background-size: inherit !important;
+  transform: inherit !important;
+  overflow: visible !important; /* Allow scaled backgrounds to show fully */
+  scrollbar-width: visible !important; /* Don't hide if somehow applied */
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+/* Ensure fixed backgrounds aren't clipped */
+body > div[position="fixed"][style*="position: fixed"] {
+  overflow: visible !important;
+  z-index: inherit !important;
 }
 
-@media (max-width: 640px) {
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.feature-card {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px);
-  border-radius: 16px;
-  padding: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: transform 0.3s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-6px);
-}
-
-.feature-card span {
-  font-size: 32px;
-}
-
-.feature-card h3 {
-  margin-top: 12px;
-  color: #ff5a5a;
-}
-
-.feature-card p {
-  opacity: 0.8;
-}
-
-/* VISION */
-.vision-card {
-  text-align: center;
-}
-
-/* ANIMATION */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* If your GlobalBackground div has a class, add it here for protection */
+.global-bg-fixed {
+  overflow: visible !important;
+  animation: bgCrazy 20s ease-in-out infinite !important; /* Reinforce the animation */
 }

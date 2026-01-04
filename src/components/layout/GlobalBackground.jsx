@@ -1,5 +1,4 @@
 // src/components/layout/GlobalBackground.jsx
-
 const bgAnimation = `
 @keyframes bgCrazy {
   0% {
@@ -32,11 +31,11 @@ export default function GlobalBackground({ children }) {
 
       {/* 🌌 FIXED ANIMATED BACKGROUND */}
       <div
+        className="global-bg-fixed"  // 👈 Added class for CSS protection
         style={{
           position: "fixed",
           inset: 0,
           zIndex: -1,
-
           backgroundImage: `
             linear-gradient(
               rgba(0,0,0,0.55),
@@ -47,9 +46,7 @@ export default function GlobalBackground({ children }) {
           backgroundRepeat: "repeat",
           backgroundSize: "1400px auto",
           backgroundPosition: "center",
-
-          /* 🔥 NOTICEABLE animation */
-          animation: "bgCrazy 20s ease-in-out infinite",
+          animation: "bgCrazy 20s ease-in-out infinite",  // 👈 Ensure it's set
         }}
       />
 
