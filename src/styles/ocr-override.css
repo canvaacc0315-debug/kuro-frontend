@@ -17,15 +17,18 @@
   color: #9ca3af;
 }
 
-/* LAYOUT */
+/* LAYOUT - Adapted to match chat layout (flex instead of grid) */
 .ocr-output-layout {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: 32px;
+  display: flex;
+  gap: 24px;
   margin-top: 24px;
 }
 
-/* LEFT SIDE */
+/* LEFT SIDE - Adapted to match .chat-main */
+.ocr-main {
+  flex: 2;
+}
+
 .ocr-upload {
   border: 1px solid #ef4444;
   border-radius: 16px;
@@ -57,17 +60,31 @@
   justify-content: center;
 }
 
-/* PDF PREVIEW (A4) */
+/* PDF PREVIEW (A4) - Adapted to match .chat-container */
+.ocr-preview-container {
+  display: flex;
+  flex-direction: column;
+  height: 520px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ef4444;
+}
+
 .ocr-preview-frame {
+  flex: 1;
   width: 100%;
-  height: 90vh;
-  margin-top: 20px;
   border: none;
-  border-radius: 16px;
+  border-radius: 12px;
   background: black;
 }
 
-/* RIGHT PANEL */
+/* RIGHT PANEL - Adapted to match .chat-assist */
+.ocr-assist {
+  flex: 1;
+  min-width: 280px;
+}
+
 .ocr-output-right {
   background: rgba(15, 15, 18, 0.95);
   border-radius: 16px;
@@ -75,6 +92,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  height: 520px;
 }
 
 .ocr-output-right h4 {
@@ -100,14 +118,15 @@
   cursor: not-allowed;
 }
 
-/* OCR RESULT (A4 MATCH) */
+/* OCR RESULT (A4 MATCH) - Integrated into right panel */
 .ocr-result-preview {
-  height: 90vh;
+  flex: 1;
   background: rgba(0, 0, 0, 0.6);
   border: 1px solid #ef4444;
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 16px;
   overflow-y: auto;
+  margin-top: 10px;
 }
 
 .ocr-result-preview pre {
@@ -149,7 +168,7 @@
 }
 
 /* ===========================
-   RESPONSIVE - Enhanced Breakpoints
+   RESPONSIVE - Enhanced Breakpoints (Adapted to match chat responsive)
 =========================== */
 
 /* Tablet */
@@ -159,7 +178,7 @@
   }
 
   .ocr-output-layout {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 24px;
   }
 
@@ -183,9 +202,9 @@
     padding: 12px 24px;
   }
 
-  .ocr-preview-frame,
-  .ocr-result-preview {
-    height: 70vh;
+  .ocr-preview-container,
+  .ocr-output-right {
+    height: 420px;
   }
 
   .ocr-output-right {
@@ -208,7 +227,7 @@
   }
 
   .ocr-output-layout {
-    grid-template-columns: 1fr;
+    flex-direction: column;
     gap: 16px;
   }
 
@@ -240,15 +259,15 @@
     font-size: 14px;
   }
 
-  .ocr-preview-frame,
+  .ocr-preview-container,
   .ocr-result-preview {
-    height: 50vh; /* Reduced for mobile */
-    margin-top: 12px;
+    height: calc(100vh - 220px);
   }
 
   .ocr-output-right {
     padding: 12px;
     gap: 8px;
+    height: auto;
   }
 
   .ocr-output-right h4 {
@@ -263,6 +282,7 @@
   .ocr-result-preview {
     padding: 12px;
     border-radius: 12px;
+    margin-top: 0;
   }
 
   .ocr-result-preview pre {
@@ -317,14 +337,15 @@
     font-size: 13px;
   }
 
-  .ocr-preview-frame,
+  .ocr-preview-container,
   .ocr-result-preview {
-    height: 40vh;
+    height: 380px;
     border-radius: 8px;
   }
 
   .ocr-output-right {
     padding: 10px;
+    height: auto;
   }
 
   .ocr-output-right button {
@@ -368,9 +389,9 @@
     font-size: 14px;
   }
 
-  .ocr-preview-frame,
+  .ocr-preview-container,
   .ocr-result-preview {
-    height: 35vh;
+    height: 350px;
   }
 
   .ocr-result-preview {
