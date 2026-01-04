@@ -804,7 +804,13 @@ export default function KuroWorkspacePage() {
 
                   {/* CHAT MESSAGES */}
                   <div className="chat-container">
-                    <div className="chat-messages">
+                    <div 
+                      className="chat-messages no-scrollbar" 
+                      style={{ 
+                        msOverflowStyle: 'none',  /* IE and Edge */
+                        scrollbarWidth: 'none',  /* Firefox */
+                      }}
+                    >
                       {conversation.map((m) => (
                         <div
                           key={m.id}
