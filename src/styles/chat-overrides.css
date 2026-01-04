@@ -1,146 +1,89 @@
-/* =========================================================
+/* ================================
    PHASE 1.3 CHAT LAYOUT OVERRIDES
-   Safe override – does NOT touch existing JSX
-   ========================================================= */
+   SAFE: overrides only, no deletions
+================================ */
 
-/* ---------- RESET BAD POSITIONING ---------- */
-#chatTab,
-#chatTab * {
-  position: relative;
-  box-sizing: border-box;
-}
-
-/* ---------- CHAT SUBTAB CONTENT ---------- */
-.chat-subtab-content.active {
+/* Main chat container */
+#chatTab .chat-subtab-content {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: 100%;
+  height: 100%;
 }
 
-/* ---------- CHAT CONTAINER (MAIN BODY) ---------- */
-.chat-container {
+/* Core split: messages + suggestions */
+#chatTab .chat-container {
   display: grid;
-  grid-template-columns: 1fr 360px; /* left: chat | right: input */
-  gap: 16px;
-  width: 100%;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 20px;
   align-items: stretch;
+  margin-top: 16px;
 }
 
-/* ---------- CHAT MESSAGES (LEFT) ---------- */
-.chat-messages {
+/* LEFT: chat messages */
+#chatTab .chat-messages {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   padding: 16px;
-  background: rgba(15, 15, 20, 0.6);
+  background: rgba(20, 20, 25, 0.6);
   border-radius: 14px;
   overflow-y: auto;
-  max-height: 60vh;
+  min-height: 420px;
 }
 
-/* ---------- MESSAGE FIX ---------- */
-.message {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
-}
-
-.message.bot {
-  justify-content: flex-start;
-}
-
-.message.user {
-  justify-content: flex-end;
-}
-
-/* ---------- INPUT AREA (RIGHT) ---------- */
-.chat-input-area {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: rgba(15, 15, 20, 0.6);
+/* RIGHT: Try Asking panel */
+#chatTab .try-asking-panel {
+  background: rgba(18, 18, 22, 0.7);
   border-radius: 14px;
   padding: 14px;
+  overflow-y: auto;
+  max-height: 100%;
+  position: sticky;
+  top: 16px;
 }
 
-/* ---------- INPUT ---------- */
-.chat-input {
-  width: 100%;
-  min-height: 120px;
-  resize: none;
+/* Section titles */
+#chatTab .try-asking-panel h4 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #aaa;
+  margin: 14px 0 8px;
 }
 
-/* ---------- SEND BUTTON ---------- */
-.send-btn {
-  width: 100%;
-  height: 44px;
+/* Question chips */
+#chatTab .question-chip {
+  display: inline-block;
+  padding: 8px 12px;
+  margin: 6px 6px 0 0;
+  border-radius: 999px;
+  font-size: 12px;
+  background: #1f232b;
+  color: #eaeaea;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
-/* =========================================================
-   TRY ASKING (PHASE 1.3) – FIXED PLACEMENT
-   ========================================================= */
+#chatTab .question-chip:hover {
+  background: #2b3040;
+  transform: translateY(-1px);
+}
 
-.try-asking,
-.try-asking-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+/* Chat input stays full width under messages */
+#chatTab .chat-input-area {
+  grid-column: 1 / 2;
   margin-top: 12px;
 }
 
-/* Section title */
-.try-asking h4,
-.try-asking-title {
-  font-size: 13px;
-  opacity: 0.85;
-}
-
-/* Chips wrapper */
-.try-asking-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* Individual chip */
-.try-asking-chip {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  padding: 6px 12px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.try-asking-chip:hover {
-  background: rgba(255, 100, 100, 0.15);
-  border-color: rgba(255, 100, 100, 0.4);
-}
-
-/* ---------- IMPORTANT: PREVENT FLOATING ---------- */
-.try-asking,
-.try-asking * {
-  float: none !important;
-  position: relative !important;
-}
-
-/* =========================================================
-   RESPONSIVE FIX
-   ========================================================= */
-
-@media (max-width: 900px) {
-  .chat-container {
+/* Prevent collapsing on smaller screens */
+@media (max-width: 1100px) {
+  #chatTab .chat-container {
     grid-template-columns: 1fr;
   }
 
-  .chat-input-area {
-    order: 2;
-  }
-
-  .chat-messages {
-    order: 1;
-    max-height: 50vh;
+  #chatTab .try-asking-panel {
+    position: relative;
+    max-height: none;
+    margin-top: 16px;
   }
 }
