@@ -1,5 +1,5 @@
 // src/pages/KuroWorkspacePage.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
@@ -413,6 +413,15 @@ export default function KuroWorkspacePage() {
     showStatus("All history cleared.");
   };
   // ---------------- render ----------------
+  const chatMessagesRef = useRef(null);
+  useEffect(() => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTo({
+        top: chatMessagesRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  }, [conversation]);
   return (
     <RovexProvider>
     <div className="workspace-root">
@@ -805,6 +814,7 @@ export default function KuroWorkspacePage() {
                   {/* CHAT MESSAGES */}
                   <div className="chat-container">
                     <div 
+                      ref={chatMessagesRef}
                       className="chat-messages no-scrollbar" 
                       style={{ 
                         msOverflowStyle: 'none',  /* IE and Edge */
