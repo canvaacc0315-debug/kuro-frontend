@@ -28,4 +28,26 @@
 .chat-assist .question-chip {
   display: inline-block;
   margin: 6px 6px 0 0;
+}/* Scope pills - Rovex theme */
+.scope-pill {
+  background: rgba(255, 90, 95, 0.08);
+  border: 1px solid rgba(255, 90, 95, 0.25);
+  color: #ffb3b6;
+  transition: all 0.2s ease;
+}
+
+.scope-pill:hover {
+  background: rgba(255, 90, 95, 0.18);
+  border-color: #ff5a5f;
+}
+
+.scope-pill.active {
+  background: linear-gradient(
+    135deg,
+    #ff5a5f,
+    #ff7676
+  );
+  color: #fff;
+  border-color: #ff5a5f;
+  box-shadow: 0 0 12px rgba(255, 90, 95, 0.45);
 }
