@@ -136,3 +136,105 @@
 .process-another-btn {
   background: #333 !important;
 }
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .ocr-root {
+    padding: 16px 12px;
+  }
+
+  .ocr-header h2 {
+    font-size: 24px;
+  }
+
+  .ocr-header p {
+    font-size: 14px;
+  }
+
+  .ocr-output-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .ocr-upload {
+    padding: 40px 20px;
+    border-radius: 12px;
+  }
+
+  .ocr-upload-icon {
+    font-size: 40px;
+  }
+
+  .ocr-upload-title {
+    font-size: 18px;
+    margin-top: 8px;
+  }
+
+  .ocr-upload-btn {
+    margin-top: 12px;
+    padding: 14px 24px;
+    font-size: 16px;
+    min-height: 44px;
+    border-radius: 8px;
+  }
+
+  .ocr-output-right {
+    padding: 16px;
+    border-radius: 12px;
+    gap: 8px;
+  }
+
+  .ocr-output-right h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .ocr-output-right button {
+    padding: 14px;
+    font-size: 16px;
+    min-height: 44px;
+    border-radius: 8px;
+  }
+
+  .ocr-preview-frame,
+  .ocr-result-preview {
+    height: calc(50vh - 20px);
+    margin-top: 12px;
+    border-radius: 12px;
+  }
+
+  .ocr-result-preview {
+    padding: 12px;
+  }
+
+  .ocr-result-preview pre {
+    font-size: 14px;
+  }
+
+  .ocr-placeholder {
+    font-size: 16px;
+    margin-top: 30%;
+  }
+
+  .ocr-progress-bar {
+    height: 6px;
+  }
+
+  .ocr-progress-text {
+    font-size: 14px;
+  }
+
+  .process-another-btn {
+    padding: 14px !important;
+    font-size: 16px !important;
+    min-height: 44px !important;
+  }
+
+  button,
+  input[type="button"],
+  input[type="submit"] {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+}

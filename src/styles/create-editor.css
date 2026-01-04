@@ -604,6 +604,126 @@
   .zoom-slider {
     z-index: 30;
   }
+
+  /* Adjust root padding for mobile */
+  .create-editor-root {
+    padding: 8px 0;
+    gap: 8px;
+    min-height: calc(100vh - 80px);
+  }
+
+  /* Make textareas touch-friendly */
+  .heading-textarea {
+    min-height: 60px;
+    font-size: 18px;
+    padding: 12px;
+  }
+
+  .body-textarea {
+    min-height: 200px;
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  /* Compact pages bar */
+  .pages-bar {
+    padding: 8px 12px;
+    gap: 8px;
+    overflow-x: auto;
+  }
+
+  .page-pill,
+  .delete-page-btn {
+    padding: 10px 14px;
+    font-size: 14px;
+    min-width: 60px;
+  }
+
+  /* Toolbar adjustments */
+  .toolbar-input {
+    width: 48px;
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+
+  .toolbar-toggle {
+    min-width: 32px;
+    height: 28px;
+    font-size: 13px;
+    padding: 0 8px;
+  }
+
+  .toolbar-label {
+    font-size: 11px;
+  }
+
+  /* Context menu wider on mobile */
+  .pdf-context-menu {
+    min-width: 160px;
+    padding: 6px;
+  }
+
+  .context-item {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  /* Buttons touch-friendly */
+  .sidebar-primary-btn,
+  .sidebar-pill-btn,
+  .delete-page-btn,
+  .page-pill,
+  .toolbar-toggle,
+  button {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Zoom slider fixed and wider */
+  .zoom-slider {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 90px !important;
+    width: calc(100% - 32px) !important;
+    max-width: 400px !important;
+    z-index: 995 !important;
+    background: rgba(42, 34, 47, 0.9);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  .zoom-slider input[type="range"] {
+    width: 100% !important;
+  }
+
+  /* Enlarge handles further for touch */
+  .resize-handle,
+  .rnd-resize-handle,
+  .rnd-resize-handle * {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    right: -12px !important;
+    bottom: -12px !important;
+    border-radius: 50% !important;
+    background: #ff5164 !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35) !important;
+    z-index: 999 !important;
+    touch-action: none !important;
+  }
+
+  /* Prevent horizontal scroll */
+  html, body, .create-editor-root {
+    overflow-x: hidden !important;
+  }
+
+  /* Safe area for bottom */
+  body, .create-editor-root {
+    padding-bottom: max(env(safe-area-inset-bottom), 12px);
+  }
 }
 
 /* Slight improvement for medium screens (tablet) */
