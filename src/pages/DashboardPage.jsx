@@ -5,7 +5,7 @@ import "../styles/kuro-dashboard.css";
 import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import Footer from "../components/layout/Footer";
-import "./styles/no-scrollbar-override.css";
+import "../styles/no-scrollbar-override.css";
 
 
 export default function DashboardPage() {

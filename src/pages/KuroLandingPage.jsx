@@ -3,7 +3,7 @@ import { useSignIn, useAuth } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import "../styles/kuro.css";
-import "./styles/no-scrollbar-override.css";
+import "../styles/no-scrollbar-override.css";
 
 
 export default function KuroLandingPage() {

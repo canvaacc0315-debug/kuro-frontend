@@ -1,6 +1,6 @@
 import PublicPageLayout from "../components/layout/PublicPageLayout";
 import "../styles/public-pages.css";
-import "./styles/no-scrollbar-override.css";
+import "../styles/no-scrollbar-override.css";
 
 
 export default function About() {

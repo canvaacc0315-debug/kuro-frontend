@@ -12,7 +12,7 @@ import { jsPDF } from "jspdf";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import OcrPanel from "../components/OcrPanel";
 import "../styles/chat-overrides.css";
-import "./styles/no-scrollbar-override.css";
+import "../styles/no-scrollbar-override.css";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
