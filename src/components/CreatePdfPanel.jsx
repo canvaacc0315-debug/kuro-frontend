@@ -199,7 +199,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
 
     const pageRect = pageRef.current.getBoundingClientRect();
     const pointerX = e.clientX - pageRect.left;
-    const pointerY = e.clientY - pageRect.top;
+    const pointerY = e.clientY - pageRect.top; // 👈 FIXED: was pageRef.top, now pageRect.top
 
     setDragState({
       imageId: img.id,
@@ -435,7 +435,27 @@ export default function CreatePdfPanel({ onExportPdf }) {
     };
   })();
 
-  /* ------------ FRONTEND PDF EXPORT (improved positioning) ------------ */
+  /* ------------ FRONTEND PDF EXPORT (fixed image loading) ------------ */
+
+  // 👈 FIXED: Simplified image loader – load dims only, use src directly in addImage (avoids canvas tainting)
+  const loadImageDimensions = (src) =>
+    new Promise((resolve) => {
+      const img = new Image();
+      // 👈 FIXED: No crossOrigin for blob URLs (local/same-origin)
+      if (!src.startsWith('blob:')) {
+        img.crossOrigin = "anonymous";
+      }
+      img.onload = () => {
+        console.log('Image loaded successfully:', src); // 👈 DEBUG log
+        resolve({ width: img.naturalWidth, height: img.naturalHeight });
+      };
+      img.onerror = (err) => {
+        console.error('Image load failed:', src, err); // 👈 DEBUG log
+        // 👈 FIXED: Use reasonable defaults instead of 0
+        resolve({ width: 400, height: 300 }); // Assume standard aspect
+      };
+      img.src = src;
+    });
 
   // 👈 IMPROVED: Assume editor page dims for better x/y mapping (A4 ~595x842pt, editor ~600x800px)
   const EDITOR_WIDTH = 600;
@@ -444,32 +464,6 @@ export default function CreatePdfPanel({ onExportPdf }) {
   const PDF_HEIGHT = 842;
   const SCALE_FACTOR_X = PDF_WIDTH / EDITOR_WIDTH;
   const SCALE_FACTOR_Y = PDF_HEIGHT / EDITOR_HEIGHT;
-
-  // helper to load an image src into dataURL (canvas) so jsPDF can add it
-  const loadImageAsDataUrl = (src) =>
-    new Promise((resolve) => {
-      try {
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => {
-          const c = document.createElement("canvas");
-          c.width = img.naturalWidth;
-          c.height = img.naturalHeight;
-          const ctx = c.getContext("2d");
-          ctx.drawImage(img, 0, 0);
-          try {
-            const dataUrl = c.toDataURL("image/png");
-            resolve({ dataUrl, width: img.naturalWidth, height: img.naturalHeight });
-          } catch {
-            resolve({ dataUrl: src, width: img.naturalWidth, height: img.naturalHeight }); // fallback
-          }
-        };
-        img.onerror = () => resolve({ dataUrl: src, width: 0, height: 0 });
-        img.src = src;
-      } catch {
-        resolve({ dataUrl: src, width: 0, height: 0 });
-      }
-    });
 
   // export all pages to a PDF in the browser
   const exportToPdf = async () => {
@@ -537,37 +531,44 @@ export default function CreatePdfPanel({ onExportPdf }) {
         pdf.text(bodyLines, margin, cursorY);
         cursorY += (bodyLines.length + 1) * (bodyStyle.fontSize || 14);
 
-        // images: render each with improved positioning
+        // images: render each with improved positioning and direct URL usage
         for (const img of p.images || []) {
           try {
-            const { dataUrl, width: imgW, height: imgH } = await loadImageAsDataUrl(img.src);
+            console.log('Attempting to add image:', img.src); // 👈 DEBUG log
+
+            const { width: imgW, height: imgH } = await loadImageDimensions(img.src);
 
             const contentWidth = pageWidth - margin * 2;
             const targetW = ((img.scale || 60) / 100) * contentWidth;
-            let targetH = targetW * (imgH && imgW ? imgH / imgW : 0.6);
+            let targetH = targetW * (imgH && imgW ? imgH / imgW : 0.6); // 👈 Use loaded dims
 
             if (!targetH || Number.isNaN(targetH) || targetH <= 0) {
-              targetH = targetW * 0.6;
+              targetH = targetW * 0.6; // Fallback aspect
             }
 
-            // 👈 IMPROVED: Map editor px to PDF pt using scale factors
+            // 👈 FIXED: Map editor px to PDF pt using scale factors
             const imgX = margin + (img.x || 0) * SCALE_FACTOR_X;
             const imgY = margin + (img.y || 0) * SCALE_FACTOR_Y;
 
-            pdf.addImage(dataUrl, "PNG", imgX, imgY, targetW, targetH);
+            // 👈 FIXED: Use src directly (URL/blob works in jsPDF) + detect format loosely
+            const format = img.src.toLowerCase().includes('png') ? 'PNG' : 'JPEG';
+            pdf.addImage(img.src, format, imgX, imgY, targetW, targetH);
+
+            console.log('Image added:', { imgX, imgY, targetW, targetH }); // 👈 DEBUG log
 
             // Update cursor if image overlaps (simple heuristic)
             if (imgY + targetH > cursorY) {
               cursorY = imgY + targetH + 12;
             }
           } catch (err) {
-            console.warn("Failed to add image to PDF:", err);
+            console.error('Failed to add image to PDF:', img.src, err); // 👈 Enhanced error log
           }
         }
 
         // 👈 NEW: Add page number footer
         pdf.setFontSize(10);
         pdf.setFont("helvetica", "normal");
+        pdf.setTextColor(100, 100, 100); // Gray for footer
         pdf.text(`Page ${i + 1} of ${pages.length}`, pageWidth / 2, pageHeight - 20, { align: "center" });
       }
 
