@@ -519,7 +519,8 @@ export default function KuroWorkspacePage() {
                     width: "100%",
                     height: "75vh",
                     border: "none",
-                    borderRadius: "10px",
+                    borderRadius: "0",
+                    boxShadow: "none",
                     background: "#111",
                   }}
                 />
@@ -752,23 +753,24 @@ export default function KuroWorkspacePage() {
                         <option value="bullet">Bullet points</option>
                       </select>
                     </div>
+                  </div>
 
-                    <div style={{ display: "flex", gap: "8px" }}>
-                      <button
-                        type="button"
-                        className="clear-conversation-btn"
-                        onClick={handleSaveConversation}
-                      >
-                        💾 Save Conversation
-                      </button>
-                      <button
-                        type="button"
-                        className="clear-conversation-btn"
-                        onClick={handleClearConversation}
-                      >
-                        🗑 Clear Conversation
-                      </button>
-                    </div>
+                  {/* MOVED: Separate row for conversation buttons, away from top-row */}
+                  <div className="chat-actions-row" style={{ display: "flex", justifyContent: "flex-end", padding: "10px 0", marginBottom: "10px" }}>
+                    <button
+                      type="button"
+                      className="clear-conversation-btn"
+                      onClick={handleSaveConversation}
+                    >
+                      💾 Save Conversation
+                    </button>
+                    <button
+                      type="button"
+                      className="clear-conversation-btn"
+                      onClick={handleClearConversation}
+                    >
+                      🗑 Clear Conversation
+                    </button>
                   </div>
 
                   {/* CHAT MESSAGES */}
