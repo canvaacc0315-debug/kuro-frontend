@@ -1,440 +1,164 @@
-/* ROOT */
-.ocr-root {
-  max-width: 1400px;
-  margin: auto;
-  padding: 24px;
-  color: #e5e7eb;
-}
+/* ======================================================
+   OCR OVERRIDES – RovexAI
+   Purpose:
+   - Fix layout overflow
+   - Improve OCR preview readability
+   - Match chat dark theme
+   - Prevent iframe / canvas bleed
+   ====================================================== */
 
-/* HEADER */
-.ocr-header h2 {
-  font-size: 34px;
-}
-.ocr-header span {
-  color: #ef4444;
-}
-.ocr-header p {
-  color: #9ca3af;
-}
-
-/* LAYOUT - Simple flex layout matching chat */
-.ocr-output-layout {
-  display: flex;
-  gap: 24px;
-  margin-top: 24px;
-}
-
-/* LEFT SIDE - Simple main area */
-.ocr-main {
-  flex: 2;
-}
-
-.ocr-upload {
-  border: 1px solid #ef4444;
-  border-radius: 12px;
-  padding: 40px;
-  text-align: center;
-  cursor: pointer;
-  background: rgba(15, 15, 18, 0.5);
-}
-
-.ocr-upload-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-}
-
-.ocr-upload-title {
-  font-size: 20px;
-  margin-bottom: 8px;
-}
-
-.ocr-upload-btn {
-  padding: 12px 24px;
-  background: #ef4444;
-  border: none;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease;
-}
-
-.ocr-upload-btn:hover {
-  background: #dc2626;
-}
-
-/* PDF PREVIEW - Simple container matching chat */
-.ocr-preview-container {
-  display: flex;
-  flex-direction: column;
-  height: 520px;
-  background: rgba(20, 20, 30, 0.6);
-  border: 1px solid #ef4444;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-top: 16px;
-}
-
-.ocr-preview-frame {
-  flex: 1;
+/* ---------- OCR ROOT ---------- */
+.ocr-panel,
+.ocr-container {
   width: 100%;
-  border: none;
-  background: black;
-}
-
-/* RIGHT PANEL - Simple assist area */
-.ocr-assist {
-  flex: 1;
-  min-width: 280px;
-}
-
-.ocr-output-right {
-  background: rgba(15, 15, 18, 0.95);
-  border: 1px solid #ef4444;
-  border-radius: 12px;
-  padding: 18px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  height: 520px;
+  gap: 16px;
+  background: transparent;
 }
 
-.ocr-output-right h4 {
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #e5e7eb;
-}
-
-/* BUTTONS - Clean, no glow */
-.ocr-output-right button {
-  padding: 12px;
-  background: #ef4444;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  min-height: 44px;
+/* ---------- OCR HEADER ---------- */
+.ocr-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: background 0.2s ease;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.ocr-output-right button:hover:not(:disabled) {
-  background: #dc2626;
+.ocr-header-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
 }
 
-.ocr-output-right button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: #333;
+/* ---------- OCR ACTION BUTTONS ---------- */
+.ocr-actions {
+  display: flex;
+  gap: 8px;
 }
 
-/* OCR RESULT - Simple preview area */
-.ocr-result-preview {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid #ef4444;
-  border-radius: 8px;
-  padding: 16px;
-  overflow-y: auto;
-}
-
-.ocr-result-preview pre {
+.ocr-btn {
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff5a5f, #ff7676);
+  color: #fff;
+  border: none;
   font-size: 13px;
-  white-space: pre-wrap;
-  color: #e5e7eb;
-  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* PLACEHOLDER */
-.ocr-placeholder {
-  color: #9ca3af;
-  font-size: 14px;
-  text-align: center;
-  padding: 40px;
+.ocr-btn.secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* PROGRESS - Simple bar */
-.ocr-progress-bar {
-  height: 6px;
-  background: #333;
-  border-radius: 3px;
+.ocr-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(255, 90, 95, 0.35);
+}
+
+/* ---------- OCR BODY LAYOUT ---------- */
+.ocr-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  min-height: 0; /* CRITICAL for overflow */
+}
+
+/* ---------- LEFT: OCR PREVIEW ---------- */
+.ocr-preview {
+  position: relative;
+  border-radius: 14px;
   overflow: hidden;
-  margin-top: 8px;
+  background: #0d0f14;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.ocr-progress-fill {
+/* PDF / IMAGE / CANVAS FIX */
+.ocr-preview iframe,
+.ocr-preview canvas,
+.ocr-preview img {
+  width: 100%;
   height: 100%;
-  background: #ef4444;
-  transition: width 0.3s ease;
+  object-fit: contain;
+  background: #0d0f14;
 }
 
-.ocr-progress-text {
+/* ---------- RIGHT: OCR TEXT OUTPUT ---------- */
+.ocr-result {
+  display: flex;
+  flex-direction: column;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+/* ---------- OCR RESULT HEADER ---------- */
+.ocr-result-header {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffb3b6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* ---------- OCR TEXT AREA ---------- */
+.ocr-text-output {
+  flex: 1;
+  padding: 14px;
+  overflow-y: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #e6e6e6;
+  white-space: pre-wrap;
+}
+
+/* scrollbar (matches chat) */
+.ocr-text-output::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ocr-text-output::-webkit-scrollbar-thumb {
+  background: rgba(255, 90, 95, 0.35);
+  border-radius: 6px;
+}
+
+/* ---------- EMPTY STATE ---------- */
+.ocr-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  font-size: 13px;
+  gap: 8px;
+}
+
+/* ---------- STATUS / PROGRESS ---------- */
+.ocr-status {
+  margin-top: 8px;
   font-size: 12px;
-  color: #9ca3af;
-  margin-top: 4px;
+  color: #ffb3b6;
 }
 
-/* RESET BUTTON */
-.process-another-btn {
-  background: #333 !important;
-  border: 1px solid #555 !important;
-}
-.process-another-btn:hover {
-  background: #444 !important;
-}
-
-/* ===========================
-   RESPONSIVE - Clean and simple
-=========================== */
-
-/* Tablet */
+/* ---------- MOBILE / SMALL SCREENS ---------- */
 @media (max-width: 1024px) {
-  .ocr-root {
-    padding: 20px;
+  .ocr-body {
+    grid-template-columns: 1fr;
   }
 
-  .ocr-output-layout {
-    flex-direction: column;
-    gap: 20px;
+  .ocr-preview {
+    min-height: 280px;
   }
-
-  .ocr-header h2 {
-    font-size: 28px;
-  }
-
-  .ocr-upload {
-    padding: 32px;
-  }
-
-  .ocr-upload-icon {
-    font-size: 40px;
-  }
-
-  .ocr-upload-title {
-    font-size: 18px;
-  }
-
-  .ocr-upload-btn {
-    padding: 12px 20px;
-  }
-
-  .ocr-preview-container,
-  .ocr-output-right {
-    height: 420px;
-  }
-
-  .ocr-output-right {
-    padding: 16px;
-  }
-
-  .ocr-result-preview pre {
-    font-size: 12px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .ocr-root {
-    padding: 16px 12px;
-  }
-
-  .ocr-output-layout {
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .ocr-header h2 {
-    font-size: 24px;
-    text-align: center;
-  }
-
-  .ocr-header p {
-    text-align: center;
-    font-size: 14px;
-  }
-
-  .ocr-upload {
-    padding: 24px 16px;
-  }
-
-  .ocr-upload-icon {
-    font-size: 32px;
-  }
-
-  .ocr-upload-title {
-    font-size: 16px;
-  }
-
-  .ocr-upload-btn {
-    padding: 12px 16px;
-    font-size: 14px;
-  }
-
-  .ocr-preview-container,
-  .ocr-result-preview {
-    height: calc(100vh - 220px);
-  }
-
-  .ocr-output-right {
-    height: auto;
-    padding: 12px;
-    gap: 8px;
-  }
-
-  .ocr-output-right button {
-    padding: 12px;
-    font-size: 14px;
-  }
-
-  .ocr-result-preview {
-    padding: 12px;
-  }
-
-  .ocr-result-preview pre {
-    font-size: 12px;
-    line-height: 1.4;
-  }
-
-  .ocr-placeholder {
-    font-size: 13px;
-    padding: 32px;
-  }
-
-  .process-another-btn {
-    width: 100%;
-    padding: 12px !important;
-    font-size: 14px;
-  }
-}
-
-/* Small Mobile */
-@media (max-width: 480px) {
-  .ocr-root {
-    padding: 12px 8px;
-  }
-
-  .ocr-header h2 {
-    font-size: 20px;
-  }
-
-  .ocr-header p {
-    font-size: 13px;
-  }
-
-  .ocr-upload {
-    padding: 20px 12px;
-  }
-
-  .ocr-upload-icon {
-    font-size: 28px;
-  }
-
-  .ocr-upload-title {
-    font-size: 15px;
-  }
-
-  .ocr-upload-btn {
-    padding: 10px 14px;
-    font-size: 13px;
-  }
-
-  .ocr-preview-container,
-  .ocr-result-preview {
-    height: 380px;
-  }
-
-  .ocr-output-right {
-    padding: 10px;
-  }
-
-  .ocr-output-right button {
-    padding: 10px;
-    font-size: 13px;
-  }
-
-  .ocr-result-preview pre {
-    font-size: 11px;
-  }
-
-  .ocr-placeholder {
-    font-size: 12px;
-    padding: 24px;
-  }
-}
-
-/* Extra Small Mobile */
-@media (max-width: 360px) {
-  .ocr-root {
-    padding: 8px 4px;
-  }
-
-  .ocr-output-layout {
-    gap: 12px;
-  }
-
-  .ocr-header h2 {
-    font-size: 18px;
-  }
-
-  .ocr-upload {
-    padding: 16px 8px;
-  }
-
-  .ocr-upload-icon {
-    font-size: 24px;
-  }
-
-  .ocr-upload-title {
-    font-size: 14px;
-  }
-
-  .ocr-preview-container,
-  .ocr-result-preview {
-    height: 350px;
-  }
-
-  .ocr-result-preview {
-    padding: 8px;
-  }
-
-  .ocr-result-preview pre {
-    font-size: 10px;
-  }
-}
-
-/* ================= ACCESSIBILITY ================= */
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* High contrast enhancements */
-@media (prefers-contrast: high) {
-  .ocr-upload,
-  .ocr-preview-container,
-  .ocr-output-right,
-  .ocr-result-preview {
-    border-width: 2px;
-  }
-}
-
-/* Focus visibility */
-*:focus-visible {
-  outline: 2px solid #ef4444;
-  outline-offset: 2px;
 }
