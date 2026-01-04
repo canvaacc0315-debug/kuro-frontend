@@ -110,7 +110,7 @@ body {
 
 .hero-banner:hover {
   transform: translateY(-4px); /* Lift on hover */
-  box-shadow: 0 20px 40px rgba(255, 107, 107, 0.2); /* Glow shadow */
+  /* Removed glow shadow */
 }
 
 .hero-title {
@@ -127,16 +127,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: textGlow 2s ease-in-out infinite alternate; /* Pulsing glow */
-}
-
-@keyframes textGlow {
-  from {
-    filter: drop-shadow(0 0 4px rgba(255, 107, 107, 0.5));
-  }
-  to {
-    filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.8));
-  }
+  /* Removed pulsing glow animation */
 }
 
 .hero-subtitle {
@@ -261,7 +252,7 @@ body {
   background: rgba(20, 20, 30, 0.8);
   border-color: rgba(255, 107, 107, 0.4);
   transform: translateY(-8px) rotateX(2deg); /* 3D tilt */
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 107, 107, 0.2);
+  /* Removed glow shadow */
 }
 
 .workspace-card:hover::before {
@@ -277,7 +268,7 @@ body {
   margin-bottom: 20px;
   display: inline-block;
   transition: transform 0.3s ease; /* Icon bounce */
-  filter: drop-shadow(0 4px 8px rgba(255, 107, 107, 0.3));
+  /* Removed drop-shadow filter */
 }
 
 .workspace-card:hover .workspace-icon {
@@ -373,7 +364,7 @@ body {
 
 .workspace-btn:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+  /* Removed glow shadow */
 }
 
 .workspace-btn:active {
@@ -424,7 +415,7 @@ body {
   background: rgba(255, 107, 107, 0.08);
   border-color: rgba(255, 107, 107, 0.3);
   transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.15);
+  /* Removed glow shadow */
 }
 
 .feature-icon {
@@ -527,7 +518,7 @@ body {
 .chat-toolbar button:hover,
 .toolbar button:hover {
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3) !important;
+  /* Removed glow shadow */
 }
 
 .chat-toolbar select,
@@ -628,7 +619,7 @@ body {
 }
 
 /* ===========================
-   SCROLLBAR - Custom Theme
+   SCROLLBAR - Custom Theme (No Glow on Hover)
 =========================== */
 
 ::-webkit-scrollbar {
@@ -648,7 +639,7 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #ff8787, #ff6b6b);
-  transform: scale(1.1); /* Subtle expand */
+  /* Removed transform scale */
 }
 
 /* ===========================
