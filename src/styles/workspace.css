@@ -227,8 +227,8 @@ body {
 /* Upload Section */
 .upload-container {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-  gap: 40px;
+  grid-template-columns: 1.6fr 0.6fr;
+  gap: 24px;
   align-items: flex-start;
 }
 
@@ -298,6 +298,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-height: 82vh;
+  overflow-y: auto;
 }
 
 .uploaded-files-title {
@@ -371,43 +373,54 @@ body {
   background: rgba(255, 107, 107, 0.2);
 }
 
-/* Upload tab - preview row */
-.upload-preview-row {
-  margin-top: 32px;
-}
-
-/* PDF viewer */
-.pdf-viewer-wrapper,
-.pdf-viewer {
+/* PDF Preview */
+.pdf-preview-panel {
   width: 100%;
-  min-height: 420px;
-  border-radius: 12px;
+  height: 82vh;
+  background: rgba(20, 20, 30, 0.6);
+  border-radius: 16px;
   border: 1px solid rgba(255, 107, 107, 0.25);
-  background: #050712;
-  overflow: hidden;
+  padding: 14px;
   display: flex;
+  flex-direction: column;
 }
 
-.pdf-viewer-frame {
-  width: 100%;
-  height: 100%;
-  border: none;
-  background: #050712;
-}
-
-.pdf-viewer-empty,
-.pdf-viewer-error,
-.pdf-viewer-loading {
-  width: 100%;
-  min-height: 240px;
-  border-radius: 12px;
-  border: 1px dashed rgba(255, 107, 107, 0.3);
+.pdf-preview-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  color: #888;
-  background: rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+}
+
+.pdf-preview-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f9fafb;
+}
+
+.pdf-preview-back-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 107, 107, 0.7);
+  background: transparent;
+  color: #fecaca;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.pdf-preview-back-btn:hover {
+  background: rgba(255, 107, 107, 0.15);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.pdf-preview-frame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: #000;
 }
 
 /* Empty State */
@@ -435,8 +448,7 @@ body {
   color: #666666;
 }
 
-/* ------- Chat & subtabs ------- */
-
+/* Chat & Subtabs */
 .chat-selected-file-banner {
   border-radius: 10px;
   border: 1px dashed rgba(255, 107, 107, 0.35);
@@ -489,7 +501,20 @@ body {
   display: block;
 }
 
-/* Make current chat wider */
+.chat-layout {
+  display: flex;
+  gap: 24px;
+}
+
+.chat-main {
+  flex: 2;
+}
+
+.chat-assist {
+  flex: 1;
+  min-width: 280px;
+}
+
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -497,11 +522,6 @@ body {
   background: rgba(255, 255, 255, 0.02);
   border-radius: 12px;
   overflow: hidden;
-}
-
-.chat-container-wide {
-  max-width: 1100px;
-  margin: 0 auto;
 }
 
 .chat-messages {
@@ -557,7 +577,6 @@ body {
   color: #ffffff;
 }
 
-/* chat input */
 .chat-input-area {
   border-top: 1px solid rgba(255, 107, 107, 0.15);
   padding: 16px;
@@ -603,10 +622,19 @@ body {
   box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
 }
 
-/* Answer style dropdown */
-.answer-style-wrapper {
-  margin: 0 auto 16px;
-  max-width: 280px;
+/* Chat Top Row */
+.chat-top-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chat-pdf-select,
+.chat-answer-style {
+  flex: 1 1 220px;
 }
 
 .form-label {
@@ -639,17 +667,158 @@ body {
   box-shadow: 0 0 0 1px rgba(255, 107, 107, 0.4);
 }
 
-/* --- Chat history --- */
+.clear-conversation-btn {
+  padding: 10px 18px;
+  background: rgba(255, 107, 107, 0.15);
+  border: 1px solid rgba(255, 107, 107, 0.6);
+  color: #ff6b6b;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+.clear-conversation-btn:hover {
+  background: rgba(255, 107, 107, 0.25);
+  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.25);
+}
+
+/* Scope Selector */
+.chat-scope-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 14px;
+  flex-wrap: wrap;
+}
+
+.scope-label {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.scope-options {
+  display: flex;
+  gap: 6px;
+}
+
+.scope-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid #333;
+  background: #111;
+  color: #ccc;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scope-pill:hover {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.scope-pill.active {
+  background: linear-gradient(135deg, #6b8cff, #8b5cf6);
+  color: #fff;
+  border-color: transparent;
+}
+
+.scope-input {
+  width: 70px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #0f0f0f;
+  color: #fff;
+  font-size: 12px;
+}
+
+.scope-range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scope-separator {
+  color: #777;
+  font-size: 12px;
+}
+
+/* PDF Question Suggestions */
+.chat-suggestions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.suggestion-chip {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #eee;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.suggestion-chip:hover {
+  background: rgba(120,120,255,0.25);
+  transform: translateY(-1px);
+}
+
+.question-suggestions {
+  margin-bottom: 12px;
+}
+
+.question-header {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 6px;
+}
+
+.question-group {
+  margin-bottom: 8px;
+}
+
+.question-group-title {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.question-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.question-chip {
+  background: #1f2937;
+  border: 1px solid #333;
+  color: #e5e7eb;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.question-chip:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+/* Chat History */
 .history-container {
   background: rgba(255, 255, 255, 0.02);
   border-radius: 12px;
   padding: 30px;
   min-height: 320px;
-}
-
-.history-wide {
-  max-width: 1100px;
-  margin: 0 auto;
 }
 
 .history-header {
@@ -687,13 +856,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-/* 2x2 grid */
-.history-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
 }
 
 .history-item {
@@ -746,17 +908,12 @@ body {
   background: rgba(255, 107, 107, 0.2);
 }
 
-/* --- Export conversation --- */
+/* Export Conversation */
 .export-container {
   background: rgba(255, 255, 255, 0.02);
   border-radius: 12px;
   padding: 30px;
   min-height: 320px;
-}
-
-.export-wide {
-  max-width: 1100px;
-  margin: 0 auto;
 }
 
 .export-header {
@@ -783,7 +940,6 @@ body {
   margin-bottom: 30px;
 }
 
-/* 3-column layout on desktop */
 .export-grid-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -865,227 +1021,7 @@ body {
   font-weight: 600;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
-  .upload-container {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .history-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .export-grid-3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .main-container {
-    padding: 20px;
-  }
-
-  .navbar {
-    flex-direction: column;
-    gap: 12px;
-    padding: 12px 20px;
-  }
-
-  .tabs-nav {
-    padding: 0;
-  }
-
-  .tab-btn {
-    padding: 12px 16px;
-    font-size: 12px;
-  }
-
-  .tab-content {
-    padding: 20px;
-  }
-
-  .chat-container {
-    height: 420px;
-  }
-
-  .message-bubble {
-    max-width: 90%;
-  }
-
-  .export-grid-3 {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/* upload layout with preview on the right */
-.upload-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.2fr);
-  gap: 32px;
-  align-items: flex-start;
-}
-
-.uploaded-files-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-/* PDF preview full height */
-.pdf-preview-shell {
-  margin-top: 12px;
-}
-
-.pdf-viewer {
-  width: 100%;
-  height: 520px;             /* big, fixed height */
-  border-radius: 12px;
-  border: 1px solid rgba(255, 107, 107, 0.25);
-  background: #050712;
-  overflow: hidden;
-  display: flex;
-}
-
-.pdf-viewer-frame {
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.pdf-viewer-empty {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pdf-viewer-empty-text {
-  font-size: 13px;
-  color: #888;
-}
-
-/* make chat container wider/taller */
-.current-chat-layout {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.chat-container-large {
-  height: 560px;
-}
-
-/* history wider + 2x2 grid */
-.history-container-wide {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.history-list-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
-}
-
-/* export wider + 3 column grid */
-.export-container-wide {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.export-grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 24px;
-}
-
-.export-card-large {
-  min-height: 210px;
-}
-
-/* responsive tweaks */
-@media (max-width: 1200px) {
-  .upload-layout {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .history-list-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .export-grid-3 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .history-list-grid,
-  .export-grid-3 {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .pdf-viewer {
-    height: 420px;
-  }
-}
-
-.navbar-profile-photo {
-  width: 32px;
-  height: 32px;
-  border-radius: 999px;
-  object-fit: cover;
-  margin-left: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-/* ===== NEW: Chat top row (PDF dropdown + answer style + clear convo) ===== */
-
-.chat-top-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
-.chat-pdf-select {
-  flex: 1 1 260px;
-}
-
-.chat-answer-style {
-  flex: 0 0 220px;
-}
-
-.clear-conversation-btn {
-  padding: 10px 18px;
-  background: rgba(255, 107, 107, 0.15);
-  border: 1px solid rgba(255, 107, 107, 0.6);
-  color: #ff6b6b;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.25s ease;
-}
-
-.clear-conversation-btn:hover {
-  background: rgba(255, 107, 107, 0.25);
-  box-shadow: 0 8px 20px rgba(255, 107, 107, 0.25);
-}
-
-/* stack nicely on small screens */
-@media (max-width: 768px) {
-  .chat-top-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .clear-conversation-btn {
-    align-self: flex-start;
-  }
-}/* ===================== ANALYSIS PANEL ===================== */
-
+/* Analysis Panel */
 .analysis-panel {
   display: flex;
   flex-direction: column;
@@ -1162,7 +1098,6 @@ body {
   box-shadow: 0 0 0 1px rgba(255, 107, 107, 0.4);
 }
 
-/* Generate button */
 .analysis-generate-btn {
   padding: 10px 22px;
   border-radius: 999px;
@@ -1188,7 +1123,6 @@ body {
   cursor: default;
 }
 
-/* Result card */
 .analysis-result-card {
   border-radius: 12px;
   border: 1px solid rgba(255, 107, 107, 0.22);
@@ -1226,7 +1160,6 @@ body {
   overflow-y: auto;
 }
 
-/* result text + skeleton */
 .analysis-result-text {
   font-size: 12px;
   line-height: 1.7;
@@ -1272,19 +1205,7 @@ body {
   }
 }
 
-/* responsive tweaks */
-@media (max-width: 900px) {
-  .analysis-header {
-    align-items: flex-start;
-  }
-
-  .analysis-controls {
-    width: 100%;
-    justify-content: flex-start;
-  }
-}
-/* ===================== CREATE & EDIT – CUSTOM PDF DESIGNER ===================== */
-
+/* Create & Edit Panel */
 .create-editor-root {
   display: flex;
   border-radius: 12px;
@@ -1294,8 +1215,6 @@ body {
   overflow: hidden;
   min-height: 480px;
 }
-
-/* Sidebar */
 
 .create-sidebar {
   width: 260px;
@@ -1367,8 +1286,6 @@ body {
   gap: 8px;
 }
 
-/* Main area */
-
 .create-main {
   flex: 1;
   display: flex;
@@ -1418,8 +1335,6 @@ body {
   flex: 1;
   display: flex;
 }
-
-/* Canvas */
 
 .create-canvas {
   flex: 1;
@@ -1479,8 +1394,6 @@ body {
   border-color: #ff2945;
   box-shadow: 0 0 18px rgba(255, 41, 69, 0.35);
 }
-
-/* Properties panel */
 
 .create-properties {
   width: 300px;
@@ -1564,8 +1477,6 @@ body {
   margin: 6px 0;
 }
 
-/* Buttons */
-
 .create-action-btn {
   width: 100%;
   padding: 9px 10px;
@@ -1596,8 +1507,6 @@ body {
   filter: brightness(1.08);
 }
 
-/* Scrollbar inside panels */
-
 .create-properties::-webkit-scrollbar,
 .create-sidebar::-webkit-scrollbar {
   width: 6px;
@@ -1619,18 +1528,268 @@ body {
   background: rgba(255, 41, 69, 0.5);
 }
 
-/* Responsive */
+/* OCR Panel */
+.ocr-root {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: transparent;
+}
 
-@media (max-width: 1100px) {
-  .create-sidebar {
-    width: 230px;
+.ocr-header h2 {
+  font-size: 32px;
+  color: #ffffff;
+}
+
+.ocr-header span {
+  color: #ef4444;
+}
+
+.ocr-header p {
+  color: #9ca3af;
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.ocr-content {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 40px;
+  align-items: stretch;
+}
+
+.ocr-upload {
+  background: rgba(15, 15, 20, 0.9);
+  border: 2px dashed rgba(239, 68, 68, 0.45);
+  border-radius: 16px;
+  padding: 48px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ocr-upload:hover {
+  border-color: rgba(239, 68, 68, 0.75);
+  background: rgba(18, 18, 25, 0.95);
+}
+
+.ocr-upload-icon {
+  font-size: 56px;
+  margin-bottom: 12px;
+}
+
+.ocr-upload-title {
+  font-size: 20px;
+  margin-top: 6px;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.ocr-upload-desc {
+  font-size: 13px;
+  color: #9ca3af;
+  margin-top: 6px;
+}
+
+.ocr-upload-btn {
+  margin-top: 22px;
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ocr-upload-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.45);
+}
+
+.ocr-settings {
+  background: rgba(15, 15, 20, 0.9);
+  border-radius: 16px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ocr-settings h3 {
+  margin-bottom: 18px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.ocr-settings label {
+  font-size: 12px;
+  margin-top: 14px;
+  display: block;
+  color: #cbd5f5;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ocr-settings select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 14px;
+  background: rgba(10, 10, 15, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e5e7eb;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.ocr-settings select:focus {
+  outline: none;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+}
+
+.ocr-checks {
+  margin-top: 18px;
+}
+
+.ocr-checks label {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  margin-top: 10px;
+  color: #d1d5db;
+}
+
+.ocr-checks input {
+  accent-color: #ef4444;
+}
+
+/* Navbar Profile Photo */
+.navbar-profile-photo {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  object-fit: cover;
+  margin-left: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .upload-container {
+    grid-template-columns: 1fr;
   }
-  .create-properties {
-    width: 260px;
+
+  .ocr-content {
+    grid-template-columns: 1fr;
+  }
+
+  .export-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .analysis-header {
+    align-items: flex-start;
+  }
+
+  .analysis-controls {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .pdf-preview-panel {
+    height: 70vh;
+  }
+
+  .uploaded-files {
+    max-height: unset;
   }
 }
 
 @media (max-width: 768px) {
+  .main-container {
+    padding: 20px;
+  }
+
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px 20px;
+  }
+
+  .tabs-nav {
+    padding: 0;
+  }
+
+  .tab-btn {
+    padding: 12px 16px;
+    font-size: 12px;
+  }
+
+  .tab-content {
+    padding: 20px;
+  }
+
+  .chat-container {
+    height: 420px;
+  }
+
+  .message-bubble {
+    max-width: 90%;
+  }
+
+  .export-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-top-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .clear-conversation-btn {
+    align-self: flex-start;
+  }
+
+  .chat-pdf-select,
+  .chat-answer-style {
+    flex: 1 1 100%;
+  }
+
+  .chat-messages {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .message-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+  }
+
+  .chat-input-area {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.3));
+    border-top: 1px solid rgba(255, 107, 107, 0.08);
+    gap: 8px;
+  }
+
+  .chat-input {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+
+  .send-btn {
+    padding: 10px 14px;
+    min-width: 74px;
+  }
+
   .create-editor-root {
     flex-direction: column;
     min-height: 520px;
@@ -1659,179 +1818,52 @@ body {
     margin: 10px;
     min-height: 260px;
   }
-}
-/* ========= PDF preview inside Upload tab ========= */
 
-.pdf-preview-panel {
-  flex: 1;
-  min-height: 360px;
-  background: rgba(15, 15, 25, 0.9);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 107, 107, 0.25);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-}
-
-.pdf-preview-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.pdf-preview-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #f9fafb;
-}
-
-.pdf-preview-back-btn {
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 107, 107, 0.7);
-  background: transparent;
-  color: #fecaca;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.18s ease, color 0.18s ease,
-    transform 0.12s ease;
-}
-
-.pdf-preview-back-btn:hover {
-  background: rgba(255, 107, 107, 0.15);
-  color: #ffffff;
-  transform: translateY(-1px);
-}
-
-.pdf-preview-frame {
-  flex: 1;
-  width: 100%;
-  border: none;
-  border-radius: 12px;
-  background: #111827;
-}
-/* ===========================
-   PDF PREVIEW FULL SIZE FIX
-=========================== */
-
-/* container holding upload + preview columns */
-.upload-container {
-  display: grid;
-  grid-template-columns: 1.6fr 0.6fr;
-  gap: 24px;
-}
-
-/* left preview panel */
-.pdf-preview-panel {
-  width: 100%;
-  height: 82vh;
-  background: rgba(20, 20, 30, 0.6);
-  border-radius: 16px;
-  border: 1px solid rgba(255, 107, 107, 0.25);
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-}
-
-/* preview title row */
-.pdf-preview-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.pdf-preview-title {
-  font-size: 14px;
-  color: #fff;
-  font-weight: 600;
-}
-
-.pdf-preview-back-btn {
-  background: transparent;
-  border: 1px solid rgba(255, 107, 107, 0.6);
-  color: #ff6b6b;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.pdf-preview-back-btn:hover {
-  background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-  color: #fff;
-}
-
-/* iframe – BIG readable viewer */
-.pdf-preview-frame {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  border: none;
-  background: #000;
-}
-
-/* uploaded files panel stays smaller on the right */
-.uploaded-files {
-  max-height: 82vh;
-  overflow-y: auto;
-}
-
-/* Responsive behavior */
-@media (max-width: 900px) {
-  .upload-container {
-    grid-template-columns: 1fr;
+  .pdf-preview-panel {
+    height: 62vh;
   }
 
   .uploaded-files {
-    max-height: unset;
+    max-height: none;
   }
 
-  .pdf-preview-panel {
-    height: 70vh;
+  .upload-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
-}
-/* ========== Mobile / resize-handle fixes (append to workspace.css) ========== */
 
-/* Ensure editor/canvas parents don't clip resize handles from react-rnd */
-.create-editor-root,
-.create-canvas,
-.create-canvas-content,
-.create-page,
-.create-page-shell,
-.kuro-design-canvas,
-.pdf-preview-panel,
-.upload-container,
-.create-editor-body,
-.create-properties {
-  overflow: visible !important;
-  -webkit-overflow-scrolling: touch;
-}
+  .create-editor-root,
+  .create-canvas,
+  .create-canvas-content,
+  .create-page,
+  .create-page-shell,
+  .kuro-design-canvas,
+  .pdf-preview-panel,
+  .upload-container,
+  .create-editor-body,
+  .create-properties {
+    overflow: visible !important;
+    -webkit-overflow-scrolling: touch;
+  }
 
-/* Make resize handles and dragged items visible above everything */
-.kuro-design-canvas * {
-  z-index: auto;
-}
-.kuro-design-canvas .react-rnd-resize-handle,
-.kuro-design-canvas .react-resizable-handle,
-.kuro-design-canvas .resize-handle,
-.kuro-design-canvas .rnd-resize-handle {
-  z-index: 9999 !important;
-  pointer-events: auto !important;
-}
+  .kuro-design-canvas * {
+    z-index: auto;
+  }
 
-/* Ensure canvas area allows touch dragging and doesn't swallow gestures */
-.kuro-design-canvas,
-.create-canvas,
-.create-canvas-content {
-  touch-action: none; /* allow pointer events for custom drag handlers */
-}
+  .kuro-design-canvas .react-rnd-resize-handle,
+  .kuro-design-canvas .react-resizable-handle,
+  .kuro-design-canvas .resize-handle,
+  .kuro-design-canvas .rnd-resize-handle {
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+  }
 
-/* Pin export / action buttons on small screens so they won't be pushed below the fold */
-@media (max-width: 768px) {
-  /* Export/panel buttons: stick to bottom of screen (above on-screen keyboard) */
+  .kuro-design-canvas,
+  .create-canvas,
+  .create-canvas-content {
+    touch-action: none;
+  }
+
   .sidebar-bottom,
   .create-sidebar-footer,
   .create-properties {
@@ -1843,7 +1875,6 @@ body {
     z-index: 30;
   }
 
-  /* Make export / primary actions full width and tappable */
   .sidebar-export-btn,
   .create-action-btn.primary,
   .export-btn,
@@ -1853,7 +1884,6 @@ body {
     font-size: 15px !important;
   }
 
-  /* Reduce big paddings so the canvas stays visible on phones */
   .main-container,
   .tab-content,
   .create-canvas,
@@ -1862,34 +1892,6 @@ body {
     padding-right: 12px !important;
   }
 
-  /* Make PDF preview and uploaded files stack vertically and use full width */
-  .upload-container {
-    grid-template-columns: 1fr !important;
-    gap: 12px !important;
-  }
-  .pdf-preview-panel {
-    height: 62vh !important;
-  }
-  .uploaded-files {
-    max-height: none !important;
-  }
-
-  /* Chat input area and send button stick to bottom of chat */
-  .chat-input-area {
-    position: sticky;
-    bottom: 0;
-    z-index: 40;
-    background: linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.3));
-    padding: 12px;
-  }
-
-  /* Keep inspector / properties compact */
-  .create-properties {
-    max-height: 220px;
-    overflow-y: auto !important;
-  }
-
-  /* Make images resize controls visible and above the canvas */
   .image-size-controls,
   .image-size-range,
   .image-size-label {
@@ -1905,82 +1907,13 @@ body {
     padding: 6px 8px;
   }
 
-  /* Ensure page images can be moved without getting clipped to the page */
   .page-image,
   .page-image-active,
   .page-image .image-block-inner {
     overflow: visible !important;
     touch-action: none;
   }
-}
 
-/* Desktop: allow some extra room for resize handle to show */
-@media (min-width: 769px) {
-  .kuro-design-canvas {
-    padding-bottom: 320px; /* keep bottom controls scrollable while leaving space for handles */
-    overflow: visible;
-  }
-}
-
-/* Accessibility: bigger hit targets for handles on touch devices */
-@media (pointer: coarse) {
-  .react-resizable-handle,
-  .react-rnd-resize-handle,
-  .resize-handle {
-    width: 22px !important;
-    height: 22px !important;
-    right: -12px !important;
-    bottom: -12px !important;
-    border-radius: 999px !important;
-  }
-}
-
-/* Safety: ensure PDF preview iframe sits above background but doesn't block handles */
-.pdf-preview-panel,
-.pdf-preview-frame {
-  position: relative;
-  z-index: 1;
-}
-
-/* Minor: ensure modals/menus used in create/edit (context menus) float above canvas */
-.pdf-context-menu,
-.kuro-inspector,
-.create-properties,
-.kuro-canvas-toolbar {
-  z-index: 10010;
-}
-
-/* If you still have any rule that forcibly hides overflow on body/html, make sure resize handles are allowed */
-html, body {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-/* =========================
-   Mobile fixes: Chat + Create tabs
-   Append to the end of workspace.css
-   ========================= */
-
-/* Scope: only for mobile phones */
-@media (max-width: 768px) {
-
-  /* Make the main page padding smaller so content fits */
-  .main-container {
-    padding: 12px;
-  }
-
-  /* Tabs: compress vertical spacing */
-  .tabs-nav {
-    padding: 6px 8px;
-  }
-  .tab-btn {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-
-  /* ---------- CHAT ---------- */
-  /* Stack top row controls and make buttons compact */
   .chat-top-row {
     display: flex;
     flex-direction: column;
@@ -1989,13 +1922,6 @@ html, body {
     margin-bottom: 12px;
   }
 
-  .chat-pdf-select,
-  .chat-answer-style {
-    width: 100%;
-    flex: 1 1 auto;
-  }
-
-  /* Place action buttons in a row that scrolls horizontally if needed */
   .chat-top-row > div:last-child,
   .chat-top-row > div[style] {
     display: flex;
@@ -2010,60 +1936,17 @@ html, body {
     font-size: 13px;
   }
 
-  /* Chat container: take full height available, reduce inner paddings */
   .chat-container {
-    height: calc(100vh - 220px); /* fits under navbar + tabs + input */
+    height: calc(100vh - 220px);
     border-radius: 12px;
     padding: 0;
   }
 
-  .chat-messages {
-    padding: 12px;
-    gap: 12px;
-  }
-
-  .message-bubble {
-    max-width: 88%;
-    padding: 10px 12px;
-    font-size: 14px;
-  }
-
-  .message-avatar {
-    width: 28px;
-    height: 28px;
-    font-size: 12px;
-  }
-
-  /* Input area: fixed to the bottom of the chat area and always visible */
-  .chat-input-area {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 8px;
-    background: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.04));
-    border-top: 1px solid rgba(255, 107, 107, 0.08);
-    gap: 8px;
-  }
-
-  .chat-input {
-    font-size: 14px;
-    padding: 10px 12px;
-  }
-
-  .send-btn {
-    padding: 10px 14px;
-    min-width: 74px;
-  }
-
-  /* If the chat list gets very tall, make it scroll nicely */
   .chat-messages::-webkit-scrollbar,
   .uploaded-files::-webkit-scrollbar {
     height: 6px;
   }
 
-  /* ---------- CREATE & EDIT (designer) ---------- */
-  /* Hide the large sidebars and give canvas full width */
   .create-editor-root {
     flex-direction: column;
     gap: 6px;
@@ -2074,36 +1957,39 @@ html, body {
   .create-editor-sidebar,
   .create-properties,
   .create-sidebar {
-    display: none !important; /* hide side panels on small phones */
+    display: none !important;
   }
 
-  .create-editor-main,
-  .create-editor-body {
-    width: 100%;
-    padding: 0;
+  .create-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 10px;
+    align-items: center;
   }
 
-  /* Canvas area: full width, smaller padding and keep bottom space for handles */
-  .create-page,
   .create-canvas {
-    margin: 6px 0;
-    width: calc(100% - 0px) !important;
-    max-height: none;
-    aspect-ratio: auto;
-    padding: 14px !important;
+    margin: 8px 12px;
+    min-height: calc(100vh - 260px);
     border-radius: 12px;
+  }
+
+  .create-page {
+    width: 100% !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    padding: 18px !important;
+    margin: 6px 0;
   }
 
   .create-page-shell {
     padding: 8px 0 14px;
   }
 
-  /* enlarge the page area so the white document looks centered */
   .create-canvas-content {
     padding: 8px;
   }
 
-  /* Make heading/body textareas larger and easier to tap */
   .heading-textarea {
     min-height: 48px;
     font-size: 20px;
@@ -2116,7 +2002,6 @@ html, body {
     padding: 8px;
   }
 
-  /* Page controls (pages-bar) move near the bottom and be reachable */
   .pages-bar {
     padding: 8px 6px;
     gap: 8px;
@@ -2129,7 +2014,6 @@ html, body {
     font-size: 13px;
   }
 
-  /* Floating export button: small FAB at bottom-right (reuses existing export styles) */
   .sidebar-export-btn {
     position: fixed !important;
     right: 14px !important;
@@ -2149,7 +2033,6 @@ html, body {
     display: none !important;
   }
 
-  /* Ensure resize handles & react-rnd handles are visible and touch-friendly */
   .resize-handle,
   .rnd-resize-handle,
   .rnd-resize-handle * {
@@ -2164,61 +2047,24 @@ html, body {
     touch-action: none !important;
   }
 
-  /* Make bottom padding larger so handles are never clipped */
   .create-page,
   .create-page-shell,
   .create-editor-main {
     padding-bottom: 120px !important;
   }
 
-  /* small utilities to prevent horizontal overflow */
   html, body, .workspace-root {
     overflow-x: hidden !important;
   }
 
-  /* Reduce fonts for some heavy elements so layout stays stable */
   .toolbar-toggle,
   .toolbar-input,
   .tab-btn {
     font-size: 12px !important;
   }
-}
-/* =========================
-   MOBILE FIXES — append only
-   (for Chat & Create tabs)
-   ========================= */
-
-/* Base mobile breakpoint */
-@media (max-width: 768px) {
-  /* --- Top-level layout --- */
-  .main-container {
-    padding: 12px;
-  }
-
-  /* Make tabs full width and scrollable horizontally */
-  .tabs-nav {
-    padding: 8px 6px;
-    gap: 6px;
-  }
-  .tab-btn {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-
-  /* --- CHAT TAB --- */
-  /* Stack chat controls vertically and make messages area full width */
-  .chat-top-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
-  .chat-pdf-select,
-  .chat-answer-style {
-    flex: 1 1 100%;
-  }
 
   .chat-container {
-    height: calc(100vh - 220px); /* give room for inputs and nav */
+    height: calc(100vh - 220px);
     min-height: 380px;
     border-radius: 12px;
     padding-bottom: 12px;
@@ -2256,23 +2102,14 @@ html, body {
     padding: 10px 14px;
   }
 
-  /* ensure the chat messages container scrolls above the sticky input */
   .chat-messages {
     margin-bottom: 8px;
   }
 
-  /* --- CREATE (PDF Designer) TAB --- */
   .create-editor-root {
     flex-direction: column;
     gap: 8px;
-    padding-bottom: 140px; /* room for FAB + resize handles */
-  }
-
-  /* hide desktop sidebar on phones, toolbar becomes top compact bar */
-  .create-editor-sidebar,
-  .create-sidebar,
-  .create-properties {
-    display: none !important;
+    padding-bottom: 140px;
   }
 
   .create-toolbar {
@@ -2283,7 +2120,6 @@ html, body {
     align-items: center;
   }
 
-  /* Canvas becomes full width and taller */
   .create-canvas {
     margin: 8px 12px;
     min-height: calc(100vh - 260px);
@@ -2298,14 +2134,12 @@ html, body {
     margin: 6px 0;
   }
 
-  /* ensure page has extra bottom padding so resize handles & slider aren't clipped */
   .create-page,
   .create-page-shell,
   .create-editor-main {
     padding-bottom: 140px !important;
   }
 
-  /* image handles / react-rnd handles: make big and touch friendly */
   .resize-handle,
   .rnd-resize-handle,
   .rnd-resize-handle * {
@@ -2322,12 +2156,10 @@ html, body {
     touch-action: none !important;
   }
 
-  /* Allow overflow visible so handles aren't clipped */
   .create-canvas, .create-page, .create-page-shell, .pdf-canvas-wrapper {
     overflow: visible !important;
   }
 
-  /* Image size slider (if present) should be pinned above FAB */
   .image-size-controls,
   .zoom-slider {
     position: fixed !important;
@@ -2344,7 +2176,6 @@ html, body {
     width: 100% !important;
   }
 
-  /* --- Export FAB --- */
   .sidebar-export-btn {
     position: fixed !important;
     right: 14px !important;
@@ -2361,22 +2192,19 @@ html, body {
     font-size: 20px !important;
     overflow: visible !important;
   }
-  /* hide text inside FAB so icon-only remains */
+
   .sidebar-export-btn > *:not(.export-icon) {
     display: none !important;
   }
 
-  /* ensure pages bar is above export FAB */
   .pages-bar {
     z-index: 30;
   }
 
-  /* safe area for devices with bottom nav (android) */
   body, .main-container {
     padding-bottom: env(safe-area-inset-bottom, 12px);
   }
 
-  /* Small tweaks for buttons & pills */
   .page-pill,
   .delete-page-btn,
   .clear-conversation-btn,
@@ -2385,10 +2213,19 @@ html, body {
     font-size: 13px;
     padding: 8px 12px;
   }
+
+  .tabs-nav {
+    padding: 8px 6px;
+    gap: 6px;
+  }
+
+  .tab-btn {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
 }
 
-/* --- Tablet breakpoint improvements --- */
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 769px) {
   .create-editor-sidebar {
     width: 100%;
     display: flex;
@@ -2404,291 +2241,49 @@ html, body {
   .chat-container {
     height: 520px;
   }
+
+  .kuro-design-canvas {
+    padding-bottom: 320px;
+    overflow: visible;
+  }
 }
 
-/* Small helper to explicitly allow overflow where clipping occurs */
+@media (pointer: coarse) {
+  .react-resizable-handle,
+  .react-rnd-resize-handle,
+  .resize-handle {
+    width: 22px !important;
+    height: 22px !important;
+    right: -12px !important;
+    bottom: -12px !important;
+    border-radius: 999px !important;
+  }
+}
+
+.pdf-preview-panel,
+.pdf-preview-frame {
+  position: relative;
+  z-index: 1;
+}
+
+.pdf-context-menu,
+.kuro-inspector,
+.create-properties,
+.kuro-canvas-toolbar {
+  z-index: 10010;
+}
+
+html, body {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .allow-overflow,
 .create-canvas,
 .create-page,
 .pdf-canvas-wrapper,
 .create-editor-root {
   overflow: visible !important;
-}
-/* =========================
-   OCR PANEL – FINAL THEME
-   ========================= */
-
-.ocr-root {
-  max-width: 1200px;
-  margin: 0 auto;
-  background: transparent; /* inherit main workspace */
-}
-
-/* ---------- HEADER ---------- */
-
-.ocr-header h2 {
-  font-size: 32px;
-  color: #ffffff;
-}
-
-.ocr-header span {
-  color: #ef4444;
-}
-
-.ocr-header p {
-  color: #9ca3af;
-  margin-top: 4px;
-  font-size: 14px;
-}
-
-/* ---------- MAIN LAYOUT ---------- */
-
-.ocr-content {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr; /* upload bigger */
-  gap: 40px;
-  align-items: stretch;
-}
-
-/* ---------- UPLOAD CARD ---------- */
-
-.ocr-upload {
-  background: rgba(15, 15, 20, 0.9); /* 🔥 neutral dark */
-  border: 2px dashed rgba(239, 68, 68, 0.45);
-  border-radius: 16px;
-  padding: 48px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.ocr-upload:hover {
-  border-color: rgba(239, 68, 68, 0.75);
-  background: rgba(18, 18, 25, 0.95);
-}
-
-.ocr-upload-icon {
-  font-size: 56px;
-  margin-bottom: 12px;
-}
-
-.ocr-upload-title {
-  font-size: 20px;
-  margin-top: 6px;
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.ocr-upload-desc {
-  font-size: 13px;
-  color: #9ca3af;
-  margin-top: 6px;
-}
-
-/* Upload button */
-.ocr-upload-btn {
-  margin-top: 22px;
-  padding: 12px 30px;
-  background: linear-gradient(135deg, #dc2626, #ef4444);
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.ocr-upload-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.45);
-}
-
-/* ---------- SETTINGS CARD ---------- */
-
-.ocr-settings {
-  background: rgba(15, 15, 20, 0.9); /* 🔥 same as analysis cards */
-  border-radius: 16px;
-  padding: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.ocr-settings h3 {
-  margin-bottom: 18px;
-  color: #ffffff;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-/* labels */
-.ocr-settings label {
-  font-size: 12px;
-  margin-top: 14px;
-  display: block;
-  color: #cbd5f5;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* selects */
-.ocr-settings select {
-  width: 100%;
-  margin-top: 6px;
-  padding: 12px 14px;
-  background: rgba(10, 10, 15, 0.95); /* 🔥 neutral */
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #e5e7eb;
-  border-radius: 8px;
-  font-size: 13px;
-}
-
-.ocr-settings select:focus {
-  outline: none;
-  border-color: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
-}
-
-/* ---------- CHECKBOXES ---------- */
-
-.ocr-checks {
-  margin-top: 18px;
-}
-
-.ocr-checks label {
-  display: flex;
-  gap: 10px;
-  font-size: 13px;
-  margin-top: 10px;
-  color: #d1d5db;
-}
-
-.ocr-checks input {
-  accent-color: #ef4444;
-}
-/* ============================
-   Phase 1.2.B — Scope Selector
-============================ */
-
-.chat-scope-bar {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 10px 0 14px;
-  flex-wrap: wrap;
-}
-
-.scope-label {
-  font-size: 12px;
-  color: #aaa;
-}
-
-.scope-options {
-  display: flex;
-  gap: 6px;
-}
-
-.scope-pill {
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid #333;
-  background: #111;
-  color: #ccc;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.scope-pill:hover {
-  background: #1a1a1a;
-  color: #fff;
-}
-
-.scope-pill.active {
-  background: linear-gradient(135deg, #6b8cff, #8b5cf6);
-  color: #fff;
-  border-color: transparent;
-}
-
-.scope-input {
-  width: 70px;
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1px solid #333;
-  background: #0f0f0f;
-  color: #fff;
-  font-size: 12px;
-}
-
-.scope-range-inputs {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.scope-separator {
-  color: #777;
-  font-size: 12px;
-}
-.chat-suggestions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  padding: 8px 0;
-}
-
-.suggestion-chip {
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 999px;
-  padding: 6px 14px;
-  font-size: 12px;
-  color: #eee;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.suggestion-chip:hover {
-  background: rgba(120,120,255,0.25);
-  transform: translateY(-1px);
-}
-.question-suggestions {
-  margin-bottom: 12px;
-}
-
-.question-header {
-  font-size: 13px;
-  color: #aaa;
-  margin-bottom: 6px;
-}
-
-.question-group {
-  margin-bottom: 8px;
-}
-
-.question-group-title {
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 4px;
-}
-
-.question-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.question-chip {
-  background: #1f2937;
-  border: 1px solid #333;
-  color: #e5e7eb;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.question-chip:hover {
-  background: #2563eb;
-  border-color: #2563eb;
 }
