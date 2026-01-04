@@ -1,0 +1,146 @@
+/* =========================================================
+   PHASE 1.3 CHAT LAYOUT OVERRIDES
+   Safe override – does NOT touch existing JSX
+   ========================================================= */
+
+/* ---------- RESET BAD POSITIONING ---------- */
+#chatTab,
+#chatTab * {
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* ---------- CHAT SUBTAB CONTENT ---------- */
+.chat-subtab-content.active {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* ---------- CHAT CONTAINER (MAIN BODY) ---------- */
+.chat-container {
+  display: grid;
+  grid-template-columns: 1fr 360px; /* left: chat | right: input */
+  gap: 16px;
+  width: 100%;
+  align-items: stretch;
+}
+
+/* ---------- CHAT MESSAGES (LEFT) ---------- */
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: rgba(15, 15, 20, 0.6);
+  border-radius: 14px;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+/* ---------- MESSAGE FIX ---------- */
+.message {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.message.bot {
+  justify-content: flex-start;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+/* ---------- INPUT AREA (RIGHT) ---------- */
+.chat-input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(15, 15, 20, 0.6);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+/* ---------- INPUT ---------- */
+.chat-input {
+  width: 100%;
+  min-height: 120px;
+  resize: none;
+}
+
+/* ---------- SEND BUTTON ---------- */
+.send-btn {
+  width: 100%;
+  height: 44px;
+}
+
+/* =========================================================
+   TRY ASKING (PHASE 1.3) – FIXED PLACEMENT
+   ========================================================= */
+
+.try-asking,
+.try-asking-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* Section title */
+.try-asking h4,
+.try-asking-title {
+  font-size: 13px;
+  opacity: 0.85;
+}
+
+/* Chips wrapper */
+.try-asking-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Individual chip */
+.try-asking-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.try-asking-chip:hover {
+  background: rgba(255, 100, 100, 0.15);
+  border-color: rgba(255, 100, 100, 0.4);
+}
+
+/* ---------- IMPORTANT: PREVENT FLOATING ---------- */
+.try-asking,
+.try-asking * {
+  float: none !important;
+  position: relative !important;
+}
+
+/* =========================================================
+   RESPONSIVE FIX
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .chat-container {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-input-area {
+    order: 2;
+  }
+
+  .chat-messages {
+    order: 1;
+    max-height: 50vh;
+  }
+}

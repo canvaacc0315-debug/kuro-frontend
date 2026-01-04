@@ -11,6 +11,7 @@ import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import OcrPanel from "../components/OcrPanel";
+import "../styles/chat-overrides.css";
 
 
 const API_BASE =
