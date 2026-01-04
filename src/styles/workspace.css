@@ -2629,3 +2629,66 @@ html, body {
   color: #777;
   font-size: 12px;
 }
+.chat-suggestions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.suggestion-chip {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: #eee;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.suggestion-chip:hover {
+  background: rgba(120,120,255,0.25);
+  transform: translateY(-1px);
+}
+.question-suggestions {
+  margin-bottom: 12px;
+}
+
+.question-header {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 6px;
+}
+
+.question-group {
+  margin-bottom: 8px;
+}
+
+.question-group-title {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.question-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.question-chip {
+  background: #1f2937;
+  border: 1px solid #333;
+  color: #e5e7eb;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.question-chip:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
-
+import PdfQuestionSuggestions from "../components/PdfQuestionSuggestions";
 import "../styles/workspace.css";
 import AnalysisPanel from "../components/AnalysisPanel.jsx";
 import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
@@ -792,6 +792,12 @@ export default function KuroWorkspacePage() {
                   ))}
                 </div>
                 <div className="chat-input-area">
+                  <PdfQuestionSuggestions
+                    onSelect={(q) => {
+                      setChatInput(q);
+                      setTimeout(() => handleSend(), 100);
+                    }}
+                  />
                   <input
                     className="chat-input"
                     placeholder="Ask anything about your PDFs..."
