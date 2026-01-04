@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams } from "react-router-dom";
+import { RovexProvider } from "../core/RovexProvider";
 import "../styles/workspace.css";
 import AnalysisPanel from "../components/AnalysisPanel.jsx";
 import PdfDesignCanvas from "../components/PdfDesignCanvas.jsx";
