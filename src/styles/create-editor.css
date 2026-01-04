@@ -444,6 +444,12 @@
     flex-direction: row;
     align-items: flex-start;
     overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  .create-editor-sidebar::-webkit-scrollbar {
+    display: none; /* WebKit */
   }
 
   .create-editor-main {
@@ -630,6 +636,12 @@
     padding: 8px 12px;
     gap: 8px;
     overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  .pages-bar::-webkit-scrollbar {
+    display: none; /* WebKit */
   }
 
   .page-pill,
@@ -732,6 +744,12 @@
     width: 100%;
     display: flex;
     overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+
+  .create-editor-sidebar::-webkit-scrollbar {
+    display: none; /* WebKit */
   }
 
   .create-page {
