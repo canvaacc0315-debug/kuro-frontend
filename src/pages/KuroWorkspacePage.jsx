@@ -4,14 +4,14 @@ import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
 import PdfQuestionSuggestions from "../components/PdfQuestionSuggestions";
-import "../styles/workspace.css";
+//import "../styles/workspace.css";
 import AnalysisPanel from "../components/AnalysisPanel.jsx";
 import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
 import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import OcrPanel from "../components/OcrPanel";
-import "../styles/chat-overrides.css";
+//import "../styles/chat-overrides.css";
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
