@@ -1,10 +1,10 @@
 /* ======================================================
-   OCR OVERRIDES – RovexAI
+   OCR OVERRIDES – RovexAI (Clean Version)
    Purpose:
-   - Fix layout overflow
-   - Improve OCR preview readability
-   - Match chat dark theme
-   - Prevent iframe / canvas bleed
+   - Simple, clean dark theme matching chat UI
+   - Fix layout overflow and readability
+   - Minimal transitions, no glow effects
+   - Consistent spacing and responsive design
    ====================================================== */
 
 /* ---------- OCR ROOT ---------- */
@@ -50,17 +50,17 @@
   border: none;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .ocr-btn.secondary {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #e5e7eb;
 }
 
 .ocr-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(255, 90, 95, 0.35);
+  background: #ff5a5f; /* Simplified hover, no shadow/glow */
 }
 
 /* ---------- OCR BODY LAYOUT ---------- */
@@ -69,7 +69,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  min-height: 0; /* CRITICAL for overflow */
+  min-height: 0; /* Prevent overflow */
 }
 
 /* ---------- LEFT: OCR PREVIEW ---------- */
@@ -121,16 +121,25 @@
   line-height: 1.55;
   color: #e6e6e6;
   white-space: pre-wrap;
+  background: transparent; /* Clean background */
 }
 
-/* scrollbar (matches chat) */
+/* Scrollbar (minimal, matching chat) */
 .ocr-text-output::-webkit-scrollbar {
   width: 6px;
 }
 
+.ocr-text-output::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .ocr-text-output::-webkit-scrollbar-thumb {
-  background: rgba(255, 90, 95, 0.35);
+  background: rgba(255, 90, 95, 0.4);
   border-radius: 6px;
+}
+
+.ocr-text-output::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 90, 95, 0.6);
 }
 
 /* ---------- EMPTY STATE ---------- */
@@ -140,9 +149,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #777;
+  color: #9ca3af;
   font-size: 13px;
   gap: 8px;
+  padding: 20px;
+  text-align: center;
 }
 
 /* ---------- STATUS / PROGRESS ---------- */
@@ -150,6 +161,7 @@
   margin-top: 8px;
   font-size: 12px;
   color: #ffb3b6;
+  text-align: center;
 }
 
 /* ---------- MOBILE / SMALL SCREENS ---------- */
@@ -161,4 +173,70 @@
   .ocr-preview {
     min-height: 280px;
   }
+
+  .ocr-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .ocr-actions {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .ocr-root {
+    padding: 16px 12px;
+  }
+
+  .ocr-header {
+    padding: 12px;
+  }
+
+  .ocr-body {
+    gap: 12px;
+  }
+
+  .ocr-preview,
+  .ocr-result {
+    border-radius: 8px;
+  }
+
+  .ocr-text-output {
+    padding: 12px;
+    font-size: 12px;
+  }
+
+  .ocr-empty {
+    padding: 16px;
+    font-size: 12px;
+  }
+}
+
+/* ================= ACCESSIBILITY ================= */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .ocr-btn {
+    transition: none;
+  }
+}
+
+/* High contrast enhancements */
+@media (prefers-contrast: high) {
+  .ocr-preview,
+  .ocr-result {
+    border-width: 2px;
+  }
+
+  .ocr-text-output::-webkit-scrollbar-thumb {
+    background: #ff5a5f;
+  }
+}
+
+/* Focus visibility */
+*:focus-visible {
+  outline: 2px solid #ff5a5f;
+  outline-offset: 2px;
 }
