@@ -748,3 +748,38 @@
 .allow-overflow {
   overflow: visible !important;
 }
+.toolbar-color-picker {
+  width: 32px;
+  height: 22px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.page-image-active .resize-handle {
+  display: block; /* Assuming it's hidden by default in your CSS */
+}
+
+.image-size-controls {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.image-size-label {
+  white-space: nowrap;
+}
+
+.image-size-range {
+  flex: 1;
+  max-width: 100px;
+}

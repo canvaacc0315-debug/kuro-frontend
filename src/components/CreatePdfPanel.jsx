@@ -1,5 +1,5 @@
 // src/components/CreatePdfPanel.jsx
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import "../styles/create-editor.css";
 import { jsPDF } from "jspdf"; // ADDED: for frontend PDF export
 
@@ -9,6 +9,7 @@ const defaultTextStyle = {
   bold: false,
   italic: false,
   underline: false,
+  color: "#000000", // 👈 NEW: Added text color support
 };
 
 const createPage = (index) => ({
@@ -32,12 +33,16 @@ const createPage = (index) => ({
   images: [], // { id, src, scale, x, y }
 });
 
-const makeImageId = () =>
-  `img-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const makeImageId = () => `img-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+// 👈 NEW: Simple undo/redo stack (limited to 20 actions for "mini" feel)
+const UNDO_REDO_LIMIT = 20;
 
 export default function CreatePdfPanel({ onExportPdf }) {
   const [pages, setPages] = useState([createPage(1)]);
   const [activePageIndex, setActivePageIndex] = useState(0);
+  const [history, setHistory] = useState([]); // 👈 NEW: Undo/redo
+  const [historyIndex, setHistoryIndex] = useState(-1);
 
   const [activeTextTarget, setActiveTextTarget] = useState("body");
   const [toolbarStyle, setToolbarStyle] = useState(defaultTextStyle);
@@ -59,14 +64,44 @@ export default function CreatePdfPanel({ onExportPdf }) {
   const page = pages[activePageIndex];
 
   /* ------------ helpers ------------ */
+  const saveToHistory = useCallback((newPages) => {
+    setHistory((prev) => {
+      const newHist = prev.slice(0, historyIndex + 1); // Trim future
+      newHist.push(newPages);
+      return newHist.slice(-UNDO_REDO_LIMIT); // Limit size
+    });
+    setHistoryIndex((prev) => prev + 1);
+  }, [historyIndex]);
 
-  const updatePage = (updater) => {
-    setPages((prev) =>
-      prev.map((p, idx) => (idx === activePageIndex ? updater(p) : p))
-    );
-  };
+  const updatePage = useCallback((updater) => {
+    setPages((prev) => {
+      const newPages = prev.map((p, idx) => (idx === activePageIndex ? updater(p) : p));
+      if (historyIndex < history.length - 1) {
+        // If not at tip, reset
+        setHistory(newPages);
+        setHistoryIndex(0);
+      } else {
+        saveToHistory(newPages);
+      }
+      return newPages;
+    });
+  }, [activePageIndex, history, historyIndex, saveToHistory]);
 
-  const applyStyleToSelection = (patch) => {
+  const undo = useCallback(() => {
+    if (historyIndex > 0) {
+      setHistoryIndex((prev) => prev - 1);
+      setPages(history[historyIndex - 1]);
+    }
+  }, [history, historyIndex]);
+
+  const redo = useCallback(() => {
+    if (historyIndex < history.length - 1) {
+      setHistoryIndex((prev) => prev + 1);
+      setPages(history[prev + 1]);
+    }
+  }, [history, historyIndex]);
+
+  const applyStyleToSelection = useCallback((patch) => {
     setToolbarStyle((prev) => ({ ...prev, ...patch }));
 
     updatePage((p) => {
@@ -87,43 +122,55 @@ export default function CreatePdfPanel({ onExportPdf }) {
         },
       };
     });
-  };
+  }, [activeTextTarget, updatePage]);
+
+  // 👈 NEW: Cleanup object URLs on unmount
+  useEffect(() => {
+    return () => {
+      pages.flatMap(p => p.images).forEach(img => URL.revokeObjectURL(img.src));
+    };
+  }, [pages]);
 
   /* ------------ toolbar ------------ */
 
-  const handleSizeChange = (e) => {
+  const handleSizeChange = useCallback((e) => {
     const v = parseInt(e.target.value || "16", 10);
-    applyStyleToSelection({ fontSize: isNaN(v) ? 16 : v });
-  };
+    applyStyleToSelection({ fontSize: isNaN(v) ? 16 : Math.max(8, Math.min(120, v)) }); // 👈 Clamp values
+  }, [applyStyleToSelection]);
 
-  const handleAlignChange = (align) => {
+  const handleAlignChange = useCallback((align) => {
     applyStyleToSelection({ align });
-  };
+  }, [applyStyleToSelection]);
 
-  const toggleStyleFlag = (key) => {
+  const toggleStyleFlag = useCallback((key) => {
     applyStyleToSelection({ [key]: !toolbarStyle[key] });
-  };
+  }, [toolbarStyle, applyStyleToSelection]);
+
+  // 👈 NEW: Color picker handler
+  const handleColorChange = useCallback((color) => {
+    applyStyleToSelection({ color });
+  }, [applyStyleToSelection]);
 
   /* ------------ text change ------------ */
 
-  const handleHeadingChange = (text) => {
+  const handleHeadingChange = useCallback((text) => {
     updatePage((p) => ({
       ...p,
       heading: { ...p.heading, text },
     }));
-  };
+  }, [updatePage]);
 
-  const handleBodyChange = (text) => {
+  const handleBodyChange = useCallback((text) => {
     updatePage((p) => ({
       ...p,
       body: { ...p.body, text },
     }));
-  };
+  }, [updatePage]);
 
   /* ------------ images: insert + drag + size slider ------------ */
 
-  const handleImageChange = (e) => {
-    const file = e.target.files && e.target.files[0];
+  const handleImageChange = useCallback((e) => {
+    const file = e.target.files?.[0];
     if (!file) return;
 
     const url = URL.createObjectURL(file);
@@ -143,11 +190,12 @@ export default function CreatePdfPanel({ onExportPdf }) {
 
     // allow picking same file again
     e.target.value = "";
-  };
+  }, [updatePage]);
 
-  const handleImageMouseDown = (e, img) => {
+  const handleImageMouseDown = useCallback((e, img) => {
     if (!pageRef.current) return;
     e.stopPropagation();
+    e.preventDefault(); // 👈 Prevent text selection
 
     const pageRect = pageRef.current.getBoundingClientRect();
     const pointerX = e.clientX - pageRect.left;
@@ -159,17 +207,17 @@ export default function CreatePdfPanel({ onExportPdf }) {
       offsetY: pointerY - img.y,
     });
     setActiveImageId(img.id);
-  };
+  }, []);
 
-  const handlePageMouseMove = (e) => {
+  const handlePageMouseMove = useCallback((e) => {
     if (!dragState || !pageRef.current) return;
 
     const pageRect = pageRef.current.getBoundingClientRect();
     const pointerX = e.clientX - pageRect.left;
     const pointerY = e.clientY - pageRect.top;
 
-    const newX = pointerX - dragState.offsetX;
-    const newY = pointerY - dragState.offsetY;
+    const newX = Math.max(0, Math.min(pointerX - dragState.offsetX, 600)); // 👈 Clamp to page bounds (approx 600px wide)
+    const newY = Math.max(0, Math.min(pointerY - dragState.offsetY, 800)); // 👈 Clamp to page bounds (approx 800px tall)
 
     updatePage((p) => ({
       ...p,
@@ -183,21 +231,21 @@ export default function CreatePdfPanel({ onExportPdf }) {
           : img
       ),
     }));
-  };
+  }, [dragState, updatePage]);
 
-  const handlePageMouseUp = () => {
+  const handlePageMouseUp = useCallback(() => {
     setDragState(null);
-  };
+  }, []);
 
-  const handleImageScaleChange = (e, imgId) => {
-    const scale = Number(e.target.value) || 60;
+  const handleImageScaleChange = useCallback((e, imgId) => {
+    const scale = Math.max(30, Math.min(150, Number(e.target.value) || 60)); // 👈 Clamp
     updatePage((p) => ({
       ...p,
       images: p.images.map((img) =>
         img.id === imgId ? { ...img, scale } : img
       ),
     }));
-  };
+  }, [updatePage]);
 
   const activeImage =
     page.images.length === 0
@@ -207,7 +255,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
 
   /* ------------ pages ------------ */
 
-  const handleAddPage = () => {
+  const handleAddPage = useCallback(() => {
     const newPage = createPage(pages.length + 1);
     setPages((prev) => [...prev, newPage]);
     setActivePageIndex(pages.length);
@@ -215,9 +263,9 @@ export default function CreatePdfPanel({ onExportPdf }) {
     setToolbarStyle(newPage.body.style);
     setActiveImageId(null);
     setContextMenu(null);
-  };
+  }, [pages.length]);
 
-  const handleDeletePage = () => {
+  const handleDeletePage = useCallback(() => {
     if (pages.length === 1) return;
     setPages((prev) => {
       const copy = [...prev];
@@ -228,11 +276,11 @@ export default function CreatePdfPanel({ onExportPdf }) {
     setActiveTextTarget("body");
     setActiveImageId(null);
     setContextMenu(null);
-  };
+  }, [pages.length, activePageIndex]);
 
   /* ------------ context menu ------------ */
 
-  const openContextMenu = (e, target, imageId) => {
+  const openContextMenu = useCallback((e, target, imageId) => {
     e.preventDefault();
     setContextMenu({
       x: e.clientX,
@@ -240,11 +288,11 @@ export default function CreatePdfPanel({ onExportPdf }) {
       target, // 'heading' | 'body' | 'image'
       imageId: imageId || null,
     });
-  };
+  }, []);
 
-  const closeContextMenu = () => setContextMenu(null);
+  const closeContextMenu = useCallback(() => setContextMenu(null), []);
 
-  const handleContextAction = async (action) => {
+  const handleContextAction = useCallback(async (action) => {
     if (!contextMenu) return;
 
     // IMAGE actions
@@ -288,8 +336,8 @@ export default function CreatePdfPanel({ onExportPdf }) {
             id: makeImageId(),
             src: base.src,
             scale: base.scale ?? 60,
-            x: (ref.x ?? 120) + 24,
-            y: (ref.y ?? 220) + 24,
+            x: Math.min((ref.x ?? 120) + 24, 500), // 👈 Clamp
+            y: Math.min((ref.y ?? 220) + 24, 700),
           };
           return { ...p, images: [...p.images, newImg] };
         });
@@ -359,7 +407,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
     }
 
     closeContextMenu();
-  };
+  }, [contextMenu, page.images, activeImageId, imageClipboard, closeContextMenu, updatePage, handleHeadingChange, handleBodyChange]);
 
   /* ------------ inline text styles ------------ */
 
@@ -371,6 +419,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
       fontStyle: s.italic ? "italic" : "normal",
       textDecoration: s.underline ? "underline" : "none",
       textAlign: s.align,
+      color: s.color || "#000000",
     };
   })();
 
@@ -382,14 +431,23 @@ export default function CreatePdfPanel({ onExportPdf }) {
       fontStyle: s.italic ? "italic" : "normal",
       textDecoration: s.underline ? "underline" : "none",
       textAlign: s.align,
+      color: s.color || "#000000",
     };
   })();
 
-  /* ------------ FRONTEND PDF EXPORT (minimal, async-safe) ------------ */
+  /* ------------ FRONTEND PDF EXPORT (improved positioning) ------------ */
+
+  // 👈 IMPROVED: Assume editor page dims for better x/y mapping (A4 ~595x842pt, editor ~600x800px)
+  const EDITOR_WIDTH = 600;
+  const EDITOR_HEIGHT = 800;
+  const PDF_WIDTH = 595;
+  const PDF_HEIGHT = 842;
+  const SCALE_FACTOR_X = PDF_WIDTH / EDITOR_WIDTH;
+  const SCALE_FACTOR_Y = PDF_HEIGHT / EDITOR_HEIGHT;
 
   // helper to load an image src into dataURL (canvas) so jsPDF can add it
   const loadImageAsDataUrl = (src) =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       try {
         const img = new Image();
         img.crossOrigin = "anonymous";
@@ -402,16 +460,13 @@ export default function CreatePdfPanel({ onExportPdf }) {
           try {
             const dataUrl = c.toDataURL("image/png");
             resolve({ dataUrl, width: img.naturalWidth, height: img.naturalHeight });
-          } catch (err) {
+          } catch {
             resolve({ dataUrl: src, width: img.naturalWidth, height: img.naturalHeight }); // fallback
           }
         };
-        img.onerror = () => {
-          // fallback: resolve with original src (might be object URL)
-          resolve({ dataUrl: src, width: 0, height: 0 });
-        };
+        img.onerror = () => resolve({ dataUrl: src, width: 0, height: 0 });
         img.src = src;
-      } catch (err) {
+      } catch {
         resolve({ dataUrl: src, width: 0, height: 0 });
       }
     });
@@ -432,11 +487,12 @@ export default function CreatePdfPanel({ onExportPdf }) {
       for (let i = 0; i < pages.length; i++) {
         const p = pages[i];
 
+        if (i > 0) pdf.addPage(); // 👈 Move addPage to top for cleaner flow
+
         // heading
         const headingStyle = p.heading.style || {};
         pdf.setFontSize(headingStyle.fontSize || 24);
 
-        // --- RELEVANT CHANGE: compute combined fontStyle and call setFont once ---
         const computeFontStyle = (style) => {
           const bold = !!style.bold;
           const italic = !!style.italic;
@@ -447,12 +503,16 @@ export default function CreatePdfPanel({ onExportPdf }) {
         };
         const headingFontStyle = computeFontStyle(headingStyle);
         pdf.setFont("helvetica", headingFontStyle);
-        // --- end change ---
+
+        // 👈 IMPROVED: Support color (basic, as jsPDF color is limited; use hex)
+        if (headingStyle.color) {
+          const [r, g, b] = hexToRgb(headingStyle.color);
+          pdf.setTextColor(r, g, b);
+        }
 
         const headingX = margin;
         let cursorY = margin + (headingStyle.fontSize || 24);
 
-        // split heading if long
         const headingLines = pdf.splitTextToSize(p.heading.text || "", pageWidth - margin * 2);
         pdf.text(headingLines, headingX, cursorY);
 
@@ -462,67 +522,70 @@ export default function CreatePdfPanel({ onExportPdf }) {
         const bodyStyle = p.body.style || {};
         pdf.setFontSize(bodyStyle.fontSize || 14);
 
-        // --- RELEVANT CHANGE: compute body font style and set it ---
         const bodyFontStyle = computeFontStyle(bodyStyle);
         pdf.setFont("helvetica", bodyFontStyle);
-        // --- end change ---
+
+        // 👈 IMPROVED: Reset color for body if different
+        pdf.setTextColor(0, 0, 0); // Default black; override if color set
+        if (bodyStyle.color) {
+          const [r, g, b] = hexToRgb(bodyStyle.color);
+          pdf.setTextColor(r, g, b);
+        }
 
         const bodyLines = pdf.splitTextToSize(p.body.text || "", pageWidth - margin * 2);
-        // start a bit below heading
         cursorY += 8;
         pdf.text(bodyLines, margin, cursorY);
         cursorY += (bodyLines.length + 1) * (bodyStyle.fontSize || 14);
 
-        // images: render each image according to its scale (% of page width) and (x,y)
+        // images: render each with improved positioning
         for (const img of p.images || []) {
           try {
             const { dataUrl, width: imgW, height: imgH } = await loadImageAsDataUrl(img.src);
 
-            // compute width on PDF based on scale% and page width inside margins
-            const targetW = ((img.scale || 60) / 100) * (pageWidth - margin * 2);
-            // maintain aspect ratio if image natural sizes available
+            const contentWidth = pageWidth - margin * 2;
+            const targetW = ((img.scale || 60) / 100) * contentWidth;
             let targetH = targetW * (imgH && imgW ? imgH / imgW : 0.6);
 
-            // If the computed height is zero, set a reasonable default
             if (!targetH || Number.isNaN(targetH) || targetH <= 0) {
               targetH = targetW * 0.6;
             }
 
-            // compute x/y in PDF units: map img.x/img.y (px in editor) proportionally to page area
-            // We don't have the original page pixel dimensions here, so place images by stacking below current cursor
-            // This is a safe approximation for export without changing backend.
-            const imgX = margin + (img.x || 0) * 0.0; // keep left margin; do not attempt pixel-perfect positioning
-            const imgY = Math.max(cursorY + 8, margin + 100 + (img.y || 0) * 0.0);
+            // 👈 IMPROVED: Map editor px to PDF pt using scale factors
+            const imgX = margin + (img.x || 0) * SCALE_FACTOR_X;
+            const imgY = margin + (img.y || 0) * SCALE_FACTOR_Y;
 
             pdf.addImage(dataUrl, "PNG", imgX, imgY, targetW, targetH);
 
-            // move cursor below image
-            cursorY = imgY + targetH + 12;
+            // Update cursor if image overlaps (simple heuristic)
+            if (imgY + targetH > cursorY) {
+              cursorY = imgY + targetH + 12;
+            }
           } catch (err) {
-            // ignore image addition errors, continue
             console.warn("Failed to add image to PDF:", err);
           }
         }
 
-        // If not last page, add new page
-        if (i < pages.length - 1) {
-          pdf.addPage();
-        }
+        // 👈 NEW: Add page number footer
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`Page ${i + 1} of ${pages.length}`, pageWidth / 2, pageHeight - 20, { align: "center" });
       }
 
-      // trigger download
       pdf.save("rovexai-created.pdf");
 
-      // still call the optional callback so parent can react (keeps backward compatibility)
       if (typeof onExportPdf === "function") {
-        try {
-          onExportPdf(pages);
-        } catch {}
+        onExportPdf(pages);
       }
     } catch (err) {
       console.error("Export failed:", err);
       alert("Export failed: " + (err?.message || err));
     }
+  };
+
+  // 👈 NEW: Hex to RGB helper for PDF colors
+  const hexToRgb = (hex) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : [0, 0, 0];
   };
 
   /* ------------ render ------------ */
@@ -541,6 +604,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
               setActiveTextTarget("heading");
               setToolbarStyle(page.heading.style);
             }}
+            aria-label="Edit heading" // 👈 Accessibility
           >
             <span className="sidebar-primary-icon">T</span>
             Edit heading
@@ -553,6 +617,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
               setActiveTextTarget("body");
               setToolbarStyle(page.body.style);
             }}
+            aria-label="Edit paragraph" // 👈 Accessibility
           >
             <div className="text-style-main">Edit paragraph</div>
             <div className="text-style-sub">
@@ -570,15 +635,42 @@ export default function CreatePdfPanel({ onExportPdf }) {
               accept="image/*"
               style={{ display: "none" }}
               onChange={handleImageChange}
+              aria-label="Import image" // 👈 Accessibility
             />
           </label>
+        </div>
+
+        {/* 👈 NEW: Undo/Redo buttons */}
+        <div className="sidebar-section">
+          <div className="sidebar-title">Actions</div>
+          <div style={{ display: "flex", gap: "8px", marginBottom: "8px" }}>
+            <button
+              type="button"
+              className="sidebar-pill-btn"
+              onClick={undo}
+              disabled={historyIndex <= 0}
+              aria-label="Undo"
+            >
+              ↶ Undo
+            </button>
+            <button
+              type="button"
+              className="sidebar-pill-btn"
+              onClick={redo}
+              disabled={historyIndex >= history.length - 1}
+              aria-label="Redo"
+            >
+              ↷ Redo
+            </button>
+          </div>
         </div>
 
         <div className="sidebar-bottom">
           <button
             type="button"
             className="sidebar-export-btn"
-            onClick={exportToPdf} // <-- wired to frontend export (minimal change)
+            onClick={exportToPdf}
+            aria-label="Export PDF" // 👈 Accessibility
           >
             Export PDF
           </button>
@@ -601,6 +693,19 @@ export default function CreatePdfPanel({ onExportPdf }) {
               max={120}
               value={toolbarStyle.fontSize}
               onChange={handleSizeChange}
+              aria-label="Font size" // 👈 Accessibility
+            />
+          </div>
+
+          {/* 👈 NEW: Color picker (simple input) */}
+          <div className="toolbar-group">
+            <span className="toolbar-label">Color</span>
+            <input
+              type="color"
+              value={toolbarStyle.color}
+              onChange={(e) => handleColorChange(e.target.value)}
+              className="toolbar-color-picker" // 👈 Add CSS for this if needed
+              aria-label="Text color"
             />
           </div>
 
@@ -614,6 +719,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
                   (toolbarStyle.align === "left" ? " active" : "")
                 }
                 onClick={() => handleAlignChange("left")}
+                aria-label="Align left"
               >
                 ☰
               </button>
@@ -624,6 +730,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
                   (toolbarStyle.align === "center" ? " active" : "")
                 }
                 onClick={() => handleAlignChange("center")}
+                aria-label="Align center"
               >
                 ≡
               </button>
@@ -634,6 +741,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
                   (toolbarStyle.align === "right" ? " active" : "")
                 }
                 onClick={() => handleAlignChange("right")}
+                aria-label="Align right"
               >
                 ☷
               </button>
@@ -647,6 +755,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
                 "toolbar-toggle" + (toolbarStyle.bold ? " active" : "")
               }
               onClick={() => toggleStyleFlag("bold")}
+              aria-label="Bold"
             >
               B
             </button>
@@ -656,6 +765,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
                 "toolbar-toggle" + (toolbarStyle.italic ? " active" : "")
               }
               onClick={() => toggleStyleFlag("italic")}
+              aria-label="Italic"
             >
               I
             </button>
@@ -665,6 +775,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
                 "toolbar-toggle" + (toolbarStyle.underline ? " active" : "")
               }
               onClick={() => toggleStyleFlag("underline")}
+              aria-label="Underline"
             >
               U
             </button>
@@ -677,6 +788,8 @@ export default function CreatePdfPanel({ onExportPdf }) {
           onMouseMove={handlePageMouseMove}
           onMouseUp={handlePageMouseUp}
           onMouseLeave={handlePageMouseUp}
+          role="main" // 👈 Accessibility
+          aria-label="PDF editor canvas"
         >
           <div
             className="create-page"
@@ -695,13 +808,15 @@ export default function CreatePdfPanel({ onExportPdf }) {
               }}
               onContextMenu={(e) => openContextMenu(e, "heading")}
               style={headingInline}
+              placeholder="Enter your heading here..." // 👈 Better placeholder
+              aria-label="Heading editor" // 👈 Accessibility
             />
 
             {/* Body */}
             <textarea
               ref={bodyRef}
               className="body-textarea"
-              placeholder="Start writing your PDF content here..."
+              placeholder="Start writing your PDF content here... Apply styles with the toolbar above." // 👈 Enhanced
               value={page.body.text}
               onChange={(e) => handleBodyChange(e.target.value)}
               onFocus={() => {
@@ -710,6 +825,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
               }}
               onContextMenu={(e) => openContextMenu(e, "body")}
               style={bodyInline}
+              aria-label="Body editor" // 👈 Accessibility
             />
 
             {/* IMAGES – many per page */}
@@ -727,22 +843,28 @@ export default function CreatePdfPanel({ onExportPdf }) {
                 }}
                 onMouseDown={(e) => handleImageMouseDown(e, img)}
                 onContextMenu={(e) => openContextMenu(e, "image", img.id)}
+                role="img" // 👈 Accessibility
+                aria-label={`Image: ${img.scale}% scale`}
               >
                 <div className="image-block-inner">
                   <img
                     src={img.src}
-                    alt=""
+                    alt={`Placed image at ${img.x}px, ${img.y}px`} // 👈 Better alt
                     className="image-block-img"
                     draggable={false}
                   />
                 </div>
+                {/* 👈 NEW: Visual resize handle */}
+                {img.id === activeImageId && (
+                  <div className="resize-handle" aria-hidden="true" />
+                )}
               </div>
             ))}
 
             {/* Image size slider – controls selected image */}
             {activeImage && (
               <div className="image-size-controls">
-                <span className="image-size-label">Image size</span>
+                <span className="image-size-label">Image size: {activeImage.scale}%</span> {/* 👈 Show value */}
                 <input
                   type="range"
                   min="30"
@@ -752,6 +874,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
                     handleImageScaleChange(e, activeImage.id)
                   }
                   className="image-size-range"
+                  aria-label="Image scale slider" // 👈 Accessibility
                 />
               </div>
             )}
@@ -762,8 +885,10 @@ export default function CreatePdfPanel({ onExportPdf }) {
         <div
           className="pages-bar"
           onMouseDown={(e) => e.stopPropagation()}
+          role="navigation" // 👈 Accessibility
+          aria-label="Page navigation"
         >
-          <div className="pages-list">
+          <div className="pages-list" role="list">
             {pages.map((p, idx) => (
               <button
                 key={p.id}
@@ -778,6 +903,8 @@ export default function CreatePdfPanel({ onExportPdf }) {
                   setActiveImageId(null);
                   setContextMenu(null);
                 }}
+                aria-current={idx === activePageIndex ? "page" : undefined} // 👈 Accessibility
+                aria-label={`Go to page ${idx + 1}`}
               >
                 Page {idx + 1}
               </button>
@@ -786,6 +913,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
               type="button"
               className="page-pill add-page-pill"
               onClick={handleAddPage}
+              aria-label="Add new page"
             >
               + Add page
             </button>
@@ -796,6 +924,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
             className="delete-page-btn"
             disabled={pages.length === 1}
             onClick={handleDeletePage}
+            aria-label="Delete current page"
           >
             Delete page
           </button>
@@ -808,11 +937,14 @@ export default function CreatePdfPanel({ onExportPdf }) {
           className="pdf-context-menu"
           style={{ top: contextMenu.y, left: contextMenu.x }}
           onMouseLeave={closeContextMenu}
+          role="menu" // 👈 Accessibility
+          aria-label="Context menu"
         >
           <button
             type="button"
             className="context-item"
             onClick={() => handleContextAction("copy")}
+            role="menuitem"
           >
             Copy
           </button>
@@ -820,6 +952,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
             type="button"
             className="context-item"
             onClick={() => handleContextAction("cut")}
+            role="menuitem"
           >
             Cut
           </button>
@@ -827,6 +960,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
             type="button"
             className="context-item"
             onClick={() => handleContextAction("paste")}
+            role="menuitem"
           >
             Paste
           </button>
@@ -834,6 +968,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
             type="button"
             className="context-item context-danger"
             onClick={() => handleContextAction("delete")}
+            role="menuitem"
           >
             Delete
           </button>
