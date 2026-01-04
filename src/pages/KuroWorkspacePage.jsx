@@ -1,5 +1,5 @@
 // src/pages/KuroWorkspacePage.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
@@ -829,6 +829,9 @@ export default function KuroWorkspacePage() {
                           )}
                         </div>
                       ))}
+
+                      {/* 👇 invisible anchor */}
+                      <div ref={chatEndRef} />
                     </div>
 
                     {/* INPUT */}
