@@ -632,17 +632,23 @@ export default function KuroWorkspacePage() {
           {/* CURRENT CHAT */}
           {activeChatSubTab === "current" && (
             <div className="chat-subtab-content active">
+              <div className="chat-layout">
+                 {/* LEFT — MAIN CHAT */}
+                <div className="chat-main">
+                  {/* EVERYTHING chat-related stays here */}
+                  {/* chat-top-row */}
+                  {/* selected file banner */}
+                  {/* chat-container */}
+                  {/* chat messages */}
+                  {/* input */}
+                </div>
+              </div>
+              {/* RIGHT — QUESTION ASSIST */}
+              <div className="chat-assist">
+                {/* MOVE Try Asking block here */}
+              </div>
               {/* top row: PDF select (left), answer style (middle‑right), actions (right) */}
               <div className="chat-top-row">
-                <div className="chat-layout">
-                  <div className="chat-main">
-                    {/* existing chat messages + input */}
-                  </div>
-
-                  <div className="chat-side">
-                    {/* your question chips */}
-                  </div>
-                </div>
                 {/* Phase 1.2.B — Conversation Scope Selector */}
                 <div className="chat-scope-bar">
                   <span className="scope-label">Scope:</span>
@@ -831,6 +837,7 @@ export default function KuroWorkspacePage() {
           {/* CHAT HISTORY */}
           {activeChatSubTab === "history" && (
             <div className="chat-subtab-content active">
+            
               <div className="history-container">
                 <div className="history-header">
                   <h3 className="history-title">📚 Your Chat History</h3>
