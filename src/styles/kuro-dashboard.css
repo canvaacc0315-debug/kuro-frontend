@@ -1,5 +1,5 @@
 /* ===========================
-   RESET
+   RESET - Enhanced
 =========================== */
 
 * {
@@ -8,8 +8,13 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for sticky navbar */
+}
+
 /* ===========================
-   BASE PAGE
+   BASE PAGE - Refined
 =========================== */
 
 html,
@@ -24,10 +29,11 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
   background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
   color: #e0e0e0;
+  line-height: 1.6; /* Improved readability */
 }
 
 /* ===========================
-   DASHBOARD LAYOUT
+   DASHBOARD LAYOUT - Enhanced
 =========================== */
 
 .kuro-dashboard-page {
@@ -35,19 +41,32 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative; /* For potential overlays */
 }
 
-/* scoped main container so it doesn't affect other pages */
+/* Scoped main container: improved spacing and centering */
 .kuro-dashboard-page .main-container {
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
   padding: 60px 80px;
   flex: 1;
+  animation: pageFadeIn 0.6s ease-out; /* Entry animation */
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ===========================
-   HERO SECTION
+   HERO SECTION - Enhanced with Gradient Overlay
 =========================== */
 
 .hero-banner {
@@ -57,12 +76,41 @@ body {
     rgba(240, 68, 68, 0.1) 100%
   );
   border: 1px solid rgba(255, 107, 107, 0.2);
-  border-radius: 16px;
-  padding: 50px;
+  border-radius: 20px; /* Softer corners */
+  padding: 60px 50px; /* More padding */
   margin-bottom: 60px;
   text-align: center;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px); /* Stronger blur */
   width: 100%;
+  position: relative;
+  overflow: hidden; /* For pseudo-elements */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 107, 107, 0.05) 50%, transparent 70%);
+  animation: shimmer 3s ease-in-out infinite; /* Subtle shimmer */
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.hero-banner:hover {
+  transform: translateY(-4px); /* Lift on hover */
+  box-shadow: 0 20px 40px rgba(255, 107, 107, 0.2); /* Glow shadow */
 }
 
 .hero-title {
@@ -70,6 +118,8 @@ body {
   font-weight: 800;
   color: #ffffff;
   margin-bottom: 12px;
+  position: relative;
+  z-index: 1; /* Above shimmer */
 }
 
 .hero-title-accent {
@@ -77,20 +127,45 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: textGlow 2s ease-in-out infinite alternate; /* Pulsing glow */
+}
+
+@keyframes textGlow {
+  from {
+    filter: drop-shadow(0 0 4px rgba(255, 107, 107, 0.5));
+  }
+  to {
+    filter: drop-shadow(0 0 8px rgba(255, 107, 107, 0.8));
+  }
 }
 
 .hero-subtitle {
   font-size: 18px;
   color: #b0b0b0;
   margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ===========================
-   SECTION HEADER
+   SECTION HEADER - Refined
 =========================== */
 
 .section-header {
   margin-bottom: 40px;
+  position: relative;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  border-radius: 1px;
 }
 
 .section-title {
@@ -98,6 +173,11 @@ body {
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 8px;
+  transition: color 0.3s ease;
+}
+
+.section-title:hover {
+  color: #ff6b6b; /* Accent on hover */
 }
 
 .section-title-accent {
@@ -107,10 +187,11 @@ body {
 .section-subtitle {
   font-size: 15px;
   color: #888888;
+  max-width: 500px; /* Prevent overflow */
 }
 
 /* ===========================
-   WORKSPACE GRID (3 x 2)
+   WORKSPACE GRID (3 x 2) - Enhanced Cards
 =========================== */
 
 .workspace-grid {
@@ -118,19 +199,38 @@ body {
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-bottom: 60px;
+  animation: gridStaggerIn 0.6s ease-out; /* Staggered entry */
 }
 
-/* Workspace Card */
+@keyframes gridStaggerIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+.workspace-grid .workspace-card:nth-child(1) { animation-delay: 0.1s; }
+.workspace-grid .workspace-card:nth-child(2) { animation-delay: 0.2s; }
+.workspace-grid .workspace-card:nth-child(3) { animation-delay: 0.3s; }
+.workspace-grid .workspace-card:nth-child(4) { animation-delay: 0.4s; }
+.workspace-grid .workspace-card:nth-child(5) { animation-delay: 0.5s; }
+.workspace-grid .workspace-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Workspace Card: 3D hover and inner glow */
 .workspace-card {
   background: rgba(20, 20, 30, 0.6);
   border: 1px solid rgba(255, 107, 107, 0.15);
-  border-radius: 16px;
+  border-radius: 20px; /* Softer */
   padding: 40px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth curve */
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px); /* Frosted glass */
 }
 
 .workspace-card::before {
@@ -143,23 +243,45 @@ body {
   background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
+  border-radius: 20px 20px 0 0;
+}
+
+.workspace-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .workspace-card:hover {
   background: rgba(20, 20, 30, 0.8);
   border-color: rgba(255, 107, 107, 0.4);
-  transform: translateY(-8px);
+  transform: translateY(-8px) rotateX(2deg); /* 3D tilt */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 107, 107, 0.2);
 }
 
 .workspace-card:hover::before {
   transform: scaleX(1);
 }
 
+.workspace-card:hover::after {
+  opacity: 1;
+}
+
 .workspace-icon {
   font-size: 48px;
   margin-bottom: 20px;
   display: inline-block;
+  transition: transform 0.3s ease; /* Icon bounce */
+  filter: drop-shadow(0 4px 8px rgba(255, 107, 107, 0.3));
+}
+
+.workspace-card:hover .workspace-icon {
+  transform: translateY(-4px) scale(1.1);
 }
 
 .workspace-name {
@@ -167,6 +289,11 @@ body {
   font-weight: 700;
   color: #ffffff;
   margin-bottom: 12px;
+  transition: color 0.3s ease;
+}
+
+.workspace-card:hover .workspace-name {
+  color: #ff6b6b;
 }
 
 .workspace-description {
@@ -188,12 +315,24 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: color 0.3s ease;
+  padding: 4px 0; /* Subtle padding */
+}
+
+.workspace-card:hover .workspace-features li {
+  color: #b0b0b0; /* Lighter on hover */
 }
 
 .workspace-features li::before {
   content: "✓";
   color: #ff6b6b;
   font-weight: 700;
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+.workspace-card:hover .workspace-features li::before {
+  transform: scale(1.2);
 }
 
 .workspace-btn {
@@ -202,26 +341,43 @@ body {
   background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px; /* Softer */
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.workspace-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.workspace-btn:hover::before {
+  left: 100%;
 }
 
 .workspace-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
   box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
 }
 
 .workspace-btn:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
 }
 
 /* ===========================
-   FEATURES SECTION
+   FEATURES SECTION - Enhanced Grid
 =========================== */
 
 .features-section {
@@ -237,19 +393,45 @@ body {
 .feature-card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
+  border-radius: 16px; /* Consistent with workspace */
   padding: 30px;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover::before {
+  transform: scaleX(1);
 }
 
 .feature-card:hover {
   background: rgba(255, 107, 107, 0.08);
   border-color: rgba(255, 107, 107, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(255, 107, 107, 0.15);
 }
 
 .feature-icon {
   font-size: 32px;
   margin-bottom: 16px;
+  color: #ff6b6b; /* Accent color */
+  transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+  transform: rotate(360deg) scale(1.1); /* Fun spin */
 }
 
 .feature-title {
@@ -266,7 +448,7 @@ body {
 }
 
 /* ===========================
-   FOOTER
+   FOOTER - Polished
 =========================== */
 
 .footer {
@@ -276,10 +458,21 @@ body {
   color: #666666;
   font-size: 13px;
   margin-top: 40px;
+  position: relative;
+}
+
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(135deg, transparent, #ff6b6b, transparent);
 }
 
 /* ===========================
-   SCROLLBAR
+   SCROLLBAR - Custom Theme
 =========================== */
 
 ::-webkit-scrollbar {
@@ -287,25 +480,45 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0f0f0f;
+  background: rgba(15, 15, 15, 0.5); /* Semi-transparent */
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
-  border-radius: 8px;
+  border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #ff8787, #ff6b6b);
-}
-
-html {
-  scroll-behavior: smooth;
+  transform: scale(1.1); /* Subtle expand */
 }
 
 /* ===========================
-   RESPONSIVE
+   RESPONSIVE - Enhanced Breakpoints
 =========================== */
+
+/* Large Tablet */
+@media (max-width: 1200px) {
+  .kuro-dashboard-page .main-container {
+    padding: 50px 60px;
+  }
+
+  .workspace-grid,
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .hero-title {
+    font-size: 40px;
+  }
+
+  .section-title {
+    font-size: 32px;
+  }
+}
 
 /* Tablet */
 @media (max-width: 1024px) {
@@ -329,20 +542,26 @@ html {
   .workspace-card {
     padding: 30px;
   }
+
+  .hero-banner {
+    padding: 40px 30px;
+  }
 }
 
-/* Mobile */
-@media (max-width: 600px) {
+/* Mobile Landscape */
+@media (max-width: 768px) {
   .kuro-dashboard-page .main-container {
-    padding: 40px 20px;
+    padding: 30px 20px;
   }
 
   .workspace-grid,
   .features-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .workspace-card {
+  .workspace-card,
+  .feature-card {
     padding: 24px;
   }
 
@@ -355,6 +574,72 @@ html {
   }
 
   .hero-title {
+    font-size: 28px;
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+  }
+
+  .section-title {
     font-size: 24px;
   }
+
+  .hero-banner {
+    padding: 30px 20px;
+    margin-bottom: 40px;
+  }
+
+  .footer {
+    padding: 30px 20px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .kuro-dashboard-page .main-container {
+    padding: 20px 16px;
+  }
+
+  .workspace-btn {
+    padding: 12px 20px;
+    font-size: 13px;
+  }
+
+  .feature-card {
+    padding: 20px;
+  }
+}
+
+/* ================= ACCESSIBILITY & PERFORMANCE ================= */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast enhancements */
+@media (prefers-contrast: high) {
+  .workspace-card,
+  .feature-card,
+  .hero-banner {
+    border-width: 2px;
+  }
+
+  .section-header::after {
+    height: 3px;
+  }
+}
+
+/* Dark mode is default, but ensure focus visibility */
+*:focus-visible {
+  outline: 2px solid #ff6b6b;
+  outline-offset: 2px;
 }
