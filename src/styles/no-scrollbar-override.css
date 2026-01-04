@@ -1,62 +1,93 @@
-/* =========================================================
-   GLOBAL NO-SCROLLBAR OVERRIDE
-   Applies to ALL pages (auth + app)
-   ========================================================= */
+/* Global Scrollbar Hider - Overrides all scrollbars across the entire app */
 
-/* 1️⃣ Kill scrolling at the root level */
+/* Target the root elements */
 html,
 body {
-  height: 100%;
-  overflow: hidden !important;
-  overscroll-behavior: none;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
-/* 2️⃣ Prevent any framework/root container from scrolling */
-#root,
-#__next,
-.app-root,
-.workspace-root,
-.auth-wrapper,
-.login-page,
-.signup-page {
-  height: 100%;
-  overflow: hidden !important;
+/* WebKit browsers (Chrome, Safari, Opera) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
-/* 3️⃣ Force all common layout containers to not scroll */
-main,
-section,
-article,
-div {
-  overscroll-behavior: none;
-}
-
-/* 4️⃣ Explicitly disable scrollbars visually (all browsers) */
+/* Universal selector to catch any scrollable element */
 * {
-  scrollbar-width: none;            /* Firefox */
-  -ms-overflow-style: none;         /* IE / Edge */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 *::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-  display: none;                    /* Chrome / Safari */
+  display: none;
 }
 
-/* 5️⃣ Clerk / auth / iframe safety */
-iframe,
-#clerk-component {
-  overflow: hidden !important;
+/* Ensure it applies to specific common scrollable containers (e.g., modals, sidebars, chats) */
+::-webkit-scrollbar,
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-corner {
+  display: none;
 }
 
-/* 6️⃣ Prevent accidental page growth */
-body > * {
-  max-height: 100vh;
+/* Fallback for any overflow-auto or overflow-scroll elements */
+.overflow-auto,
+.overflow-scroll {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
 }
 
-/* 7️⃣ Disable scroll chaining (trackpad / mobile) */
+.overflow-auto::-webkit-scrollbar,
+.overflow-scroll::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Specific overrides for common app components (adjust selectors as needed for your app) */
+/* Example for chat, sidebar, lists, etc. - customize these if your classes differ */
+.chat-messages,
+.sidebar,
+.pages-list,
+.create-editor-sidebar,
+.pages-bar,
+.pdf-context-menu,
+.modal-content,
+.login-form,
+.signup-form,
+.workspace-root,
+.main-container,
+.tab-content,
+.history-list,
+.export-options-grid {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.chat-messages::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar,
+.pages-list::-webkit-scrollbar,
+.create-editor-sidebar::-webkit-scrollbar,
+.pages-bar::-webkit-scrollbar,
+.pdf-context-menu::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar,
+.login-form::-webkit-scrollbar,
+.signup-form::-webkit-scrollbar,
+.workspace-root::-webkit-scrollbar,
+.main-container::-webkit-scrollbar,
+.tab-content::-webkit-scrollbar,
+.history-list::-webkit-scrollbar,
+.export-options-grid::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Ensure mobile/touch scrolling remains smooth */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent any horizontal scrollbars globally */
 html,
-body,
-#root {
-  touch-action: manipulation;
+body {
+  overflow-x: hidden !important;
 }
