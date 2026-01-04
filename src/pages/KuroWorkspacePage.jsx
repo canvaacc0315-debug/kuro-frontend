@@ -634,6 +634,15 @@ export default function KuroWorkspacePage() {
             <div className="chat-subtab-content active">
               {/* top row: PDF select (left), answer style (middle‑right), actions (right) */}
               <div className="chat-top-row">
+                <div className="chat-layout">
+                  <div className="chat-main">
+                    {/* existing chat messages + input */}
+                  </div>
+
+                  <div className="chat-side">
+                    {/* your question chips */}
+                  </div>
+                </div>
                 {/* Phase 1.2.B — Conversation Scope Selector */}
                 <div className="chat-scope-bar">
                   <span className="scope-label">Scope:</span>
