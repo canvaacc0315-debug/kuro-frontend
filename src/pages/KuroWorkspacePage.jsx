@@ -633,358 +633,182 @@ export default function KuroWorkspacePage() {
           {activeChatSubTab === "current" && (
             <div className="chat-subtab-content active">
               <div className="chat-layout">
+
+                {/* LEFT — MAIN CHAT */}
                 <div className="chat-main">
-                </div>
-                <div className="chat-assist">
-                  <PdfQuestionSuggestions
-                  onSelect={(q) => {
-                    setChatInput(q); 
-                    setTimeout(() => handleSend(), 100);
-                  }}
-                />
-                </div>
-              </div>
-              {/* top row: PDF select (left), answer style (middle‑right), actions (right) */}
-              <div className="chat-top-row">
-                {/* Phase 1.2.B — Conversation Scope Selector */}
-                <div className="chat-scope-bar">
-                  <span className="scope-label">Scope:</span>
 
-                  <div className="scope-options">
-                    <button
-                      className={`scope-pill ${chatScope.type === "all" ? "active" : ""}`}
-                      onClick={() =>
-                        setChatScope({ type: "all", page: "", from: "", to: "" })
-                      }
-                    >
-                      Entire PDF
-                    </button>
-
-                    <button
-                      className={`scope-pill ${chatScope.type === "page" ? "active" : ""}`}
-                      onClick={() =>
-                        setChatScope({ type: "page", page: "", from: "", to: "" })
-                      }
-                    >
-                      Page
-                    </button>
-
-                    <button
-                      className={`scope-pill ${chatScope.type === "range" ? "active" : ""}`}
-                      onClick={() =>
-                        setChatScope({ type: "range", page: "", from: "", to: "" })
-                      }
-                    >
-                      Range
-                    </button>
-                  </div>
-
-                  {chatScope.type === "page" && (
-                    <input
-                      type="number"
-                      className="scope-input"
-                      placeholder="Page #"
-                      value={chatScope.page}
-                      onChange={(e) =>
-                        setChatScope((prev) => ({ ...prev, page: e.target.value }))
-                      }
-                      min="1"
-                    />
-                  )}
-
-                  {chatScope.type === "range" && (
-                    <div className="scope-range-inputs">
-                      <input
-                        type="number"
-                        className="scope-input"
-                        placeholder="From"
-                        value={chatScope.from}
-                        onChange={(e) =>
-                          setChatScope((prev) => ({ ...prev, from: e.target.value }))
-                        }
-                        min="1"
-                      />
-                      <span className="scope-separator">–</span>
-                      <input
-                        type="number"
-                        className="scope-input"
-                        placeholder="To"
-                        value={chatScope.to}
-                        onChange={(e) =>
-                          setChatScope((prev) => ({ ...prev, to: e.target.value }))
-                        }
-                        min="1"
-                      />
+                  {/* banner with selected file */}
+                  {selectedFile && (
+                    <div className="chat-selected-file-banner">
+                      📄 Chatting with: <strong>{selectedFile.name}</strong>
                     </div>
                   )}
-                </div>
-                <div className="chat-pdf-select">
-                  <label className="form-label">PDF to chat with</label>
-                  <select
-                    className="form-select"
-                    value={selectedPdfId}
-                    onChange={(e) => setSelectedPdfId(e.target.value)}
-                    disabled={uploadedFiles.length === 0}
-                  >
-                    {uploadedFiles.length === 0 ? (
-                      <option>No PDFs uploaded yet</option>
-                    ) : (
-                      <>
-                        <option value="">All PDFs / general chat</option>
+                  {/* TOP CONTROLS */}
+                  <div className="chat-top-row">
+                    <div className="chat-scope-bar">
+                      <span className="scope-label">Scope:</span>
+
+                      <div className="scope-options">
+                        <button
+                          className={`scope-pill ${chatScope.type === "all" ? "active" : ""}`}
+                          onClick={() =>
+                            setChatScope({ type: "all", page: "", from: "", to: "" })
+                          }
+                        >
+                          Entire PDF
+                        </button>
+
+                        <button
+                          className={`scope-pill ${chatScope.type === "page" ? "active" : ""}`}
+                          onClick={() =>
+                            setChatScope({ type: "page", page: "", from: "", to: "" })
+                          }
+                        >
+                          Page
+                        </button>
+
+                        <button
+                          className={`scope-pill ${chatScope.type === "range" ? "active" : ""}`}
+                          onClick={() =>
+                            setChatScope({ type: "range", page: "", from: "", to: "" })
+                          }
+                        >
+                          Range
+                        </button>
+                      </div>
+
+                      {chatScope.type === "page" && (
+                        <input
+                          type="number"
+                          className="scope-input"
+                          placeholder="Page #"
+                          value={chatScope.page}
+                          onChange={(e) =>
+                            setChatScope((prev) => ({ ...prev, page: e.target.value }))
+                          }
+                        />
+                      )}
+
+                      {chatScope.type === "range" && (
+                        <div className="scope-range-inputs">
+                          <input
+                            type="number"
+                            className="scope-input"
+                            placeholder="From"
+                            value={chatScope.from}
+                            onChange={(e) =>
+                              setChatScope((prev) => ({ ...prev, from: e.target.value }))
+                            }
+                          />
+                          <span className="scope-separator">–</span>
+                          <input
+                            type="number"
+                            className="scope-input"
+                            placeholder="To"
+                            value={chatScope.to}
+                            onChange={(e) =>
+                              setChatScope((prev) => ({ ...prev, to: e.target.value }))
+                            }
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="chat-pdf-select">
+                      <label className="form-label">PDF to chat with</label>
+                      <select
+                        className="form-select"
+                        value={selectedPdfId}
+                        onChange={(e) => setSelectedPdfId(e.target.value)}
+                      >
+                        <option value="">All PDFs</option>
                         {uploadedFiles.map((f) => (
                           <option key={f.id} value={f.id}>
                             {f.name}
                           </option>
                         ))}
-                      </>
-                    )}
-                  </select>
-                </div>
-                <div className="chat-answer-style">
-                  <label className="form-label">Answer style</label>
-                  <select
-                    className="form-select"
-                    value={answerStyle}
-                    onChange={(e) => setAnswerStyle(e.target.value)}
-                  >
-                    <option value="default">Helpful explanation</option>
-                    <option value="summary">Concise summary</option>
-                    <option value="exam">Exam / questions</option>
-                    <option value="bullet">Bullet points</option>
-                  </select>
-                </div>
-                <div style={{ display: "flex", gap: "8px" }}>
-                  <button
-                    type="button"
-                    className="clear-conversation-btn"
-                    onClick={handleSaveConversation}
-                  >
-                    💾 Save Conversation
-                  </button>
-                  <button
-                    type="button"
-                    className="clear-conversation-btn"
-                    onClick={handleClearConversation}
-                  >
-                    🗑 Clear Conversation
-                  </button>
-                </div>
-              </div>
-              {/* banner with selected file */}
-              {selectedFile && (
-                <div className="chat-selected-file-banner">
-                  Chatting with: <strong>{selectedFile.name}</strong>
-                </div>
-              )}
-              <div className="chat-container">
-                <div className="chat-messages">
-                  {conversation.map((m) => (
-                    <div
-                      key={m.id}
-                      className={`message ${
-                        m.role === "user" ? "user" : "bot"
-                      }`}
-                    >
-                      {m.role === "bot" && (
-                        <img
-                          src="\kuro-logo.png"
-                          alt="kuro-logo"
-                          className="message-avatar"
-                        />
-                      )}
-                      <div className="message-bubble">{m.content}</div>
+                      </select>
+                    </div>
 
-                      {m.role === "user" && (
-                        <img
-                          src={user?.imageUrl}
-                          alt="User"
-                          className="message-avatar"
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
-                <div className="chat-input-area">
-                  <input
-                    className="chat-input"
-                    placeholder="Ask anything about your PDFs..."
-                    value={chatInput}
-                    onChange={(e) => setChatInput(e.target.value)}
-                    onKeyDown={handleChatKeyDown}
-                    disabled={isSending}
-                  />
-                  <button
-                    className="send-btn"
-                    type="button"
-                    onClick={handleSend}
-                    disabled={isSending}
-                  >
-                    {isSending ? "Sending..." : "Send"}
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-          {/* CHAT HISTORY */}
-          {activeChatSubTab === "history" && (
-            <div className="chat-subtab-content active">
-            
-              <div className="history-container">
-                <div className="history-header">
-                  <h3 className="history-title">📚 Your Chat History</h3>
-                  <button
-                    type="button"
-                    className="clear-history-btn"
-                    onClick={handleClearHistory}
-                  >
-                    Clear All
-                  </button>
-                </div>
-                {history.length === 0 ? (
-                  <div className="empty-state">
-                    <div className="empty-icon">📭</div>
-                    <div className="empty-title">No Chat History Yet</div>
-                    <div className="empty-desc">
-                      Your saved conversations will appear here. Save a
-                      conversation from the Current Chat tab to get started.
+                    <div className="chat-answer-style">
+                      <label className="form-label">Answer style</label>
+                      <select
+                        className="form-select"
+                        value={answerStyle}
+                        onChange={(e) => setAnswerStyle(e.target.value)}
+                      >
+                        <option value="default">Helpful explanation</option>
+                        <option value="summary">Concise summary</option>
+                        <option value="exam">Exam / questions</option>
+                        <option value="bullet">Bullet points</option>
+                      </select>
                     </div>
                   </div>
-                ) : (
-                  <div className="history-list">
-                    {history.map((h) => (
-                      <div key={h.id} className="history-item">
-                        <div>
-                          <div className="history-item-title">{h.title}</div>
-                          <div className="history-item-info">{h.meta}</div>
+
+                  {/* CHAT MESSAGES */}
+                  <div className="chat-container">
+                    <div className="chat-messages">
+                      {conversation.map((m) => (
+                        <div
+                          key={m.id}
+                          className={`message ${m.role === "user" ? "user" : "bot"}`}
+                        >
+                          {m.role === "bot" && (
+                            <img
+                              src="/kuro-logo.png"
+                              alt="kuro-logo"
+                              className="message-avatar"
+                            />
+                          )}
+
+                          <div className="message-bubble">{m.content}</div>
+
+                          {m.role === "user" && (
+                            <img
+                              src={user?.imageUrl}
+                              alt="User"
+                              className="message-avatar"
+                            />
+                          )}
                         </div>
-                        <div className="history-item-actions">
-                          <button
-                            className="history-item-btn"
-                            type="button"
-                            onClick={() => handleLoadHistoryItem(h.id)}
-                          >
-                            Load
-                          </button>
-                          <button
-                            className="history-item-btn"
-                            type="button"
-                            onClick={() => handleDeleteHistoryItem(h.id)}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-          {/* EXPORT CONVERSATION */}
-          {activeChatSubTab === "export" && (
-            <div className="chat-subtab-content active">
-              <div className="export-container">
-                <div className="export-header">
-                  <h3 className="export-title">📥 Export Your Conversation</h3>
-                  <p className="export-desc">
-                    Download or share your current chat conversation in multiple
-                    formats.
-                  </p>
-                </div>
-                <div className="export-options-grid export-grid-3">
-                  <div className="export-card">
-                    <span className="export-icon">📄</span>
-                    <h4 className="export-card-title">Export as PDF</h4>
-                    <p className="export-card-desc">
-                      Download your entire conversation with formatting and
-                      timestamps.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleExportPDF}
-                    >
-                      📥 Export PDF
-                    </button>
-                  </div>
-                  <div className="export-card">
-                    <span className="export-icon">📝</span>
-                    <h4 className="export-card-title">
-                      Export as Word (.DOCX)
-                    </h4>
-                    <p className="export-card-desc">
-                      Perfect for editing and sharing in Microsoft Word or
-                      Google Docs.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleExportDOCX}
-                    >
-                      📥 Export DOCX
-                    </button>
-                  </div>
-                  <div className="export-card">
-                    <span className="export-icon">📊</span>
-                    <h4 className="export-card-title">Export as CSV</h4>
-                    <p className="export-card-desc">
-                      Import to Excel or Google Sheets for analysis and
-                      processing.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleExportCSV}
-                    >
-                      📥 Export CSV
-                    </button>
-                  </div>
-                  <div className="export-card">
-                    <span className="export-icon">📋</span>
-                    <h4 className="export-card-title">
-                      Export as Text (.TXT)
-                    </h4>
-                    <p className="export-card-desc">
-                      Simple plain text format, universal compatibility.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleExportTXT}
-                    >
-                      📥 Export TXT
-                    </button>
-                  </div>
-                  <div className="export-card">
-                    <span className="export-icon">📋</span>
-                    <h4 className="export-card-title">Copy to Clipboard</h4>
-                    <p className="export-card-desc">
-                      Copy the entire conversation to paste anywhere.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleCopyText}
-                    >
-                      📋 Copy Text
-                    </button>
-                  </div>
-                </div>
-                {exportStatus && (
-                  <div className="export-status">
-                    <div className="status-icon">
-                      {exportStatus.type === "error" ? "⚠️" : "✅"}
-                    </div>
-                    <div className="status-message">
-                      {exportStatus.message.split("\n").map((l, i) => (
-                        <div key={i}>{l}</div>
                       ))}
                     </div>
+
+                    {/* INPUT */}
+                    <div className="chat-input-area">
+                      <input
+                        className="chat-input"
+                        placeholder="Ask anything about your PDFs..."
+                        value={chatInput}
+                        onChange={(e) => setChatInput(e.target.value)}
+                        onKeyDown={handleChatKeyDown}
+                        disabled={isSending}
+                      />
+                      <button
+                        className="send-btn"
+                        type="button"
+                        onClick={handleSend}
+                        disabled={isSending}
+                      >
+                        {isSending ? "Sending..." : "Send"}
+                      </button>
+                    </div>
                   </div>
-                )}
+                </div>
+
+                {/* RIGHT — QUESTION ASSIST */}
+                <div className="chat-assist">
+                  <PdfQuestionSuggestions
+                    onSelect={(q) => {
+                      setChatInput(q);
+                      setTimeout(() => handleSend(), 100);
+                    }}
+                  />
+                </div>
               </div>
             </div>
           )}
+          {/* CHAT HISTORY */}  
         </section>
         {/* OTHER TABS */}
         {/* ANALYSIS TAB → uses AnalysisPanel */}

@@ -21,7 +21,7 @@ export const PDF_QUESTION_SETS = [
     title: "Study / Revision",
     questions: [
       "Create short notes from this PDF.",
-      "What questions can be asked from this document?",
+      "List important dates and events mentioned.",
       "Summarize this PDF for exam preparation.",
       "Generate revision points from this PDF."
     ]
