@@ -1,88 +1,113 @@
-/* ===============================
-   PHASE 1.3 – CHAT 2-COLUMN LAYOUT
-   SAFE CSS OVERRIDE (NO JSX CHANGE)
-================================ */
+/* ============================= */
+/* PHASE 1.3 – CHAT SPLIT LAYOUT */
+/* ============================= */
 
-/* Main chat container */
-.chat-container {
+/* Main chat content wrapper */
+.chat-subtab-content.active {
   display: grid;
-  grid-template-columns: 1fr 340px; /* LEFT chat | RIGHT questions */
-  gap: 16px;
-  height: calc(100vh - 260px); /* adjusts for navbar + tabs */
+  grid-template-columns: minmax(0, 1fr) 360px; /* chat | questions */
+  gap: 20px;
   align-items: stretch;
 }
 
-/* LEFT SIDE — CHAT AREA */
-.chat-messages {
+/* LEFT SIDE — CHAT */
+.chat-container {
   grid-column: 1 / 2;
-  background: rgba(15, 17, 23, 0.9);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 260px);
+  background: rgba(15, 15, 18, 0.85);
   border-radius: 14px;
-  padding: 18px;
-  overflow-y: auto;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
+  padding: 16px;
+  overflow: hidden;
 }
 
-/* Chat input stays below messages */
+/* Chat messages scroll */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Input stays at bottom */
 .chat-input-area {
-  grid-column: 1 / 2;
   margin-top: 12px;
   display: flex;
   gap: 10px;
 }
 
-/* RIGHT SIDE — QUESTION PANEL */
-.try-asking-panel {
+/* ============================= */
+/* RIGHT SIDE — QUESTION PANEL   */
+/* ============================= */
+
+.try-asking-panel,
+.try-asking,
+.questions-panel {
   grid-column: 2 / 3;
-  background: rgba(18, 21, 28, 0.95);
-  border-radius: 14px;
-  padding: 16px;
+  height: calc(100vh - 260px);
   overflow-y: auto;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
-}
-
-/* Sticky behavior so it feels premium */
-.try-asking-panel {
   position: sticky;
-  top: 120px;
-  max-height: calc(100vh - 160px);
+  top: 140px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 25, 0.95),
+    rgba(12, 12, 16, 0.95)
+  );
+
+  border: 1px solid rgba(255, 80, 80, 0.15);
+  border-radius: 16px;
+  padding: 14px;
 }
 
-/* Section headings */
-.try-asking-panel h4 {
+/* Section titles */
+.questions-panel h4,
+.try-asking h4 {
   font-size: 12px;
-  letter-spacing: 0.08em;
-  color: #9aa4b2;
-  margin: 18px 0 8px;
   text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ff6b6b;
+  margin: 14px 0 8px;
 }
 
 /* Question chips */
-.try-asking-panel .question-chip {
-  display: inline-block;
+.questions-panel button,
+.try-asking button {
   width: 100%;
-  padding: 10px 14px;
+  text-align: left;
+  padding: 8px 12px;
   margin-bottom: 8px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  background: rgba(255,255,255,0.04);
-  color: #e5e7eb;
+
+  color: #eaeaea;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.25s ease;
-  border: 1px solid rgba(255,255,255,0.06);
+  transition: all 0.2s ease;
 }
 
-.try-asking-panel .question-chip:hover {
-  background: rgba(255,255,255,0.08);
-  transform: translateX(4px);
+.questions-panel button:hover,
+.try-asking button:hover {
+  background: rgba(255, 80, 80, 0.15);
+  border-color: rgba(255, 80, 80, 0.4);
+  transform: translateX(-2px);
 }
 
-/* Mobile fallback */
+/* ============================= */
+/* RESPONSIVE FALLBACK           */
+/* ============================= */
+
 @media (max-width: 1100px) {
-  .chat-container {
+  .chat-subtab-content.active {
     grid-template-columns: 1fr;
   }
 
-  .try-asking-panel {
-    display: none;
+  .questions-panel,
+  .try-asking {
+    position: relative;
+    height: auto;
+    margin-top: 16px;
   }
 }
