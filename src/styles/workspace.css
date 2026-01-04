@@ -983,6 +983,54 @@ body {
   transform: translateY(-1px);
 }
 
+.chat-actions-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 0;
+  margin-bottom: 5px;
+  gap: 12px; /* 👈 Added gap for button spacing */
+  animation: controlsFadeIn 0.5s ease-out; /* 👈 Preserve animation */
+}
+
+.save-conversation-btn { /* 👈 New class for save button, mirroring clear styles but with green theme */
+  padding: 10px 18px;
+  background: rgba(40, 167, 69, 0.15); /* 👈 Softer green bg */
+  border: 1px solid rgba(40, 167, 69, 0.6);
+  color: #28a745; /* 👈 Green text */
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease; /* 👈 Preserve transition for animations */
+  position: relative;
+  overflow: hidden;
+}
+
+.save-conversation-btn::before { /* 👈 Mirror the shine effect */
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid rgba(40, 167, 69, 0.6);
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.save-conversation-btn:hover::before {
+  opacity: 1;
+}
+
+.save-conversation-btn:hover {
+  background: rgba(40, 167, 69, 0.25); /* 👈 Darker green on hover */
+  transform: translateY(-2px); /* 👈 Preserve lift animation */
+}
+
 .clear-conversation-btn {
   padding: 10px 18px;
   background: rgba(255, 107, 107, 0.15);
