@@ -755,12 +755,31 @@ export default function KuroWorkspacePage() {
                     </div>
                   </div>
 
-                  {/* MOVED: Separate row for conversation buttons, with minimal space */}
-                  <div className="chat-actions-row" style={{ display: "flex", justifyContent: "flex-end", padding: "5px 0", marginBottom: "5px" }}>
+                  {/* FIXED: Added gap for spacing, fixed classNames, added inline styles for less aggressive colors */}
+                  <div 
+                    className="chat-actions-row" 
+                    style={{ 
+                      display: "flex", 
+                      justifyContent: "flex-end", 
+                      padding: "5px 0", 
+                      marginBottom: "5px",
+                      gap: "12px"  // 👈 Adds breathing room between buttons
+                    }}
+                  >
                     <button
                       type="button"
-                      className="clear-conversation-btn"
+                      className="save-conversation-btn"  // 👈 Fixed className (was shared with clear)
                       onClick={handleSaveConversation}
+                      style={{
+                        backgroundColor: "#28a745",  // 👈 Softer green for "safe" save action
+                        color: "white",
+                        border: "none",
+                        padding: "8px 16px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        whiteSpace: "nowrap"
+                      }}
                     >
                       💾 Save Conversation
                     </button>
@@ -768,6 +787,16 @@ export default function KuroWorkspacePage() {
                       type="button"
                       className="clear-conversation-btn"
                       onClick={handleClearConversation}
+                      style={{
+                        backgroundColor: "#dc3545",  // 👈 Kept red but you can swap to #6c757d for gray if preferred
+                        color: "white",
+                        border: "none",
+                        padding: "8px 16px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontSize: "14px",
+                        whiteSpace: "nowrap"
+                      }}
                     >
                       🗑 Clear Conversation
                     </button>
