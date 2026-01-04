@@ -13,7 +13,6 @@ import KuroLogo from "../components/layout/KuroLogo.jsx";
 import OcrPanel from "../components/OcrPanel";
 import "../styles/chat-overrides.css";
 
-
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -686,6 +685,7 @@ export default function KuroWorkspacePage() {
                           onChange={(e) =>
                             setChatScope((prev) => ({ ...prev, page: e.target.value }))
                           }
+                          min="1"
                         />
                       )}
 
@@ -699,6 +699,7 @@ export default function KuroWorkspacePage() {
                             onChange={(e) =>
                               setChatScope((prev) => ({ ...prev, from: e.target.value }))
                             }
+                            min="1"
                           />
                           <span className="scope-separator">–</span>
                           <input
@@ -709,6 +710,7 @@ export default function KuroWorkspacePage() {
                             onChange={(e) =>
                               setChatScope((prev) => ({ ...prev, to: e.target.value }))
                             }
+                            min="1"
                           />
                         </div>
                       )}
@@ -720,13 +722,20 @@ export default function KuroWorkspacePage() {
                         className="form-select"
                         value={selectedPdfId}
                         onChange={(e) => setSelectedPdfId(e.target.value)}
+                        disabled={uploadedFiles.length === 0}
                       >
-                        <option value="">All PDFs</option>
-                        {uploadedFiles.map((f) => (
-                          <option key={f.id} value={f.id}>
-                            {f.name}
-                          </option>
-                        ))}
+                        {uploadedFiles.length === 0 ? (
+                          <option>No PDFs uploaded yet</option>
+                        ) : (
+                          <>
+                            <option value="">All PDFs / general chat</option>
+                            {uploadedFiles.map((f) => (
+                              <option key={f.id} value={f.id}>
+                                {f.name}
+                              </option>
+                            ))}
+                          </>
+                        )}
                       </select>
                     </div>
 
@@ -742,6 +751,23 @@ export default function KuroWorkspacePage() {
                         <option value="exam">Exam / questions</option>
                         <option value="bullet">Bullet points</option>
                       </select>
+                    </div>
+
+                    <div style={{ display: "flex", gap: "8px" }}>
+                      <button
+                        type="button"
+                        className="clear-conversation-btn"
+                        onClick={handleSaveConversation}
+                      >
+                        💾 Save Conversation
+                      </button>
+                      <button
+                        type="button"
+                        className="clear-conversation-btn"
+                        onClick={handleClearConversation}
+                      >
+                        🗑 Clear Conversation
+                      </button>
                     </div>
                   </div>
 
@@ -808,7 +834,165 @@ export default function KuroWorkspacePage() {
               </div>
             </div>
           )}
-          {/* CHAT HISTORY */}  
+          {/* CHAT HISTORY */}
+          {activeChatSubTab === "history" && (
+            <div className="chat-subtab-content active">
+              <div className="history-container">
+                <div className="history-header">
+                  <h3 className="history-title">📚 Your Chat History</h3>
+                  <button
+                    type="button"
+                    className="clear-history-btn"
+                    onClick={handleClearHistory}
+                  >
+                    Clear All
+                  </button>
+                </div>
+                {history.length === 0 ? (
+                  <div className="empty-state">
+                    <div className="empty-icon">📭</div>
+                    <div className="empty-title">No Chat History Yet</div>
+                    <div className="empty-desc">
+                      Your saved conversations will appear here. Save a
+                      conversation from the Current Chat tab to get started.
+                    </div>
+                  </div>
+                ) : (
+                  <div className="history-list">
+                    {history.map((h) => (
+                      <div key={h.id} className="history-item">
+                        <div>
+                          <div className="history-item-title">{h.title}</div>
+                          <div className="history-item-info">{h.meta}</div>
+                        </div>
+                        <div className="history-item-actions">
+                          <button
+                            className="history-item-btn"
+                            type="button"
+                            onClick={() => handleLoadHistoryItem(h.id)}
+                          >
+                            Load
+                          </button>
+                          <button
+                            className="history-item-btn"
+                            type="button"
+                            onClick={() => handleDeleteHistoryItem(h.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+          {/* EXPORT CONVERSATION */}
+          {activeChatSubTab === "export" && (
+            <div className="chat-subtab-content active">
+              <div className="export-container">
+                <div className="export-header">
+                  <h3 className="export-title">📥 Export Your Conversation</h3>
+                  <p className="export-desc">
+                    Download or share your current chat conversation in multiple
+                    formats.
+                  </p>
+                </div>
+                <div className="export-options-grid export-grid-3">
+                  <div className="export-card">
+                    <span className="export-icon">📄</span>
+                    <h4 className="export-card-title">Export as PDF</h4>
+                    <p className="export-card-desc">
+                      Download your entire conversation with formatting and
+                      timestamps.
+                    </p>
+                    <button
+                      className="export-btn"
+                      type="button"
+                      onClick={handleExportPDF}
+                    >
+                      📥 Export PDF
+                    </button>
+                  </div>
+                  <div className="export-card">
+                    <span className="export-icon">📝</span>
+                    <h4 className="export-card-title">
+                      Export as Word (.DOCX)
+                    </h4>
+                    <p className="export-card-desc">
+                      Perfect for editing and sharing in Microsoft Word or
+                      Google Docs.
+                    </p>
+                    <button
+                      className="export-btn"
+                      type="button"
+                      onClick={handleExportDOCX}
+                    >
+                      📥 Export DOCX
+                    </button>
+                  </div>
+                  <div className="export-card">
+                    <span className="export-icon">📊</span>
+                    <h4 className="export-card-title">Export as CSV</h4>
+                    <p className="export-card-desc">
+                      Import to Excel or Google Sheets for analysis and
+                      processing.
+                    </p>
+                    <button
+                      className="export-btn"
+                      type="button"
+                      onClick={handleExportCSV}
+                    >
+                      📥 Export CSV
+                    </button>
+                  </div>
+                  <div className="export-card">
+                    <span className="export-icon">📋</span>
+                    <h4 className="export-card-title">
+                      Export as Text (.TXT)
+                    </h4>
+                    <p className="export-card-desc">
+                      Simple plain text format, universal compatibility.
+                    </p>
+                    <button
+                      className="export-btn"
+                      type="button"
+                      onClick={handleExportTXT}
+                    >
+                      📥 Export TXT
+                    </button>
+                  </div>
+                  <div className="export-card">
+                    <span className="export-icon">📋</span>
+                    <h4 className="export-card-title">Copy to Clipboard</h4>
+                    <p className="export-card-desc">
+                      Copy the entire conversation to paste anywhere.
+                    </p>
+                    <button
+                      className="export-btn"
+                      type="button"
+                      onClick={handleCopyText}
+                    >
+                      📋 Copy Text
+                    </button>
+                  </div>
+                </div>
+                {exportStatus && (
+                  <div className="export-status">
+                    <div className="status-icon">
+                      {exportStatus.type === "error" ? "⚠️" : "✅"}
+                    </div>
+                    <div className="status-message">
+                      {exportStatus.message.split("\n").map((l, i) => (
+                        <div key={i}>{l}</div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </section>
         {/* OTHER TABS */}
         {/* ANALYSIS TAB → uses AnalysisPanel */}
@@ -842,4 +1026,4 @@ export default function KuroWorkspacePage() {
     </div>
     </RovexProvider>
   );
-}   
+}
