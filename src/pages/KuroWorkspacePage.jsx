@@ -6,9 +6,7 @@ import { RovexProvider } from "../core/RovexProvider";
 
 import "../styles/workspace.css";
 import AnalysisPanel from "../components/AnalysisPanel.jsx";
-import PdfDesignCanvas from "../components/PdfDesignCanvas.jsx";
 import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
-import { useClerk } from "@clerk/clerk-react";
 import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
@@ -635,6 +633,78 @@ export default function KuroWorkspacePage() {
             <div className="chat-subtab-content active">
               {/* top row: PDF select (left), answer style (middle‑right), actions (right) */}
               <div className="chat-top-row">
+                {/* Phase 1.2.B — Conversation Scope Selector */}
+                <div className="chat-scope-bar">
+                  <span className="scope-label">Scope:</span>
+
+                  <div className="scope-options">
+                    <button
+                      className={`scope-pill ${chatScope.type === "all" ? "active" : ""}`}
+                      onClick={() =>
+                        setChatScope({ type: "all", page: "", from: "", to: "" })
+                      }
+                    >
+                      Entire PDF
+                    </button>
+
+                    <button
+                      className={`scope-pill ${chatScope.type === "page" ? "active" : ""}`}
+                      onClick={() =>
+                        setChatScope({ type: "page", page: "", from: "", to: "" })
+                      }
+                    >
+                      Page
+                    </button>
+
+                    <button
+                      className={`scope-pill ${chatScope.type === "range" ? "active" : ""}`}
+                      onClick={() =>
+                        setChatScope({ type: "range", page: "", from: "", to: "" })
+                      }
+                    >
+                      Range
+                    </button>
+                  </div>
+
+                  {chatScope.type === "page" && (
+                    <input
+                      type="number"
+                      className="scope-input"
+                      placeholder="Page #"
+                      value={chatScope.page}
+                      onChange={(e) =>
+                        setChatScope((prev) => ({ ...prev, page: e.target.value }))
+                      }
+                      min="1"
+                    />
+                  )}
+
+                  {chatScope.type === "range" && (
+                    <div className="scope-range-inputs">
+                      <input
+                        type="number"
+                        className="scope-input"
+                        placeholder="From"
+                        value={chatScope.from}
+                        onChange={(e) =>
+                          setChatScope((prev) => ({ ...prev, from: e.target.value }))
+                        }
+                        min="1"
+                      />
+                      <span className="scope-separator">–</span>
+                      <input
+                        type="number"
+                        className="scope-input"
+                        placeholder="To"
+                        value={chatScope.to}
+                        onChange={(e) =>
+                          setChatScope((prev) => ({ ...prev, to: e.target.value }))
+                        }
+                        min="1"
+                      />
+                    </div>
+                  )}
+                </div>
                 <div className="chat-pdf-select">
                   <label className="form-label">PDF to chat with</label>
                   <select
@@ -934,4 +1004,4 @@ export default function KuroWorkspacePage() {
     </div>
     </RovexProvider>
   );
-}
+}   
