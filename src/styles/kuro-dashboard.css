@@ -350,6 +350,10 @@ body {
   letter-spacing: 0.5px;
   position: relative;
   overflow: hidden;
+  min-height: 44px; /* Touch-friendly minimum */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .workspace-btn::before {
@@ -551,54 +555,81 @@ body {
 /* Mobile Landscape */
 @media (max-width: 768px) {
   .kuro-dashboard-page .main-container {
-    padding: 30px 20px;
+    padding: 24px 16px; /* Reduced for more breathing room */
   }
 
   .workspace-grid,
   .features-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 12px; /* Tighter gap */
   }
 
   .workspace-card,
   .feature-card {
-    padding: 24px;
+    padding: 20px; /* Reduced padding */
   }
 
   .workspace-icon {
-    font-size: 36px;
+    font-size: 32px; /* Smaller icon */
   }
 
   .workspace-name {
-    font-size: 20px;
+    font-size: 18px; /* Smaller title */
   }
 
   .hero-title {
-    font-size: 28px;
+    font-size: 24px; /* More compact */
   }
 
   .hero-subtitle {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .section-title {
-    font-size: 24px;
+    font-size: 20px; /* Smaller section headers */
   }
 
   .hero-banner {
-    padding: 30px 20px;
-    margin-bottom: 40px;
+    padding: 24px 16px; /* Reduced padding */
+    margin-bottom: 32px;
+    border-radius: 16px; /* Slightly smaller radius */
   }
 
   .footer {
-    padding: 30px 20px;
+    padding: 24px 16px; /* Consistent with main */
+  }
+
+  .workspace-features li {
+    font-size: 12px; /* Smaller feature text */
+    gap: 6px;
+  }
+
+  .workspace-features li::before {
+    font-size: 12px;
+  }
+
+  .workspace-description {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .feature-title {
+    font-size: 15px;
+  }
+
+  .feature-desc {
+    font-size: 12px;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
   }
 }
 
 /* Small Mobile */
 @media (max-width: 480px) {
   .kuro-dashboard-page .main-container {
-    padding: 20px 16px;
+    padding: 16px 12px; /* Even tighter for small screens */
   }
 
   .workspace-btn {
@@ -607,7 +638,116 @@ body {
   }
 
   .feature-card {
-    padding: 20px;
+    padding: 16px; /* Further reduced */
+  }
+
+  .workspace-icon {
+    font-size: 28px;
+  }
+
+  .workspace-name {
+    font-size: 16px;
+  }
+
+  .hero-title {
+    font-size: 20px; /* Very compact */
+    margin-bottom: 8px;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .hero-banner {
+    padding: 20px 12px;
+    margin-bottom: 24px;
+  }
+
+  .workspace-card {
+    padding: 16px;
+  }
+
+  .workspace-features {
+    margin-bottom: 20px;
+  }
+
+  .workspace-features li {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .workspace-description {
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+
+  .feature-icon {
+    font-size: 28px;
+  }
+
+  .feature-title {
+    font-size: 14px;
+  }
+
+  .feature-desc {
+    font-size: 11px;
+  }
+
+  .footer {
+    padding: 20px 12px;
+    font-size: 12px;
+  }
+
+  .section-header {
+    margin-bottom: 32px;
+  }
+
+  .section-header::after {
+    width: 40px; /* Smaller underline */
+  }
+}
+
+/* Extra Small Mobile (e.g., iPhone SE) */
+@media (max-width: 360px) {
+  .kuro-dashboard-page .main-container {
+    padding: 12px 8px;
+  }
+
+  .workspace-grid,
+  .features-grid {
+    gap: 8px;
+  }
+
+  .workspace-card,
+  .feature-card {
+    padding: 12px;
+  }
+
+  .hero-banner {
+    padding: 16px 8px;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size: 18px;
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+
+  .workspace-name {
+    font-size: 15px;
+  }
+
+  .workspace-btn {
+    padding: 10px 16px;
+    font-size: 12px;
   }
 }
 
