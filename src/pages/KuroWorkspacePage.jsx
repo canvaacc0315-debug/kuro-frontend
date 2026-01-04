@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
+
 import "../styles/workspace.css";
 import AnalysisPanel from "../components/AnalysisPanel.jsx";
 import PdfDesignCanvas from "../components/PdfDesignCanvas.jsx";
@@ -52,6 +53,12 @@ export default function KuroWorkspacePage() {
       timestamp: new Date().toLocaleTimeString(),
     },
   ]);
+  const [chatScope, setChatScope] = useState({
+    type: "all", // all | page | range
+    page: "",
+    from: "",
+    to: "",
+  });
   const [exportStatus, setExportStatus] = useState(null);
   const [isSending, setIsSending] = useState(false);
   // ✅ Real history state (replaces demoHistory)
@@ -409,6 +416,7 @@ export default function KuroWorkspacePage() {
   };
   // ---------------- render ----------------
   return (
+    <RovexProvider>
     <div className="workspace-root">
       {/* TOP NAVBAR (same style as home) */}
       <header className="navbar">
@@ -924,5 +932,6 @@ export default function KuroWorkspacePage() {
         </section>
       </main>
     </div>
+    </RovexProvider>
   );
 }
