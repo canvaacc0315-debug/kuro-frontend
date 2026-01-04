@@ -1,0 +1,62 @@
+/* =========================================================
+   GLOBAL NO-SCROLLBAR OVERRIDE
+   Applies to ALL pages (auth + app)
+   ========================================================= */
+
+/* 1️⃣ Kill scrolling at the root level */
+html,
+body {
+  height: 100%;
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
+/* 2️⃣ Prevent any framework/root container from scrolling */
+#root,
+#__next,
+.app-root,
+.workspace-root,
+.auth-wrapper,
+.login-page,
+.signup-page {
+  height: 100%;
+  overflow: hidden !important;
+}
+
+/* 3️⃣ Force all common layout containers to not scroll */
+main,
+section,
+article,
+div {
+  overscroll-behavior: none;
+}
+
+/* 4️⃣ Explicitly disable scrollbars visually (all browsers) */
+* {
+  scrollbar-width: none;            /* Firefox */
+  -ms-overflow-style: none;         /* IE / Edge */
+}
+
+*::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  display: none;                    /* Chrome / Safari */
+}
+
+/* 5️⃣ Clerk / auth / iframe safety */
+iframe,
+#clerk-component {
+  overflow: hidden !important;
+}
+
+/* 6️⃣ Prevent accidental page growth */
+body > * {
+  max-height: 100vh;
+}
+
+/* 7️⃣ Disable scroll chaining (trackpad / mobile) */
+html,
+body,
+#root {
+  touch-action: manipulation;
+}

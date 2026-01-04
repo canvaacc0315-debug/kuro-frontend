@@ -3,6 +3,8 @@ import { SignUp } from "@clerk/clerk-react";
 import "../styles/login-landing.css";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import Footer from "../components/layout/Footer"; // ✅ ADDED
+import "./styles/no-scrollbar-override.css";
+
 
 export default function SignUpPage() {
   return (

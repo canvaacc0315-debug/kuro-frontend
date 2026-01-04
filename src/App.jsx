@@ -9,6 +9,8 @@ import DashboardPage from "./pages/DashboardPage";
 import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
 import ScrollToTop from "./components/utils/ScrollToTop";
+import "./styles/no-scrollbar-override.css";
+
 
 
 import PrivacyPolicy from "./pages/PrivacyPolicy";
