@@ -51,6 +51,10 @@
   color: white;
   border-radius: 10px;
   cursor: pointer;
+  min-height: 44px; /* Touch-friendly */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* PDF PREVIEW (A4) */
@@ -85,6 +89,10 @@
   border-radius: 6px;
   color: white;
   cursor: pointer;
+  min-height: 44px; /* Touch-friendly */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ocr-output-right button:disabled {
@@ -138,4 +146,267 @@
 }
 .process-another-btn:hover {
   background: #444 !important;
+}
+
+/* ===========================
+   RESPONSIVE - Enhanced Breakpoints
+=========================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .ocr-root {
+    padding: 20px;
+  }
+
+  .ocr-output-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .ocr-header h2 {
+    font-size: 28px;
+  }
+
+  .ocr-upload {
+    padding: 40px 24px;
+  }
+
+  .ocr-upload-icon {
+    font-size: 40px;
+  }
+
+  .ocr-upload-title {
+    font-size: 18px;
+  }
+
+  .ocr-upload-btn {
+    padding: 12px 24px;
+  }
+
+  .ocr-preview-frame,
+  .ocr-result-preview {
+    height: 70vh;
+  }
+
+  .ocr-output-right {
+    padding: 16px;
+  }
+
+  .ocr-result-preview {
+    padding: 12px;
+  }
+
+  .ocr-result-preview pre {
+    font-size: 12px;
+  }
+}
+
+/* Mobile Landscape */
+@media (max-width: 768px) {
+  .ocr-root {
+    padding: 16px 12px;
+  }
+
+  .ocr-output-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ocr-header h2 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .ocr-header p {
+    text-align: center;
+    font-size: 14px;
+  }
+
+  .ocr-upload {
+    padding: 32px 16px;
+    border-width: 2px;
+  }
+
+  .ocr-upload-icon {
+    font-size: 32px;
+  }
+
+  .ocr-upload-title {
+    font-size: 16px;
+  }
+
+  .ocr-upload-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  .ocr-preview-frame,
+  .ocr-result-preview {
+    height: 50vh; /* Reduced for mobile */
+    margin-top: 12px;
+  }
+
+  .ocr-output-right {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .ocr-output-right h4 {
+    font-size: 16px;
+  }
+
+  .ocr-output-right button {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .ocr-result-preview {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .ocr-result-preview pre {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .ocr-placeholder {
+    font-size: 13px;
+    margin-top: 30%;
+  }
+
+  .ocr-progress-text {
+    font-size: 11px;
+  }
+
+  .process-another-btn {
+    width: 100%;
+    padding: 12px !important;
+    font-size: 14px;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .ocr-root {
+    padding: 12px 8px;
+  }
+
+  .ocr-header h2 {
+    font-size: 20px;
+  }
+
+  .ocr-header p {
+    font-size: 13px;
+  }
+
+  .ocr-upload {
+    padding: 24px 12px;
+  }
+
+  .ocr-upload-icon {
+    font-size: 28px;
+  }
+
+  .ocr-upload-title {
+    font-size: 15px;
+  }
+
+  .ocr-upload-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+
+  .ocr-preview-frame,
+  .ocr-result-preview {
+    height: 40vh;
+    border-radius: 8px;
+  }
+
+  .ocr-output-right {
+    padding: 10px;
+  }
+
+  .ocr-output-right button {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .ocr-result-preview pre {
+    font-size: 10px;
+  }
+
+  .ocr-placeholder {
+    font-size: 12px;
+    margin-top: 25%;
+  }
+}
+
+/* Extra Small Mobile (e.g., iPhone SE) */
+@media (max-width: 360px) {
+  .ocr-root {
+    padding: 8px 4px;
+  }
+
+  .ocr-output-layout {
+    gap: 12px;
+  }
+
+  .ocr-header h2 {
+    font-size: 18px;
+  }
+
+  .ocr-upload {
+    padding: 20px 8px;
+  }
+
+  .ocr-upload-icon {
+    font-size: 24px;
+  }
+
+  .ocr-upload-title {
+    font-size: 14px;
+  }
+
+  .ocr-preview-frame,
+  .ocr-result-preview {
+    height: 35vh;
+  }
+
+  .ocr-result-preview {
+    padding: 8px;
+  }
+
+  .ocr-result-preview pre {
+    font-size: 9px;
+  }
+}
+
+/* ================= ACCESSIBILITY ================= */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast enhancements */
+@media (prefers-contrast: high) {
+  .ocr-upload {
+    border-width: 3px;
+  }
+
+  .ocr-result-preview {
+    border-width: 2px;
+  }
+}
+
+/* Focus visibility */
+*:focus-visible {
+  outline: 2px solid #ef4444;
+  outline-offset: 2px;
 }
