@@ -633,19 +633,16 @@ export default function KuroWorkspacePage() {
           {activeChatSubTab === "current" && (
             <div className="chat-subtab-content active">
               <div className="chat-layout">
-                 {/* LEFT — MAIN CHAT */}
                 <div className="chat-main">
-                  {/* EVERYTHING chat-related stays here */}
-                  {/* chat-top-row */}
-                  {/* selected file banner */}
-                  {/* chat-container */}
-                  {/* chat messages */}
-                  {/* input */}
                 </div>
-              </div>
-              {/* RIGHT — QUESTION ASSIST */}
-              <div className="chat-assist">
-                {/* MOVE Try Asking block here */}
+                <div className="chat-assist">
+                  <PdfQuestionSuggestions
+                  onSelect={(q) => {
+                    setChatInput(q); 
+                    setTimeout(() => handleSend(), 100);
+                  }}
+                />
+                </div>
               </div>
               {/* top row: PDF select (left), answer style (middle‑right), actions (right) */}
               <div className="chat-top-row">
@@ -808,12 +805,6 @@ export default function KuroWorkspacePage() {
                   ))}
                 </div>
                 <div className="chat-input-area">
-                  <PdfQuestionSuggestions
-                    onSelect={(q) => {
-                      setChatInput(q);
-                      setTimeout(() => handleSend(), 100);
-                    }}
-                  />
                   <input
                     className="chat-input"
                     placeholder="Ask anything about your PDFs..."
