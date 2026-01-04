@@ -29,6 +29,18 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
+  animation: navbarSlideIn 0.5s ease-out;
+}
+
+@keyframes navbarSlideIn {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .navbar-brand {
@@ -48,6 +60,16 @@ body {
   font-size: 24px;
   font-weight: bold;
   color: white;
+  animation: logoPulse 2s ease-in-out infinite;
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .navbar-brand-text {
@@ -70,6 +92,12 @@ body {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.user-info:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(4px);
 }
 
 .user-avatar {
@@ -110,6 +138,7 @@ body {
 .nav-btn:hover {
   background: rgba(255, 107, 107, 0.2);
   border-color: rgba(255, 107, 107, 0.5);
+  transform: scale(1.05);
 }
 
 /* Main Container */
@@ -127,6 +156,18 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .workspace-title {
@@ -156,6 +197,18 @@ body {
   margin-bottom: 0;
   overflow-x: auto;
   scrollbar-width: thin;
+  animation: slideInTabs 0.4s ease-out;
+}
+
+@keyframes slideInTabs {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
 .tabs-nav::-webkit-scrollbar {
@@ -183,15 +236,45 @@ body {
   position: relative;
   transition: all 0.3s ease;
   border-bottom: 3px solid transparent;
+  overflow: hidden;
+}
+
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.tab-btn:hover::before {
+  left: 100%;
 }
 
 .tab-btn:hover {
   color: #ff6b6b;
+  transform: translateY(-2px);
 }
 
 .tab-btn.active {
   color: #ff6b6b;
   border-bottom-color: #ff6b6b;
+  animation: activeTabGlow 0.3s ease-out;
+}
+
+@keyframes activeTabGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(255, 107, 107, 0);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(255, 107, 107, 0);
+  }
 }
 
 /* Tab Content */
@@ -203,10 +286,20 @@ body {
   display: none;
   animation: fadeIn 0.3s ease;
   margin-bottom: 32px;
+  transform: translateY(20px);
+  opacity: 0;
 }
 
 .tab-content.active {
   display: block;
+  animation: contentSlideIn 0.4s ease-out forwards;
+}
+
+@keyframes contentSlideIn {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .chat-tab-wide {
@@ -230,6 +323,18 @@ body {
   grid-template-columns: 1.6fr 0.6fr;
   gap: 24px;
   align-items: flex-start;
+  animation: gridFadeIn 0.5s ease-out;
+}
+
+@keyframes gridFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .upload-area {
@@ -240,22 +345,63 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   background: rgba(255, 107, 107, 0.02);
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-area::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 107, 107, 0.05), transparent);
+  transform: rotate(45deg);
+  transition: all 0.6s;
+  opacity: 0;
+}
+
+.upload-area:hover::before {
+  opacity: 1;
+  transform: rotate(45deg) translateX(50%) translateY(50%);
 }
 
 .upload-area:hover {
   border-color: rgba(255, 107, 107, 0.6);
   background: rgba(255, 107, 107, 0.05);
+  transform: scale(1.02);
 }
 
 .upload-area.drag-over {
   border-color: #ff6b6b;
   background: rgba(255, 107, 107, 0.1);
-  transform: scale(1.02);
+  transform: scale(1.02) rotate(1deg);
+  animation: dragBounce 0.6s ease-out;
+}
+
+@keyframes dragBounce {
+  0%, 100% {
+    transform: scale(1.02);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .upload-icon {
   font-size: 64px;
   margin-bottom: 20px;
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .upload-title {
@@ -282,6 +428,26 @@ body {
   font-size: 14px;
   font-weight: 600;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.upload-btn:hover::after {
+  width: 300px;
+  height: 300px;
 }
 
 .upload-btn:hover {
@@ -318,11 +484,13 @@ body {
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
+  transform: translateX(0);
 }
 
 .file-item:hover {
   background: rgba(255, 107, 107, 0.08);
   border-color: rgba(255, 107, 107, 0.3);
+  transform: translateX(8px);
 }
 
 .file-info {
@@ -334,6 +502,20 @@ body {
 
 .file-icon {
   font-size: 24px;
+  animation: iconSpin 2s linear infinite paused;
+}
+
+.file-item:hover .file-icon {
+  animation-play-state: running;
+}
+
+@keyframes iconSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .file-details {
@@ -371,6 +553,7 @@ body {
 
 .file-action-btn:hover {
   background: rgba(255, 107, 107, 0.2);
+  transform: scale(1.1);
 }
 
 /* PDF Preview */
@@ -383,6 +566,18 @@ body {
   padding: 14px;
   display: flex;
   flex-direction: column;
+  animation: panelSlideIn 0.4s ease-out;
+}
+
+@keyframes panelSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .pdf-preview-header {
@@ -412,7 +607,7 @@ body {
 .pdf-preview-back-btn:hover {
   background: rgba(255, 107, 107, 0.15);
   color: #ffffff;
-  transform: translateY(-1px);
+  transform: translateY(-1px) scale(1.05);
 }
 
 .pdf-preview-frame {
@@ -421,6 +616,11 @@ body {
   border: none;
   border-radius: 10px;
   background: #000;
+  transition: transform 0.3s ease;
+}
+
+.pdf-preview-frame:hover {
+  transform: scale(1.01);
 }
 
 /* Empty State */
@@ -428,6 +628,16 @@ body {
   text-align: center;
   padding: 60px 40px;
   color: #666666;
+  animation: emptyFloat 4s ease-in-out infinite;
+}
+
+@keyframes emptyFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
 }
 
 .empty-icon {
@@ -456,6 +666,16 @@ body {
   font-size: 13px;
   margin-bottom: 18px;
   background: rgba(255, 107, 107, 0.03);
+  animation: bannerSlide 0.3s ease-out;
+}
+
+@keyframes bannerSlide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 .chat-subtabs-nav {
@@ -481,10 +701,28 @@ body {
   position: relative;
   transition: all 0.25s ease;
   border-bottom: 2px solid transparent;
+  overflow: hidden;
+}
+
+.chat-subtab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #ff6b6b;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.chat-subtab-btn:hover::after {
+  width: 100%;
 }
 
 .chat-subtab-btn:hover {
   color: #ff6b6b;
+  transform: translateY(-1px);
 }
 
 .chat-subtab-btn.active {
@@ -499,6 +737,18 @@ body {
 
 .chat-subtab-content.active {
   display: block;
+  animation: subtabSlide 0.3s ease-out;
+}
+
+@keyframes subtabSlide {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .chat-layout {
@@ -522,6 +772,12 @@ body {
   background: rgba(255, 255, 255, 0.02);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.chat-container:hover {
+  box-shadow: 0 8px 30px rgba(255, 107, 107, 0.2);
 }
 
 .chat-messages {
@@ -536,6 +792,18 @@ body {
 .message {
   display: flex;
   gap: 12px;
+  animation: messageSlideIn 0.4s ease-out;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .message-avatar {
@@ -548,6 +816,11 @@ body {
   justify-content: center;
   font-size: 14px;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.message:hover .message-avatar {
+  transform: scale(1.1);
 }
 
 .message-bubble {
@@ -556,6 +829,12 @@ body {
   border-radius: 12px;
   font-size: 13px;
   line-height: 1.6;
+  transition: all 0.2s ease;
+}
+
+.message-bubble:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .message.bot .message-bubble {
@@ -583,6 +862,11 @@ body {
   display: flex;
   gap: 12px;
   background: rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease;
+}
+
+.chat-input-area:focus-within {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .chat-input {
@@ -594,16 +878,18 @@ body {
   color: #e0e0e0;
   font-size: 14px;
   font-family: inherit;
-}
-
-.chat-input::placeholder {
-  color: #666666;
+  transition: all 0.3s ease;
 }
 
 .chat-input:focus {
   outline: none;
   border-color: rgba(255, 107, 107, 0.5);
   background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.02);
+}
+
+.chat-input::placeholder {
+  color: #666666;
 }
 
 .send-btn {
@@ -615,10 +901,27 @@ body {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.send-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.send-btn:hover::before {
+  left: 100%;
 }
 
 .send-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
+  transform: translateY(-2px) rotate(2deg);
   box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
 }
 
@@ -630,6 +933,18 @@ body {
   flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 16px;
+  animation: controlsFadeIn 0.5s ease-out;
+}
+
+@keyframes controlsFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .chat-pdf-select,
@@ -653,18 +968,36 @@ body {
   border-radius: 8px;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease, box-shadow 0.3s ease;
   width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-select::after {
+  content: '▼';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  transition: transform 0.3s ease;
+}
+
+.form-select:focus::after {
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .form-select:hover {
   border-color: rgba(255, 107, 107, 0.8);
+  box-shadow: 0 0 10px rgba(255, 107, 107, 0.2);
 }
 
 .form-select:focus {
   outline: none;
   border-color: #ff6b6b;
   box-shadow: 0 0 0 1px rgba(255, 107, 107, 0.4);
+  transform: translateY(-1px);
 }
 
 .clear-conversation-btn {
@@ -678,11 +1011,32 @@ body {
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.25s ease;
+  position: relative;
+}
+
+.clear-conversation-btn::before {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid rgba(255, 107, 107, 0.6);
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.clear-conversation-btn:hover::before {
+  opacity: 1;
 }
 
 .clear-conversation-btn:hover {
   background: rgba(255, 107, 107, 0.25);
   box-shadow: 0 8px 20px rgba(255, 107, 107, 0.25);
+  transform: translateY(-2px);
 }
 
 /* Scope Selector */
@@ -713,17 +1067,48 @@ body {
   font-size: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.scope-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.scope-pill:hover::before {
+  left: 100%;
 }
 
 .scope-pill:hover {
   background: #1a1a1a;
   color: #fff;
+  transform: scale(1.05);
 }
 
 .scope-pill.active {
   background: linear-gradient(135deg, #6b8cff, #8b5cf6);
   color: #fff;
   border-color: transparent;
+  animation: pillGlow 0.5s ease-out;
+}
+
+@keyframes pillGlow {
+  0% {
+    box-shadow: 0 0 0 rgba(107, 140, 255, 0);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(107, 140, 255, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(107, 140, 255, 0);
+  }
 }
 
 .scope-input {
@@ -734,6 +1119,13 @@ body {
   background: #0f0f0f;
   color: #fff;
   font-size: 12px;
+  transition: all 0.2s ease;
+}
+
+.scope-input:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 0 5px rgba(255, 107, 107, 0.3);
+  transform: scale(1.02);
 }
 
 .scope-range-inputs {
@@ -764,15 +1156,47 @@ body {
   color: #eee;
   cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.suggestion-chip::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(120, 120, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+.suggestion-chip:hover::after {
+  width: 200px;
+  height: 200px;
 }
 
 .suggestion-chip:hover {
   background: rgba(120,120,255,0.25);
-  transform: translateY(-1px);
+  transform: translateY(-1px) rotate(5deg);
 }
 
 .question-suggestions {
   margin-bottom: 12px;
+  animation: suggestionsFadeIn 0.5s ease-out;
+}
+
+@keyframes suggestionsFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .question-header {
@@ -811,6 +1235,7 @@ body {
 .question-chip:hover {
   background: #2563eb;
   border-color: #2563eb;
+  transform: scale(1.05);
 }
 
 /* Chat History */
@@ -819,6 +1244,18 @@ body {
   border-radius: 12px;
   padding: 30px;
   min-height: 320px;
+  animation: historySlideIn 0.4s ease-out;
+}
+
+@keyframes historySlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .history-header {
@@ -850,6 +1287,7 @@ body {
 
 .clear-history-btn:hover {
   background: rgba(255, 107, 107, 0.2);
+  transform: scale(1.1);
 }
 
 .history-list {
@@ -868,11 +1306,30 @@ body {
   justify-content: space-between;
   align-items: center;
   transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.history-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, #ff6b6b, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.history-item:hover::before {
+  opacity: 1;
 }
 
 .history-item:hover {
   background: rgba(255, 107, 107, 0.08);
   border-color: rgba(255, 107, 107, 0.3);
+  transform: translateX(5px);
 }
 
 .history-item-title {
@@ -906,6 +1363,7 @@ body {
 
 .history-item-btn:hover {
   background: rgba(255, 107, 107, 0.2);
+  transform: rotate(5deg);
 }
 
 /* Export Conversation */
@@ -914,6 +1372,18 @@ body {
   border-radius: 12px;
   padding: 30px;
   min-height: 320px;
+  animation: exportFadeIn 0.5s ease-out;
+}
+
+@keyframes exportFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .export-header {
@@ -955,18 +1425,41 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+.export-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b6b, transparent);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.export-card:hover::before {
+  transform: scaleX(1);
 }
 
 .export-card:hover {
   background: rgba(255, 107, 107, 0.08);
   border-color: rgba(255, 107, 107, 0.3);
-  transform: translateY(-4px);
+  transform: translateY(-4px) rotateX(5deg);
 }
 
 .export-icon {
   font-size: 40px;
   margin-bottom: 12px;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.export-card:hover .export-icon {
+  transform: rotate(360deg);
 }
 
 .export-card-title {
@@ -997,7 +1490,7 @@ body {
 }
 
 .export-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
   box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
 }
 
@@ -1009,6 +1502,18 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  animation: statusPulse 1s ease-out;
+}
+
+@keyframes statusPulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .status-icon {
@@ -1027,6 +1532,16 @@ body {
   flex-direction: column;
   gap: 18px;
   padding: 24px 18px 18px;
+  animation: analysisFadeIn 0.4s ease-out;
+}
+
+@keyframes analysisFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .analysis-header {
@@ -1084,12 +1599,13 @@ body {
   border-radius: 999px;
   font-size: 12px;
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease,
-    background-color 0.2s ease;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 
 .analysis-select:hover {
   border-color: rgba(255, 107, 107, 0.8);
+  transform: translateY(-1px);
 }
 
 .analysis-select:focus {
@@ -1111,11 +1627,32 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.analysis-generate-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+.analysis-generate-btn:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .analysis-generate-btn:hover:not(:disabled) {
   background: #f5f5f5;
   color: #111111;
+  transform: translateY(-2px);
 }
 
 .analysis-generate-btn:disabled {
@@ -1128,6 +1665,11 @@ body {
   border: 1px solid rgba(255, 107, 107, 0.22);
   background: radial-gradient(circle at top left, #262434 0%, #151520 45%, #0b0b13 100%);
   min-height: 260px;
+  transition: transform 0.3s ease;
+}
+
+.analysis-result-card:hover {
+  transform: scale(1.01);
 }
 
 .analysis-result-inner {
@@ -1196,12 +1738,15 @@ body {
 @keyframes analysisPulse {
   0% {
     opacity: 0.45;
+    transform: scaleX(1);
   }
   50% {
     opacity: 0.9;
+    transform: scaleX(1.05);
   }
   100% {
     opacity: 0.45;
+    transform: scaleX(1);
   }
 }
 
@@ -1214,6 +1759,18 @@ body {
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
   overflow: hidden;
   min-height: 480px;
+  animation: editorSlideIn 0.5s ease-out;
+}
+
+@keyframes editorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .create-sidebar {
@@ -1257,17 +1814,47 @@ body {
   font-size: 13px;
   cursor: pointer;
   transition: all 160ms ease-out;
+  position: relative;
+}
+
+.create-tool-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #ff2945;
+  transition: width 0.2s ease;
+}
+
+.create-tool-btn:hover::after {
+  width: 100%;
 }
 
 .create-tool-btn:hover {
   background: rgba(255, 41, 69, 0.12);
   border-color: rgba(255, 41, 69, 0.25);
+  transform: translateX(4px);
 }
 
 .create-tool-btn.active {
   background: rgba(255, 41, 69, 0.08);
   border-color: rgba(255, 41, 69, 0.35);
   color: #ff2945;
+  animation: activeToolPulse 0.3s ease-out;
+}
+
+@keyframes activeToolPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .create-tool-icon {
@@ -1329,6 +1916,7 @@ body {
 .create-icon-btn:hover {
   background: rgba(255, 41, 69, 0.1);
   border-color: rgba(255, 41, 69, 0.25);
+  transform: rotate(180deg);
 }
 
 .create-editor-body {
@@ -1344,6 +1932,11 @@ body {
   background: radial-gradient(circle at top left, #171722 0, #0b0b10 55%);
   position: relative;
   overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+
+.create-canvas:hover {
+  border-color: #ff2945;
 }
 
 .create-canvas-content {
@@ -1360,6 +1953,16 @@ body {
   transform: translate(-50%, -50%);
   text-align: center;
   pointer-events: none;
+  animation: placeholderFloat 3s ease-in-out infinite;
+}
+
+@keyframes placeholderFloat {
+  0%, 100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-10px);
+  }
 }
 
 .create-canvas-placeholder-icon {
@@ -1388,11 +1991,13 @@ body {
   cursor: default;
   user-select: none;
   transition: all 160ms ease-out;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .create-canvas-element:hover {
   border-color: #ff2945;
   box-shadow: 0 0 18px rgba(255, 41, 69, 0.35);
+  transform: scale(1.02);
 }
 
 .create-properties {
@@ -1441,6 +2046,7 @@ body {
   outline: none;
   border-color: #ff2945;
   box-shadow: 0 0 0 1px rgba(255, 41, 69, 0.6);
+  transform: scale(1.01);
 }
 
 .create-range-input {
@@ -1460,10 +2066,11 @@ body {
   border: 2px solid transparent;
   cursor: pointer;
   transition: all 160ms ease-out;
+  transform: rotate(0deg);
 }
 
 .create-color-swatch:hover {
-  transform: scale(1.08);
+  transform: rotate(180deg) scale(1.1);
 }
 
 .create-color-swatch.active {
@@ -1490,11 +2097,29 @@ body {
   transition: all 160ms ease-out;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  position: relative;
+  overflow: hidden;
+}
+
+.create-action-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.create-action-btn:hover::after {
+  left: 100%;
 }
 
 .create-action-btn:hover {
   background: rgba(255, 41, 69, 0.15);
   border-color: #ff2945;
+  transform: translateY(-1px);
 }
 
 .create-action-btn.primary {
@@ -1505,6 +2130,7 @@ body {
 
 .create-action-btn.primary:hover {
   filter: brightness(1.08);
+  transform: translateY(-2px);
 }
 
 .create-properties::-webkit-scrollbar,
@@ -1533,6 +2159,16 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   background: transparent;
+  animation: ocrFadeIn 0.4s ease-out;
+}
+
+@keyframes ocrFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .ocr-header h2 {
@@ -1565,16 +2201,45 @@ body {
   text-align: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ocr-upload::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(239, 68, 68, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ocr-upload:hover::before {
+  opacity: 1;
 }
 
 .ocr-upload:hover {
   border-color: rgba(239, 68, 68, 0.75);
   background: rgba(18, 18, 25, 0.95);
+  transform: scale(1.02);
 }
 
 .ocr-upload-icon {
   font-size: 56px;
   margin-bottom: 12px;
+  animation: ocrIconBounce 2s ease-in-out infinite;
+}
+
+@keyframes ocrIconBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .ocr-upload-title {
@@ -1600,7 +2265,27 @@ body {
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ocr-upload-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ocr-upload-btn:hover::after {
+  width: 400px;
+  height: 400px;
 }
 
 .ocr-upload-btn:hover {
@@ -1613,6 +2298,11 @@ body {
   border-radius: 16px;
   padding: 28px;
   border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: box-shadow 0.3s ease;
+}
+
+.ocr-settings:hover {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
 }
 
 .ocr-settings h3 {
@@ -1640,12 +2330,14 @@ body {
   color: #e5e7eb;
   border-radius: 8px;
   font-size: 13px;
+  transition: all 0.3s ease;
 }
 
 .ocr-settings select:focus {
   outline: none;
   border-color: #ef4444;
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
+  transform: scale(1.02);
 }
 
 .ocr-checks {
@@ -1658,6 +2350,11 @@ body {
   font-size: 13px;
   margin-top: 10px;
   color: #d1d5db;
+  transition: color 0.2s ease;
+}
+
+.ocr-checks label:hover {
+  color: #ef4444;
 }
 
 .ocr-checks input {
@@ -1672,6 +2369,11 @@ body {
   object-fit: cover;
   margin-left: 12px;
   border: 2px solid rgba(255, 255, 255, 0.2);
+  transition: border-color 0.3s ease;
+}
+
+.navbar-profile-photo:hover {
+  border-color: #ff6b6b;
 }
 
 /* Responsive Design */
