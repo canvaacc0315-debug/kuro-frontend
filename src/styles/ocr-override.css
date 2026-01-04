@@ -1,242 +1,138 @@
-/* ======================================================
-   OCR OVERRIDES – RovexAI (Clean Version)
-   Purpose:
-   - Simple, clean dark theme matching chat UI
-   - Fix layout overflow and readability
-   - Minimal transitions, no glow effects
-   - Consistent spacing and responsive design
-   ====================================================== */
-
-/* ---------- OCR ROOT ---------- */
-.ocr-panel,
-.ocr-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background: transparent;
-}
-
-/* ---------- OCR HEADER ---------- */
-.ocr-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 16px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.ocr-header-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #fff;
-}
-
-/* ---------- OCR ACTION BUTTONS ---------- */
-.ocr-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.ocr-btn {
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #ff5a5f, #ff7676);
-  color: #fff;
-  border: none;
-  font-size: 13px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.ocr-btn.secondary {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+/* ROOT */
+.ocr-root {
+  max-width: 1400px;
+  margin: auto;
+  padding: 24px;
   color: #e5e7eb;
 }
 
-.ocr-btn:hover {
-  background: #ff5a5f; /* Simplified hover, no shadow/glow */
+/* HEADER */
+.ocr-header h2 {
+  font-size: 34px;
 }
-
-/* ---------- OCR BODY LAYOUT ---------- */
-.ocr-body {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  min-height: 0; /* Prevent overflow */
+.ocr-header span {
+  color: #ef4444;
 }
-
-/* ---------- LEFT: OCR PREVIEW ---------- */
-.ocr-preview {
-  position: relative;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #0d0f14;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-/* PDF / IMAGE / CANVAS FIX */
-.ocr-preview iframe,
-.ocr-preview canvas,
-.ocr-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #0d0f14;
-}
-
-/* ---------- RIGHT: OCR TEXT OUTPUT ---------- */
-.ocr-result {
-  display: flex;
-  flex-direction: column;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  overflow: hidden;
-}
-
-/* ---------- OCR RESULT HEADER ---------- */
-.ocr-result-header {
-  padding: 10px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #ffb3b6;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.25);
-}
-
-/* ---------- OCR TEXT AREA ---------- */
-.ocr-text-output {
-  flex: 1;
-  padding: 14px;
-  overflow-y: auto;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 13px;
-  line-height: 1.55;
-  color: #e6e6e6;
-  white-space: pre-wrap;
-  background: transparent; /* Clean background */
-}
-
-/* Scrollbar (minimal, matching chat) */
-.ocr-text-output::-webkit-scrollbar {
-  width: 6px;
-}
-
-.ocr-text-output::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.ocr-text-output::-webkit-scrollbar-thumb {
-  background: rgba(255, 90, 95, 0.4);
-  border-radius: 6px;
-}
-
-.ocr-text-output::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 90, 95, 0.6);
-}
-
-/* ---------- EMPTY STATE ---------- */
-.ocr-empty {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.ocr-header p {
   color: #9ca3af;
+}
+
+/* LAYOUT */
+.ocr-output-layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+/* LEFT SIDE */
+.ocr-upload {
+  border: 2px dashed #ef4444;
+  border-radius: 16px;
+  padding: 56px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.ocr-upload-icon {
+  font-size: 48px;
+}
+
+.ocr-upload-title {
+  font-size: 20px;
+  margin-top: 10px;
+}
+
+.ocr-upload-btn {
+  margin-top: 16px;
+  padding: 10px 28px;
+  background: #ef4444;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* PDF PREVIEW (A4) */
+.ocr-preview-frame {
+  width: 100%;
+  height: 90vh;
+  margin-top: 20px;
+  border: none;
+  border-radius: 16px;
+  background: black;
+}
+
+/* RIGHT PANEL */
+.ocr-output-right {
+  background: rgba(15, 15, 18, 0.95);
+  border-radius: 16px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ocr-output-right h4 {
+  margin-bottom: 6px;
+}
+
+/* BUTTONS */
+.ocr-output-right button {
+  padding: 10px;
+  background: #ef4444;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+.ocr-output-right button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* OCR RESULT (A4 MATCH) */
+.ocr-result-preview {
+  height: 90vh;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid #ef4444;
+  border-radius: 16px;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.ocr-result-preview pre {
   font-size: 13px;
-  gap: 8px;
-  padding: 20px;
-  text-align: center;
+  white-space: pre-wrap;
 }
 
-/* ---------- STATUS / PROGRESS ---------- */
-.ocr-status {
-  margin-top: 8px;
+/* PLACEHOLDER */
+.ocr-placeholder {
+  color: #9ca3af;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 45%;
+}
+
+/* PROGRESS */
+.ocr-progress-bar {
+  height: 8px;
+  background: #222;
+  border-radius: 99px;
+}
+
+.ocr-progress-fill {
+  height: 100%;
+  background: #ef4444;
+}
+
+.ocr-progress-text {
   font-size: 12px;
-  color: #ffb3b6;
-  text-align: center;
+  color: #9ca3af;
 }
 
-/* ---------- MOBILE / SMALL SCREENS ---------- */
-@media (max-width: 1024px) {
-  .ocr-body {
-    grid-template-columns: 1fr;
-  }
-
-  .ocr-preview {
-    min-height: 280px;
-  }
-
-  .ocr-header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  .ocr-actions {
-    justify-content: center;
-  }
-}
-
-@media (max-width: 768px) {
-  .ocr-root {
-    padding: 16px 12px;
-  }
-
-  .ocr-header {
-    padding: 12px;
-  }
-
-  .ocr-body {
-    gap: 12px;
-  }
-
-  .ocr-preview,
-  .ocr-result {
-    border-radius: 8px;
-  }
-
-  .ocr-text-output {
-    padding: 12px;
-    font-size: 12px;
-  }
-
-  .ocr-empty {
-    padding: 16px;
-    font-size: 12px;
-  }
-}
-
-/* ================= ACCESSIBILITY ================= */
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .ocr-btn {
-    transition: none;
-  }
-}
-
-/* High contrast enhancements */
-@media (prefers-contrast: high) {
-  .ocr-preview,
-  .ocr-result {
-    border-width: 2px;
-  }
-
-  .ocr-text-output::-webkit-scrollbar-thumb {
-    background: #ff5a5f;
-  }
-}
-
-/* Focus visibility */
-*:focus-visible {
-  outline: 2px solid #ff5a5f;
-  outline-offset: 2px;
+/* RESET */
+.process-another-btn {
+  background: #333 !important;
 }
