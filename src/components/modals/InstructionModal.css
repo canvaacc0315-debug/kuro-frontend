@@ -33,7 +33,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 28px 16px;
-  /* Removed border-bottom to eliminate the red line below the header */
+  /* No border-bottom */
   position: relative; /* For potential pseudo-elements if needed */
 }
 
@@ -117,6 +117,14 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  counter-reset: step-counter; /* For custom numbered list */
+}
+
+.features-list ol { /* Target if nested, but since it's direct ol, adjust as needed */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: step-counter;
 }
 
 .features-list li {
@@ -133,6 +141,24 @@
   opacity: 0; /* Start hidden for stagger */
   transform: translateY(20px); /* Start offset for slide-in */
   animation: staggerIn 0.5s ease-out forwards; /* Staggered entrance */
+  counter-increment: step-counter;
+  position: relative;
+}
+
+.features-list li::before {
+  content: counter(step-counter);
+  background: #ef4444; /* Red circle for step number */
+  color: #ffffff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-right: 8px; /* Space after number */
 }
 
 .features-list li:nth-child(1) { animation-delay: 0.5s; }
@@ -140,6 +166,7 @@
 .features-list li:nth-child(3) { animation-delay: 0.7s; }
 .features-list li:nth-child(4) { animation-delay: 0.8s; }
 .features-list li:nth-child(5) { animation-delay: 0.9s; }
+.features-list li:nth-child(6) { animation-delay: 1.0s; } /* Extra for 6th step */
 
 .features-list li:hover {
   background: rgba(26, 26, 26, 1);
@@ -154,6 +181,7 @@
   flex-shrink: 0;
   margin-top: 2px;
   transition: transform 0.2s ease; /* Icon bounce on hover */
+  margin-left: -32px; /* Adjust for number positioning */
 }
 
 .features-list li:hover .icon {
@@ -166,7 +194,7 @@
 }
 
 .features-list strong {
-  color: #f472b6; /* Pink emphasis */
+  color: #ef4444; /* Matched to the red in "Choose Your Workspace" for instruction titles */
 }
 
 /* Highlight: More prominent pink/red with extra flair */
@@ -183,7 +211,7 @@
 }
 
 .features-list .highlight strong {
-  color: #ffffff;
+  color: #ef4444; /* Consistent red for highlight title */
 }
 
 /* Actions: Refined pink/red button with better focus and press */
@@ -350,4 +378,5 @@
   .features-list li:nth-child(3) { animation-delay: 0.5s; }
   .features-list li:nth-child(4) { animation-delay: 0.6s; }
   .features-list li:nth-child(5) { animation-delay: 0.7s; }
+  .features-list li:nth-child(6) { animation-delay: 0.8s; } /* For 6th step */
 }
