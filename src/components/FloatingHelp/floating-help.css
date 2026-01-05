@@ -29,8 +29,8 @@
 }
 .floating-help-btn:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  background: linear-gradient(135deg, #333333 0%, #666666 100%);
+  box-shadow: 0 6px 20px rgb(255, 0, 0);
+  background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
 }
 .floating-help-btn:focus {
   outline: 2px solid #fff;
