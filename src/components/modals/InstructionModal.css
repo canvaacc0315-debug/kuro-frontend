@@ -190,7 +190,7 @@
 .instruction-actions {
   padding: 0 28px 24px;
   text-align: center;
-  border-top: 1px solid rgba(239, 68, 68, 0.25);
+  /* Removed border-top to eliminate the red line above the button */
   animation: slideInUp 0.5s ease-out 1s both; /* Actions slide in last */
 }
 
