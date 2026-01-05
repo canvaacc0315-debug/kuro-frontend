@@ -74,7 +74,7 @@ export default function InstructionModal() {
 
         <div className="instruction-actions">
           <button onClick={handleClose} className="primary-btn">
-            Got It! 🚀
+            Got It!
           </button>
         </div>
       </div>
