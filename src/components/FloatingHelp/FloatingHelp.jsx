@@ -73,7 +73,7 @@ export default function FloatingHelp() {
             className={`section-header ${expandedSections.analysis ? 'expanded' : ''}`}
             onClick={() => toggleSection('analysis')}
           >
-            <strong>Analysis Features</strong>
+            <strong>Analysis & OCR</strong>
             <span className="toggle-icon">{expandedSections.analysis ? "−" : "+"}</span>
           </button>
           <div className={`section-content ${expandedSections.analysis ? 'expanded' : ''}`}>
