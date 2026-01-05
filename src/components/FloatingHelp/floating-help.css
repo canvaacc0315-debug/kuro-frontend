@@ -42,7 +42,7 @@
   outline-offset: 2px;
 }
 
-/* Floating Panel - Dark red theme */
+/* Floating Panel - Black inside theme */
 .floating-help-panel {
   position: fixed;
   bottom: 170px; /* Adjusted for button position */
@@ -50,7 +50,7 @@
   width: 280px; /* Made smaller */
   max-width: 90vw;
   max-height: 70vh; /* Allows scrolling for full content */
-  background: rgba(139, 0, 0, 0.85); /* Dark red background */
+  background: rgba(0, 0, 0, 0.95); /* Black background for inside */
   backdrop-filter: blur(10px);
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Deeper shadow for depth */
@@ -104,7 +104,7 @@
 
 /* Help Sections */
 .help-section {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 0, 0, 0.2); /* Red accent border */
   overflow: hidden; /* For smooth section transitions */
 }
 
@@ -147,7 +147,7 @@
 .section-content {
   max-height: 0;
   overflow: hidden;
-  background-color: rgba(139, 0, 0, 0.85); /* Match panel dark red bg */
+  background-color: rgba(0, 0, 0, 0.95); /* Black background for inside */
   transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease; /* Smooth height and fade */
   opacity: 0;
 }
@@ -160,7 +160,7 @@
 /* Help Items */
 .help-item {
   padding: 16px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 0, 0, 0.1); /* Subtle red border */
   display: flex;
   flex-direction: column;
   gap: 6px;
