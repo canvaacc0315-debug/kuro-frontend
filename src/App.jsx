@@ -9,6 +9,7 @@ import DashboardPage from "./pages/DashboardPage";
 import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
 import ScrollToTop from "./components/utils/ScrollToTop";
+import FloatingHelp from "./components/FloatingHelp/FloatingHelp"; // ✅ Added import
 import "./styles/no-scrollbar-override.css";
 
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -66,6 +67,8 @@ export default function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
+              {/* ✅ Floating help widget – only on dashboard */}
+              <FloatingHelp />
               <DashboardPage />
             </ProtectedRoute>
           }
