@@ -1,234 +1,206 @@
-/* Enhanced Overlay: Smoother backdrop with subtle blur for modern depth */
+/* Overlay: Dark, immersive black */
 .instruction-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75); /* Darker black for better focus */
+  background: rgba(0, 0, 0, 0.85); /* Heavy black for focus */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  backdrop-filter: blur(4px); /* Subtle blur for immersion (fallback: none for older browsers) */
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Modal: Refined black base with red accents for energy */
+/* Modal: Dark theme with subtle red glows */
 .instruction-modal {
-  background: linear-gradient(145deg, #0f0f0f, #1a1a1a); /* Subtle gradient for depth */
+  background: linear-gradient(145deg, #0a0a0a, #1a1a1a); /* Matches app's black/dark bg */
   color: #ffffff;
-  padding: 32px; /* More breathing room */
+  padding: 0; /* Handled in children */
   width: 90%;
-  max-width: 540px; /* Slightly wider for better text flow */
-  border-radius: 16px; /* Softer corners */
+  max-width: 520px;
+  border-radius: 20px; /* Rounded like workspace cards */
   box-shadow: 
-    0 25px 50px -12px rgba(220, 38, 127, 0.25), /* Red-tinted outer glow */
-    0 0 0 1px rgba(220, 38, 127, 0.1), /* Subtle red border glow */
-    inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Inner highlight for premium feel */
-  animation: pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy ease for delight */
-  border: none; /* Clean, no default border */
-  position: relative; /* For potential pseudo-elements */
+    0 20px 40px rgba(0, 0, 0, 0.5), /* Deep black shadow */
+    0 0 0 1px rgba(239, 68, 68, 0.1), /* Subtle red border */
+    inset 0 1px 0 rgba(255, 255, 255, 0.02); /* Inner lift */
+  animation: pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  overflow: hidden; /* Clean edges */
 }
 
-/* Header: Added for structure (assumes JSX has .instruction-header) */
+/* Header: Clean, with red accent */
 .instruction-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid rgba(220, 38, 127, 0.2); /* Red accent line */
+  padding: 24px 28px 16px;
+  border-bottom: 1px solid rgba(239, 68, 68, 0.2); /* Red line */
 }
 
-.instruction-modal h2 {
-  margin: 0 0 16px 0;
-  font-size: 1.75rem; /* Larger for impact */
-  font-weight: 700;
-  letter-spacing: -0.025em; /* Subtle tightening */
+.instruction-header h2 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
   color: #ffffff;
   display: flex;
   align-items: center;
   gap: 8px;
+  letter-spacing: -0.02em;
 }
 
-/* Close Button: Added for better UX (assumes JSX has it) */
+/* Close Button: Subtle red hover */
 .close-btn {
   background: none;
   border: none;
-  color: #ffffff;
+  color: #9ca3af; /* Gray for subtlety */
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 4px;
+  padding: 8px;
   border-radius: 50%;
   transition: all 0.2s ease;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .close-btn:hover {
-  background: rgba(220, 38, 127, 0.2); /* Red hover tint */
-  opacity: 1;
-  transform: scale(1.1);
+  color: #ffffff;
+  background: rgba(239, 68, 68, 0.15); /* Red tint */
+  transform: scale(1.05);
 }
 
-/* List: Cleaner, with red icons/accents */
-.instruction-modal ul {
+/* Body: Spacious, card-like */
+.instruction-body {
+  padding: 0 28px 24px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.intro-text {
+  margin: 0 0 20px 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #d1d5db; /* Light gray for secondary */
+  text-align: center;
+  font-style: italic;
+}
+
+/* List: Card-style items with red accents */
+.features-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 24px 0;
+  margin: 0;
 }
 
-.instruction-modal li {
-  margin-bottom: 14px; /* More space between items */
-  line-height: 1.6; /* Improved readability */
+.features-list li {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  padding: 12px;
-  background: rgba(220, 38, 127, 0.05); /* Very subtle red tint */
-  border-radius: 8px;
-  border-left: 3px solid rgba(220, 38, 127, 0.4); /* Red accent bar */
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: rgba(26, 26, 26, 0.8); /* Dark card bg */
+  border-radius: 12px;
+  border-left: 3px solid rgba(239, 68, 68, 0.4); /* Red bar */
   transition: all 0.2s ease;
+  line-height: 1.4;
 }
 
-.instruction-modal li:hover {
-  background: rgba(220, 38, 127, 0.1);
-  transform: translateX(2px); /* Micro-interaction */
-  border-left-color: #dc256f; /* Brighter red on hover */
+.features-list li:hover {
+  background: rgba(26, 26, 26, 1);
+  border-left-color: #ef4444; /* Brighter red */
+  transform: translateX(2px);
 }
 
-.instruction-modal li strong {
-  color: #dc256f; /* Red for emphasis */
+.features-list .icon {
+  font-size: 1.2rem;
+  color: #f472b6; /* Pink/red icon like app highlights */
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
-/* Highlight: More prominent with red background */
-.instruction-modal .highlight {
-  background: linear-gradient(90deg, rgba(220, 38, 127, 0.15), rgba(220, 38, 127, 0.05));
-  border-left: 4px solid #dc256f; /* Solid red */
-  padding: 14px;
-  margin: 16px 0; /* Extra top/bottom space */
-  font-size: 0.95rem;
-  border-radius: 8px;
-}
-
-.instruction-modal .highlight strong {
-  color: #ffffff; /* White for contrast */
-  text-shadow: 0 0 4px rgba(220, 38, 127, 0.3); /* Subtle glow */
-}
-
-/* Actions: Full-width red button with hover effects */
-.instruction-modal button {
-  margin-top: 0; /* Reset if needed */
-  width: 100%;
-  padding: 14px 24px;
-  background: linear-gradient(135deg, #dc256f, #b91c52); /* Red gradient */
-  border: none;
-  border-radius: 10px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
+.features-list span:last-of-type {
   color: #ffffff;
+  flex: 1;
+}
+
+.features-list strong {
+  color: #f472b6; /* Pink emphasis */
+}
+
+/* Highlight: More prominent pink/red */
+.features-list .highlight {
+  background: linear-gradient(90deg, rgba(244, 114, 182, 0.15), rgba(239, 68, 68, 0.1));
+  border-left: 4px solid #f472b6;
+  margin: 12px 0;
+  font-weight: 500;
+}
+
+.features-list .highlight .icon {
+  color: #ef4444; /* Red for mobile icon */
+}
+
+.features-list .highlight strong {
+  color: #ffffff;
+}
+
+/* Actions: Pink/red button like "Enter Workspace" */
+.instruction-actions {
+  padding: 0 28px 24px;
+  text-align: center;
+  border-top: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #ef4444, #f472b6); /* Red-to-pink gradient */
+  color: #ffffff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(220, 38, 127, 0.3);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  width: 100%;
+  max-width: 220px;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
-.instruction-modal button:hover {
-  background: linear-gradient(135deg, #b91c52, #dc256f);
+.primary-btn:hover {
+  background: linear-gradient(135deg, #dc2626, #ec4899);
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(220, 38, 127, 0.4);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
 }
 
-.instruction-modal button:active {
-  transform: translateY(0);
-}
-
-/* Animations: Refined for smoothness */
+/* Animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes pop {
-  0% {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.02);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-  }
+  0% { transform: scale(0.95); opacity: 0; }
+  60% { transform: scale(1.02); opacity: 1; }
+  100% { transform: scale(1); }
 }
 
-/* Responsiveness: Better mobile handling */
+/* Responsive: Matches app's mobile-friendly design */
 @media (max-width: 600px) {
   .instruction-modal {
     width: 95%;
-    padding: 24px;
-    margin: 16px;
+    border-radius: 16px;
   }
   
-  .instruction-modal h2 {
-    font-size: 1.5rem;
+  .instruction-body {
+    padding: 0 20px 20px;
   }
   
-  .instruction-modal li {
-    padding: 10px;
-    font-size: 0.95rem;
-  }
-}
-
-/* Accessibility: Focus states */
-.instruction-modal button:focus,
-.close-btn:focus {
-  outline: 2px solid #dc256f;
-  outline-offset: 2px;
-}
-
-/* Dark mode is already aligned; light mode fallback if needed */
-@media (prefers-color-scheme: light) {
-  .instruction-modal {
-    background: linear-gradient(145deg, #f8fafc, #f1f5f9);
-    color: #1e293b;
-    border: 1px solid #e2e8f0;
+  .features-list li {
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
   }
   
-  .instruction-modal li {
-    background: #f8fafc;
-    border-left-color: #ef4444;
+  .instruction-header {
+    padding: 20px 20px 12px;
   }
   
-  .instruction-modal button {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
+  .instruction-actions {
+    padding: 0 20px 20px;
   }
-}
-/* Checkbox: Subtle red accent */
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-  color: #d1d5db;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.checkbox-label input[type="checkbox"] {
-  accent-color: #dc256f; /* Red checkbox */
-  width: 16px;
-  height: 16px;
-}
-
-.checkbox-label span {
-  user-select: none;
-}
-
-/* Ensure body padding accounts for new elements */
-.instruction-body {
-  padding-bottom: 8px; /* Tiny adjustment */
 }

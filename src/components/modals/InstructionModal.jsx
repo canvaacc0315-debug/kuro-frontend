@@ -1,22 +1,14 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom"; // For route change detection
+import { useLocation } from "react-router-dom";
 import "./InstructionModal.css";
 
-const STORAGE_KEY = "rovex_show_instructions";
-
 export default function InstructionModal() {
-  const [open, setOpen] = useState(true); // Start open for immediate show
-  const [dontShowAgain, setDontShowAgain] = useState(false);
-  const location = useLocation(); // Detect route changes (login/signup)
+  const [open, setOpen] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     // Force show on every entry (refresh, reopen, route change)
-    // Temporarily bypass storage for testing – always set to true
-    // const shouldShow = localStorage.getItem(STORAGE_KEY);
-    // if (shouldShow !== "false") {
-    //   setOpen(true);
-    // }
-    setOpen(true); // 🚨 TEMP: Always show – comment this + uncomment above for persistence
+    setOpen(true); // Always show for now – add localStorage logic later if needed
 
     // Re-show on tab focus/reopen or page show (refresh)
     const handleVisibilityChange = () => {
@@ -37,12 +29,9 @@ export default function InstructionModal() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("pageshow", handlePageShow);
     };
-  }, [location.pathname]); // Re-run on route changes
+  }, [location.pathname]);
 
   const handleClose = () => {
-    if (dontShowAgain) {
-      localStorage.setItem(STORAGE_KEY, "false"); // Persist if checked
-    }
     setOpen(false);
   };
 
@@ -60,29 +49,29 @@ export default function InstructionModal() {
 
         <div className="instruction-body">
           <p className="intro-text">
-            Transform your PDF workflows with intelligent processing and creation. Here's a quick guide to get started:
+            Transform your PDF workflows with intelligent processing and creation. Select a workspace to get started:
           </p>
 
           <ul className="features-list">
             <li>
-              <span className="icon">📄</span>
-              <span>Upload PDFs to start chatting with your documents</span>
-            </li>
-            <li>
               <span className="icon">💬</span>
-              <span>Ask questions and get instant answers based on your content</span>
+              <span>PDF Chat: Interact with your PDFs using natural language. Ask questions, extract information, and get instant answers.</span>
             </li>
             <li>
               <span className="icon">📊</span>
-              <span>Unlock deeper insights with AI-powered analysis</span>
+              <span>Analysis: Deep dive into PDF content. Extract data, generate insights, and visualize information beautifully.</span>
             </li>
             <li>
-              <span className="icon">🔍</span>
-              <span>OCR magic: Extract text from scanned or image-based PDFs</span>
+              <span className="icon">📁</span>
+              <span>Upload & Organize: Upload, manage, and organize your PDF documents in one place. Efficiently build and maintain your document library.</span>
             </li>
             <li>
               <span className="icon">✏️</span>
-              <span>Create, edit, and export PDFs in real time</span>
+              <span>Create & Edit: Design and edit PDFs with Canva-like simplicity. Professional templates and easy tools.</span>
+            </li>
+            <li>
+              <span className="icon">🔍</span>
+              <span>OCR & Recognition: Convert scanned documents to editable text and extract data from complex layouts.</span>
             </li>
             <li className="highlight">
               <span className="icon">📱</span>
@@ -93,14 +82,6 @@ export default function InstructionModal() {
         </div>
 
         <div className="instruction-actions">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={dontShowAgain}
-              onChange={(e) => setDontShowAgain(e.target.checked)}
-            />
-            <span>Don't show this again</span>
-          </label>
           <button onClick={handleClose} className="primary-btn">
             Got It! 🚀
           </button>
