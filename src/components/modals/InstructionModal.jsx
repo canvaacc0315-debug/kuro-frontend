@@ -48,11 +48,11 @@ export default function InstructionModal() {
         </div>
 
         <div className="instruction-body">
-          <p className="intro-text">
-            Transform your PDF workflows with intelligent processing and creation. Select a workspace to get started:
-          </p>
-
           <ul className="features-list">
+            <li className="highlight">
+              <span className="icon">📱</span>
+              Mobile Users For the best experience enable Desktop Mode in your browser settings.
+            </li>
             <li>
               <span className="icon">💬</span>
               <span>PDF Chat: Interact with your PDFs using natural language. Ask questions, extract information, and get instant answers.</span>
@@ -72,11 +72,6 @@ export default function InstructionModal() {
             <li>
               <span className="icon">🔍</span>
               <span>OCR & Recognition: Convert scanned documents to editable text and extract data from complex layouts.</span>
-            </li>
-            <li className="highlight">
-              <span className="icon">📱</span>
-              <strong>Mobile Users:</strong><br />
-              For the best experience, enable <strong>Desktop Mode</strong> in your browser settings.
             </li>
           </ul>
         </div>
