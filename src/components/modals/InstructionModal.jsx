@@ -62,10 +62,6 @@ export default function InstructionModal() {
               <span>Analysis: Deep dive into PDF content. Extract data, generate insights, and visualize information beautifully.</span>
             </li>
             <li>
-              <span className="icon">📁</span>
-              <span>Upload & Organize: Upload, manage, and organize your PDF documents in one place. Efficiently build and maintain your document library.</span>
-            </li>
-            <li>
               <span className="icon">✏️</span>
               <span>Create & Edit: Design and edit PDFs with Canva-like simplicity. Professional templates and easy tools.</span>
             </li>
