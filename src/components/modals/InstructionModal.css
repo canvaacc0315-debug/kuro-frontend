@@ -33,7 +33,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 28px 16px;
-  border-bottom: 1px solid rgba(239, 68, 68, 0.25); /* Slightly stronger red line */
+  /* Removed border-bottom to eliminate the red line below the header */
   position: relative; /* For potential pseudo-elements if needed */
 }
 
@@ -190,7 +190,7 @@
 .instruction-actions {
   padding: 0 28px 24px;
   text-align: center;
-  /* Removed border-top to eliminate the red line above the button */
+  /* No border-top */
   animation: slideInUp 0.5s ease-out 1s both; /* Actions slide in last */
 }
 
