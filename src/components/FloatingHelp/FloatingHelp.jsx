@@ -98,21 +98,17 @@ export default function FloatingHelp() {
             className={`section-header ${expandedSections.privacy ? 'expanded' : ''}`}
             onClick={() => toggleSection('privacy')}
           >
-            <strong>Privacy & Support</strong>
+            <strong>Privacy</strong>
             <span className="toggle-icon">{expandedSections.privacy ? "−" : "+"}</span>
           </button>
           <div className={`section-content ${expandedSections.privacy ? 'expanded' : ''}`}>
             <div className="help-item">
               <strong>Is my data private?</strong>
-              <span>Yes! PDFs are processed securely and not stored without consent. Learn more at <a href="https://rovexai.com/privacy" target="_blank" rel="noopener noreferrer">rovexai.com/privacy</a>.</span>
+              <span>Yes! PDFs are processed securely and not stored without consent. Learn more at <a href="https://www.rovexai.com/privacy-policy" target="_blank" rel="noopener noreferrer">rovexai.com/privacy</a>.</span>
             </div>
             <div className="help-item warning">
               <strong>📱 Mobile Tip</strong>
               <span>Enable <b>Desktop Mode</b> in your browser for full features like editing and OCR.</span>
-            </div>
-            <div className="help-item">
-              <strong>Need more help?</strong>
-              <span>Visit <a href="https://rovexai.com/support" target="_blank" rel="noopener noreferrer">rovexai.com/support</a> or email help@rovexai.com. We're here 24/7!</span>
             </div>
           </div>
         </div>
