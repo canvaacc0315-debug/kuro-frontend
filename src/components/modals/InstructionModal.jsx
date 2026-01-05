@@ -1,37 +1,37 @@
+// src/components/modals/InstructionModal.jsx
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./InstructionModal.css";
 
+const STORAGE_KEY = "rovex_instructions_shown_session"; // sessionStorage for per-visit (clears on tab close)
+
 export default function InstructionModal() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    // Force show on every entry (refresh, reopen, route change)
-    setOpen(true); // Always show for now – add localStorage logic later if needed
+    // Check sessionStorage – show only if not shown in this session
+    const shown = sessionStorage.getItem(STORAGE_KEY);
+    if (!shown && location.pathname === "/dashboard") { // Only on dashboard entry
+      setOpen(true);
+    }
 
-    // Re-show on tab focus/reopen or page show (refresh)
-    const handleVisibilityChange = () => {
-      if (!document.hidden) { // Tab became visible
+    // Optional: Re-show only on initial site entry (not refresh/other routes)
+    const handlePageShow = () => {
+      if (location.pathname === "/dashboard" && !sessionStorage.getItem(STORAGE_KEY)) {
         setOpen(true);
       }
     };
 
-    const handlePageShow = () => {
-      setOpen(true);
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
     window.addEventListener("pageshow", handlePageShow);
 
-    // Re-trigger on route change (login/signup)
     return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("pageshow", handlePageShow);
     };
   }, [location.pathname]);
 
   const handleClose = () => {
+    sessionStorage.setItem(STORAGE_KEY, "true"); // Mark as shown for this session
     setOpen(false);
   };
 
@@ -48,11 +48,11 @@ export default function InstructionModal() {
         </div>
 
         <div className="instruction-body">
+          <p className="intro-text">
+            Transform your PDF workflows with intelligent processing and creation. Select a workspace to get started:
+          </p>
+
           <ul className="features-list">
-            <li className="highlight">
-              <span className="icon">📱</span>
-              Mobile Users For the best experience enable Desktop Mode in your browser settings.
-            </li>
             <li>
               <span className="icon">💬</span>
               <span>PDF Chat: Interact with your PDFs using natural language. Ask questions, extract information, and get instant answers.</span>
@@ -62,12 +62,21 @@ export default function InstructionModal() {
               <span>Analysis: Deep dive into PDF content. Extract data, generate insights, and visualize information beautifully.</span>
             </li>
             <li>
+              <span className="icon">📁</span>
+              <span>Upload & Organize: Upload, manage, and organize your PDF documents in one place. Efficiently build and maintain your document library.</span>
+            </li>
+            <li>
               <span className="icon">✏️</span>
               <span>Create & Edit: Design and edit PDFs with Canva-like simplicity. Professional templates and easy tools.</span>
             </li>
             <li>
               <span className="icon">🔍</span>
               <span>OCR & Recognition: Convert scanned documents to editable text and extract data from complex layouts.</span>
+            </li>
+            <li className="highlight">
+              <span className="icon">📱</span>
+              <strong>Mobile Users:</strong><br />
+              For the best experience, enable <strong>Desktop Mode</strong> in your browser settings.
             </li>
           </ul>
         </div>
