@@ -92,7 +92,7 @@ export default function InstructionModal() {
             </li>
             <li>
               <span className="icon">🔍</span>
-              <strong>Handle Scans:</strong> Apply OCR to convert images/text to editable content and pull out structured data.
+              <strong>Handle Scans:</strong> Apply OCR to convert pdfs to editable content and pull out structured data.
             </li>
           </ol>
         </div>
