@@ -10,7 +10,7 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-/* Floating Button */
+/* Floating Button - Matches theme purple accent */
 .floating-help-btn {
   position: fixed;
   bottom: 100px; /* Moved up to avoid footer */
@@ -42,28 +42,29 @@
   outline-offset: 2px;
 }
 
-/* Floating Panel - Dark theme to match app */
+/* Floating Panel - Dark theme matching dashboard (blackish bg, purple accents) */
 .floating-help-panel {
   position: fixed;
   bottom: 170px; /* Adjusted for button position */
   right: 20px;
   width: 280px; /* Made smaller */
   max-width: 90vw;
-  max-height: 70vh; /* Slightly reduced height */
-  background: rgba(17, 24, 39, 0.95); /* Dark background */
+  max-height: 70vh; /* Allows scrolling for full content */
+  background: rgba(0, 0, 0, 0.85); /* Dark black matching dashboard */
   backdrop-filter: blur(10px);
   border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  overflow: hidden; /* Changed to hidden for smoother transitions */
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Deeper shadow for depth */
+  overflow-y: auto; /* Enable scrolling */
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother easing for panel open/close */
   z-index: 999;
   padding: 0;
   color: #f7fafc; /* Light text */
+  border: 1px solid rgba(102, 126, 234, 0.2); /* Subtle purple border to match theme */
 }
 
-/* Scrollbar styling for Webkit browsers */
+/* Invisible/Low-Visibility Scrollbar - Thin and semi-transparent for dark theme */
 .floating-help-panel::-webkit-scrollbar {
-  width: 4px;
+  width: 2px; /* Very thin */
 }
 
 .floating-help-panel::-webkit-scrollbar-track {
@@ -71,15 +72,21 @@
 }
 
 .floating-help-panel::-webkit-scrollbar-thumb {
-  background: rgba(102, 126, 234, 0.3);
-  border-radius: 2px;
+  background: rgba(102, 126, 234, 0.3); /* Low opacity purple to match theme, nearly invisible */
+  border-radius: 1px;
 }
 
 .floating-help-panel::-webkit-scrollbar-thumb:hover {
-  background: rgba(102, 126, 234, 0.5);
+  background: rgba(102, 126, 234, 0.5); /* Slightly more visible on hover */
 }
 
-/* Help Header */
+/* Firefox scrollbar (minimal) */
+.floating-help-panel {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(102, 126, 234, 0.3) transparent;
+}
+
+/* Help Header - Purple gradient matching theme */
 .help-header {
   padding: 20px 24px 16px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -121,7 +128,7 @@
 }
 
 .section-header:hover {
-  background-color: rgba(102, 126, 234, 0.1);
+  background-color: rgba(102, 126, 234, 0.1); /* Purple hover matching theme */
 }
 
 .section-header strong {
@@ -133,7 +140,7 @@
 .toggle-icon {
   font-size: 20px;
   font-weight: bold;
-  color: #63b3ed;
+  color: #63b3ed; /* Light blue for icons */
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother rotation */
 }
 
@@ -145,7 +152,7 @@
 .section-content {
   max-height: 0;
   overflow: hidden;
-  background-color: rgba(17, 24, 39, 0.95); /* Match panel background */
+  background-color: rgba(0, 0, 0, 0.85); /* Match panel dark bg */
   transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s ease; /* Smooth height and fade */
   opacity: 0;
 }
@@ -162,11 +169,11 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  transition: background-color 0.2s ease; /* Subtle hover on items if desired */
+  transition: background-color 0.2s ease; /* Subtle hover on items */
 }
 
 .help-item:hover {
-  background-color: rgba(102, 126, 234, 0.05);
+  background-color: rgba(102, 126, 234, 0.05); /* Purple tint on hover */
 }
 
 .help-item:last-child {
@@ -197,10 +204,10 @@
   text-decoration: underline;
 }
 
-/* Warning Item */
+/* Warning Item - Orange accent for warnings */
 .help-item.warning {
   background: rgba(45, 55, 72, 0.5);
-  border-left: 4px solid #f6ad55;
+  border-left: 4px solid #f6ad55; /* Orange border */
 }
 
 .help-item.warning strong {
@@ -211,7 +218,7 @@
   color: #f7fafc;
 }
 
-/* Responsive Design */
+/* Responsive Design - Adjust for mobile, ensure scroll works */
 @media (max-width: 480px) {
   .floating-help-btn {
     bottom: 90px; /* Adjusted for mobile */
@@ -226,7 +233,7 @@
     right: 16px;
     left: 16px;
     width: auto;
-    max-height: 60vh;
+    max-height: 60vh; /* Ensure room for scroll on small screens */
   }
 
   .help-header {
@@ -250,5 +257,10 @@
 
   .section-header strong {
     font-size: 14px;
+  }
+
+  /* Mobile scrollbar even thinner */
+  .floating-help-panel::-webkit-scrollbar {
+    width: 1px;
   }
 }
