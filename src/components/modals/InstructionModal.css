@@ -1,63 +1,209 @@
+/* Enhanced Overlay: Smoother backdrop with subtle blur for modern depth */
 .instruction-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.75); /* Darker black for better focus */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  backdrop-filter: blur(4px); /* Subtle blur for immersion (fallback: none for older browsers) */
+  animation: fadeIn 0.3s ease-out;
 }
 
+/* Modal: Refined black base with red accents for energy */
 .instruction-modal {
-  background: #0f0f0f;
-  color: #fff;
-  padding: 28px;
+  background: linear-gradient(145deg, #0f0f0f, #1a1a1a); /* Subtle gradient for depth */
+  color: #ffffff;
+  padding: 32px; /* More breathing room */
   width: 90%;
-  max-width: 520px;
-  border-radius: 14px;
-  box-shadow: 0 0 40px rgba(0, 255, 255, 0.15);
-  animation: pop 0.25s ease-out;
+  max-width: 540px; /* Slightly wider for better text flow */
+  border-radius: 16px; /* Softer corners */
+  box-shadow: 
+    0 25px 50px -12px rgba(220, 38, 127, 0.25), /* Red-tinted outer glow */
+    0 0 0 1px rgba(220, 38, 127, 0.1), /* Subtle red border glow */
+    inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Inner highlight for premium feel */
+  animation: pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy ease for delight */
+  border: none; /* Clean, no default border */
+  position: relative; /* For potential pseudo-elements */
+}
+
+/* Header: Added for structure (assumes JSX has .instruction-header) */
+.instruction-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(220, 38, 127, 0.2); /* Red accent line */
 }
 
 .instruction-modal h2 {
-  margin-bottom: 16px;
+  margin: 0 0 16px 0;
+  font-size: 1.75rem; /* Larger for impact */
+  font-weight: 700;
+  letter-spacing: -0.025em; /* Subtle tightening */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
+/* Close Button: Added for better UX (assumes JSX has it) */
+.close-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.close-btn:hover {
+  background: rgba(220, 38, 127, 0.2); /* Red hover tint */
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* List: Cleaner, with red icons/accents */
 .instruction-modal ul {
   list-style: none;
   padding: 0;
+  margin: 0 0 24px 0;
 }
 
 .instruction-modal li {
-  margin-bottom: 10px;
-  line-height: 1.5;
-}
-
-.instruction-modal .highlight {
-  background: #111;
-  border-left: 4px solid #00e5ff;
-  padding: 10px;
-  margin-top: 12px;
-}
-
-.instruction-modal button {
-  margin-top: 20px;
-  width: 100%;
+  margin-bottom: 14px; /* More space between items */
+  line-height: 1.6; /* Improved readability */
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   padding: 12px;
-  background: #00e5ff;
-  border: none;
+  background: rgba(220, 38, 127, 0.05); /* Very subtle red tint */
   border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
+  border-left: 3px solid rgba(220, 38, 127, 0.4); /* Red accent bar */
+  transition: all 0.2s ease;
 }
 
-@keyframes pop {
+.instruction-modal li:hover {
+  background: rgba(220, 38, 127, 0.1);
+  transform: translateX(2px); /* Micro-interaction */
+  border-left-color: #dc256f; /* Brighter red on hover */
+}
+
+.instruction-modal li strong {
+  color: #dc256f; /* Red for emphasis */
+}
+
+/* Highlight: More prominent with red background */
+.instruction-modal .highlight {
+  background: linear-gradient(90deg, rgba(220, 38, 127, 0.15), rgba(220, 38, 127, 0.05));
+  border-left: 4px solid #dc256f; /* Solid red */
+  padding: 14px;
+  margin: 16px 0; /* Extra top/bottom space */
+  font-size: 0.95rem;
+  border-radius: 8px;
+}
+
+.instruction-modal .highlight strong {
+  color: #ffffff; /* White for contrast */
+  text-shadow: 0 0 4px rgba(220, 38, 127, 0.3); /* Subtle glow */
+}
+
+/* Actions: Full-width red button with hover effects */
+.instruction-modal button {
+  margin-top: 0; /* Reset if needed */
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #dc256f, #b91c52); /* Red gradient */
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #ffffff;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(220, 38, 127, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.instruction-modal button:hover {
+  background: linear-gradient(135deg, #b91c52, #dc256f);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(220, 38, 127, 0.4);
+}
+
+.instruction-modal button:active {
+  transform: translateY(0);
+}
+
+/* Animations: Refined for smoothness */
+@keyframes fadeIn {
   from {
-    transform: scale(0.9);
     opacity: 0;
   }
   to {
-    transform: scale(1);
     opacity: 1;
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Responsiveness: Better mobile handling */
+@media (max-width: 600px) {
+  .instruction-modal {
+    width: 95%;
+    padding: 24px;
+    margin: 16px;
+  }
+  
+  .instruction-modal h2 {
+    font-size: 1.5rem;
+  }
+  
+  .instruction-modal li {
+    padding: 10px;
+    font-size: 0.95rem;
+  }
+}
+
+/* Accessibility: Focus states */
+.instruction-modal button:focus,
+.close-btn:focus {
+  outline: 2px solid #dc256f;
+  outline-offset: 2px;
+}
+
+/* Dark mode is already aligned; light mode fallback if needed */
+@media (prefers-color-scheme: light) {
+  .instruction-modal {
+    background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+    color: #1e293b;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .instruction-modal li {
+    background: #f8fafc;
+    border-left-color: #ef4444;
+  }
+  
+  .instruction-modal button {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
   }
 }
