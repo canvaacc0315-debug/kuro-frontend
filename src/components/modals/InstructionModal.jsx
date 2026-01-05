@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./instruction-modal.css";
+import "./InstructionModal.css";
 
 const STORAGE_KEY = "rovex_show_instructions";
 
