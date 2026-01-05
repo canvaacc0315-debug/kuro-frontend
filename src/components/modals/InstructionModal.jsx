@@ -68,7 +68,7 @@ export default function InstructionModal() {
           <ul className="features-list">
             <li className="highlight">
               <span className="icon">📱</span>
-              Mobile Users For the best experience enable Desktop Mode in your browser settings.
+              Mobile Users: For the best experience enable Desktop Mode in your browser settings.
             </li>
             <li>
               <span className="icon">💬</span>
