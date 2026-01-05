@@ -47,8 +47,10 @@ export default function DashboardPage() {
             Welcome to <span className="hero-title-accent">RovexAI</span>
           </h1>
           <p className="hero-subtitle">
-            Transform your PDF workflows with intelligent document processing
-            and creation
+            RovexAI is an advanced AI‑powered document intelligence platform designed
+            to transform how users interact with PDFs. Instead of manually reading,
+            searching, or extracting information, RovexAI allows users to chat with
+            documents, generate summaries, and uncover insights instantly.
           </p>
         </section>
 

@@ -1,7 +1,7 @@
 // src/App.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -11,13 +11,13 @@ import HomeOverlayButton from "./components/layout/HomeOverlayButton";
 import ScrollToTop from "./components/utils/ScrollToTop";
 import "./styles/no-scrollbar-override.css";
 
-
-
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 
 import GlobalBackground from "./components/layout/GlobalBackground";
+
+import InstructionModal from "./components/modals/InstructionModal";
 
 function ProtectedRoute({ children }) {
   return (
@@ -41,9 +41,17 @@ export default function App() {
     document.head.appendChild(script);
   }, []);
 
+  const [showInstructions, setShowInstructions] = useState(true);
+
   return (
     <GlobalBackground>
+      {/* ✅ Instruction popup – shows on every visit */}
+      {showInstructions && (
+        <InstructionModal onClose={() => setShowInstructions(false)} />
+      )}
+
       <ScrollToTop />
+
       <Routes>
         {/* INDEX */}
         <Route index element={<Navigate to="/dashboard" replace />} />

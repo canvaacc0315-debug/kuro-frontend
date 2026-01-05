@@ -13,6 +13,8 @@ import KuroLogo from "../components/layout/KuroLogo.jsx";
 import OcrPanel from "../components/OcrPanel";
 import "../styles/chat-overrides.css";
 import "../styles/no-scrollbar-override.css";
+import InstructionModal from "../components/modals/InstructionModal";
+
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
@@ -425,6 +427,7 @@ export default function KuroWorkspacePage() {
   }, [conversation]);
   return (
     <RovexProvider>
+    <InstructionModal />
     <div className="workspace-root">
       {/* TOP NAVBAR (same style as home) */}
       <header className="navbar">
