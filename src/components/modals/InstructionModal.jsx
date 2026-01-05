@@ -19,11 +19,6 @@ export default function InstructionModal() {
     setOpen(false);
   };
 
-  const handleDontShowAgain = () => {
-    localStorage.setItem(STORAGE_KEY, "false");
-    setOpen(false);
-  };
-
   if (!open) return null;
 
   return (
@@ -46,9 +41,6 @@ export default function InstructionModal() {
         <div className="instruction-actions">
           <button onClick={handleClose} className="primary">
             Got it
-          </button>
-          <button onClick={handleDontShowAgain} className="secondary">
-            Don’t show again
           </button>
         </div>
       </div>
