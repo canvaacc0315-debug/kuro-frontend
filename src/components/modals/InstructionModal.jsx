@@ -58,40 +58,48 @@ export default function InstructionModal() {
     <div className="instruction-overlay">
       <div className="instruction-modal">
         <div className="instruction-header">
-          <h2>👋 Welcome to RovexAI</h2>
+          <h2>🧭 Quick Start Instructions</h2>
           <button className="close-btn" onClick={handleClose}>
             ×
           </button>
         </div>
 
         <div className="instruction-body">
-          <ul className="features-list">
+          <p className="intro-text">
+            Follow these steps to get started with RovexAI and unlock the power of your PDFs.
+          </p>
+          
+          <ol className="features-list">
             <li className="highlight">
               <span className="icon">📱</span>
-              Mobile Users: For the best experience enable Desktop Mode in your browser settings.
+              <strong>Enable Desktop Mode:</strong> If on mobile, switch to desktop view in your browser for the full experience.
+            </li>
+            <li>
+              <span className="icon">📤</span>
+              <strong>Upload a PDF:</strong> Click the upload button and select your document to begin.
             </li>
             <li>
               <span className="icon">💬</span>
-              <span>PDF Chat: Interact with your PDFs using natural language. Ask questions, extract information, and get instant answers.</span>
+              <strong>Chat Naturally:</strong> Ask questions in plain English—extract info, summarize, or query content instantly.
             </li>
             <li>
               <span className="icon">📊</span>
-              <span>Analysis: Deep dive into PDF content. Extract data, generate insights, and visualize information beautifully.</span>
+              <strong>Analyze Deeply:</strong> Use tools to extract data, generate charts, or uncover insights from your PDF.
             </li>
             <li>
               <span className="icon">✏️</span>
-              <span>Create & Edit: Design and edit PDFs with Canva-like simplicity. Professional templates and easy tools.</span>
+              <strong>Edit & Create:</strong> Drag-and-drop elements, apply templates, or redesign with easy Canva-style tools.
             </li>
             <li>
               <span className="icon">🔍</span>
-              <span>OCR & Recognition: Convert scanned documents to editable text and extract data from complex layouts.</span>
+              <strong>Handle Scans:</strong> Apply OCR to convert images/text to editable content and pull out structured data.
             </li>
-          </ul>
+          </ol>
         </div>
 
         <div className="instruction-actions">
           <button onClick={handleClose} className="primary-btn">
-            Got It!
+            Got It! Let's Go
           </button>
         </div>
       </div>
