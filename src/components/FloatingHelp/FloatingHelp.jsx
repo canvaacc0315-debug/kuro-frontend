@@ -24,7 +24,7 @@ export default function FloatingHelp() {
         onClick={() => setOpen((v) => !v)}
         aria-label="Help"
       >
-        {open ? "✕" : "💭"}
+        {open ? "✕" : "❓"}
       </button>
 
       {/* Floating panel */}
@@ -51,22 +51,20 @@ export default function FloatingHelp() {
             <strong>Using the PDF Chatbot</strong>
             <span className="toggle-icon">{expandedSections.using ? "−" : "+"}</span>
           </button>
-          {expandedSections.using && (
-            <div className="section-content">
-              <div className="help-item">
-                <strong>How do I upload a PDF?</strong>
-                <span>Click the upload icon in the dashboard, select your file, and start chatting instantly.</span>
-              </div>
-              <div className="help-item">
-                <strong>What can I ask the chatbot?</strong>
-                <span>Ask anything: "Summarize this page," "Extract tables," or "Explain this section" – it uses AI for natural responses.</span>
-              </div>
-              <div className="help-item">
-                <strong>Can I chat with multiple PDFs at once?</strong>
-                <span>Yes! Upload several files to the workspace, and the chatbot can reference all of them in a single conversation for cross-document insights.</span>
-              </div>
+          <div className={`section-content ${expandedSections.using ? 'expanded' : ''}`}>
+            <div className="help-item">
+              <strong>How do I upload a PDF?</strong>
+              <span>Click the upload icon in the dashboard, select your file, and start chatting instantly.</span>
             </div>
-          )}
+            <div className="help-item">
+              <strong>What can I ask the chatbot?</strong>
+              <span>Ask anything: "Summarize this page," "Extract tables," or "Explain this section" – it uses AI for natural responses.</span>
+            </div>
+            <div className="help-item">
+              <strong>Can I chat with multiple PDFs at once?</strong>
+              <span>Yes! Upload several files to the workspace, and the chatbot can reference all of them in a single conversation for cross-document insights.</span>
+            </div>
+          </div>
         </div>
 
         {/* Main Section 2: Analysis Features */}
@@ -78,22 +76,20 @@ export default function FloatingHelp() {
             <strong>Analysis Features</strong>
             <span className="toggle-icon">{expandedSections.analysis ? "−" : "+"}</span>
           </button>
-          {expandedSections.analysis && (
-            <div className="section-content">
-              <div className="help-item">
-                <strong>How does Analysis work?</strong>
-                <span>Basic mode uses simple matching; Advanced dives deeper with AI patterns for insights, charts, and data extraction.</span>
-              </div>
-              <div className="help-item">
-                <strong>What is OCR and when to use it?</strong>
-                <span>OCR extracts text from scanned or image-based PDFs. Enable it for non-digital documents to unlock full chatbot functionality.</span>
-              </div>
-              <div className="help-item">
-                <strong>Can I export analysis results?</strong>
-                <span>Absolutely! Download summaries, extracted data, or charts as PDF, CSV, or images directly from the results panel.</span>
-              </div>
+          <div className={`section-content ${expandedSections.analysis ? 'expanded' : ''}`}>
+            <div className="help-item">
+              <strong>How does Analysis work?</strong>
+              <span>Basic mode uses simple matching; Advanced dives deeper with AI patterns for insights, charts, and data extraction.</span>
             </div>
-          )}
+            <div className="help-item">
+              <strong>What is OCR and when to use it?</strong>
+              <span>OCR extracts text from scanned or image-based PDFs. Enable it for non-digital documents to unlock full chatbot functionality.</span>
+            </div>
+            <div className="help-item">
+              <strong>Can I export analysis results?</strong>
+              <span>Absolutely! Download summaries, extracted data, or charts as PDF, CSV, or images directly from the results panel.</span>
+            </div>
+          </div>
         </div>
 
         {/* Main Section 3: Privacy & Support */}
@@ -105,38 +101,16 @@ export default function FloatingHelp() {
             <strong>Privacy & Support</strong>
             <span className="toggle-icon">{expandedSections.privacy ? "−" : "+"}</span>
           </button>
-          {expandedSections.privacy && (
-            <div className="section-content">
-              <div className="help-item">
-                <strong>Is my data private?</strong>
-                <span>Yes! PDFs are processed securely and not stored without consent. Learn more at <a href="https://rovexai.com/privacy" target="_blank" rel="noopener noreferrer">rovexai.com/privacy</a>.</span>
-              </div>
-              <div className="help-item warning">
-                <strong>📱 Mobile Tip</strong>
-                <span>Enable <b>Desktop Mode</b> in your browser for full features like editing and OCR.</span>
-              </div>
-              <div className="help-item">
-                <strong>Need more help?</strong>
-                <span>Visit <a href="https://rovexai.com/support" target="_blank" rel="noopener noreferrer">rovexai.com/support</a> or email help@rovexai.com. We're here 24/7!</span>
-              </div>
+          <div className={`section-content ${expandedSections.privacy ? 'expanded' : ''}`}>
+            <div className="help-item">
+              <strong>Is my data private?</strong>
+              <span>Yes! PDFs are processed securely and not stored without consent. Learn more at <a href="https://rovexai.com/privacy-policy" target="_blank" rel="noopener noreferrer">rovexai.com/privacy</a>.</span>
             </div>
-          )}
-        </div>
-
-        {/* Additional Standalone Questions */}
-        <div className="help-item">
-          <strong>What file formats are supported besides PDF?</strong>
-          <span>Currently PDFs only, but DOCX and images coming soon. Stay tuned for updates!</span>
-        </div>
-
-        <div className="help-item">
-          <strong>How accurate is the AI?</strong>
-          <span>Our models are trained on vast datasets for 95%+ accuracy on standard queries, but always verify critical info with original sources.</span>
-        </div>
-
-        <div className="help-item">
-          <strong>Can I integrate this with other tools?</strong>
-          <span>Yes, via our API! Check out developer docs at <a href="https://rovexai.com/api" target="_blank" rel="noopener noreferrer">rovexai.com/api</a> for seamless workflows.</span>
+            <div className="help-item warning">
+              <strong>📱 Mobile Tip</strong>
+              <span>Enable <b>Desktop Mode</b> in your browser for full features like editing and OCR.</span>
+            </div>
+          </div>
         </div>
       </div>
     </>
