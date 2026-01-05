@@ -1,21 +1,48 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom"; // For route change detection
 import "./InstructionModal.css";
 
 const STORAGE_KEY = "rovex_show_instructions";
 
 export default function InstructionModal() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true); // Start open for immediate show
+  const [dontShowAgain, setDontShowAgain] = useState(false);
+  const location = useLocation(); // Detect route changes (login/signup)
 
   useEffect(() => {
-    // Always show on site re-entry unless explicitly dismissed
-    const shouldShow = localStorage.getItem(STORAGE_KEY);
-    if (shouldShow !== "false") {
+    // Force show on every entry (refresh, reopen, route change)
+    // Temporarily bypass storage for testing – always set to true
+    // const shouldShow = localStorage.getItem(STORAGE_KEY);
+    // if (shouldShow !== "false") {
+    //   setOpen(true);
+    // }
+    setOpen(true); // 🚨 TEMP: Always show – comment this + uncomment above for persistence
+
+    // Re-show on tab focus/reopen or page show (refresh)
+    const handleVisibilityChange = () => {
+      if (!document.hidden) { // Tab became visible
+        setOpen(true);
+      }
+    };
+
+    const handlePageShow = () => {
       setOpen(true);
-    }
-  }, []);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pageshow", handlePageShow);
+
+    // Re-trigger on route change (login/signup)
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pageshow", handlePageShow);
+    };
+  }, [location.pathname]); // Re-run on route changes
 
   const handleClose = () => {
-    localStorage.setItem(STORAGE_KEY, "false"); // Persist dismissal across sessions
+    if (dontShowAgain) {
+      localStorage.setItem(STORAGE_KEY, "false"); // Persist if checked
+    }
     setOpen(false);
   };
 
@@ -66,6 +93,14 @@ export default function InstructionModal() {
         </div>
 
         <div className="instruction-actions">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={dontShowAgain}
+              onChange={(e) => setDontShowAgain(e.target.checked)}
+            />
+            <span>Don't show this again</span>
+          </label>
           <button onClick={handleClose} className="primary-btn">
             Got It! 🚀
           </button>

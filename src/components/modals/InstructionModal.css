@@ -207,3 +207,28 @@
     background: linear-gradient(135deg, #ef4444, #dc2626);
   }
 }
+/* Checkbox: Subtle red accent */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #d1d5db;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  accent-color: #dc256f; /* Red checkbox */
+  width: 16px;
+  height: 16px;
+}
+
+.checkbox-label span {
+  user-select: none;
+}
+
+/* Ensure body padding accounts for new elements */
+.instruction-body {
+  padding-bottom: 8px; /* Tiny adjustment */
+}

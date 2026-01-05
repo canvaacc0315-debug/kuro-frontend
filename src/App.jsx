@@ -1,7 +1,7 @@
 // src/App.jsx
 import { Routes, Route, Navigate } from "react-router-dom";
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react"; // Removed useState
 
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -41,14 +41,10 @@ export default function App() {
     document.head.appendChild(script);
   }, []);
 
-  const [showInstructions, setShowInstructions] = useState(true);
-
   return (
     <GlobalBackground>
-      {/* ✅ Instruction popup – shows on every visit */}
-      {showInstructions && (
-        <InstructionModal onClose={() => setShowInstructions(false)} />
-      )}
+      {/* ✅ Instruction popup – always mounted, self-manages visibility */}
+      <InstructionModal />
 
       <ScrollToTop />
 
