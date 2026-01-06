@@ -236,6 +236,7 @@ export default function HomePage() {
           <div className="footer-section">
             <h4>Product</h4>
             <a href="#features" className="footer-link">Features</a>
+            <a href="#how-it-works" className="nav-link">Working</a>
           </div>
 
           <div className="footer-section">
