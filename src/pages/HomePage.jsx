@@ -40,20 +40,46 @@ export default function HomePage() {
 
       {/* HERO */}
       <section className="hero">
-        <h1>Chat, Analyze & Create PDFs with AI</h1>
-        <p>
-          Your all‑in‑one AI‑powered PDF workspace. Upload, analyze, extract, and
-          generate PDFs in seconds.
-        </p>
+        <div className="hero-content">
+          <h1>Chat, Analyze & Create PDFs with AI</h1>
+          <p>
+            Your all‑in‑one AI‑powered PDF workspace. Upload, analyze, extract, and
+            generate PDFs in seconds.
+          </p>
 
-        <div className="hero-actions">
-          <button
-            className="btn-primary"
-            onClick={() => navigate("/sign-up")}
-          >
-            Get Started Free
-          </button>
-          <button className="btn-outline">Learn More</button>
+          <div className="hero-actions">
+            <button
+              className="btn-primary"
+              onClick={() => navigate("/sign-up")}
+            >
+              Get Started Free
+            </button>
+            <button className="btn-outline">Learn More</button>
+          </div>
+        </div>
+        {/* Space for importing image without frame */}
+        <div className="hero-image-container">
+          {/* Import your image here, e.g., <img src={yourImage} alt="Hero Illustration" /> */}
+          {/* Placeholder for image */}
+          <img
+            src="https://via.placeholder.com/800x400?text=Your+Hero+Image+Here"
+            alt="Hero Illustration"
+            className="hero-image"
+          />
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="how-it-works">
+        <h2>How RovexAI Works</h2>
+        <p className="subtitle">
+          RovexAI combines advanced AI with intuitive design to make document processing effortless.
+        </p>
+        <div className="steps-grid">
+          <Step number="1" title="Upload Documents" text="Upload PDFs of any size or type." />
+          <Step number="2" title="AI-Powered Analysis" text="Process text, tables, and visuals." />
+          <Step number="3" title="Interact & Query" text="Chat with documents using natural language." />
+          <Step number="4" title="Generate Outputs" text="Get summaries, data, and insights." />
         </div>
       </section>
 
@@ -71,10 +97,39 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* HOW IT WORKS (CYCLE) */}
-      <section className="how-it-works">
-        <h2>How RovexAI Works</h2>
-      </section>
+      {/* FOOTER */}
+      <footer className="footer">
+        <div className="footer-content">
+          <div className="footer-logo">Ⓡ RovexAI</div>
+          <div className="footer-links">
+            <div>
+              <h4>Product</h4>
+              <ul>
+                <li>Features</li>
+                <li>Pricing</li>
+                <li>Documentation</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Company</h4>
+              <ul>
+                <li>About</li>
+                <li>Contact</li>
+                <li>Privacy Policy</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Connect</h4>
+              <ul>
+                <li>Twitter</li>
+                <li>LinkedIn</li>
+                <li>GitHub</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <p className="footer-copyright">© 2026 RovexAI. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
@@ -82,6 +137,16 @@ export default function HomePage() {
 function Feature({ title, text }) {
   return (
     <div className="feature-card">
+      <h3>{title}</h3>
+      <p>{text}</p>
+    </div>
+  );
+}
+
+function Step({ number, title, text }) {
+  return (
+    <div className="step-card">
+      <div className="step-number">{number}</div>
       <h3>{title}</h3>
       <p>{text}</p>
     </div>
