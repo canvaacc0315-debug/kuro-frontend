@@ -1,6 +1,6 @@
 // App.jsx
 import React, { useState, useEffect } from 'react';
-import './App.css';
+import './styles/honepage.css';
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
