@@ -44,7 +44,7 @@ const HomePage = () => {
       <header className="header">
         <Link to="/" className="logo">
           <div className="logo-icon">
-            <KuroLogo size={28} />
+            <KuroLogo size={40} />
           </div>
           RovexAI
         </Link>
