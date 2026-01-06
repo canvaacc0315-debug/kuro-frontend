@@ -1,6 +1,6 @@
 // RovexAI.jsx
 import React, { useEffect } from 'react';
-import '../styles/honepage.css';
+import '../styles/honmepage.css';
 
 const RovexAI = () => {
   // Handle scroll animations
