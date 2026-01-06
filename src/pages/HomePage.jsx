@@ -2,7 +2,7 @@ import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/homepage.css";
-import KuroLogo from "../components/layout/KuroLogo.jsx";
+import logoIcon from "../assets/logo.svg"; // Add your logo image
 
 // Import icons for features - you can use react-icons or your own SVG
 import { 
@@ -85,7 +85,7 @@ export default function HomePage() {
       {/* HEADER */}
       <header className={`home-header ${scrolled ? "scrolled" : ""}`}>
         <div className="logo-container" onClick={() => navigate("/")}>
-          <KuroLogo />
+          <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
           <span className="logo-text">
             <span className="logo-red">Rovex</span>AI
           </span>
@@ -265,7 +265,7 @@ export default function HomePage() {
         <div className="footer-content">
           <div className="footer-section">
             <div className="logo-container" onClick={() => navigate("/")}>
-              <img src={logoIcon} alt="kuro-logo" className="logo-icon" />
+              <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
               <span className="logo-text">
                 <span className="logo-red">Rovex</span>AI
               </span>
