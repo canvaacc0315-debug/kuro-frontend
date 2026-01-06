@@ -1,179 +1,192 @@
-// src/pages/HomePage.jsx
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/homepage.css';
+import { useNavigate } from "react-router-dom";
+import "../styles/homepage.css";
 
-const HomePage = () => {
-  const [darkMode, setDarkMode] = useState(false);
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      setDarkMode(true);
-    }
-  }, []);
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [darkMode]);
-  const toggleTheme = () => {
-    setDarkMode(!darkMode);
-  };
-  useEffect(() => {
-    const staggerAnimate = (selector, delay = 100) => {
-      const elements = document.querySelectorAll(selector);
-      elements.forEach((el, index) => {
-        el.style.animation = 'none';
-        setTimeout(() => {
-          el.style.animation = '';
-        }, delay * index);
-      });
-    };
-    setTimeout(() => {
-      staggerAnimate('.feature-card', 80);
-    }, 200);
-  }, []);
+export default function HomePage() {
+  const navigate = useNavigate();
+
   return (
-    <>
-      {/* HEADER */}
-      <header className="header">
-        <Link to="/" className="logo">
-          <div className="logo-icon">
-            ®
+    <div className="page-shell">
+      {/* Top navigation */}
+      <header className="top-nav">
+        <div className="nav-left">
+          <div className="nav-logo" onClick={() => navigate("/")}>
+            RovexAI
           </div>
-          RovexAI
-        </Link>
-        <nav className="nav">
-          <Link to="/" className="nav-link">Home</Link>
-          <Link to="/about" className="nav-link">About</Link>
-          <Link to="/contact" className="nav-link">Contact</Link>
-          <button className="theme-toggle" onClick={toggleTheme} title="Toggle dark mode">
-            {darkMode ? '☀️' : '🌙'}
+
+          <nav className="nav-links">
+            <button type="button">Product</button>
+            <button type="button">Solutions</button>
+            <button type="button">Pricing</button>
+            <button type="button">Docs</button>
+          </nav>
+        </div>
+
+        <div className="nav-right">
+          <button
+            className="nav-link-btn"
+            type="button"
+            onClick={() => navigate("/login")}
+          >
+            Sign in
           </button>
-          <Link to="/login" className="btn btn-secondary">Login</Link>
-          <Link to="/sign-up" className="btn btn-primary">Sign Up</Link>
-        </nav>
+
+          <button
+            className="primary-btn"
+            type="button"
+            onClick={() => navigate("/dashboard")}
+          >
+            Get started
+          </button>
+        </div>
       </header>
-      {/* HOME PAGE */}
-      <div className="hero">
-        <div className="hero-content">
-          <h1>Chat, Analyze & Create PDFs with AI</h1>
-          <p>Your all-in-one AI-powered PDF workspace. Upload, analyze, extract, and generate PDFs in seconds.</p>
-          <div className="hero-buttons">
-            <Link to="/sign-up" className="btn btn-primary">Get Started Free</Link>
-            <button className="btn btn-secondary">Learn More</button>
+
+      {/* Hero */}
+      <section className="hero-header">
+        <h1>Turn static PDFs into living workflows.</h1>
+        <p>
+          Upload contracts, reports, and research. RovexAI turns them into a
+          conversational workspace with traceable answers and exportable
+          insights.
+        </p>
+
+        <div className="hero-cta-row">
+          <button
+            className="primary-btn"
+            type="button"
+            onClick={() => navigate("/sign-up")}
+          >
+            Start for free
+          </button>
+
+          <button className="ghost-btn" type="button">
+            Book a demo
+          </button>
+        </div>
+
+        <div className="hero-badges">
+          <span>No setup · Just upload</span>
+          <span>Optimized for long documents</span>
+        </div>
+      </section>
+
+      {/* Hero mock */}
+      <section className="hero-mock">
+        <div className="mock-window">
+          <div className="mock-topbar">
+            <div className="mock-dots">
+              <span />
+              <span />
+              <span />
+            </div>
+            <div className="mock-title">Rovex · Q4 Workspace</div>
+          </div>
+
+          <div className="mock-body">
+            <aside className="mock-sidebar">
+              <div className="mock-sidebar-header">Workspaces</div>
+              <ul>
+                <li className="active">Q4 contracts</li>
+                <li>Board reports</li>
+                <li>Vendor reviews</li>
+                <li>Research notes</li>
+              </ul>
+            </aside>
+
+            <div className="mock-main">
+              <div className="mock-channel-header"># q4-contracts</div>
+
+              <div className="mock-message">
+                <div className="mock-avatar">R</div>
+                <div className="mock-message-body">
+                  <div className="mock-message-title">Rovex AI</div>
+                  <p>
+                    Upload the contracts for this quarter and I will surface
+                    risks, opportunities, and unusual clauses in one lifecycle
+                    view.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mock-input">
+                Ask Rovex about this workspace…
+              </div>
+            </div>
           </div>
         </div>
-        <div className="blob bottom-left"></div>
-        <div className="blob bottom-right"></div>
-      </div>
-      {/* HOW IT WORKS SECTION */}
-      <div className="how-it-works">
-        <div className="how-it-works-content">
-          <h2>How RovexAI Works</h2>
-          <p className="how-it-works-description">
-            RovexAI combines advanced AI with intuitive design to make document processing effortless
+      </section>
+
+      {/* Lifecycle */}
+      <section className="cycle-section">
+        <header className="cycle-header">
+          <h2>Document lifecycle, in one orbit.</h2>
+          <p>
+            Hover or tap each stage to see how RovexAI handles your documents from
+            upload to export.
           </p>
-          <div className="steps-container">
-            <div className="step">
-              <div className="step-number">1</div>
-              <div className="step-icon">📤</div>
-              <h3>Upload Documents</h3>
-              <p>Start by uploading PDFs of any size or type (research papers, legal documents, invoices, reports, study materials). The system handles the upload and begins analysis automatically.</p>
+        </header>
+
+        <div className="cycle-layout">
+          <div className="cycle-shell">
+            <div className="cycle-card">
+              <div className="orbit-ring">
+                <div className="orbit-spark" />
+                <div className="orbit-spark" />
+              </div>
+
+              <div className="cycle-core">
+                <span className="core-pill">
+                  <span className="core-dot" />
+                  Rovex document engine
+                </span>
+
+                <div className="core-title">Helio Core Stack</div>
+                <div className="core-subtitle">
+                  PDFs are converted into a single structured context so every
+                  answer points to the exact page that supports it.
+                </div>
+              </div>
+
+              <button className="cycle-node" aria-current="true">
+                <div className="cycle-node-indicator" />
+                <span className="cycle-node-label">Upload</span>
+                <span className="cycle-node-caption">Bring files in</span>
+              </button>
+
+              <button className="cycle-node">
+                <div className="cycle-node-indicator" />
+                <span className="cycle-node-label">Process</span>
+                <span className="cycle-node-caption">Clean & index</span>
+              </button>
+
+              <button className="cycle-node">
+                <div className="cycle-node-indicator" />
+                <span className="cycle-node-label">Chat</span>
+                <span className="cycle-node-caption">Ask & explore</span>
+              </button>
+
+              <button className="cycle-node">
+                <div className="cycle-node-indicator" />
+                <span className="cycle-node-label">Insights</span>
+                <span className="cycle-node-caption">Summaries</span>
+              </button>
+
+              <button className="cycle-node">
+                <div className="cycle-node-indicator" />
+                <span className="cycle-node-label">Share</span>
+                <span className="cycle-node-caption">Export & send</span>
+              </button>
             </div>
-            <div className="step">
-              <div className="step-number">2</div>
-              <div className="step-icon">🤖</div>
-              <h3>AI-Powered Analysis</h3>
-              <p>The AI processes the document to recognize text, tables, structured data, and key points. Handles OCR for scanned PDFs and interprets visual elements like charts and images.</p>
-            </div>
-            <div className="step">
-              <div className="step-number">3</div>
-              <div className="step-icon">💬</div>
-              <h3>Interact & Query</h3>
-              <p>Chat with your document using natural language questions. Ask about specific details and get accurate, context-aware answers drawn directly from the content.</p>
-            </div>
-            <div className="step">
-              <div className="step-number">4</div>
-              <div className="step-icon">📊</div>
-              <h3>Generate Outputs</h3>
-              <p>Receive smart summaries, extracted data tables, key facts, structured information, custom notes, and additional insights based on the analysis—all ready for use.</p>
-            </div>
           </div>
+
+          <article className="cycle-detail">
+            <h3>Smart upload hub</h3>
+            <p>
+              Add one or many PDFs from your drive or cloud storage. RovexAI
+              validates each file and prepares it for fast AI search.
+            </p>
+          </article>
         </div>
-        <div className="blob top-right"></div>
-      </div>
-      {/* FEATURES SECTION */}
-      <div className="features">
-        <h2>Powerful Features</h2>
-        <div className="feature-grid">
-          <div className="feature-card">
-            <div className="feature-icon">📄</div>
-            <h3>PDF Upload</h3>
-            <p>Drag and drop your PDF files for instant processing with zero complexity.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">💬</div>
-            <h3>AI Chat</h3>
-            <p>Ask questions about your PDFs and get instant, intelligent responses.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">📊</div>
-            <h3>Deep Analysis</h3>
-            <p>Extract key insights, summaries, and structured data from documents.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">🔍</div>
-            <h3>OCR Technology</h3>
-            <p>Convert scanned images to editable text with AI-powered accuracy.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">✨</div>
-            <h3>PDF Creation</h3>
-            <p>Build professional PDFs with drag-and-drop simplicity.</p>
-          </div>
-          <div className="feature-card">
-            <div className="feature-icon">🚀</div>
-            <h3>Lightning Fast</h3>
-            <p>Process documents in seconds with enterprise-grade performance.</p>
-          </div>
-        </div>
-      </div>
-      {/* FOOTER */}
-      <div className="footer">
-        <div className="footer-content">
-          <div className="footer-section">
-            <h4>RovexAI</h4>
-            <p style={{ color: 'rgba(255, 255, 255, 0.7)', margin: 0 }}>The AI-powered PDF platform for modern teams.</p>
-          </div>
-          <div className="footer-section">
-            <h4>Product</h4>
-            <a className="footer-link" href="#">Features</a>
-            <a className="footer-link" href="#">Pricing</a>
-            <a className="footer-link" href="#">Documentation</a>
-          </div>
-          <div className="footer-section">
-            <h4>Company</h4>
-            <Link to="/about" className="footer-link">About</Link>
-            <Link to="/contact" className="footer-link">Contact</Link>
-            <Link to="/privacy-policy" className="footer-link">Privacy Policy</Link>
-          </div>
-          <div className="footer-section">
-            <h4>Connect</h4>
-            <a className="footer-link" href="#">Twitter</a>
-            <a className="footer-link" href="#">LinkedIn</a>
-            <a className="footer-link" href="#">GitHub</a>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>&copy; 2026 RovexAI. All rights reserved.</p>
-        </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
-};
-export default HomePage;
+}
