@@ -139,6 +139,7 @@
 
 .logo-ai {
   color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
 }
 
 .nav {
