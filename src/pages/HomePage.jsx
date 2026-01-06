@@ -136,10 +136,11 @@ export default function HomePage() {
                 Get Started 
               </button>
             </div>
+
             <div className="hero-actions">
                 <button
                  className="btn-secondary btn-scale"
-                 nClick={() => navigate("/about")}
+                 onClick={() => navigate("/about")}
                 >
                  Learn More
                 </button>
@@ -147,7 +148,7 @@ export default function HomePage() {
 
             <div className="hero-stats">
               <div className="stat-item">
-                <span className="stat-number">10k+</span>
+                <span className="stat-number">10+</span>
                 <span className="stat-label">Users</span>
               </div>
               <div className="stat-item">
@@ -155,7 +156,7 @@ export default function HomePage() {
                 <span className="stat-label">Uptime</span>
               </div>
               <div className="stat-item">
-                <span className="stat-number">1M+</span>
+                <span className="stat-number">1k+</span>
                 <span className="stat-label">Documents</span>
               </div>
             </div>
