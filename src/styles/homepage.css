@@ -510,6 +510,10 @@
   max-width: 1200px;
   margin: 0 auto 1.5rem;
 }
+.footer-ai {
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+}
 
 .footer-section h4 {
   font-size: 1rem;
