@@ -138,6 +138,15 @@ export default function HomePage() {
               </button>
             </div>
 
+            <div className="hero-actions">
+                <button
+                 className="btn-secondary btn-scale"
+                 onClick={() => navigate("/about")}
+                >
+                 Learn More
+                </button>
+            </div>
+
             <div className="hero-stats">
               <div className="stat-item">
                 <span className="stat-number">10+</span>
@@ -280,7 +289,7 @@ function Step({ number, title, description, delay }) {
       className="step-card animate-fade-up"
       style={{ animationDelay: delay }}
     >
-      <div className="step-number-red animate-scale-in">{number}</div>
+      <div className="step-number-red">{number}</div>
       <h3>{title}</h3>
       <p>{description}</p>
     </div>
