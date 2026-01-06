@@ -133,9 +133,16 @@ export default function HomePage() {
                 className="btn-primary btn-glow btn-scale"
                 onClick={() => navigate("/sign-up")}
               >
-                Get Started Free
+                Get Started 
               </button>
-              <button className="btn-outline btn-scale">Learn More</button>
+            </div>
+            <div className="hero-actions">
+                <button
+                 className="btn-secondary btn-scale"
+                 nClick={() => navigate("/about")}
+                >
+                 Learn More
+                </button>
             </div>
 
             <div className="hero-stats">
