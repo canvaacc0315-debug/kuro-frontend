@@ -1,34 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/homepage.css';
+// RovexAI.jsx
+import React, { useEffect } from 'react';
+import './RovexAI.css';
 
 const RovexAI = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  // Load saved theme from localStorage
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      setIsDarkMode(true);
-      document.body.classList.add('dark-mode');
-    } else {
-      setIsDarkMode(false);
-      document.body.classList.remove('dark-mode');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    
-    if (newDarkMode) {
-      document.body.classList.add('dark-mode');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      document.body.classList.remove('dark-mode');
-      localStorage.setItem('theme', 'light');
-    }
-  };
-
   // Handle scroll animations
   useEffect(() => {
     const observerOptions = {
@@ -36,7 +10,6 @@ const RovexAI = () => {
       rootMargin: '0px',
       threshold: 0.1
     };
-
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -44,15 +17,12 @@ const RovexAI = () => {
         }
       });
     }, observerOptions);
-
     // Observe all feature cards and steps
     document.querySelectorAll('.feature-card, .step').forEach((el) => {
       observer.observe(el);
     });
-
     return () => observer.disconnect();
   }, []);
-
   const features = [
     {
       icon: '📄',
@@ -85,7 +55,6 @@ const RovexAI = () => {
       description: 'Process documents in seconds with enterprise-grade performance.'
     }
   ];
-
   const steps = [
     {
       number: 1,
@@ -112,13 +81,11 @@ const RovexAI = () => {
       description: 'Receive smart summaries, extracted data tables, key facts, structured information, custom notes, and additional insights based on the analysis—all ready for use.'
     }
   ];
-
   const footerLinks = {
     product: ['Features', 'Pricing', 'Documentation'],
     company: ['About', 'Contact', 'Privacy Policy'],
     connect: ['Twitter', 'LinkedIn', 'GitHub']
   };
-
   return (
     <div className="rovex-ai">
       {/* Header */}
@@ -131,20 +98,10 @@ const RovexAI = () => {
           <span className="nav-link">Home</span>
           <span className="nav-link">About</span>
           <span className="nav-link">Contact</span>
-          <button 
-            className="theme-toggle" 
-            id="theme-toggle" 
-            onClick={toggleTheme}
-            title="Toggle dark mode"
-            aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-          >
-            {isDarkMode ? '☀️' : '🌙'}
-          </button>
           <button className="btn btn-secondary">Login</button>
           <button className="btn btn-primary">Sign Up</button>
         </nav>
       </header>
-
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
@@ -156,7 +113,6 @@ const RovexAI = () => {
           </div>
         </div>
       </section>
-
       {/* How It Works Section */}
       <section className="how-it-works">
         <div className="how-it-works-content">
@@ -164,7 +120,7 @@ const RovexAI = () => {
           <p className="section-subtitle">
             RovexAI combines advanced AI with intuitive design to make document processing effortless
           </p>
-          
+         
           <div className="steps-container">
             {steps.map((step, index) => (
               <div className="step" key={step.number}>
@@ -177,7 +133,6 @@ const RovexAI = () => {
           </div>
         </div>
       </section>
-
       {/* Features Section */}
       <section className="features">
         <h2>Powerful Features</h2>
@@ -191,7 +146,6 @@ const RovexAI = () => {
           ))}
         </div>
       </section>
-
       {/* Footer */}
       <footer className="footer">
         <div className="footer-content">
@@ -227,5 +181,4 @@ const RovexAI = () => {
     </div>
   );
 };
-
 export default RovexAI;
