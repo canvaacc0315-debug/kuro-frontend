@@ -48,7 +48,7 @@ export default function App() {
   const location = useLocation();
 
   if (isSignedIn && (location.pathname.startsWith("/login") || location.pathname.startsWith("/sign-up"))) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return (
@@ -74,7 +74,7 @@ export default function App() {
 
         {/* DASHBOARD */}
         <Route
-          path="/homepage"
+          path="/dashboard"
           element={
             <ProtectedRoute>
               {/* ✅ Floating help widget – only on dashboard */}
@@ -98,7 +98,7 @@ export default function App() {
         />
 
         {/* FALLBACK */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<Navigate to={isSignedIn ? "/dashboard" : "/"} replace />} />
       </Routes>
     </GlobalBackground>
   );
