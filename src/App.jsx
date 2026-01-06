@@ -52,7 +52,7 @@ export default function App() {
   }
 
   return (
-    <GlobalBackground>
+    <>
       {/* ✅ Instruction popup – always mounted, self-manages visibility */}
       <InstructionModal />
 
@@ -100,6 +100,6 @@ export default function App() {
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to={isSignedIn ? "/dashboard" : "/"} replace />} />
       </Routes>
-    </GlobalBackground>
+    </>
   );
 }
