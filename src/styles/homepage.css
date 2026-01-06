@@ -424,15 +424,15 @@
   border-radius: 20px;
   padding: 2.5rem;
   box-shadow: 0 8px 30px rgba(220, 38, 38, 0.1);
-  transition: all 0.3s ease;
-  opacity: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
 .feature-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgb(255, 255, 255);
+  background: #ffffff;
+  box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15);
   border-bottom: 5px solid #dc2626;
 }
 
