@@ -18,7 +18,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 
-import GlobalBackground from "./components/layout/GlobalBackground";
+
 
 import InstructionModal from "./components/modals/InstructionModal";
 

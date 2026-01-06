@@ -141,9 +141,3 @@ body > div[position="fixed"][style*="position: fixed"] {
   overflow: visible !important;
   z-index: inherit !important;
 }
-
-/* If your GlobalBackground div has a class, add it here for protection */
-.global-bg-fixed {
-  overflow: visible !important;
-  animation: bgCrazy 20s ease-in-out infinite !important; /* Reinforce the animation */
-}
