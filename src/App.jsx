@@ -11,6 +11,8 @@ import HomeOverlayButton from "./components/layout/HomeOverlayButton";
 import ScrollToTop from "./components/utils/ScrollToTop";
 import FloatingHelp from "./components/FloatingHelp/FloatingHelp"; // ✅ Added import
 import "./styles/no-scrollbar-override.css";
+import HomePage from "./pages/HomePage";
+
 
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
@@ -51,7 +53,8 @@ export default function App() {
 
       <Routes>
         {/* INDEX */}
-        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route index element={<HomePage />} />
+        <Route path="/" element={<HomePage />} />
         
         {/* PUBLIC PAGES */}
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -64,7 +67,7 @@ export default function App() {
 
         {/* DASHBOARD */}
         <Route
-          path="/dashboard"
+          path="/homepage"
           element={
             <ProtectedRoute>
               {/* ✅ Floating help widget – only on dashboard */}
@@ -88,7 +91,7 @@ export default function App() {
         />
 
         {/* FALLBACK */}
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/homepage" replace />} />
       </Routes>
     </GlobalBackground>
   );
