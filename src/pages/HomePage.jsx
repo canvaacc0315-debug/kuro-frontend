@@ -4,20 +4,18 @@ import "../styles/homepage.css";
 
 export default function HomePage() {
   const navigate = useNavigate();
-
   return (
     <div className="home-root">
       {/* HEADER */}
       <header className="home-header">
-        <div className="logo" onClick={() => navigate("/")}>
-          Ⓡ RovexAI
+        <div className="logo-container" onClick={() => navigate("/")}>
+          <span className="logo-icon">Ⓡ</span>
+          <span className="logo-text">RovexAI</span>
         </div>
-
         <nav className="nav">
           <span>Home</span>
           <span>About</span>
           <span>Contact</span>
-
           <SignedOut>
             <button onClick={() => navigate("/login")} className="btn-outline">
               Login
@@ -26,7 +24,6 @@ export default function HomePage() {
               Sign Up
             </button>
           </SignedOut>
-
           <SignedIn>
             <button
               onClick={() => navigate("/dashboard")}
@@ -37,16 +34,15 @@ export default function HomePage() {
           </SignedIn>
         </nav>
       </header>
-
       {/* HERO */}
       <section className="hero">
         <div className="hero-content">
-          <h1>Chat, Analyze & Create PDFs with AI</h1>
+          <h1>RovexAI</h1>
+          <h2>Chat, Analyze & Create PDFs with AI</h2>
           <p>
             Your all‑in‑one AI‑powered PDF workspace. Upload, analyze, extract, and
             generate PDFs in seconds.
           </p>
-
           <div className="hero-actions">
             <button
               className="btn-primary"
@@ -68,7 +64,6 @@ export default function HomePage() {
           />
         </div>
       </section>
-
       {/* HOW IT WORKS */}
       <section className="how-it-works">
         <h2>How RovexAI Works</h2>
@@ -82,25 +77,21 @@ export default function HomePage() {
           <Step number="4" title="Generate Outputs" text="Get summaries, data, and insights." />
         </div>
       </section>
-
       {/* FEATURES */}
       <section className="features">
         <h2>Powerful Features</h2>
-
         <div className="features-grid">
-          <Feature title="PDF Upload" text="Upload PDFs instantly" />
-          <Feature title="AI Chat" text="Ask questions from PDFs" />
-          <Feature title="Deep Analysis" text="Extract insights & summaries" />
-          <Feature title="OCR Technology" text="Convert scanned PDFs to text" />
-          <Feature title="PDF Creation" text="Create professional PDFs" />
-          <Feature title="Lightning Fast" text="Process documents in seconds" />
+          <Feature icon="📄" title="PDF Upload" text="Upload PDFs instantly for seamless processing." />
+          <Feature icon="🤖" title="AI Chat" text="Ask questions from PDFs using natural language." />
+          <Feature icon="🔍" title="Deep Analysis" text="Extract insights, summaries, and key data." />
+          <Feature icon="📷" title="OCR Technology" text="Convert scanned PDFs to editable text." />
+          <Feature icon="✏️" title="PDF Creation" text="Create professional PDFs from scratch or data." />
+          <Feature icon="⚡" title="Lightning Fast" text="Process documents in seconds with AI speed." />
         </div>
       </section>
-
       {/* FOOTER */}
       <footer className="footer">
         <div className="footer-content">
-          <div className="footer-logo">Ⓡ RovexAI</div>
           <div className="footer-links">
             <div>
               <h4>Product</h4>
@@ -134,9 +125,10 @@ export default function HomePage() {
   );
 }
 
-function Feature({ title, text }) {
+function Feature({ icon, title, text }) {
   return (
     <div className="feature-card">
+      <div className="feature-icon">{icon}</div>
       <h3>{title}</h3>
       <p>{text}</p>
     </div>
