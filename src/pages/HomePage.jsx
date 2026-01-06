@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/homepage.css';
-import KuroLogo from "../components/layout/KuroLogo.jsx";
 
 const HomePage = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -44,7 +43,7 @@ const HomePage = () => {
       <header className="header">
         <Link to="/" className="logo">
           <div className="logo-icon">
-            <KuroLogo  size={40} />
+            ®
           </div>
           RovexAI
         </Link>
@@ -66,8 +65,11 @@ const HomePage = () => {
           <p>Your all-in-one AI-powered PDF workspace. Upload, analyze, extract, and generate PDFs in seconds.</p>
           <div className="hero-buttons">
             <Link to="/sign-up" className="btn btn-primary">Get Started Free</Link>
+            <button className="btn btn-secondary">Learn More</button>
           </div>
         </div>
+        <div className="blob bottom-left"></div>
+        <div className="blob bottom-right"></div>
       </div>
       {/* HOW IT WORKS SECTION */}
       <div className="how-it-works">
@@ -92,7 +94,7 @@ const HomePage = () => {
             <div className="step">
               <div className="step-number">3</div>
               <div className="step-icon">💬</div>
-              <h3>Chat Interact & Query</h3>
+              <h3>Interact & Query</h3>
               <p>Chat with your document using natural language questions. Ask about specific details and get accurate, context-aware answers drawn directly from the content.</p>
             </div>
             <div className="step">
@@ -103,6 +105,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
+        <div className="blob top-right"></div>
       </div>
       {/* FEATURES SECTION */}
       <div className="features">
@@ -167,7 +170,7 @@ const HomePage = () => {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; 2026 RovexAI.</p>
+          <p>&copy; 2026 RovexAI. All rights reserved.</p>
         </div>
       </div>
     </>
