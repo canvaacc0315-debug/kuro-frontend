@@ -1,22 +1,10 @@
-// src/pages/LoginPage.jsx
-import { useEffect } from "react";
-import { useUser, SignIn } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
-import KuroLogo from "../components/layout/KuroLogo.jsx";
+// src/pages/SignUpPage.jsx
+import { SignUp } from "@clerk/clerk-react";
 import "../styles/login-landing.css";
-import "../styles/no-scrollbar-override.css";
+import KuroLogo from "../components/layout/KuroLogo.jsx";
+import Footer from "../components/layout/Footer"; // ✅ ADDED
 
-
-export default function LoginPage() {
-  const { isSignedIn } = useUser();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isSignedIn) {
-      navigate("/dashboard", { replace: true });
-    }
-  }, [isSignedIn, navigate]);
-
+export default function SignUpPage() {
   return (
     /* ✅ Wrapper for footer */
     <div
@@ -52,26 +40,25 @@ export default function LoginPage() {
               </div>
 
               <h1 className="login-hero-title">
-                Chat with your PDFs{" "}
+                Join the{" "}
                 <span className="login-hero-title-accent">
-                  like never before
+                  RovexAI community
                 </span>
               </h1>
 
               <p className="login-hero-description">
-                RovexAI is your intelligent PDF companion. Upload documents, ask
-                questions, generate summaries, extract data, and unlock insights
-                in seconds.
+                Create your free account and start experiencing the future of
+                PDF interaction. No credit card required.
               </p>
 
               <div className="login-hero-features">
                 {[
-                  "Instant Q&A from any PDF",
-                  "AI‑powered summarization",
-                  "Smart data extraction",
-                  "Chart & image understanding",
-                  "Question paper generation",
-                  "Screenshot OCR support",
+                  "Unlimited PDF uploads",
+                  "Advanced AI chat & analysis",
+                  "Export & share conversations",
+                  "OCR & data extraction",
+                  "24/7 support & updates",
+                  "100% secure & private",
                 ].map((text) => (
                   <div key={text} className="login-feature-item">
                     <div className="login-feature-icon">✓</div>
@@ -82,30 +69,25 @@ export default function LoginPage() {
             </div>
           </section>
 
-          {/* RIGHT – Clerk SignIn */}
+          {/* RIGHT – Clerk SignUp */}
           <section className="login-auth-section">
             <div className="login-auth-container">
               <div className="login-auth-header">
                 <h2 className="login-auth-title">
-                  Sign In to{" "}
-                  <span className="login-auth-title-accent">RovexAI</span>
+                  Create{" "}
+                  <span className="login-auth-title-accent">Account</span>
                 </h2>
-
                 <p className="login-auth-subtitle">
-                  Welcome back! Please sign in to continue
+                  Join thousands of users leveraging AI for PDF intelligence
                 </p>
-
-                <div className="login-last-used">
-                  Secure authentication by Clerk
-                </div>
               </div>
 
-              <SignIn
+              <SignUp
                 routing="path"
-                path="/login"
-                signUpUrl="/sign-up"
-                afterSignInUrl="/dashboard"
+                path="/sign-up"
+                signInUrl="/login"
                 afterSignUpUrl="/dashboard"
+                afterSignInUrl="/dashboard"
                 appearance={{
                   elements: {
                     rootBox: { background: "transparent" },
@@ -119,8 +101,10 @@ export default function LoginPage() {
 
               <div className="login-security-badge">
                 <span className="login-security-icon">🔒</span>
-                <span>Accounts protected with Clerk &amp; OAuth</span>
+                <span>256-bit encryption · Accounts protected with Clerk</span>
               </div>
+
+              <div className="login-clerk-badge">Secured by Clerk</div>
             </div>
           </section>
         </div>
