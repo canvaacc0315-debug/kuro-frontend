@@ -220,7 +220,7 @@ export default function HomePage() {
             className="btn-primary btn-glow btn-scale"
             onClick={() => navigate("/sign-up")}
           >
-            Start Free Trial
+            Get Started Now
           </button>
         </div>
       </section>
