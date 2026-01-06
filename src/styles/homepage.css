@@ -185,6 +185,17 @@ body.dark-mode .hero {
   background: linear-gradient(135deg, #1a1a2e 0%, rgba(230, 57, 70, 0.08) 100%);
 }
 
+body.dark-mode .hero h1 {
+  background: linear-gradient(135deg, var(--light-red), var(--primary-red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+body.dark-mode .hero p {
+  color: var(--gray-300);
+}
+
 body.dark-mode .features h2 {
   color: var(--gray-100);
 }
@@ -213,6 +224,10 @@ body.dark-mode .how-it-works {
 
 body.dark-mode .how-it-works h2 {
   color: var(--gray-100);
+}
+
+body.dark-mode .how-it-works-description {
+  color: var(--gray-400) !important;
 }
 
 body.dark-mode .step {
@@ -431,7 +446,7 @@ body.dark-mode .footer-bottom {
 }
 
 .feature-card p {
-  color: var(--gray-600);
+  color: var(--gray-500);
   line-height: 1.6;
   margin: 0;
 }
@@ -468,6 +483,15 @@ body.dark-mode .footer-bottom {
   margin-bottom: 1rem;
   text-align: center;
   color: var(--gray-900);
+}
+
+.how-it-works-description {
+  color: var(--gray-500);
+  margin-bottom: 3rem;
+  max-width: 600px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .steps-container {
@@ -526,7 +550,7 @@ body.dark-mode .footer-bottom {
 }
 
 .step p {
-  color: var(--gray-600);
+  color: var(--gray-500);
   line-height: 1.6;
   margin: 0;
 }

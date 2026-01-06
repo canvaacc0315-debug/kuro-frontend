@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/homepage.css';
+import KuroLogo from "../components/layout/KuroLogo.jsx";
 
 const HomePage = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -49,7 +50,7 @@ const HomePage = () => {
       <header className="header">
         <Link to="/" className="logo">
           <div className="logo-icon">
-            <img src="C:\project - Copy\frontend\public\kuro.png" alt="kuro" /> {/* Replace with path to your actual logo image */}
+            <KuroLogo size={40} />
           </div>
           RovexAI
         </Link>
@@ -80,7 +81,7 @@ const HomePage = () => {
       <div className="how-it-works">
         <div className="how-it-works-content">
           <h2>How RovexAI Works</h2>
-          <p style={{ color: 'var(--gray-600)', marginBottom: '3rem', maxWidth: '600px', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p className="how-it-works-description">
             RovexAI combines advanced AI with intuitive design to make document processing effortless
           </p>
           <div className="steps-container">
