@@ -1,63 +1,62 @@
-// App.jsx
-import React, { useState, useEffect } from 'react';
+// src/pages/HomePage.jsx
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/homepage.css';
+import KuroLogo from "../components/layout/KuroLogo.jsx";
 
-function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleTheme = () => {
-    const newDarkMode = !isDarkMode;
-    setIsDarkMode(newDarkMode);
-    document.body.classList.toggle('dark-mode', newDarkMode);
-    localStorage.setItem('theme', newDarkMode ? 'dark' : 'light');
-  };
-
-  const loadTheme = () => {
-    const savedTheme = localStorage.getItem('theme');
-    const newDarkMode = savedTheme === 'dark';
-    setIsDarkMode(newDarkMode);
-    document.body.classList.toggle('dark-mode', newDarkMode);
-  };
-
-  const staggerAnimate = (selector, delay = 100) => {
-    const elements = document.querySelectorAll(selector);
-    elements.forEach((el, index) => {
-      el.style.animation = 'none';
-      setTimeout(() => {
-        el.style.animation = '';
-      }, delay * index);
-    });
-  };
-
+const HomePage = () => {
+  const [darkMode, setDarkMode] = useState(false);
   useEffect(() => {
-    loadTheme();
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setDarkMode(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.body.classList.remove('dark-mode');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [darkMode]);
+  const toggleTheme = () => {
+    setDarkMode(!darkMode);
+  };
+  useEffect(() => {
+    const staggerAnimate = (selector, delay = 100) => {
+      const elements = document.querySelectorAll(selector);
+      elements.forEach((el, index) => {
+        el.style.animation = 'none';
+        setTimeout(() => {
+          el.style.animation = '';
+        }, delay * index);
+      });
+    };
     setTimeout(() => {
       staggerAnimate('.feature-card', 80);
     }, 200);
   }, []);
-
   return (
     <>
       {/* HEADER */}
       <header className="header">
-        <div className="logo">
-          <div className="logo-icon">Ⓡ</div>
+        <Link to="/" className="logo">
+          <div className="logo-icon">
+            <KuroLogo  size={40} />
+          </div>
           RovexAI
-        </div>
+        </Link>
         <nav className="nav">
-          <span className="nav-link">Home</span>
-          <span className="nav-link">About</span>
-          <span className="nav-link">Contact</span>
-          <button
-            className="theme-toggle"
-            id="theme-toggle"
-            onClick={toggleTheme}
-            title="Toggle dark mode"
-          >
-            {isDarkMode ? '☀️' : '🌙'}
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/about" className="nav-link">About</Link>
+          <Link to="/contact" className="nav-link">Contact</Link>
+          <button className="theme-toggle" onClick={toggleTheme} title="Toggle dark mode">
+            {darkMode ? '☀️' : '🌙'}
           </button>
-          <button className="btn btn-secondary">Login</button>
-          <button className="btn btn-primary">Sign Up</button>
+          <Link to="/login" className="btn btn-secondary">Login</Link>
+          <Link to="/sign-up" className="btn btn-primary">Sign Up</Link>
         </nav>
       </header>
       {/* HOME PAGE */}
@@ -66,8 +65,7 @@ function App() {
           <h1>Chat, Analyze & Create PDFs with AI</h1>
           <p>Your all-in-one AI-powered PDF workspace. Upload, analyze, extract, and generate PDFs in seconds.</p>
           <div className="hero-buttons">
-            <button className="btn btn-primary">Get Started Free</button>
-            <button className="btn btn-secondary">Learn More</button>
+            <Link to="/sign-up" className="btn btn-primary">Get Started Free</Link>
           </div>
         </div>
       </div>
@@ -75,10 +73,9 @@ function App() {
       <div className="how-it-works">
         <div className="how-it-works-content">
           <h2>How RovexAI Works</h2>
-          <p style={{ color: 'var(--gray-600)', marginBottom: '3rem', maxWidth: '600px', textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p className="how-it-works-description">
             RovexAI combines advanced AI with intuitive design to make document processing effortless
           </p>
-          
           <div className="steps-container">
             <div className="step">
               <div className="step-number">1</div>
@@ -95,7 +92,7 @@ function App() {
             <div className="step">
               <div className="step-number">3</div>
               <div className="step-icon">💬</div>
-              <h3>Interact & Query</h3>
+              <h3>Chat Interact & Query</h3>
               <p>Chat with your document using natural language questions. Ask about specific details and get accurate, context-aware answers drawn directly from the content.</p>
             </div>
             <div className="step">
@@ -152,29 +149,28 @@ function App() {
           </div>
           <div className="footer-section">
             <h4>Product</h4>
-            <a className="footer-link">Features</a>
-            <a className="footer-link">Pricing</a>
-            <a className="footer-link">Documentation</a>
+            <a className="footer-link" href="#">Features</a>
+            <a className="footer-link" href="#">Pricing</a>
+            <a className="footer-link" href="#">Documentation</a>
           </div>
           <div className="footer-section">
             <h4>Company</h4>
-            <a className="footer-link">About</a>
-            <a className="footer-link">Contact</a>
-            <a className="footer-link">Privacy Policy</a>
+            <Link to="/about" className="footer-link">About</Link>
+            <Link to="/contact" className="footer-link">Contact</Link>
+            <Link to="/privacy-policy" className="footer-link">Privacy Policy</Link>
           </div>
           <div className="footer-section">
             <h4>Connect</h4>
-            <a className="footer-link">Twitter</a>
-            <a className="footer-link">LinkedIn</a>
-            <a className="footer-link">GitHub</a>
+            <a className="footer-link" href="#">Twitter</a>
+            <a className="footer-link" href="#">LinkedIn</a>
+            <a className="footer-link" href="#">GitHub</a>
           </div>
         </div>
         <div className="footer-bottom">
-          <p>© 2026 RovexAI. All rights reserved.</p>
+          <p>&copy; 2026 RovexAI.</p>
         </div>
       </div>
     </>
   );
-}
-
-export default App;
+};
+export default HomePage;
