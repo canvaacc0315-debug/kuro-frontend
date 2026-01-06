@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/homepage.css";
 import logoIcon from "../assets/logo.svg"; // Add your logo image
@@ -240,13 +240,13 @@ export default function HomePage() {
 
           <div className="footer-section">
             <h4>Company</h4>
-            <a href="https://www.rovexai.com/about" className="footer-link">About</a>
-            <a href="https://www.rovexai.com/contact" className="footer-link">Contact</a>
+            <Link to="/about" className="footer-link">About</Link>
+            <Link to="/contact" className="footer-link">Contact</Link>
           </div>
 
           <div className="footer-section">
             <h4>Legal</h4>
-            <a href="https://www.rovexai.com/privacy-policy" className="footer-link">Privacy Policy</a>
+            <Link to="/privacy-policy" className="footer-link">Privacy Policy</Link>
           </div>
         </div>
 
