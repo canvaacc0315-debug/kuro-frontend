@@ -1,7 +1,7 @@
 // src/pages/HomePage.jsx
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import './HomePage.css';
+import './homepage.css';
 
 const HomePage = () => {
   const [darkMode, setDarkMode] = useState(false);
