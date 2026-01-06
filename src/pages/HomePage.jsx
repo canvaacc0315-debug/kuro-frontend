@@ -6,14 +6,12 @@ import KuroLogo from "../components/layout/KuroLogo.jsx";
 
 const HomePage = () => {
   const [darkMode, setDarkMode] = useState(false);
-
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
       setDarkMode(true);
     }
   }, []);
-
   useEffect(() => {
     if (darkMode) {
       document.body.classList.add('dark-mode');
@@ -23,11 +21,9 @@ const HomePage = () => {
       localStorage.setItem('theme', 'light');
     }
   }, [darkMode]);
-
   const toggleTheme = () => {
     setDarkMode(!darkMode);
   };
-
   useEffect(() => {
     const staggerAnimate = (selector, delay = 100) => {
       const elements = document.querySelectorAll(selector);
@@ -38,19 +34,17 @@ const HomePage = () => {
         }, delay * index);
       });
     };
-
     setTimeout(() => {
       staggerAnimate('.feature-card', 80);
     }, 200);
   }, []);
-
   return (
     <>
       {/* HEADER */}
       <header className="header">
         <Link to="/" className="logo">
           <div className="logo-icon">
-            <KuroLogo size={40} />
+            <KuroLogo size={28} />
           </div>
           RovexAI
         </Link>
@@ -65,7 +59,6 @@ const HomePage = () => {
           <Link to="/sign-up" className="btn btn-primary">Sign Up</Link>
         </nav>
       </header>
-
       {/* HOME PAGE */}
       <div className="hero">
         <div className="hero-content">
@@ -76,7 +69,6 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-
       {/* HOW IT WORKS SECTION */}
       <div className="how-it-works">
         <div className="how-it-works-content">
@@ -112,7 +104,6 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-
       {/* FEATURES SECTION */}
       <div className="features">
         <h2>Powerful Features</h2>
@@ -149,7 +140,6 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-
       {/* FOOTER */}
       <div className="footer">
         <div className="footer-content">
@@ -183,5 +173,4 @@ const HomePage = () => {
     </>
   );
 };
-
 export default HomePage;
