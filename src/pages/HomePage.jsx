@@ -74,7 +74,6 @@ export default function HomePage() {
       {/* HOW IT WORKS (CYCLE) */}
       <section className="how-it-works">
         <h2>How RovexAI Works</h2>
-        <CycleDiagram />
       </section>
     </div>
   );
