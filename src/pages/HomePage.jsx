@@ -138,15 +138,6 @@ export default function HomePage() {
               </button>
             </div>
 
-            <div className="hero-actions">
-                <button
-                 className="btn-secondary btn-scale"
-                 onClick={() => navigate("/about")}
-                >
-                 Learn More
-                </button>
-            </div>
-
             <div className="hero-stats">
               <div className="stat-item">
                 <span className="stat-number">10+</span>
@@ -249,13 +240,13 @@ export default function HomePage() {
 
           <div className="footer-section">
             <h4>Company</h4>
-            <a href="#" className="footer-link">About</a>
+            <a href="https://rovexai.com/about" className="footer-link">About</a>
             <a href="https://rovexai.com/contact" className="footer-link">Contact</a>
           </div>
 
           <div className="footer-section">
             <h4>Legal</h4>
-            <a href="#" className="footer-link">Privacy Policy</a>
+            <a href="https://rovexai.com/privacy" className="footer-link">Privacy Policy</a>
           </div>
         </div>
 
