@@ -35,7 +35,7 @@ export default function HomePage() {
             </SignedOut>
             <SignedIn>
               <button
-                onClick={() => navigate("/app")}
+                onClick={() => navigate("/dashboard")}
                 className="home-btn home-btn-primary"
               >
                 Go to Workspace
