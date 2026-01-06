@@ -492,7 +492,7 @@
 
 /* FOOTER */
 .footer {
-  background: #ffffff;
+  background: #000000;
   color: #000;
   padding: 4rem 2rem 2rem;
   border-top: 1px solid rgba(220, 38, 38, 0.1);
@@ -526,7 +526,7 @@
 }
 
 .social-link {
-  color: #000;
+  color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -537,7 +537,7 @@
 
 .footer-link {
   display: block;
-  color: #000;
+  color: #ffffff;
   text-decoration: none;
   margin-bottom: 0.75rem;
   transition: all 0.3s ease;
@@ -545,7 +545,7 @@
 }
 
 .footer-link:hover {
-  color: #dc2626;
+  color: #ffffff;
   transform: translateX(5px);
 }
 

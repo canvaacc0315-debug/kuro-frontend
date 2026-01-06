@@ -207,7 +207,7 @@ export default function HomePage() {
       <section className="cta-section">
         <div className="cta-content animate-fade-up">
           <h2>Ready to Transform Your PDF Workflow?</h2>
-          <p>Join thousands of users who save hours every week with RovexAI</p>
+          <p>Join to save hours every week with RovexAI</p>
           <button
             className="btn-primary btn-glow btn-scale"
             onClick={() => navigate("/sign-up")}
@@ -230,44 +230,27 @@ export default function HomePage() {
             <p className="footer-tagline">
               Transforming how you work with documents through AI
             </p>
-            <div className="social-links">
-              <a href="#" className="social-link">Twitter</a>
-              <a href="#" className="social-link">LinkedIn</a>
-              <a href="#" className="social-link">GitHub</a>
-            </div>
           </div>
 
           <div className="footer-section">
             <h4>Product</h4>
             <a href="#features" className="footer-link">Features</a>
-            <a href="#" className="footer-link">Pricing</a>
-            <a href="#" className="footer-link">API</a>
-            <a href="#" className="footer-link">Documentation</a>
           </div>
 
           <div className="footer-section">
             <h4>Company</h4>
             <a href="#" className="footer-link">About</a>
-            <a href="#" className="footer-link">Blog</a>
-            <a href="#" className="footer-link">Careers</a>
             <a href="#contact" className="footer-link">Contact</a>
           </div>
 
           <div className="footer-section">
             <h4>Legal</h4>
             <a href="#" className="footer-link">Privacy Policy</a>
-            <a href="#" className="footer-link">Terms of Service</a>
-            <a href="#" className="footer-link">Cookie Policy</a>
-            <a href="#" className="footer-link">GDPR</a>
           </div>
         </div>
 
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} RovexAI. All rights reserved.</p>
-          <div className="footer-bottom-links">
-            <a href="#" className="footer-link">Status</a>
-            <a href="#" className="footer-link">Security</a>
-          </div>
         </div>
       </footer>
     </div>
