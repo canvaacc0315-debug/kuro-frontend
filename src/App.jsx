@@ -1,6 +1,6 @@
 // src/App.jsx
-import { Routes, Route, Navigate } from "react-router-dom";
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useEffect } from "react"; // Removed useState
 
 import LoginPage from "./pages/LoginPage";
@@ -43,6 +43,13 @@ export default function App() {
     script.crossOrigin = "anonymous";
     document.head.appendChild(script);
   }, []);
+
+  const { isSignedIn } = useUser();
+  const location = useLocation();
+
+  if (isSignedIn && (location.pathname.startsWith("/login") || location.pathname.startsWith("/sign-up"))) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <GlobalBackground>
@@ -91,7 +98,7 @@ export default function App() {
         />
 
         {/* FALLBACK */}
-        <Route path="*" element={<Navigate to="/homepage" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </GlobalBackground>
   );
