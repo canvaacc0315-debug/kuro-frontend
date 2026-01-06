@@ -4,6 +4,7 @@ import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
 import { useEffect } from "react"; // Removed useState
 
 import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 import DashboardPage from "./pages/DashboardPage";
 import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
@@ -11,7 +12,6 @@ import ScrollToTop from "./components/utils/ScrollToTop";
 import FloatingHelp from "./components/FloatingHelp/FloatingHelp"; // ✅ Added import
 import "./styles/no-scrollbar-override.css";
 import HomePage from "./pages/HomePage";
-
 
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
