@@ -265,7 +265,7 @@ export default function HomePage() {
         <div className="footer-content">
           <div className="footer-section">
             <div className="logo-container" onClick={() => navigate("/")}>
-              <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
+              <img src={logoIcon} alt="kuro-logo" className="logo-icon" />
               <span className="logo-text">
                 <span className="logo-red">Rovex</span>AI
               </span>
