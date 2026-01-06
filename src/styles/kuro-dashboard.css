@@ -1,4 +1,6 @@
-/* Dashboard.css - Extracted from the provided HTML theme (light mode) */
+/* ===========================
+   RESET - Enhanced
+=========================== */
 
 * {
   margin: 0;
@@ -6,612 +8,1159 @@
   box-sizing: border-box;
 }
 
-:root {
-  --primary-color: #FF5A6E;
-  --light-bg: #FFFFFF;
-  --light-gray: #F5F5F5;
-  --card-bg: #FAFAFA;
-  --text-primary: #1A1A1A;
-  --text-secondary: #666666;
-  --border-color: #E8E8E8;
-  --accent-blue: #3B82F6;
-  --accent-green: #10B981;
-  --accent-orange: #F59E0B;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for sticky navbar */
+}
+
+/* ===========================
+   BASE PAGE - Refined
+=========================== */
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--light-bg);
-  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+  color: #e0e0e0;
+  line-height: 1.6; /* Improved readability */
+}
+
+/* ===========================
+   DASHBOARD LAYOUT - Enhanced
+=========================== */
+
+.kuro-dashboard-page {
+  width: 100%;
   min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* ===== KEYFRAME ANIMATIONS ===== */
-@keyframes slideInDown {
-  from { opacity: 0; transform: translateY(-30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-40px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(40px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(255, 90, 110, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(255, 90, 110, 0.4); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-}
-
-@keyframes rotate360 {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* ===== CAROUSEL TRAIN ANIMATION ===== */
-@keyframes trainMove {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-320px * 6 - 20px * 6)); }
-}
-
-@keyframes trainMoveReverse {
-  0% { transform: translateX(calc(-320px * 6 - 20px * 6)); }
-  100% { transform: translateX(0); }
-}
-
-/* ===== HEADER ===== */
-.header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 40px;
-  border-bottom: 1px solid var(--border-color);
-  background: var(--light-bg);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  animation: slideInDown 0.6s ease-out;
+  flex-direction: column;
+  position: relative; /* For potential overlays */
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  animation: slideInLeft 0.7s ease-out 0.1s both;
+/* Scoped main container: improved spacing and centering */
+.kuro-dashboard-page .main-container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 60px 80px;
+  flex: 1;
+  animation: pageFadeIn 0.6s ease-out; /* Entry animation */
 }
 
-.logo-icon {
-  color: var(--primary-color);
-  animation: rotate360 3s linear infinite;
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.logo-text {
-  color: var(--text-primary);
-}
+/* ===========================
+   HERO SECTION - Enhanced with Gradient Overlay
+=========================== */
 
-.logo-highlight {
-  color: var(--primary-color);
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  animation: slideInRight 0.7s ease-out 0.2s both;
-}
-
-.user-name {
-  font-size: 14px;
-  color: var(--text-secondary);
-  animation: fadeIn 0.8s ease-out 0.3s both;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-blue));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  font-size: 18px;
-  animation: scaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.avatar:hover {
-  transform: scale(1.1) rotate(10deg);
-  box-shadow: 0 10px 25px rgba(255, 90, 110, 0.3);
-}
-
-/* ===== HERO SECTION ===== */
-.hero {
+.hero-banner {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.15) 0%,
+    rgba(240, 68, 68, 0.1) 100%
+  );
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: 20px; /* Softer corners */
+  padding: 60px 50px; /* More padding */
+  margin-bottom: 60px;
   text-align: center;
-  padding: 60px 40px 40px;
-  background: linear-gradient(180deg, rgba(255, 90, 110, 0.05) 0%, transparent 100%);
-  border-bottom: 1px solid var(--border-color);
-  animation: fadeIn 0.8s ease-out 0.2s both;
+  backdrop-filter: blur(12px); /* Stronger blur */
+  width: 100%;
+  position: relative;
+  overflow: hidden; /* For pseudo-elements */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.hero h1 {
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 107, 107, 0.05) 50%, transparent 70%);
+  animation: shimmer 3s ease-in-out infinite; /* Subtle shimmer */
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+.hero-banner:hover {
+  transform: translateY(-4px); /* Lift on hover */
+  /* Removed glow shadow */
+}
+
+.hero-title {
   font-size: 48px;
-  margin-bottom: 20px;
   font-weight: 800;
-  letter-spacing: -1px;
-  color: var(--text-primary);
-  animation: slideInUp 0.7s ease-out 0.3s both;
+  color: #ffffff;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1; /* Above shimmer */
 }
 
-.hero h1 .highlight {
-  color: var(--primary-color);
-  animation: pulse 2s ease-in-out infinite;
+.hero-title-accent {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  /* Removed pulsing glow animation */
 }
 
-.hero p {
-  font-size: 16px;
-  color: var(--text-secondary);
-  max-width: 700px;
-  margin: 0 auto 30px;
-  line-height: 1.6;
-  animation: slideInUp 0.7s ease-out 0.4s both;
+.hero-subtitle {
+  font-size: 18px;
+  color: #b0b0b0;
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* ===== SECTION HEADER ===== */
+/* ===========================
+   SECTION HEADER - Refined
+=========================== */
+
 .section-header {
-  padding: 40px 40px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  animation: slideInLeft 0.7s ease-out 0.3s both;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.section-header::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  border-radius: 1px;
 }
 
 .section-title {
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
-  position: relative;
-  padding-bottom: 15px;
-  color: var(--text-primary);
+  color: #ffffff;
+  margin-bottom: 8px;
+  transition: color 0.3s ease;
 }
 
-.section-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 60px;
-  height: 4px;
-  background: var(--primary-color);
-  border-radius: 2px;
-  animation: slideInLeft 0.6s ease-out;
+.section-title:hover {
+  color: #ff6b6b; /* Accent on hover */
+}
+
+.section-title-accent {
+  color: #ff6b6b;
 }
 
 .section-subtitle {
-  color: var(--text-secondary);
-  font-size: 14px;
-  margin-left: auto;
-  animation: slideInRight 0.7s ease-out 0.4s both;
+  font-size: 15px;
+  color: #888888;
+  max-width: 500px; /* Prevent overflow */
 }
 
-/* ===== CAROUSEL CONTAINER ===== */
-.carousel-wrapper {
-  padding: 40px;
-  background: var(--light-gray);
-  overflow: hidden;
-  animation: slideInUp 0.7s ease-out 0.4s both;
-  position: relative;
+/* ===========================
+   WORKSPACE GRID (3 x 2) - Enhanced Cards
+=========================== */
+
+.workspace-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+  animation: gridStaggerIn 0.6s ease-out; /* Staggered entry */
 }
 
-.carousel-wrapper::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  background: linear-gradient(90deg, var(--light-gray), transparent);
-  z-index: 10;
+@keyframes gridStaggerIn {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.carousel-wrapper::after {
-  content: '';
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  background: linear-gradient(270deg, var(--light-gray), transparent);
-  z-index: 10;
-}
+.workspace-grid .workspace-card:nth-child(1) { animation-delay: 0.1s; }
+.workspace-grid .workspace-card:nth-child(2) { animation-delay: 0.2s; }
+.workspace-grid .workspace-card:nth-child(3) { animation-delay: 0.3s; }
+.workspace-grid .workspace-card:nth-child(4) { animation-delay: 0.4s; }
+.workspace-grid .workspace-card:nth-child(5) { animation-delay: 0.5s; }
+.workspace-grid .workspace-card:nth-child(6) { animation-delay: 0.6s; }
 
-.carousel-container {
-  display: flex;
-  gap: 20px;
-  animation: trainMove 40s linear infinite;
-  will-change: transform;
-}
-
-.carousel-container:hover {
-  animation-play-state: paused;
-}
-
-/* ===== WORKSPACE CARDS ===== */
+/* Workspace Card: 3D hover and inner glow */
 .workspace-card {
-  min-width: 320px;
-  padding: 30px;
-  background: var(--light-bg);
-  border: 2px solid var(--border-color);
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: rgba(20, 20, 30, 0.6);
+  border: 1px solid rgba(255, 107, 107, 0.15);
+  border-radius: 20px; /* Softer */
+  padding: 40px;
   cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth curve */
   position: relative;
   overflow: hidden;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px); /* Frosted glass */
 }
 
 .workspace-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), transparent);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+  border-radius: 20px 20px 0 0;
 }
 
 .workspace-card::after {
   content: '';
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 90, 110, 0.08), transparent);
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, transparent 100%);
   opacity: 0;
-  transition: all 0.5s ease;
+  transition: opacity 0.4s ease;
   pointer-events: none;
 }
 
 .workspace-card:hover {
-  border-color: var(--primary-color);
-  background: linear-gradient(135deg, rgba(255, 90, 110, 0.02), transparent);
-  transform: translateY(-12px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(255, 90, 110, 0.15);
+  background: rgba(20, 20, 30, 0.8);
+  border-color: rgba(255, 107, 107, 0.4);
+  transform: translateY(-8px) rotateX(2deg); /* 3D tilt */
+  /* Removed glow shadow */
 }
 
 .workspace-card:hover::before {
-  opacity: 1;
+  transform: scaleX(1);
 }
 
 .workspace-card:hover::after {
   opacity: 1;
-  animation: float 3s ease-in-out infinite;
 }
 
-/* ===== CARD ELEMENTS ===== */
-.card-icon {
+.workspace-icon {
   font-size: 48px;
   margin-bottom: 20px;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 90, 110, 0.1);
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  animation: bounce 2s ease-in-out infinite;
+  display: inline-block;
+  transition: transform 0.3s ease; /* Icon bounce */
+  /* Removed drop-shadow filter */
 }
 
-.workspace-card:hover .card-icon {
-  background: rgba(255, 90, 110, 0.2);
-  transform: scale(1.2) rotate(15deg);
-  animation: rotate360 2s linear infinite, bounce 2s ease-in-out infinite;
+.workspace-card:hover .workspace-icon {
+  transform: translateY(-4px) scale(1.1);
 }
 
-.card-title {
-  font-size: 22px;
+.workspace-name {
+  font-size: 24px;
   font-weight: 700;
+  color: #ffffff;
   margin-bottom: 12px;
-  color: var(--text-primary);
-  animation: slideInUp 0.6s ease-out 0.2s both;
+  transition: color 0.3s ease;
 }
 
-.card-description {
+.workspace-card:hover .workspace-name {
+  color: #ff6b6b;
+}
+
+.workspace-description {
   font-size: 14px;
-  color: var(--text-secondary);
-  margin-bottom: 24px;
+  color: #888888;
   line-height: 1.6;
-  flex-grow: 1;
-  animation: slideInUp 0.6s ease-out 0.3s both;
+  margin-bottom: 24px;
 }
 
-.card-features {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+.workspace-features {
+  list-style: none;
+  margin-bottom: 24px;
 }
 
-.feature-item {
+.workspace-features li {
+  font-size: 13px;
+  color: #888888;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: var(--text-secondary);
-  transition: all 0.3s ease;
-  animation: slideInLeft 0.6s ease-out backwards;
+  gap: 8px;
+  transition: color 0.3s ease;
+  padding: 4px 0; /* Subtle padding */
 }
 
-.feature-item:nth-child(1) {
-  animation-delay: 0.3s;
+.workspace-card:hover .workspace-features li {
+  color: #b0b0b0; /* Lighter on hover */
 }
 
-.feature-item:nth-child(2) {
-  animation-delay: 0.4s;
-}
-
-.feature-item:nth-child(3) {
-  animation-delay: 0.5s;
-}
-
-.workspace-card:hover .feature-item {
-  transform: translateX(5px);
-  color: var(--primary-color);
-}
-
-.feature-icon {
-  color: var(--primary-color);
-  font-weight: bold;
-  font-size: 16px;
-}
-
-/* ===== CARD BUTTON ===== */
-.card-button {
-  padding: 12px 24px;
-  background: linear-gradient(135deg, var(--primary-color), #FF4A5E);
-  color: white;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  font-weight: 600;
+.workspace-features li::before {
+  content: "✓";
+  color: #ff6b6b;
+  font-weight: 700;
   font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+.workspace-card:hover .workspace-features li::before {
+  transform: scale(1.2);
+}
+
+.workspace-btn {
+  width: 100%;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  color: white;
+  border: none;
+  border-radius: 12px; /* Softer */
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   position: relative;
   overflow: hidden;
-  animation: slideInUp 0.6s ease-out 0.5s both;
+  min-height: 44px; /* Touch-friendly minimum */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.card-button::before {
+.workspace-btn::before {
   content: '';
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
   transition: left 0.5s ease;
-  z-index: -1;
 }
 
-.card-button:hover::before {
+.workspace-btn:hover::before {
   left: 100%;
 }
 
-.card-button:hover {
-  background: linear-gradient(135deg, #FF4A5E, var(--primary-color));
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 15px 35px rgba(255, 90, 110, 0.3);
-  letter-spacing: 1px;
+.workspace-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  /* Removed glow shadow */
 }
 
-.card-button:active {
-  transform: scale(0.98) translateY(0);
+.workspace-btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
-/* ===== FEATURES SECTION ===== */
+/* ===========================
+   FEATURES SECTION - Enhanced Grid
+=========================== */
+
 .features-section {
-  padding: 40px;
-  background: var(--light-gray);
-  animation: slideInUp 0.7s ease-out 0.5s both;
+  margin-bottom: 60px;
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-top: 30px;
 }
 
 .feature-card {
-  padding: 28px;
-  background: var(--light-bg);
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  animation: slideInUp 0.6s ease-out backwards;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px; /* Consistent with workspace */
+  padding: 30px;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-
-.feature-card:nth-child(1) {
-  animation-delay: 0.3s;
-}
-
-.feature-card:nth-child(2) {
-  animation-delay: 0.4s;
-}
-
-.feature-card:nth-child(3) {
-  animation-delay: 0.5s;
-}
-
-.feature-card:nth-child(4) {
-  animation-delay: 0.6s;
-}
-
-.feature-card:nth-child(5) {
-  animation-delay: 0.7s;
-}
-
-.feature-card:nth-child(6) {
-  animation-delay: 0.8s;
 }
 
 .feature-card::before {
   content: '';
   position: absolute;
   top: 0;
-  left: -100%;
+  left: 0;
   width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 90, 110, 0.08), transparent);
-  transition: left 0.6s ease;
+  height: 3px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
 .feature-card:hover::before {
-  left: 100%;
+  transform: scaleX(1);
 }
 
 .feature-card:hover {
-  border-color: var(--primary-color);
-  background: linear-gradient(135deg, rgba(255, 90, 110, 0.02), transparent);
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(255, 90, 110, 0.1);
+  background: rgba(255, 107, 107, 0.08);
+  border-color: rgba(255, 107, 107, 0.3);
+  transform: translateY(-4px);
+  /* Removed glow shadow */
 }
 
-.feature-card h3 {
-  font-size: 18px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--primary-color);
-  transition: all 0.3s ease;
+.feature-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+  color: #ff6b6b; /* Accent color */
+  transition: transform 0.3s ease;
 }
 
-.feature-card:hover h3 {
-  transform: translateX(5px);
+.feature-card:hover .feature-icon {
+  transform: rotate(360deg) scale(1.1); /* Fun spin */
 }
 
-.feature-card p {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.6;
-  transition: all 0.3s ease;
-}
-
-.feature-card:hover p {
-  color: var(--text-primary);
-}
-
-.feature-icon-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 90, 110, 0.1);
-  border-radius: 8px;
+.feature-title {
   font-size: 16px;
-  transition: all 0.3s ease;
-  animation: pulse 2s ease-in-out infinite;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
 }
 
-.feature-card:hover .feature-icon-badge {
-  background: rgba(255, 90, 110, 0.2);
-  transform: scale(1.15) rotate(10deg);
-  animation: rotate360 1s linear infinite;
+.feature-desc {
+  font-size: 13px;
+  color: #888888;
+  line-height: 1.6;
 }
 
-/* ===== FOOTER ===== */
+/* ===========================
+   FOOTER - Polished
+=========================== */
+
 .footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 40px;
   text-align: center;
-  border-top: 1px solid var(--border-color);
-  color: var(--text-secondary);
+  color: #666666;
   font-size: 13px;
-  animation: slideInUp 0.7s ease-out 0.6s both;
-  background: var(--light-bg);
+  margin-top: 40px;
+  position: relative;
 }
 
-.footer:hover {
-  color: var(--primary-color);
-  transition: all 0.3s ease;
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(135deg, transparent, #ff6b6b, transparent);
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  .header {
-    padding: 16px 20px;
+/* ===========================
+   CHAT UI SPACING FIX - New Section for RovexAI Chat
+=========================== */
+
+/* More specific selectors for toolbar and buttons; added !important for forcing distance */
+.chat-toolbar,
+.toolbar,
+.chat-header,
+.scope-section {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 12px 16px !important;
+  background: rgba(20, 20, 30, 0.8) !important;
+  border-bottom: 1px solid rgba(255, 107, 107, 0.1) !important;
+  margin-bottom: 60px !important; /* Aggressively increased to force separation from frame */
+  border-radius: 12px 12px 0 0 !important; /* Top-rounded to blend with chat */
+  flex-wrap: wrap !important;
+}
+
+.chat-toolbar .scope-controls,
+.chat-toolbar .action-buttons,
+.scope-controls,
+.action-buttons {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.chat-toolbar button,
+.toolbar button,
+.save-conversation-btn,
+.clear-conversation-btn {
+  padding: 8px 16px !important;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  min-height: 36px !important; /* Touch-friendly */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important; /* Ensure no extra margins */
+}
+
+.chat-toolbar button:hover,
+.toolbar button:hover {
+  transform: translateY(-1px) !important;
+  /* Removed glow shadow */
+}
+
+.chat-toolbar select,
+.answer-style-select {
+  padding: 8px 12px !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 107, 107, 0.2) !important;
+  border-radius: 6px !important;
+  color: #e0e0e0 !important;
+  font-size: 13px !important;
+}
+
+.chat-frame,
+.chat-container,
+.messages-frame {
+  background: rgba(15, 15, 18, 0.95) !important;
+  border: 1px solid rgba(255, 107, 107, 0.2) !important;
+  border-radius: 0 0 12px 12px !important; /* Bottom-rounded to match toolbar */
+  padding: 20px !important;
+  margin-top: 0 !important; /* Ensure no extra top margin */
+  margin-bottom: 20px !important; /* Add bottom space if needed */
+  overflow-y: auto !important;
+  height: 60vh !important; /* Adjustable based on layout */
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 12px !important;
+}
+
+.chat-message,
+.message-bubble {
+  padding: 12px 16px !important;
+  border-radius: 12px !important;
+  max-width: 80% !important;
+  word-wrap: break-word !important;
+}
+
+.chat-message.user,
+.user-message {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%) !important;
+  color: white !important;
+  align-self: flex-end !important;
+  margin-left: auto !important;
+}
+
+.chat-message.assistant,
+.assistant-message {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #e0e0e0 !important;
+  align-self: flex-start !important;
+}
+
+/* ===========================
+   TRY ASKING PANEL - Remove Red Glow (More Aggressive)
+=========================== */
+
+/* Broader selectors for the suggestions panel */
+.try-asking-panel,
+.suggestions-panel,
+.try-asking,
+.prompt-suggestions,
+.suggestion-container,
+[role="suggestions"],
+[class*="try-asking"],
+[class*="suggestion"] {
+  border: none !important; /* Force remove red border */
+  box-shadow: none !important; /* Force remove glow/shadow */
+  outline: none !important; /* Remove any outline */
+  background: rgba(20, 20, 30, 0.6) !important; /* Subtle background instead */
+  border-radius: 12px !important;
+  filter: none !important; /* Remove any filters like glow */
+}
+
+/* Category headers like "SUMMARY & KEY POINTS" */
+.try-asking-panel h3,
+.suggestions-panel h3,
+.suggestion-category {
+  color: #e0e0e0 !important;
+  border-bottom: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important; /* Remove text glow if any */
+}
+
+/* Individual suggestion buttons/links */
+.suggestion-item,
+.try-asking-item,
+.prompt-suggestion {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  color: #b0b0b0 !important;
+}
+
+.suggestion-item:hover,
+.try-asking-item:hover {
+  background: rgba(255, 107, 107, 0.1) !important; /* Subtle hover without glow */
+  box-shadow: none !important;
+}
+
+/* ===========================
+   CHAT INPUT FIX - Remove Duplicate Frames
+=========================== */
+
+/* Target the chat input container to ensure single instance and no duplicate borders */
+.chat-input-container,
+.input-wrapper,
+.chat-footer,
+.message-input {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 16px !important;
+  background: rgba(15, 15, 18, 0.95) !important;
+  border: 1px solid rgba(255, 107, 107, 0.2) !important;
+  border-radius: 20px !important; /* Single rounded frame */
+  margin: 0 !important; /* Remove any extra margins causing duplication */
+  width: 100% !important;
+  position: relative !important;
+}
+
+/* Hide or remove any duplicate input wrappers */
+.chat-input-container + .chat-input-container,
+.input-wrapper + .input-wrapper,
+.duplicate-input {
+  display: none !important; /* Hide duplicates if present */
+}
+
+/* Style the input field */
+.chat-input,
+.input-field,
+.message-input input {
+  flex: 1 !important;
+  background: rgba(20, 20, 30, 0.8) !important;
+  border: 1px solid rgba(255, 107, 107, 0.3) !important;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+  color: #e0e0e0 !important;
+  font-size: 14px !important;
+  outline: none !important;
+  margin: 0 !important;
+}
+
+/* Style the send button */
+.send-btn,
+.chat-send-button {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%) !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 12px 20px !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  min-height: 44px !important;
+  white-space: nowrap !important;
+  margin: 0 !important;
+}
+
+.send-btn:hover,
+.chat-send-button:hover {
+  transform: translateY(-2px) !important;
+  /* No glow */
+}
+
+/* Ensure only one input frame is visible and styled correctly */
+.chat-input-container::before,
+.chat-input-container::after {
+  content: none !important; /* Remove any pseudo-elements causing extra frames */
+}
+
+/* ===========================
+   SCROLLBAR - Custom Theme (No Glow on Hover)
+=========================== */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 15, 15, 0.5); /* Semi-transparent */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #ff8787, #ff6b6b);
+  /* Removed transform scale */
+}
+
+/* ===========================
+   RESPONSIVE - Enhanced Breakpoints (with Chat Fixes)
+=========================== */
+
+/* Large Tablet */
+@media (max-width: 1200px) {
+  .kuro-dashboard-page .main-container {
+    padding: 50px 60px;
   }
 
-  .hero h1 {
+  .workspace-grid,
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .hero-title {
+    font-size: 40px;
+  }
+
+  .section-title {
     font-size: 32px;
   }
 
-  .section-header, .carousel-wrapper, .features-section {
-    padding-left: 20px;
-    padding-right: 20px;
+  /* Chat responsive */
+  .chat-toolbar,
+  .toolbar {
+    margin-bottom: 48px !important; /* Increased for tablet */
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .chat-toolbar .scope-controls,
+  .chat-toolbar .action-buttons {
+    justify-content: center !important;
+  }
+
+  .chat-frame {
+    height: 50vh !important;
+    padding: 16px !important;
+  }
+
+  /* Input responsive */
+  .chat-input-container {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .send-btn {
+    width: 100% !important;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .kuro-dashboard-page .main-container {
+    padding: 40px 40px;
+  }
+
+  .workspace-grid,
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .section-title {
+    font-size: 28px;
   }
 
   .workspace-card {
-    min-width: 280px;
+    padding: 30px;
   }
 
+  .hero-banner {
+    padding: 40px 30px;
+  }
+
+  /* Chat responsive */
+  .chat-toolbar,
+  .toolbar {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+    margin-bottom: 48px !important;
+  }
+
+  .chat-toolbar button,
+  .toolbar button {
+    padding: 10px 20px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* Mobile Landscape */
+@media (max-width: 768px) {
+  .kuro-dashboard-page .main-container {
+    padding: 24px 16px; /* Reduced for more breathing room */
+  }
+
+  .workspace-grid,
   .features-grid {
     grid-template-columns: 1fr;
+    gap: 12px; /* Tighter gap */
   }
+
+  .workspace-card,
+  .feature-card {
+    padding: 20px; /* Reduced padding */
+  }
+
+  .workspace-icon {
+    font-size: 32px; /* Smaller icon */
+  }
+
+  .workspace-name {
+    font-size: 18px; /* Smaller title */
+  }
+
+  .hero-title {
+    font-size: 24px; /* More compact */
+  }
+
+  .hero-subtitle {
+    font-size: 15px;
+  }
+
+  .section-title {
+    font-size: 20px; /* Smaller section headers */
+  }
+
+  .hero-banner {
+    padding: 24px 16px; /* Reduced padding */
+    margin-bottom: 32px;
+    border-radius: 16px; /* Slightly smaller radius */
+  }
+
+  .footer {
+    padding: 24px 16px; /* Consistent with main */
+  }
+
+  .workspace-features li {
+    font-size: 12px; /* Smaller feature text */
+    gap: 6px;
+  }
+
+  .workspace-features li::before {
+    font-size: 12px;
+  }
+
+  .workspace-description {
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .feature-title {
+    font-size: 15px;
+  }
+
+  .feature-desc {
+    font-size: 12px;
+  }
+
+  .section-subtitle {
+    font-size: 14px;
+  }
+
+  /* Chat responsive - Further increased spacing for mobile */
+  .chat-toolbar,
+  .toolbar {
+    margin-bottom: 64px !important; /* Even more breathing room on mobile */
+    padding: 16px !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .chat-toolbar .scope-controls,
+  .chat-toolbar .action-buttons,
+  .scope-controls,
+  .action-buttons {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  .chat-toolbar button,
+  .toolbar button {
+    flex: 1 !important;
+    min-height: 44px !important;
+    font-size: 15px !important;
+  }
+
+  .chat-frame,
+  .chat-container {
+    height: 45vh !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+  }
+
+  .chat-message,
+  .message-bubble {
+    max-width: 95% !important;
+    padding: 10px 14px !important;
+  }
+
+  /* Input responsive on mobile */
+  .chat-input-container {
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 12px !important;
+  }
+
+  .chat-input {
+    margin: 0 !important;
+  }
+
+  .send-btn {
+    width: 100% !important;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .kuro-dashboard-page .main-container {
+    padding: 16px 12px; /* Even tighter for small screens */
+  }
+
+  .workspace-btn {
+    padding: 12px 20px;
+    font-size: 13px;
+  }
+
+  .feature-card {
+    padding: 16px; /* Further reduced */
+  }
+
+  .workspace-icon {
+    font-size: 28px;
+  }
+
+  .workspace-name {
+    font-size: 16px;
+  }
+
+  .hero-title {
+    font-size: 20px; /* Very compact */
+    margin-bottom: 8px;
+  }
+
+  .hero-subtitle {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .hero-banner {
+    padding: 20px 12px;
+    margin-bottom: 24px;
+  }
+
+  .workspace-card {
+    padding: 16px;
+  }
+
+  .workspace-features {
+    margin-bottom: 20px;
+  }
+
+  .workspace-features li {
+    font-size: 11px;
+    margin-bottom: 6px;
+  }
+
+  .workspace-description {
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+
+  .feature-icon {
+    font-size: 28px;
+  }
+
+  .feature-title {
+    font-size: 14px;
+  }
+
+  .feature-desc {
+    font-size: 11px;
+  }
+
+  .footer {
+    padding: 20px 12px;
+    font-size: 12px;
+  }
+
+  .section-header {
+    margin-bottom: 32px;
+  }
+
+  .section-header::after {
+    width: 40px; /* Smaller underline */
+  }
+
+  /* Chat responsive */
+  .chat-toolbar,
+  .toolbar {
+    margin-bottom: 56px !important;
+    padding: 12px !important;
+  }
+
+  .chat-toolbar button,
+  .toolbar button {
+    padding: 12px !important;
+    font-size: 14px !important;
+  }
+
+  .chat-frame,
+  .chat-container {
+    height: 40vh !important;
+    padding: 12px !important;
+  }
+
+  /* Input responsive */
+  .chat-input-container {
+    padding: 10px !important;
+    gap: 10px !important;
+  }
+}
+
+/* Extra Small Mobile (e.g., iPhone SE) */
+@media (max-width: 360px) {
+  .kuro-dashboard-page .main-container {
+    padding: 12px 8px;
+  }
+
+  .workspace-grid,
+  .features-grid {
+    gap: 8px;
+  }
+
+  .workspace-card,
+  .feature-card {
+    padding: 12px;
+  }
+
+  .hero-banner {
+    padding: 16px 8px;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size: 18px;
+  }
+
+  .section-title {
+    font-size: 16px;
+  }
+
+  .workspace-name {
+    font-size: 15px;
+  }
+
+  .workspace-btn {
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+
+  /* Chat responsive */
+  .chat-toolbar,
+  .toolbar {
+    margin-bottom: 48px !important;
+    padding: 10px !important;
+    gap: 12px !important;
+  }
+
+  .chat-toolbar button,
+  .toolbar button {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+  }
+
+  .chat-frame,
+  .chat-container {
+    height: 35vh !important;
+    padding: 10px !important;
+  }
+
+  /* Input responsive */
+  .chat-input-container {
+    padding: 8px !important;
+  }
+
+  .chat-input {
+    padding: 10px 12px !important;
+  }
+
+  .send-btn {
+    padding: 10px 16px !important;
+  }
+}
+
+/* ================= ACCESSIBILITY & PERFORMANCE ================= */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast enhancements */
+@media (prefers-contrast: high) {
+  .workspace-card,
+  .feature-card,
+  .hero-banner {
+    border-width: 2px;
+  }
+
+  .section-header::after {
+    height: 3px;
+  }
+
+  .chat-toolbar,
+  .toolbar {
+    border-width: 2px !important;
+  }
+
+  .chat-frame,
+  .chat-container {
+    border-width: 2px !important;
+  }
+
+  .chat-input-container {
+    border-width: 2px !important;
+  }
+}
+
+/* Dark mode is default, but ensure focus visibility */
+*:focus-visible {
+  outline: 2px solid #ff6b6b;
+  outline-offset: 2px;
 }
