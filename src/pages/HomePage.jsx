@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import "../styles/home.css";
+import "../styles/homepage.css";
 import CycleDiagram from "../components/CycleDiagram";
 
 export default function HomePage() {
