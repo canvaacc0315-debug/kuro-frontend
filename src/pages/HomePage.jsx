@@ -85,7 +85,8 @@ export default function HomePage() {
         <div className="logo-container" onClick={() => navigate("/")}>
           <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
           <span className="logo-text">
-            <span className="logo-red">Rovex</span>AI
+            <span className="logo-red">Rovex</span>
+            <span className="logo-ai">AI</span>
           </span>
         </div>
 
