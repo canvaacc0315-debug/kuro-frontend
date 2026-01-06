@@ -6,8 +6,6 @@ import logoIcon from "../assets/logo.svg"; // Add your logo image
 
 // Import icons for features - you can use react-icons or your own SVG
 import { 
-  FaUpload, FaComments, FaSearch, 
-  FaFileAlt, FaFilePdf, FaBolt,
   FaShieldAlt, FaDna, FaChartLine,
   FaDatabase, FaWifi, FaVideo
 } from "react-icons/fa";
@@ -31,24 +29,24 @@ export default function HomePage() {
       description: "Sophisticated AI analyzes massive datasets to uncover intricate patterns and predict outcomes."
     },
     {
-      icon: <FaDatabase />,
-      title: "Big Data Interoperability",
-      description: "Seamlessly storing and securely sharing information across disparate systems."
-    },
-    {
       icon: <FaWifi />,
       title: "Wearables & IoT",
       description: "Continuous, real-time tracking of data outside traditional settings for better insights."
     },
     {
-      icon: <FaShieldAlt />,
-      title: "End-to-End Security",
-      description: "State-of-the-art encryption ensures your data remains private and compliant."
-    },
-    {
       icon: <FaVideo />,
       title: "Telehealth Evolution",
       description: "Dismantling geographical barriers to access, enabling effective remote monitoring."
+    },
+    {
+      icon: <FaDatabase />,
+      title: "Big Data Interoperability",
+      description: "Seamlessly storing and securely sharing information across disparate systems."
+    },
+    {
+      icon: <FaShieldAlt />,
+      title: "End-to-End Security",
+      description: "State-of-the-art encryption ensures your data remains private and compliant."
     },
     {
       icon: <FaDna />,
@@ -205,47 +203,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ADDITIONAL FEATURES */}
-      <section className="additional-features">
-        <div className="section-header animate-fade-up">
-          <h2>Advanced PDF Capabilities</h2>
-          <p>More ways RovexAI enhances your document workflow</p>
-        </div>
-        
-        <div className="features-grid">
-          <Feature 
-            icon={<FaUpload />}
-            title="PDF Upload" 
-            description="Upload PDFs instantly with drag & drop interface" 
-          />
-          <Feature 
-            icon={<FaComments />}
-            title="AI Chat" 
-            description="Ask questions and get intelligent answers from your PDFs" 
-          />
-          <Feature 
-            icon={<FaSearch />}
-            title="Deep Analysis" 
-            description="Extract insights, summaries, and key information automatically" 
-          />
-          <Feature 
-            icon={<FaFileAlt />}
-            title="OCR Technology" 
-            description="Convert scanned PDFs to editable text with high accuracy" 
-          />
-          <Feature 
-            icon={<FaFilePdf />}
-            title="PDF Creation" 
-            description="Create professional PDFs from scratch using AI assistance" 
-          />
-          <Feature 
-            icon={<FaBolt />}
-            title="Lightning Fast" 
-            description="Process documents in seconds with our optimized AI engine" 
-          />
-        </div>
-      </section>
-
       {/* CTA SECTION */}
       <section className="cta-section">
         <div className="cta-content animate-fade-up">
@@ -325,19 +282,6 @@ function FeatureCard({ icon, title, description, delay }) {
       style={{ animationDelay: delay }}
     >
       <div className="feature-icon-red">
-        {icon}
-      </div>
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </div>
-  );
-}
-
-// Original Feature Component
-function Feature({ icon, title, description }) {
-  return (
-    <div className="feature-item">
-      <div className="feature-icon">
         {icon}
       </div>
       <h3>{title}</h3>

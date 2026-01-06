@@ -2,7 +2,7 @@
 .home-root {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   background: linear-gradient(180deg, #ffffff 0%, #fff5f5 100%);
-  color: #111;
+  color: #000;
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -126,7 +126,7 @@
 
 .logo-text {
   font-weight: 800;
-  background: linear-gradient(135deg, #111, #333);
+  background: linear-gradient(135deg, #000, #000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -144,7 +144,7 @@
 }
 
 .nav-link {
-  color: #666;
+  color: #000;
   text-decoration: none;
   font-weight: 500;
   position: relative;
@@ -241,7 +241,7 @@
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 1.5rem;
-  color: #111;
+  color: #000;
 }
 
 .hero-gradient {
@@ -254,7 +254,7 @@
 
 .hero-subtitle {
   font-size: 1.25rem;
-  color: #666;
+  color: #000;
   margin-bottom: 2.5rem;
   line-height: 1.6;
 }
@@ -287,7 +287,7 @@
 }
 
 .stat-label {
-  color: #666;
+  color: #000;
   font-size: 0.9rem;
   margin-top: 0.25rem;
 }
@@ -360,14 +360,14 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #111, #333);
+  background: linear-gradient(135deg, #000, #000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .section-header p {
-  color: #666;
+  color: #000;
   font-size: 1.1rem;
   max-width: 600px;
   margin: 0 auto;
@@ -396,24 +396,7 @@
 .step-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15);
-}
-
-.step-number-red {
-  position: absolute;
-  top: -1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(135deg, #dc2626, #ef4444);
-  color: white;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+  border-bottom: 5px solid #dc2626;
 }
 
 /* FEATURES - Red Cards */
@@ -436,26 +419,16 @@
   padding: 2.5rem;
   box-shadow: 0 8px 30px rgba(220, 38, 38, 0.1);
   transition: all 0.3s ease;
-  border-left: 5px solid #dc2626;
   opacity: 0;
   position: relative;
   overflow: hidden;
-}
-
-.feature-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(90deg, #dc2626, #ef4444);
 }
 
 .feature-card:hover {
   transform: translateY(-10px);
   box-shadow: 0 20px 40px rgba(220, 38, 38, 0.2);
   animation: pulse 2s infinite;
+  border-bottom: 5px solid #dc2626;
 }
 
 .feature-icon-red {
@@ -475,52 +448,20 @@
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 1rem;
-  color: #111;
+  color: #000;
 }
 
 .feature-card p {
-  color: #666;
+  color: #000;
   line-height: 1.6;
   margin: 0;
   font-size: 0.95rem;
 }
 
-/* ADDITIONAL FEATURES */
-.additional-features {
-  padding: 6rem 2rem;
-  background: white;
-}
-
-.feature-item {
-  background: #fef2f2;
-  border-radius: 16px;
-  padding: 2rem;
-  transition: all 0.3s ease;
-}
-
-.feature-item:hover {
-  transform: translateY(-5px);
-  background: white;
-  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.1);
-}
-
-.feature-icon {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #dc2626, #ef4444);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  color: white;
-  font-size: 1.2rem;
-}
-
 /* CTA SECTION */
 .cta-section {
   padding: 6rem 2rem;
-  background: linear-gradient(135deg, #dc2626, #ef4444);
+  background: linear-gradient(135deg, #dc2626, #f44336);
   color: white;
   text-align: center;
 }
@@ -551,9 +492,10 @@
 
 /* FOOTER */
 .footer {
-  background: linear-gradient(180deg, #111 0%, #1a1a1a 100%);
-  color: white;
+  background: #ffffff;
+  color: #000;
   padding: 4rem 2rem 2rem;
+  border-top: 1px solid rgba(220, 38, 38, 0.1);
 }
 
 .footer-content {
@@ -568,11 +510,11 @@
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: white;
+  color: #000;
 }
 
 .footer-tagline {
-  color: #999;
+  color: #000;
   margin: 1rem 0 1.5rem;
   line-height: 1.6;
   max-width: 300px;
@@ -584,7 +526,7 @@
 }
 
 .social-link {
-  color: #999;
+  color: #000;
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -595,7 +537,7 @@
 
 .footer-link {
   display: block;
-  color: #999;
+  color: #000;
   text-decoration: none;
   margin-bottom: 0.75rem;
   transition: all 0.3s ease;
@@ -603,12 +545,12 @@
 }
 
 .footer-link:hover {
-  color: white;
+  color: #dc2626;
   transform: translateX(5px);
 }
 
 .footer-bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(220, 38, 38, 0.1);
   padding-top: 2rem;
   display: flex;
   justify-content: space-between;
@@ -618,7 +560,7 @@
 }
 
 .footer-bottom p {
-  color: #999;
+  color: #000;
   font-size: 0.9rem;
 }
 
