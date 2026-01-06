@@ -83,7 +83,6 @@ html, body {
   flex-direction: column;
   justify-content: center;
   position: relative;
-  border-right: 1px solid rgba(220, 38, 38, 0.1); /* Subtle divider */
 }
 
 .login-hero-section::before {
@@ -146,6 +145,18 @@ html, body {
   box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
   transition: all 0.3s ease;
   position: relative;
+  animation: logoPulse 2s ease-in-out infinite; /* Added pulsing animation */
+}
+
+@keyframes logoPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+  }
 }
 
 .login-logo-icon::after {
@@ -169,6 +180,7 @@ html, body {
 .login-logo-icon:hover {
   transform: scale(1.1) rotate(360deg);
   box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+  animation: none; /* Pause pulse on hover */
 }
 
 .login-logo-text {
@@ -208,6 +220,16 @@ html, body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  animation: accentGlow 2s ease-in-out infinite alternate; /* Added glow animation */
+}
+
+@keyframes accentGlow {
+  from {
+    text-shadow: 0 0 5px rgba(220, 38, 38, 0.3);
+  }
+  to {
+    text-shadow: 0 0 15px rgba(220, 38, 38, 0.6);
+  }
 }
 
 .login-hero-description {
@@ -255,6 +277,19 @@ html, body {
   align-items: flex-start;
   gap: 12px;
   transition: transform 0.3s ease; /* Item hover */
+  animation: featureBounce 0.5s ease-out; /* Added bounce on load */
+}
+
+@keyframes featureBounce {
+  0% {
+    transform: translateY(10px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .login-feature-item:hover {
@@ -274,11 +309,22 @@ html, body {
   flex-shrink: 0;
   margin-top: 2px;
   transition: all 0.3s ease;
+  animation: iconSpin 1s ease-in-out infinite alternate; /* Added spin animation */
+}
+
+@keyframes iconSpin {
+  from {
+    transform: rotate(-5deg);
+  }
+  to {
+    transform: rotate(5deg);
+  }
 }
 
 .login-feature-item:hover .login-feature-icon {
   background: rgba(220, 38, 38, 0.4);
   transform: scale(1.1);
+  animation: none; /* Pause on hover */
 }
 
 .login-feature-text {
@@ -312,6 +358,18 @@ html, body {
   background: radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.06) 0%, transparent 50%);
   opacity: 0.5;
   z-index: 0;
+  animation: radialPulse 5s ease-in-out infinite; /* Added pulsing radial gradient */
+}
+
+@keyframes radialPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
 .login-auth-container {
@@ -348,6 +406,7 @@ html, body {
 
 .login-auth-title-accent {
   color: #dc2626;
+  animation: accentGlow 2s ease-in-out infinite alternate; /* Added glow */
 }
 
 .login-auth-subtitle {
@@ -362,13 +421,12 @@ html, body {
   opacity: 0.8;
 }
 
-/* White card wrapper: enhanced glass effect */
+/* White card wrapper: enhanced glass effect, removed border to avoid frame look */
 .login-signin-wrapper {
   width: 100%;
   padding: 24px 24px 20px;
   background: #ffffff;
   border-radius: 20px; /* Match container */
-  border: 1px solid rgba(220, 38, 38, 0.25);
   box-shadow: 
     0 18px 40px rgba(220, 38, 38, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Inner highlight */
@@ -428,6 +486,19 @@ html, body {
 .login-security-icon {
   font-size: 12px;
   color: #dc2626;
+  animation: lockShake 2s ease-in-out infinite; /* Added shake animation */
+}
+
+@keyframes lockShake {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
 }
 
 .login-clerk-badge {
@@ -475,8 +546,6 @@ html, body {
   .login-hero-section {
     padding: 40px 30px;
     min-height: auto;
-    border-right: none;
-    border-bottom: 1px solid rgba(220, 38, 38, 0.15);
   }
 
   .login-hero-title {
