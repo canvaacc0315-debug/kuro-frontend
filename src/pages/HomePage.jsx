@@ -158,7 +158,7 @@ export default function HomePage() {
               </div>
               <div className="stat-item">
                 <span className="stat-number">1k+</span>
-                <span className="stat-label">Documents</span>
+                <span className="stat-label">Documents Uploaded</span>
               </div>
             </div>
           </div>
