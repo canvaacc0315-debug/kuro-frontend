@@ -88,8 +88,7 @@ export default function SignUpPage() {
                 routing="path"
                 path="/sign-up"
                 signInUrl="/login"
-                afterSignUpUrl="/dashboard"
-                afterSignInUrl="/dashboard"
+                afterSignUpUrl="/"
                 appearance={{
                   elements: {
                     rootBox: { background: "transparent" },
