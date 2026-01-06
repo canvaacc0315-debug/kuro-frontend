@@ -250,7 +250,7 @@ export default function HomePage() {
           <div className="footer-section">
             <h4>Company</h4>
             <a href="#" className="footer-link">About</a>
-            <a href="#contact" className="footer-link">Contact</a>
+            <a href="https://rovexai.com/contact" className="footer-link">Contact</a>
           </div>
 
           <div className="footer-section">
