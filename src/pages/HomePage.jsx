@@ -165,7 +165,7 @@ export default function HomePage() {
           
           <div className="hero-image-container animate-fade-in">
             <img 
-              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/52610479-8cff-42ba-a59b-41559658dfb7.png"
               alt="AI PDF Analysis Interface" 
               className="hero-image"
             />
