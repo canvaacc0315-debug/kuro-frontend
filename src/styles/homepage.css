@@ -4,6 +4,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 :root {
   --primary-red: #e63946;
   --dark-red: #a4161a;
@@ -22,48 +23,58 @@
   --shadow-md: 0 8px 24px rgba(230, 57, 70, 0.12);
   --shadow-lg: 0 16px 40px rgba(230, 57, 70, 0.15);
 }
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   background: var(--off-white);
   color: var(--gray-900);
   overflow-x: hidden;
 }
+
 /* ANIMATIONS */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-10px); }
 }
+
 @keyframes bounceIn {
   0% { opacity: 0; transform: scale(0.9) translateY(10px); }
   50% { transform: scale(1.02); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
+
 @keyframes shimmerText {
   0% { background-position: -1000px 0; }
   100% { background-position: 1000px 0; }
 }
+
 @keyframes wobble {
   0%, 100% { transform: translateX(0); }
   25% { transform: translateX(-5px); }
   75% { transform: translateX(5px); }
 }
+
 @keyframes heartbeat {
   0%, 100% { transform: scale(1); }
   25% { transform: scale(1.1); }
   50% { transform: scale(1); }
 }
+
 @keyframes fadeInScale {
   from { opacity: 0; transform: scale(0.92); }
   to { opacity: 1; transform: scale(1); }
 }
+
 /* HEADER */
 .header {
   background: var(--white);
@@ -77,6 +88,7 @@ body {
   z-index: 100;
   box-shadow: var(--shadow-sm);
 }
+
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
@@ -88,9 +100,11 @@ body {
   cursor: pointer;
   transition: transform 0.3s ease;
 }
+
 .logo:hover {
   transform: scale(1.05);
 }
+
 .logo-icon {
   width: 28px;
   height: 28px;
@@ -98,11 +112,18 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+.logo-icon img {
+  width: 100%;
+  height: 100%;
+}
+
 .nav {
   display: flex;
   gap: 2rem;
   align-items: center;
 }
+
 .nav-link {
   color: var(--gray-700);
   text-decoration: none;
@@ -110,9 +131,11 @@ body {
   transition: color 0.3s ease;
   cursor: pointer;
 }
+
 .nav-link:hover {
   color: var(--primary-red);
 }
+
 .theme-toggle {
   background: transparent;
   border: none;
@@ -121,104 +144,133 @@ body {
   transition: transform 0.3s ease;
   padding: 0.5rem;
 }
+
 .theme-toggle:hover {
   transform: rotate(20deg);
 }
+
 /* DARK MODE */
 body.dark-mode {
   background: var(--dark-bg);
   color: var(--gray-100);
 }
+
 body.dark-mode .header {
   background: #1a1a2e;
   border-bottom-color: #2a2a4e;
 }
+
 body.dark-mode .logo {
   color: var(--light-red);
 }
+
 body.dark-mode .nav-link {
   color: var(--gray-400);
 }
+
 body.dark-mode .nav-link:hover {
   color: var(--light-red);
 }
+
 body.dark-mode .btn-secondary {
   border-color: var(--light-red);
   color: var(--light-red);
 }
+
 body.dark-mode .btn-secondary:hover {
   background: var(--light-red);
   color: var(--dark-bg);
 }
+
 body.dark-mode .hero {
   background: linear-gradient(135deg, #1a1a2e 0%, rgba(230, 57, 70, 0.08) 100%);
 }
+
 body.dark-mode .hero h1 {
   background: linear-gradient(135deg, var(--light-red), var(--primary-red));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
 body.dark-mode .hero p {
   color: var(--gray-300);
 }
+
 body.dark-mode .features h2 {
   color: var(--gray-100);
 }
+
 body.dark-mode .feature-card {
   background: #1a1a2e;
   border-color: #2a2a4e;
 }
+
 body.dark-mode .feature-card:hover {
   border-color: var(--light-red);
   background: #252540;
 }
+
 body.dark-mode .feature-card h3 {
   color: var(--gray-100);
 }
+
 body.dark-mode .feature-card p {
   color: var(--gray-400);
 }
+
 body.dark-mode .how-it-works {
   background: linear-gradient(135deg, rgba(230, 57, 70, 0.08) 0%, #1a1a2e 100%);
 }
+
 body.dark-mode .how-it-works h2 {
   color: var(--gray-100);
 }
+
 body.dark-mode .how-it-works-description {
   color: var(--gray-400) !important;
 }
+
 body.dark-mode .step {
   background: #1a1a2e;
   border-color: #2a2a4e;
 }
+
 body.dark-mode .step:hover {
   border-color: var(--light-red);
   background: #252540;
 }
+
 body.dark-mode .step h3 {
   color: var(--gray-100);
 }
+
 body.dark-mode .step p {
   color: var(--gray-400);
 }
+
 body.dark-mode .footer {
   background: #0f0f1e;
   border-top: 1px solid #2a2a4e;
 }
+
 body.dark-mode .footer-section h4 {
   color: var(--light-red);
 }
+
 body.dark-mode .footer-link {
   color: rgba(255, 255, 255, 0.5);
 }
+
 body.dark-mode .footer-link:hover {
   color: var(--light-red);
 }
+
 body.dark-mode .footer-bottom {
   border-top-color: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.5);
 }
+
 /* BUTTONS */
 .btn {
   padding: 0.75rem 1.5rem;
@@ -229,25 +281,30 @@ body.dark-mode .footer-bottom {
   transition: all 0.3s ease;
   font-size: 0.95rem;
 }
+
 .btn-primary {
   background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
   color: white;
   box-shadow: var(--shadow-sm);
 }
+
 .btn-primary:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
   animation: wobble 0.4s ease-out;
 }
+
 .btn-secondary {
   background: transparent;
   color: var(--primary-red);
   border: 2px solid var(--primary-red);
 }
+
 .btn-secondary:hover {
   background: var(--primary-red);
   color: white;
 }
+
 /* HERO SECTION */
 .hero {
   min-height: 90vh;
@@ -259,6 +316,7 @@ body.dark-mode .footer-bottom {
   position: relative;
   overflow: hidden;
 }
+
 .hero::before {
   content: '';
   position: absolute;
@@ -270,6 +328,7 @@ body.dark-mode .footer-bottom {
   border-radius: 50%;
   pointer-events: none;
 }
+
 .hero::after {
   content: '';
   position: absolute;
@@ -281,6 +340,7 @@ body.dark-mode .footer-bottom {
   border-radius: 50%;
   pointer-events: none;
 }
+
 .hero-content {
   max-width: 800px;
   text-align: center;
@@ -288,6 +348,7 @@ body.dark-mode .footer-bottom {
   z-index: 1;
   animation: slideUp 0.8s ease-out;
 }
+
 .hero h1 {
   font-size: 3.5rem;
   font-weight: 800;
@@ -300,12 +361,14 @@ body.dark-mode .footer-bottom {
   animation: slideUp 0.8s ease-out, shimmerText 3s ease-in-out infinite;
   background-size: 200% 100%;
 }
+
 .hero p {
   font-size: 1.25rem;
   color: var(--gray-700);
   margin-bottom: 2rem;
   line-height: 1.6;
 }
+
 .hero-buttons {
   display: flex;
   gap: 1rem;
@@ -313,26 +376,31 @@ body.dark-mode .footer-bottom {
   flex-wrap: wrap;
   animation: slideUp 1s ease-out;
 }
+
 .hero-buttons .btn {
   padding: 1rem 2rem;
   font-size: 1rem;
 }
+
 /* FEATURE CARDS */
 .features {
   padding: 4rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
+
 .features h2 {
   font-size: 2.5rem;
   margin-bottom: 3rem;
   text-align: center;
 }
+
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 2rem;
 }
+
 .feature-card {
   background: white;
   padding: 2rem;
@@ -345,12 +413,14 @@ body.dark-mode .footer-bottom {
   position: relative;
   overflow: hidden;
 }
+
 .feature-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
   border-color: var(--primary-red);
   animation: heartbeat 0.6s ease-out;
 }
+
 .feature-icon {
   width: 48px;
   height: 48px;
@@ -365,19 +435,23 @@ body.dark-mode .footer-bottom {
   transition: transform 0.3s ease;
   animation: bounceIn 0.5s ease-out;
 }
+
 .feature-card:hover .feature-icon {
   transform: scale(1.2) rotate(5deg);
 }
+
 .feature-card h3 {
   font-size: 1.25rem;
   margin-bottom: 0.5rem;
   color: var(--gray-900);
 }
+
 .feature-card p {
   color: var(--gray-500);
   line-height: 1.6;
   margin: 0;
 }
+
 /* HOW IT WORKS */
 .how-it-works {
   padding: 4rem 2rem;
@@ -385,6 +459,7 @@ body.dark-mode .footer-bottom {
   position: relative;
   overflow: hidden;
 }
+
 .how-it-works::before {
   content: '';
   position: absolute;
@@ -396,18 +471,21 @@ body.dark-mode .footer-bottom {
   border-radius: 50%;
   pointer-events: none;
 }
+
 .how-it-works-content {
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
   z-index: 1;
 }
+
 .how-it-works h2 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
   text-align: center;
   color: var(--gray-900);
 }
+
 .how-it-works-description {
   color: var(--gray-500);
   margin-bottom: 3rem;
@@ -416,12 +494,14 @@ body.dark-mode .footer-bottom {
   margin-left: auto;
   margin-right: auto;
 }
+
 .steps-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   margin: 3rem 0;
 }
+
 .step {
   background: white;
   padding: 2rem;
@@ -433,11 +513,13 @@ body.dark-mode .footer-bottom {
   transition: all 0.3s ease;
   border: 1px solid transparent;
 }
+
 .step:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
   border-color: var(--primary-red);
 }
+
 .step-number {
   position: absolute;
   top: -15px;
@@ -455,21 +537,25 @@ body.dark-mode .footer-bottom {
   font-size: 1.25rem;
   box-shadow: var(--shadow-md);
 }
+
 .step-icon {
   font-size: 3rem;
   margin: 1rem 0;
   animation: float 3s ease-in-out infinite;
 }
+
 .step h3 {
   font-size: 1.25rem;
   margin: 1rem 0;
   color: var(--gray-900);
 }
+
 .step p {
   color: var(--gray-500);
   line-height: 1.6;
   margin: 0;
 }
+
 /* FOOTER */
 .footer {
   background: var(--gray-900);
@@ -477,6 +563,7 @@ body.dark-mode .footer-bottom {
   padding: 3rem 2rem;
   margin-top: 4rem;
 }
+
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -485,10 +572,12 @@ body.dark-mode .footer-bottom {
   gap: 2rem;
   margin-bottom: 2rem;
 }
+
 .footer-section h4 {
   margin-bottom: 1rem;
   color: var(--primary-red);
 }
+
 .footer-link {
   color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
@@ -497,60 +586,76 @@ body.dark-mode .footer-bottom {
   display: block;
   margin-bottom: 0.5rem;
 }
+
 .footer-link:hover {
   color: var(--primary-red);
 }
+
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 2rem;
   text-align: center;
   color: rgba(255, 255, 255, 0.7);
 }
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2.25rem;
   }
+
   .hero p {
     font-size: 1rem;
   }
+
   .feature-grid {
     grid-template-columns: 1fr;
   }
+
   .hero-buttons {
     flex-direction: column;
   }
+
   .hero-buttons .btn {
     width: 100%;
   }
+
   .nav {
     gap: 1rem;
   }
 }
+
 @media (max-width: 480px) {
   .header {
     padding: 1rem;
   }
+
   .logo {
     font-size: 1.25rem;
   }
+
   .nav {
     gap: 0.5rem;
   }
+
   .btn {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
   }
+
   .hero {
     min-height: 70vh;
     padding: 2rem 1rem;
   }
+
   .hero h1 {
     font-size: 1.75rem;
   }
+
   .how-it-works h2 {
     font-size: 1.75rem;
   }
+
   .steps-container {
     grid-template-columns: 1fr;
   }
