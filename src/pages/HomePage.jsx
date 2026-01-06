@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import "./styles/homepage.css";
+import "../styles/homepage.css";
 
 export default function HomePage() {
   const navigate = useNavigate();
