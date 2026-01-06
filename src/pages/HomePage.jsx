@@ -93,7 +93,7 @@ export default function HomePage() {
         <nav className="nav">
           <a href="#features" className="nav-link">Features</a>
           <a href="#how-it-works" className="nav-link">How it Works</a>
-          <a href="#contact" className="nav-link">Contact</a>
+          <a href="https://rovexai.com/contact" className="nav-link">Contact</a>
 
           <SignedOut>
             <button onClick={() => navigate("/login")} className="btn-outline">
