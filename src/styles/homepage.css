@@ -18,20 +18,20 @@
 }
 
 .dark-mode {
-  --primary: #ef5350;
-  --primary-hover: #e53935;
-  --secondary: #6c757d;
-  --secondary-hover: #5a6268;
-  --background: #303f9f;
+  --primary: #ff0400;
+  --primary-hover: #ff0400;
+  --secondary: #ffffff;
+  --secondary-hover: #ffffff;
+  --background: #ffffff;
   --text: #f5f5f5;
   --gray-600: #bbbbbb;
-  --border: #424242;
-  --card-bg: #3f51b5;
-  --shadow: rgba(0, 0, 0, 0.2);
-  --footer-bg: #1a237e;
+  --border: #ffffff;
+  --card-bg: #ffffff;
+  --shadow: rgb(255, 255, 255);
+  --footer-bg: #ffffff;
   --footer-text: #ffffff;
-  --accent: #bb86fc;
-  --blob-color: rgba(156, 39, 176, 0.2);
+  --accent: #ff0000;
+  --blob-color: rgb(255, 255, 255);
 }
 
 body {
@@ -324,7 +324,7 @@ body {
 
 .footer-link {
   display: block;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgb(255, 255, 255);
   text-decoration: none;
   margin-bottom: 0.5rem;
   transition: color 0.3s;
@@ -337,7 +337,7 @@ body {
 
 .footer-bottom {
   text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgb(255, 255, 255);
   padding-top: 1.5rem;
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.875rem;
