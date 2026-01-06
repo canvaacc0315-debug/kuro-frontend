@@ -224,7 +224,7 @@
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #ffffff, #fef2f2);
+  background: transparent; /* Changed to transparent for better visibility/contrast */
   border: 2px solid #dc2626;
   color: #dc2626;
   padding: 0.8rem 1.8rem;
@@ -235,10 +235,12 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 2px 10px rgba(220, 38, 38, 0.1); /* Added subtle shadow for depth */
+  opacity: 1; /* Ensure full opacity */
 }
 
 .btn-secondary:hover {
-  background: linear-gradient(135deg, #fef2f2, #fff5f5);
+  background: rgba(220, 38, 38, 0.1); /* Light red tint on hover for feedback */
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(220, 38, 38, 0.2);
 }
@@ -300,9 +302,14 @@
 }
 
 .hero-actions {
-  display: flex;
+  display: inline-flex; /* Changed to inline-flex to allow side-by-side positioning */
   gap: 1rem;
-  margin-top: 1.5rem; /* Reduced slightly to fix positioning/space issues */
+  margin-top: 1.5rem;
+}
+
+.hero-actions + .hero-actions { /* Targets the second .hero-actions div for spacing */
+  margin-left: 1rem;
+  margin-top: 0;
 }
 
 .hero-stats {
@@ -533,7 +540,7 @@
 .footer {
   background: #000;
   color: #fff;
-  padding:  0.8rem 1.5rem 0.5rem;
+  padding: 0.8rem 1.5rem 0.5rem; /* Fixed extra space */
   border-top: 1px solid rgba(220, 38, 38, 0.1);
 }
 
@@ -544,6 +551,7 @@
   max-width: 1200px;
   margin: 0 auto 1.5rem;
 }
+
 .footer-ai {
   color: #ffffff;
   -webkit-text-fill-color: #ffffff;
@@ -655,9 +663,13 @@
   }
   
   .hero-actions {
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem; /* Increased gap for better spacing when stacked */
+    display: block; /* Stack vertically on small screens */
+    text-align: center; /* Center the buttons */
+  }
+  
+  .hero-actions + .hero-actions {
+    margin-left: 0;
+    margin-top: 1.5rem; /* Spacing between stacked buttons */
   }
   
   .btn-primary, .btn-outline, .btn-secondary {
