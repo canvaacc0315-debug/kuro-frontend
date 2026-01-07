@@ -217,7 +217,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* footer */}
+      {/* FOOTER */}
       <footer className="footer">
         <div className="footer-content">
           <div className="footer-section">
