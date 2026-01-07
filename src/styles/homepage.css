@@ -667,3 +667,80 @@
     text-align: center;
   }
 }
+/* ================================
+   🔥 FEATURE CARD GREY FIX (FINAL)
+   ================================ */
+
+/* Force feature cards to stay visible */
+.feature-card {
+  opacity: 1 !important;
+  filter: none !important;
+  background-color: #ffffff !important;
+  box-shadow: none !important;
+}
+
+/* Kill overlay layers */
+.feature-card::before,
+.feature-card::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Prevent animation classes from fading feature cards */
+.feature-card.animate-fade-up,
+.feature-card.animate-fade-in,
+.feature-card.animate-scale-in {
+  opacity: 1 !important;
+  animation: none !important;
+  transform: none !important;
+}
+
+/* Safe hover (no grey flash) */
+.feature-card:hover {
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+/* ================================
+   ✅ SAFE ANIMATIONS (NO OPACITY BUG)
+   ================================ */
+
+.animate-fade-up {
+  animation: fadeInUpSafe 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeInSafe 0.8s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scaleInSafe 0.5s ease-out forwards;
+}
+
+@keyframes fadeInUpSafe {
+  from {
+    transform: translateY(30px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInSafe {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleInSafe {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
