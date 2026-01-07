@@ -5,6 +5,10 @@
   color: #000;
   min-height: 100vh;
   overflow-x: hidden;
+
+  /* 🔑 KEY FIX */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Animations */
