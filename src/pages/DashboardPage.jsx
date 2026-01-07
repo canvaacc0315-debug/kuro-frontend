@@ -1,255 +1,164 @@
-// src/pages/DashboardPage.jsx
-import { useUser, UserButton } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
-import "../styles/kuro-dashboard.css";
-import { useClerk } from "@clerk/clerk-react";
-import KuroLogo from "../components/layout/KuroLogo.jsx";
-import "../styles/no-scrollbar-override.css";
+import { motion } from "framer-motion";
+import "../styles/grid-fix.css";
 
+export default function DashboardPanel({ pdfs }) {
+  const totalPdfs = pdfs.length;
 
-export default function DashboardPage() {
-  const { user } = useUser();
-  const navigate = useNavigate();
-  const { openUserProfile } = useClerk();
-
-  const displayName =
-    user?.fullName ||
-    user?.firstName ||
-    user?.username ||
-    user?.primaryEmailAddress?.emailAddress ||
-    "User";
+  // For now these are placeholders; you can wire them to real values later
+  const totalQueries = 0;
+  const totalNotes = 0;
 
   return (
     <div className="kuro-dashboard-page">
-      {/* ===== NAVBAR / HEADER ===== */}
-      <header className="navbar">
-        {/* LEFT: logo + brand text (same pattern as workspace page) */}
-        <div className="navbar-brand">
-          <KuroLogo size={36} />
-          <div className="navbar-brand-text">RovexAI</div>
-        </div>
-
-        {/* RIGHT: user info (unchanged) */}
-        <div className="navbar-right">
-          <div className="user-info">
-            <div className="user-name">{displayName}</div>
-          </div>
-          <UserButton afterSignOutUrl="/login" />
-        </div>
-      </header>
-
-      {/* ===== MAIN CONTENT ===== */}
-      <main className="main-container">
-        {/* HERO */}
-        <section className="hero-banner">
-          <h1 className="hero-title">
-            Welcome to <span className="hero-title-accent">RovexAI</span>
-          </h1>
+      <div className="main-container">
+        <div className="hero-banner">
+          <h1 className="hero-title">Welcome to <span className="hero-title-accent">PDF Genie</span></h1>
           <p className="hero-subtitle">
-            RovexAI is an advanced AI‑powered document intelligence platform designed
-            to transform how users interact with PDFs. Instead of manually reading,
-            searching, or extracting information, RovexAI allows users to chat with
-            documents, generate summaries, and uncover insights instantly.
+            PDF Genie is your all-in-one solution for effortless document management powered by advanced AI. Upload, organize, and interact with your PDFs in a smart way. Say goodbye to manual searching and hello to instant insights and seamless document experiences.
           </p>
-        </section>
-
-        {/* WORKSPACE SECTION */}
-        <section className="section-header">
-          <h2 className="section-title">
-            Choose Your <span className="section-title-accent">Workspace</span>
-          </h2>
-          <p className="section-subtitle">
-            Select a workspace to get started with your PDF tasks
-          </p>
-        </section>
-
-        <section className="workspace-grid">
-          {/* PDF Chat */}
-          <div className="workspace-card">
-            <div className="workspace-icon">💬</div>
-            <h3 className="workspace-name">PDF Chat</h3>
-            <p className="workspace-description">
-              Interact with your PDFs using natural language. Ask questions,
-              extract information, and get instant answers.
-            </p>
-            <ul className="workspace-features">
-              <li>Smart Q&amp;A Engine</li>
-              <li>Context Understanding</li>
-              <li>Real-time Responses</li>
-            </ul>
-            <button
-              className="workspace-btn"
-              onClick={() => navigate("/app?tab=chat")}
-            >
-              Enter Workspace
-            </button>
+          <div className="hero-illustration">
+            {/* Replace with your own image asset */}
+            <img
+              src="https://www.shutterstock.com/image-illustration/3d-graphics-ai-robot-character-260nw-2595088299.jpg"
+              alt="AI Robot Assistant"
+              className="illustration-image"
+            />
           </div>
+        </div>
 
-          {/* Analysis */}
+        <div className="section-header">
+          <h2 className="section-title">Choose Your Workspace</h2>
+          <p className="section-subtitle">Select a workspace to jump-start your tasks.</p>
+        </div>
+
+        <div className="workspace-grid">
+          <div className="workspace-card">
+            <div className="workspace-icon">📄</div>
+            <h3 className="workspace-name">PDF Chat</h3>
+            <p className="workspace-description">Chat directly with your PDFs. Ask questions and get instant answers.</p>
+          </div>
           <div className="workspace-card">
             <div className="workspace-icon">📊</div>
             <h3 className="workspace-name">Analysis</h3>
-            <p className="workspace-description">
-              Deep dive into your PDF content. Extract data, generate insights,
-              and visualize information beautifully.
-            </p>
-            <ul className="workspace-features">
-              <li>Data Extraction</li>
-              <li>Advanced Insights</li>
-              <li>Report Generation</li>
-            </ul>
-            <button
-              className="workspace-btn"
-              onClick={() => navigate("/app?tab=analysis")}
-            >
-              Enter Workspace
-            </button>
+            <p className="workspace-description">Gain insights and evaluate critical information from your PDFs.</p>
           </div>
-
-          {/* Upload & Organize */}
           <div className="workspace-card">
-            <div className="workspace-icon">⬆️</div>
-            <h3 className="workspace-name">Upload &amp; Organize</h3>
-            <p className="workspace-description">
-              Manage all your PDF documents in one place. Upload, organize, and
-              maintain your document library efficiently.
-            </p>
-            <ul className="workspace-features">
-              <li>Bulk Upload</li>
-              <li>Smart Organization</li>
-              <li>Version Control</li>
-            </ul>
-            <button
-              className="workspace-btn"
-              onClick={() => navigate("/app?tab=upload")}
-            >
-              Enter Workspace
-            </button>
+            <div className="workspace-icon">📁</div>
+            <h3 className="workspace-name">Upload & Organize</h3>
+            <p className="workspace-description">Manage all your PDFs in one place. Organize into easy, fast, efficient way.</p>
+            <p className="workspace-stats">Total PDFs: {totalPdfs}</p>
           </div>
-
-          {/* Create & Edit */}
           <div className="workspace-card">
             <div className="workspace-icon">✏️</div>
-            <h3 className="workspace-name">Create &amp; Edit</h3>
-            <p className="workspace-description">
-              Design and edit PDFs with Canva-like simplicity. Professional
-              templates and easy tools.
-            </p>
-            <ul className="workspace-features">
-              <li>Simple Editor</li>
-              <li>Add Text & Images</li>
-              <li>Custom PDFs</li>
-            </ul>
-            <button
-              className="workspace-btn"
-              onClick={() => navigate("/app?tab=create")}
-            >
-              Enter Workspace
-            </button>
+            <h3 className="workspace-name">Create & Edit</h3>
+            <p className="workspace-description">From summaries, notes and content. Quick, easy, edit, aid notes.</p>
           </div>
-
-          {/* OCR */}
           <div className="workspace-card">
             <div className="workspace-icon">🔍</div>
-            <h3 className="workspace-name">OCR &amp; Recognition</h3>
-            <p className="workspace-description">
-              Convert scanned documents to editable text and extract data from complex layouts.
-            </p>
-            <ul className="workspace-features">
-              <li>Text Recognition</li>
-              <li>Layout Detection</li>
-              <li>Batch Processing</li>
-            </ul>
-            <button
-              className="workspace-btn"
-              onClick={() => navigate("/app?tab=ocr")}
-            >
-              Enter Workspace
-            </button>
+            <h3 className="workspace-name">OCR & Extraction</h3>
+            <p className="workspace-description">Extract text and info data from scanned PDF documents.</p>
           </div>
-
-          {/* Settings (optional placeholder) */}
           <div className="workspace-card">
-            <div className="workspace-icon">⚙️</div>
-            <h3 className="workspace-name">Settings</h3>
-            <p className="workspace-description">
-              Manage your account, preferences, and integrations for a
-              personalized experience.
-            </p>
-            <ul className="workspace-features">
-              <li>Account Management</li>
-              <li>Security Settings</li>
-              <li>Update Profile</li>
+            <div className="workspace-icon">🤖</div>
+            <h3 className="workspace-name">AI Tools</h3>
+            <p className="workspace-description">AI Writer • NF Settox • AI Detector • AI to Humanizer</p>
+          </div>
+        </div>
+
+        {/* Retained and integrated your original recent PDFs and next upgrades as panels below workspaces */}
+        <div className="grid gap-4 md:grid-cols-2 mt-8">
+          <PanelBlock title="Most recent PDFs">
+            {pdfs.length === 0 ? (
+              <p className="text-[11px] text-inkSoft/75">Upload a PDF to see it appear here.</p>
+            ) : (
+              <ul className="space-y-1">
+                {pdfs
+                  .slice()
+                  .reverse()
+                  .slice(0, 5)
+                  .map((pdf) => (
+                    <li key={pdf.pdf_id} className="flex items-center justify-between gap-2">
+                      <span className="truncate">{pdf.filename}</span>
+                      <span className="text-[9px] text-inkSoft/70 uppercase tracking-[0.16em]">
+                        {pdf.pdf_id.slice(0, 6)}
+                      </span>
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </PanelBlock>
+
+          <PanelBlock title="Next upgrades">
+            <ul className="list-disc list-inside space-y-1 text-[11px] text-inkSoft">
+              <li>Persist queries & notes in a real database.</li>
+              <li>Add plan limits (Free vs Pro) based on usage.</li>
+              <li>Visual charts of daily activity (Recharts).</li>
+              <li>Team workspaces & shared PDFs.</li>
             </ul>
-            <button
-              type="button"
-              className="workspace-btn"
-              onClick={() => openUserProfile()}
-            >
-              OPEN SETTINGS
-            </button>
+          </PanelBlock>
+        </div>
+
+        <div className="section-header mt-12">
+          <h2 className="section-title">Why Choose PDF Genie?</h2>
+        </div>
+
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon">🛡️</div>
+            <h3 className="feature-title">Military-Grade Security</h3>
+            <p className="feature-desc">Your data is safe with our top-tier privacy.</p>
           </div>
-        </section>
-
-        {/* ===== FEATURES SECTION ===== */}
-        <section className="features-section">
-          <div className="section-header">
-            <h2 className="section-title">
-              Why Choose <span className="section-title-accent">RovexAI</span>?
-            </h2>
+          <div className="feature-card">
+            <div className="feature-icon">⚡</div>
+            <h3 className="feature-title">Lightning Fast</h3>
+            <p className="feature-desc">AI engine that delivers accurate results at valuable time.</p>
           </div>
-
-          <div className="features-grid">
-            <div className="feature-card">
-              <h3 className="feature-title">🛡️ Military-Grade Security</h3>
-              <p className="feature-desc">
-                Your documents are encrypted and protected with industry‑leading
-                security standards.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">⚡ Lightning Fast</h3>
-              <p className="feature-desc">
-                Process and analyze documents in milliseconds with our optimized
-                infrastructure.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">🤖 AI Powered</h3>
-              <p className="feature-desc">
-                Advanced machine learning algorithms understand context and
-                provide intelligent solutions.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">📱 Fully Responsive</h3>
-              <p className="feature-desc">
-                Access RovexAI from any device. Work seamlessly on desktop,
-                tablet, or mobile.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">🔗 API Integration</h3>
-              <p className="feature-desc">
-                Integrate RovexAI into your workflows with our REST API and
-                webhooks.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">🎯 Precision Accuracy</h3>
-              <p className="feature-desc">
-                Industry‑leading accuracy for text recognition, data extraction,
-                and analysis.
-              </p>
-            </div>
+          <div className="feature-card">
+            <div className="feature-icon">🤖</div>
+            <h3 className="feature-title">AI Powered</h3>
+            <p className="feature-desc">Experience the most robust AI technology powering all your document needs.</p>
           </div>
-        </section>
-      </main>
+          <div className="feature-card">
+            <div className="feature-icon">📱</div>
+            <h3 className="feature-title">Fully Responsive</h3>
+            <p className="feature-desc">All flow that net the, wipechange to your seamless productivity any seeds.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">🔌</div>
+            <h3 className="feature-title">API Integration</h3>
+            <p className="feature-desc">Teethnaey integrate free into your workflows with our powerful API suppe sence.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">🎯</div>
+            <h3 className="feature-title">Precise Accuracy</h3>
+            <p className="feature-desc">Un eesAI's attem ping gather, emprecising precision and accuracy in extracting insights from your documents meeds.</p>
+          </div>
+        </div>
+      </div>
+
+      <footer className="footer">
+        <div className="footer-logo">PDF Genie</div>
+        <nav className="footer-nav">
+          <a href="#">Product</a>
+          <a href="#">Pricing</a>
+          <a href="#">Company</a>
+          <a href="#">Legal</a>
+        </nav>
+        <p>© 2025 PDF Genie. All rights reserved.</p>
+      </footer>
     </div>
+  );
+}
+
+function PanelBlock({ title, children }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-xl2 border border-stroke bg-panelSoft/80 px-4 py-3 shadow-subtle/40 h-full"
+    >
+      <div className="text-[11px] text-inkSoft uppercase tracking-[0.18em] mb-3">{title}</div>
+      <div className="text-[11px]">{children}</div>
+    </motion.div>
   );
 }
