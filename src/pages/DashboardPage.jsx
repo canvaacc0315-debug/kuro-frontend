@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/kuro-dashboard.css";
 import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
+import { useRef, useEffect } from "react";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -16,6 +17,32 @@ export default function DashboardPage() {
     user?.username ||
     user?.primaryEmailAddress?.emailAddress ||
     "User";
+
+  const footerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+
+    return () => {
+      if (footerRef.current) {
+        observer.unobserve(footerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="kuro-dashboard-page">
@@ -253,7 +280,7 @@ export default function DashboardPage() {
       </main>
 
       {/* ===== FOOTER ===== */}
-      <footer className="footer">
+      <footer className="footer" ref={footerRef}>
         <div className="footer-grid">
           <div className="footer-column">
             <h4 className="footer-title">RovexAI</h4>
