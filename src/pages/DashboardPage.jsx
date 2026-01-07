@@ -271,12 +271,6 @@ export default function DashboardPage() {
               Transforming how you work with documents through AI
             </p>
           </div>
-          {/* PRODUCT */}
-          <div className="footer-section">
-            <h4>Product</h4>
-            <a href="#features" className="footer-link">Features</a>
-            <a href="#how-it-works" className="footer-link">Working</a>
-          </div>
           {/* COMPANY */}
           <div className="footer-section">
             <h4>Company</h4>
