@@ -19,16 +19,16 @@ export default function DashboardPage() {
 
   return (
     <div className="kuro-dashboard-page">
-      {/* ===== NAVBAR ===== */}
-      <header className="navbar">
-        <div className="navbar-brand">
+      {/* ===== header ===== */}
+      <header className="header">
+        <div className="header-brand">
           <KuroLogo size={36} />
           <span className="logo-text">
             <span className="logo-red">Rovex</span>
             <span className="logo-ai">AI</span>
           </span>
         </div>
-        <nav className="navbar-links">
+        <nav className="header-links">
           <a href="/homepage" className="nav-link">Home</a>
           <a href="/app" className="nav-link">Workspace</a>
           <a href="https://rovexai.com/contact" className="nav-link">Help</a>

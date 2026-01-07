@@ -10,7 +10,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Account for sticky navbar */
+  scroll-padding-top: 80px; /* Account for sticky header */
 }
 
 /* ===========================
@@ -64,27 +64,27 @@ body {
     transform: translateY(0);
   }
 }
-.navbar {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 2rem;
-  background: #000;
+  background: #000000;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(220, 38, 38, 0.1);
+  border-bottom: 1px solid rgb(255, 0, 0);
   position: sticky;
   top: 0;
   z-index: 1000;
   transition: all 0.3s ease;
 }
 
-.navbar.scrolled {
+.header.scrolled {
   padding: 0.8rem 2rem;
-  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.1);
-  background: #000;
+  box-shadow: 0 4px 20px rgb(0, 0, 0);
+  background: #000000cc;
 }
 
-.navbar-brand {
+.header-brand {
   display: flex;
   align-items: center;
   gap: 0.75rem;
@@ -94,11 +94,11 @@ body {
   transition: transform 0.3s ease;
 }
 
-.navbar-brand:hover {
+.header-brand:hover {
   transform: scale(1.05);
 }
 
-.navbar-brand-text {
+.header-brand-text {
   font-weight: 800;
   background: linear-gradient(135deg, #000, #000);
   -webkit-background-clip: text;
@@ -116,7 +116,7 @@ body {
   -webkit-text-fill-color: #ffffff;
 }
 
-.navbar-links {
+.header-links {
   display: flex;
   gap: 2rem;
   align-items: center;
@@ -488,7 +488,7 @@ body {
     font-size: 36px;
   }
 
-  .navbar {
+  .header {
     padding: 20px 60px;
   }
 }
@@ -516,7 +516,7 @@ body {
     padding: 60px 40px;
   }
 
-  .navbar {
+  .header {
     padding: 20px 40px;
   }
 }
@@ -564,11 +564,11 @@ body {
   }
 
 
-  .navbar {
+  .header {
     padding: 20px 20px;
   }
 
-  .navbar-links {
+  .header-links {
     gap: 1rem;
   }
 }
@@ -633,13 +633,13 @@ body {
   .feature-desc {
     font-size: 14px;
   }
-  .navbar {
+  .header {
     padding: 16px;
     flex-direction: column;
     gap: 16px;
   }
 
-  .navbar-links {
+  .header-links {
     flex-wrap: wrap;
     justify-content: center;
     gap: 1rem;
@@ -708,7 +708,7 @@ body {
     border-color: #000000;
   }
 
-  .navbar,
+  .header,
   .footer {
     border: 2px solid #ffffff;
   }
