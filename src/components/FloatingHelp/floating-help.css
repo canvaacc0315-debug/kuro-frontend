@@ -10,7 +10,7 @@
 /* Floating Button - Black theme with enhanced animations */
 .floating-help-btn {
   position: fixed;
-  bottom: 75px; /* Moved up to avoid footer */
+  bottom: 60px; /* Moved up to avoid footer */
   right: 20px;
   width: 60px;
   height: 60px;

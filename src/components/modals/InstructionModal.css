@@ -196,7 +196,7 @@
 /* Highlight: More prominent pink/red with extra flair */
 .features-list .highlight {
   background: linear-gradient(90deg, rgba(244, 114, 182, 0.2), rgba(239, 68, 68, 0.15));
-  border-left: 4px solid #f472b6;
+  border-left: 4px solid #ff0000;
   margin: 12px 0;
   font-weight: 500;
   animation-delay: 1s; /* Extra delay for highlight */
@@ -219,7 +219,7 @@
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #ef4444, #f472b6); /* Red-to-pink gradient */
+  background: linear-gradient(135deg, #ef4444, #ff0000); /* Red-to-pink gradient */
   color: #ffffff;
   border: none;
   padding: 14px 28px;
@@ -230,7 +230,7 @@
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   width: 100%;
   max-width: 220px;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 12px rgb(255, 255, 255);
   position: relative;
   overflow: hidden; /* For shine effect if added later */
 }
@@ -251,19 +251,19 @@
 }
 
 .primary-btn:hover {
-  background: linear-gradient(135deg, #dc2626, #ec4899);
+  background: linear-gradient(135deg, #dc2626, #ff0000);
   transform: translateY(-2px) scale(1.05); /* Stronger lift and slight scale */
-  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 8px 20px rgb(255, 0, 0);
 }
 
 .primary-btn:focus-visible {
-  outline: 2px solid rgba(239, 68, 68, 0.5);
+  outline: 2px solid rgb(255, 0, 0);
   outline-offset: 2px;
 }
 
 .primary-btn:active {
   transform: translateY(0); /* Press back down */
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 2px 8px rgb(255, 0, 0);
 }
 
 /* Enhanced Animations */
