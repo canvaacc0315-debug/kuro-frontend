@@ -428,61 +428,30 @@
   border-bottom: 5px solid #dc2626;
 }
 
-/* FEATURES - Red Cards */
-.features {
-  padding: 6rem 2rem;
-  background: linear-gradient(180deg, #ffffff 0%, #fef2f2 100%);
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .feature-card {
-  background: white;
+  background: #ffffff;
   border-radius: 20px;
   padding: 2.5rem;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
+
+  /* REMOVE GREY SHADOW */
+  box-shadow: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+
+  transition: transform 0.3s ease;
 }
 
 .feature-card:hover {
   transform: translateY(-10px);
+
+  /* KEEP CLEAN ON HOVER */
+  box-shadow: none !important;
   background: #ffffff;
   border-bottom: 5px solid #dc2626;
 }
 
-.feature-icon-red {
-  width: 64px;
-  height: 64px;
-  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.1));
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  color: #dc2626;
-  font-size: 1.5rem;
-}
-
-.feature-card h3 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #000;
-}
-
-.feature-card p {
-  color: #000;
-  line-height: 1.6;
-  margin: 0;
-  font-size: 0.95rem;
-}
 
 /* CTA SECTION */
 .cta-section {
