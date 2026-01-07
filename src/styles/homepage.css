@@ -421,9 +421,10 @@
 }
 
 .step-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-10px) scale(1.05);
   box-shadow: 0 20px 40px rgba(220, 38, 38, 0.15);
   border-bottom: 5px solid #dc2626;
+  animation: glow 1.5s infinite alternate;
 }
 
 /* FEATURES - Red Cards */
@@ -450,9 +451,10 @@
 }
 
 .feature-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-10px) scale(1.05);
   background: #ffffff;
   border-bottom: 5px solid #dc2626;
+  animation: glow 1.5s infinite alternate;
 }
 
 .feature-icon-red {
