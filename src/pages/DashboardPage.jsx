@@ -15,8 +15,9 @@ export default function DashboardPanel({ pdfs = [] }) {
         <div className="hero-banner">
           <h1 className="hero-title">Welcome to <span className="hero-title-accent">PDF Genie</span></h1>
           <p className="hero-subtitle">
-            PDF Genie is your all-in-one solution for effortless document management powered by advanced AI. Upload, organize, and interact with your PDFs in a smart way. Say goodbye to manual searching and hello to instant insights and seamless document experiences.
+            PDF Genie is your all-in-one solution for effortless document management powered by advanced AI. Upload, organize, and interact with your PDFs like never before. Say goodbye to manual searching and hello to instant answers, smart analysis, and seamless document experiences.
           </p>
+          <button className="workspace-btn">Upload PDF</button>
           <div className="hero-illustration">
             {/* Replace with your own image asset */}
             <img
@@ -37,66 +38,39 @@ export default function DashboardPanel({ pdfs = [] }) {
             <div className="workspace-icon">📄</div>
             <h3 className="workspace-name">PDF Chat</h3>
             <p className="workspace-description">Chat directly with your PDFs. Ask questions and get instant answers.</p>
+            <button className="workspace-btn">Open Workspace</button>
           </div>
           <div className="workspace-card">
             <div className="workspace-icon">📊</div>
             <h3 className="workspace-name">Analysis</h3>
             <p className="workspace-description">Gain insights and evaluate critical information from your PDFs.</p>
+            <button className="workspace-btn">Open Workspace</button>
           </div>
           <div className="workspace-card">
             <div className="workspace-icon">📁</div>
             <h3 className="workspace-name">Upload & Organize</h3>
-            <p className="workspace-description">Manage all your PDFs in one place. Organize into easy, fast, efficient way.</p>
+            <p className="workspace-description">Manage all your PDFs in one place. Organize and search effortlessly.</p>
             <p className="workspace-stats">Total PDFs: {totalPdfs}</p>
+            <button className="workspace-btn">Open Workspace</button>
           </div>
           <div className="workspace-card">
             <div className="workspace-icon">✏️</div>
             <h3 className="workspace-name">Create & Edit</h3>
-            <p className="workspace-description">From summaries, notes and content. Quick, easy, edit, aid notes.</p>
+            <p className="workspace-description">Create new documents or edit existing PDFs. Modify text, add notes and more.</p>
+            <button className="workspace-btn">Open Workspace</button>
           </div>
           <div className="workspace-card">
             <div className="workspace-icon">🔍</div>
             <h3 className="workspace-name">OCR & Extraction</h3>
-            <p className="workspace-description">Extract text and info data from scanned PDF documents.</p>
+            <p className="workspace-description">Extract text and information from scanned PDF documents.</p>
+            <button className="workspace-btn">Open Workspace</button>
           </div>
           <div className="workspace-card">
-            <div className="workspace-icon">🤖</div>
-            <h3 className="workspace-name">AI Tools</h3>
-            <p className="workspace-description">AI Writer • NF Settox • AI Detector • AI to Humanizer</p>
+            <div className="workspace-icon">⚙️</div>
+            <h3 className="workspace-name">Settings</h3>
+            <p className="workspace-description">Configure your account settings to customize our platform to your needs.</p>
+            <button className="workspace-btn">Open Workspace</button>
           </div>
-        </div>
-
-        {/* Retained and integrated your original recent PDFs and next upgrades as panels below workspaces */}
-        <div className="grid gap-4 md:grid-cols-2 mt-8">
-          <PanelBlock title="Most recent PDFs">
-            {pdfs.length === 0 ? (
-              <p className="text-[11px] text-inkSoft/75">Upload a PDF to see it appear here.</p>
-            ) : (
-              <ul className="space-y-1">
-                {pdfs
-                  .slice()
-                  .reverse()
-                  .slice(0, 5)
-                  .map((pdf) => (
-                    <li key={pdf.pdf_id} className="flex items-center justify-between gap-2">
-                      <span className="truncate">{pdf.filename}</span>
-                      <span className="text-[9px] text-inkSoft/70 uppercase tracking-[0.16em]">
-                        {pdf.pdf_id.slice(0, 6)}
-                      </span>
-                    </li>
-                  ))}
-              </ul>
-            )}
-          </PanelBlock>
-
-          <PanelBlock title="Next upgrades">
-            <ul className="list-disc list-inside space-y-1 text-[11px] text-inkSoft">
-              <li>Persist queries & notes in a real database.</li>
-              <li>Add plan limits (Free vs Pro) based on usage.</li>
-              <li>Visual charts of daily activity (Recharts).</li>
-              <li>Team workspaces & shared PDFs.</li>
-            </ul>
-          </PanelBlock>
         </div>
 
         <div className="section-header mt-12">
@@ -107,35 +81,48 @@ export default function DashboardPanel({ pdfs = [] }) {
           <div className="feature-card">
             <div className="feature-icon">🛡️</div>
             <h3 className="feature-title">Military-Grade Security</h3>
-            <p className="feature-desc">Your data is safe with our top-tier privacy.</p>
+            <p className="feature-desc">Your data is safe with enterprise-grade security because privacy is our top concern.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">⚡</div>
             <h3 className="feature-title">Lightning Fast</h3>
-            <p className="feature-desc">AI engine that delivers accurate results at valuable time.</p>
+            <p className="feature-desc">Our lightning-fast AI engine delivers accurate results in record time, saving you valuable time.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">🤖</div>
             <h3 className="feature-title">AI Powered</h3>
-            <p className="feature-desc">Experience the most robust AI technology powering all your document needs.</p>
+            <p className="feature-desc">Powered by the latest AI technology, empowering all your document needs.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">📱</div>
             <h3 className="feature-title">Fully Responsive</h3>
-            <p className="feature-desc">All flow that net the, wipechange to your seamless productivity any seeds.</p>
+            <p className="feature-desc">Fully responsive design that works on any device to ensure seamless productivity anywhere.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">🔌</div>
             <h3 className="feature-title">API Integration</h3>
-            <p className="feature-desc">Teethnaey integrate free into your workflows with our powerful API suppe sence.</p>
+            <p className="feature-desc">Easily integrate our AI into your workflows with our powerful API support.</p>
           </div>
           <div className="feature-card">
             <div className="feature-icon">🎯</div>
             <h3 className="feature-title">Precise Accuracy</h3>
-            <p className="feature-desc">Un eesAI's attem ping gather, emprecising precision and accuracy in extracting insights from your documents meeds.</p>
+            <p className="feature-desc">Our AI is designed to deliver precise accuracy, ensuring reliable insights from your documents.</p>
           </div>
         </div>
       </div>
+
+      <footer className="footer">
+        <div className="footer-logo">PDF Genie</div>
+        <nav className="footer-nav">
+          <a href="#">Home</a>
+          <a href="#">Features</a>
+          <a href="#">Pricing</a>
+          <a href="#">Help Center</a>
+          <a href="#">Documents</a>
+          <a href="#">Contact</a>
+        </nav>
+        <p>© 2026 PDF Genie. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
