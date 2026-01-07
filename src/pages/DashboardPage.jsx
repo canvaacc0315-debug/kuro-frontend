@@ -25,11 +25,16 @@ export default function DashboardPage() {
           <KuroLogo size={36} />
           <div className="navbar-brand-text">RovexAI</div>
         </div>
-        {/* RIGHT: user info (unchanged) */}
-        <div className="navbar-right">
-          <div className="user-name">{displayName}</div>
-        </div>
-        <UserButton afterSignOutUrl="/login" />
+        <nav className="navbar-links">
+          <a href="/dashboard" className="nav-link">Home</a>
+          <a href="/app" className="nav-link">Workspace</a>
+          <a href="/help" className="nav-link">Help Center</a>
+          <button onClick={openUserProfile} className="nav-link settings-link">
+            Settings
+          </button>
+        </nav>
+        {/* RIGHT: user info */}
+        <UserButton showName afterSignOutUrl="/login" />
       </header>
 
       {/* ===== MAIN CONTENT ===== */}
