@@ -448,15 +448,15 @@ body {
   color: #666666;
 }
 
-/* footer */
-.footer {
+/* footer1 */
+.footer1 {
   background: #000;
   color: #fff;
   padding: 0.8rem 1.5rem 0.5rem; /* Fixed extra space */
   border-top: 1px solid rgba(220, 38, 38, 0.1);
 }
 
-.footer-content {
+.footer1-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
@@ -464,19 +464,19 @@ body {
   margin: 0 auto 1.5rem;
 }
 
-.footer-ai {
+.footer1-ai {
   color: #ffffff;
   -webkit-text-fill-color: #ffffff;
 }
 
-.footer-section h4 {
+.footer1-section h4 {
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 1rem;
   color: #fff;
 }
 
-.footer-tagline {
+.footer1-tagline {
   color: #fff;
   margin: 0.5rem 0 1rem;
   line-height: 1.4;
@@ -500,7 +500,7 @@ body {
   color: #ef4444;
 }
 
-.footer-link {
+.footer1-link {
   display: block;
   color: #fff;
   text-decoration: none;
@@ -510,12 +510,12 @@ body {
   font-size: 0.9rem;
 }
 
-.footer-link:hover {
+.footer1-link:hover {
   color: #dc2626;
   transform: translateX(5px);
 }
 
-.footer-bottom {
+.footer1-bottom {
   border-top: 1px solid rgba(220, 38, 38, 0.1);
   padding-top: 1rem;
   display: flex;
@@ -525,12 +525,12 @@ body {
   margin: 0 auto;
 }
 
-.footer-bottom p {
+.footer1-bottom p {
   color: #fff;
   font-size: 0.8rem;
 }
 
-.footer-bottom-links {
+.footer1-bottom-links {
   display: flex;
   gap: 1.5rem;
 }
@@ -563,11 +563,11 @@ body {
     padding: 18px 60px;
   }
 
-  .footer {
+  .footer1 {
     padding: 40px 60px;
   }
 
-  .footer-grid {
+  .footer1-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -599,7 +599,7 @@ body {
     padding: 18px 40px;
   }
 
-  .footer {
+  .footer1 {
     padding: 40px 40px;
   }
 }
@@ -646,11 +646,11 @@ body {
     margin-bottom: 60px;
   }
 
-  .footer {
+  .footer1 {
     padding: 40px 20px;
   }
 
-  .footer-grid {
+  .footer1-grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }
@@ -721,7 +721,7 @@ body {
     font-size: 14px;
   }
 
-  .footer {
+  .footer1 {
     padding: 30px 16px;
   }
 
@@ -775,7 +775,7 @@ body {
     font-size: 13px;
   }
 
-  .footer {
+  .footer1 {
     padding: 30px 12px;
   }
 
@@ -808,7 +808,7 @@ body {
   }
 
   .navbar,
-  .footer {
+  .footer1 {
     border: 2px solid #ffffff;
   }
 }
