@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate, Link } from "react-router-dom";
 import { SignedIn, SignedOut } from "@clerk/nextjs"; // Assuming Clerk is used for auth
 import { useState, useEffect } from "react";
-import logoIcon from '../assets/logo.png'; // Replace with actual path to logo icon
+import logoIcon from '../assets/kuro-logo.png'; // Replace with actual path to logo icon
 import "../styles/grid-fix.css";
 import "../styles/kuro-dashboard.css";
 
@@ -69,7 +69,6 @@ export default function DashboardPanel({ pdfs = [] }) {
               <p className="hero-subtitle">
                 RovexAI is your all-in-one solution for effortless document management powered by advanced AI. Upload, organize, and interact with your PDFs like never before. Say goodbye to manual searching and hello to instant answers, smart analysis, and seamless document experiences.
               </p>
-              <button className="workspace-btn">UPLOAD PDF</button>
             </div>
             <div className="hero-illustration">
               {/* Updated image source for better match */}
