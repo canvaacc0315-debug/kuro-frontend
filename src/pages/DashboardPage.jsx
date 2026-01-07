@@ -27,9 +27,6 @@ export default function DashboardPage() {
         </div>
         {/* RIGHT: user info (unchanged) */}
         <div className="navbar-right">
-          <div className="user-avatar">
-            {displayName?.[0]?.toUpperCase() || "U"}
-          </div>
           <div className="user-name">{displayName}</div>
         </div>
         <UserButton afterSignOutUrl="/login" />
