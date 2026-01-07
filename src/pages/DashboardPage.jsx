@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import "../styles/grid-fix.css";
 
-export default function DashboardPanel({ pdfs }) {
+export default function DashboardPanel({ pdfs = [] }) {
   const totalPdfs = pdfs.length;
 
   // For now these are placeholders; you can wire them to real values later
@@ -135,17 +135,6 @@ export default function DashboardPanel({ pdfs }) {
           </div>
         </div>
       </div>
-
-      <footer className="footer">
-        <div className="footer-logo">PDF Genie</div>
-        <nav className="footer-nav">
-          <a href="#">Product</a>
-          <a href="#">Pricing</a>
-          <a href="#">Company</a>
-          <a href="#">Legal</a>
-        </nav>
-        <p>© 2025 PDF Genie. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
