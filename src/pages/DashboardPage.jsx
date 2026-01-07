@@ -37,6 +37,11 @@ export default function DashboardPage() {
           </button>
         </nav>
         {/* RIGHT: user info */}
+        <div className="header-right">
+          <div className="user-info">
+            {displayName}
+          </div>
+        </div>
         <UserButton showName afterSignOutUrl="/login" />
       </header>
 
