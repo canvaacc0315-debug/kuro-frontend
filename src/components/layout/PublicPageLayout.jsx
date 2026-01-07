@@ -22,7 +22,7 @@ export default function PublicPageLayout({ children }) {
         }}
       >
         <Link
-          to="/dashboard"
+          to="/homepage"
           style={{
             display: "flex",
             alignItems: "center",

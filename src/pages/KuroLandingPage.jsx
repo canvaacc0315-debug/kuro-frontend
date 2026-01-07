@@ -52,7 +52,7 @@ export default function KuroLandingPage() {
 
       if (code === "session_exists") {
         // already logged in → go to dashboard
-        navigate("/dashboard", { replace: true });
+        navigate("/homepage", { replace: true });
         return;
       }
 
@@ -82,7 +82,7 @@ export default function KuroLandingPage() {
 
       if (code === "session_exists") {
         // user already has an active session
-        navigate("/dashboard", { replace: true });
+        navigate("/homepage", { replace: true });
         return;
       }
 
@@ -108,7 +108,7 @@ export default function KuroLandingPage() {
       console.log("Code verify response:", res);
 
       if (res.status === "complete") {
-        navigate("/dashboard", { replace: true });
+        navigate("/homepage", { replace: true });
       } else {
         alert("Verification not complete. Check console.");
       }

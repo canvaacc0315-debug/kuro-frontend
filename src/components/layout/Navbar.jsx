@@ -47,12 +47,12 @@ export default function Navbar() {
 
   function handleProfileClick() {
     closeDropdown();
-    window.location.href = "/dashboard?section=profile";
+    window.location.href = "/homepage?section=profile";
   }
 
   function handleSettingsClick() {
     closeDropdown();
-    window.location.href = "/dashboard?section=settings";
+    window.location.href = "/homepage?section=settings";
   }
 
   function handleSignOut() {
