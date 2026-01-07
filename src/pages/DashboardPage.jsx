@@ -19,6 +19,22 @@ export default function DashboardPage() {
 
   return (
     <div className="kuro-dashboard-page">
+      {/* ===== NAVBAR ===== */}
+      <header className="navbar">
+        <div className="navbar-brand">
+          <KuroLogo size={36} />
+          <div className="navbar-brand-text">RovexAI</div>
+        </div>
+        {/* RIGHT: user info (unchanged) */}
+        <div className="navbar-right">
+          <div className="user-avatar">
+            {displayName?.[0]?.toUpperCase() || "U"}
+          </div>
+          <div className="user-name">{displayName}</div>
+        </div>
+        <UserButton afterSignOutUrl="/login" />
+      </header>
+
       {/* ===== MAIN CONTENT ===== */}
       <main className="main-container">
         {/* HERO */}
