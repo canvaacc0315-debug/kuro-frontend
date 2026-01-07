@@ -555,14 +555,6 @@
   padding: 2rem;
   margin-top: auto; /* If using flex on root, pushes to bottom */
   margin-top: 4rem; /* Add space between CTA and footer */
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.footer.visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .footer-content {
@@ -598,12 +590,11 @@
   cursor: pointer;
   text-align: left;
   font-size: 0.95rem;
-  transition: color 0.3s ease, transform 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .footer-link:hover {
   color: #dc2626;
-  transform: translateX(5px);
 }
 
 .footer-ai {
@@ -616,10 +607,6 @@
   margin-top: 1rem;
   color: #ccc;
   font-size: 0.8rem;
-}
-
-.animate-pulse {
-  animation: pulse 2s infinite ease-in-out;
 }
 
 /* Responsive Design */

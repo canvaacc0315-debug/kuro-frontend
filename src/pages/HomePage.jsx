@@ -248,7 +248,7 @@ export default function HomePage() {
           {/* LEFT: Brand */}
           <div className="footer-section">
             <div className="logo-container" onClick={() => navigate("/")}>
-              <img src={logoIcon} alt="RovexAI Logo" className="logo-icon animate-pulse" />
+              <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
               <span className="logo-text">
                 <span className="logo-red">Rovex</span>
                 <span className="footer-ai">AI</span>
