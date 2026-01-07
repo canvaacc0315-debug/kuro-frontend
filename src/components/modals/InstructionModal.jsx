@@ -5,7 +5,8 @@ import "./InstructionModal.css";
 const STORAGE_KEY = "rovex_instructions_shown_session"; // Per-session (clears on tab close)
 
 export default function InstructionModal() {
-  const [open, setOpen] = useState(false); // Start closed
+  const [isOpen, setIsOpen] = useState(false); // Start closed
+  const [isClosing, setIsClosing] = useState(false); // For close animation
   const location = useLocation();
   const pathRef = useRef(location.pathname);
 
@@ -16,22 +17,24 @@ export default function InstructionModal() {
   useEffect(() => {
     // Close if not on dashboard
     if (location.pathname !== "/dashboard") {
-      setOpen(false);
+      setIsOpen(false);
+      setIsClosing(false);
       return;
     }
 
     // Show ONLY on dashboard entry, if not already shown in this session
     const shown = sessionStorage.getItem(STORAGE_KEY);
     if (!shown) {
-      setOpen(true);
+      setIsOpen(true);
     }
 
     // Re-show only on initial page load/refresh to dashboard (not on other routes)
     const handlePageShow = () => {
       if (pathRef.current === "/dashboard" && !sessionStorage.getItem(STORAGE_KEY)) {
-        setOpen(true);
+        setIsOpen(true);
       } else {
-        setOpen(false);
+        setIsOpen(false);
+        setIsClosing(false);
       }
     };
 
@@ -43,8 +46,12 @@ export default function InstructionModal() {
   }, [location.pathname]);
 
   const handleClose = () => {
-    sessionStorage.setItem(STORAGE_KEY, "true"); // Mark as shown for session
-    setOpen(false);
+    setIsClosing(true); // Trigger close animation
+    setTimeout(() => {
+      sessionStorage.setItem(STORAGE_KEY, "true"); // Mark as shown for session
+      setIsOpen(false);
+      setIsClosing(false);
+    }, 300); // Match animation duration
   };
 
   // Extra guard: don't render if not on dashboard
@@ -52,14 +59,14 @@ export default function InstructionModal() {
     return null;
   }
 
-  if (!open) return null;
+  if (!isOpen) return null;
 
   return (
-    <div className="instruction-overlay">
-      <div className="instruction-modal">
+    <div className={`instruction-overlay ${isClosing ? "fade-out" : ""}`} role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div className={`instruction-modal ${isClosing ? "pop-out" : ""}`}>
         <div className="instruction-header">
-          <h2>🧭 Quick Start Instructions</h2>
-          <button className="close-btn" onClick={handleClose}>
+          <h2 id="modal-title">🧭 Quick Start Instructions</h2>
+          <button className="close-btn" onClick={handleClose} aria-label="Close modal">
             ×
           </button>
         </div>

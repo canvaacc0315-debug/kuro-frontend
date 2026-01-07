@@ -18,24 +18,24 @@ export default function FloatingHelp() {
 
   return (
     <>
-      {/* Floating button */}
+      {/* Floating button with improved accessibility and animation trigger */}
       <button
         className="floating-help-btn"
         onClick={() => setOpen((v) => !v)}
-        aria-label="Help"
+        aria-label={open ? "Close Help" : "Open Help"}
+        aria-expanded={open}
+        aria-controls="help-panel"
       >
         {open ? "✕" : "💭"}
       </button>
 
-      {/* Floating panel */}
+      {/* Floating panel with enhanced entrance/exit animations */}
       <div 
-        className="floating-help-panel"
-        style={{
-          opacity: open ? 1 : 0,
-          transform: open ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
-          visibility: open ? 'visible' : 'hidden',
-          pointerEvents: open ? 'auto' : 'none'
-        }}
+        id="help-panel"
+        className={`floating-help-panel ${open ? 'panel-open' : 'panel-closed'}`}
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!open}
       >
         <div className="help-header">
           <h4>👋 Welcome to RovexAI Help</h4>
@@ -47,11 +47,17 @@ export default function FloatingHelp() {
           <button 
             className={`section-header ${expandedSections.using ? 'expanded' : ''}`}
             onClick={() => toggleSection('using')}
+            aria-expanded={expandedSections.using}
+            aria-controls="using-section"
           >
             <strong>Using the PDF Chatbot</strong>
             <span className="toggle-icon">{expandedSections.using ? "−" : "+"}</span>
           </button>
-          <div className={`section-content ${expandedSections.using ? 'expanded' : ''}`}>
+          <div 
+            id="using-section"
+            className={`section-content ${expandedSections.using ? 'expanded' : ''}`}
+            aria-hidden={!expandedSections.using}
+          >
             <div className="help-item">
               <strong>How do I upload a PDF?</strong>
               <span>Click the upload icon in the dashboard, select your file, and start chatting instantly.</span>
@@ -72,11 +78,17 @@ export default function FloatingHelp() {
           <button 
             className={`section-header ${expandedSections.analysis ? 'expanded' : ''}`}
             onClick={() => toggleSection('analysis')}
+            aria-expanded={expandedSections.analysis}
+            aria-controls="analysis-section"
           >
             <strong>Analysis & OCR</strong>
             <span className="toggle-icon">{expandedSections.analysis ? "−" : "+"}</span>
           </button>
-          <div className={`section-content ${expandedSections.analysis ? 'expanded' : ''}`}>
+          <div 
+            id="analysis-section"
+            className={`section-content ${expandedSections.analysis ? 'expanded' : ''}`}
+            aria-hidden={!expandedSections.analysis}
+          >
             <div className="help-item">
               <strong>How does Analysis work?</strong>
               <span>Basic mode uses simple matching; Advanced dives deeper with AI patterns for insights, charts, and data extraction.</span>
@@ -97,11 +109,17 @@ export default function FloatingHelp() {
           <button 
             className={`section-header ${expandedSections.privacy ? 'expanded' : ''}`}
             onClick={() => toggleSection('privacy')}
+            aria-expanded={expandedSections.privacy}
+            aria-controls="privacy-section"
           >
             <strong>Privacy</strong>
             <span className="toggle-icon">{expandedSections.privacy ? "−" : "+"}</span>
           </button>
-          <div className={`section-content ${expandedSections.privacy ? 'expanded' : ''}`}>
+          <div 
+            id="privacy-section"
+            className={`section-content ${expandedSections.privacy ? 'expanded' : ''}`}
+            aria-hidden={!expandedSections.privacy}
+          >
             <div className="help-item">
               <strong>Is my data private?</strong>
               <span>Yes! PDFs are processed securely and not stored without consent. Learn more at <a href="https://www.rovexai.com/privacy-policy" target="_blank" rel="noopener noreferrer">rovexai.com/privacy</a>.</span>

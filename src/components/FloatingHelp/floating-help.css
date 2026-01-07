@@ -7,7 +7,7 @@
 .floating-help-panel {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
-/* Floating Button - Black theme */
+/* Floating Button - Black theme with enhanced animations */
 .floating-help-btn {
   position: fixed;
   bottom: 100px; /* Moved up to avoid footer */
@@ -26,9 +26,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: btnPulse 2s infinite alternate ease-in-out; /* Gentle pulse animation */
 }
+
+@keyframes btnPulse {
+  from {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgb(255, 0, 0);
+  }
+  to {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgb(255, 0, 0);
+  }
+}
+
 .floating-help-btn:hover {
-  transform: scale(1.05);
+  animation: none; /* Pause pulse on hover */
+  transform: scale(1.1) rotate(5deg); /* Playful rotate on hover */
   box-shadow: 0 6px 20px rgb(255, 0, 0);
   background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
 }
@@ -36,7 +50,7 @@
   outline: 2px solid #fff;
   outline-offset: 2px;
 }
-/* Floating Panel - Black inside theme */
+/* Floating Panel - Black inside theme with entrance/exit animations */
 .floating-help-panel {
   position: fixed;
   bottom: 170px; /* Adjusted for button position */
@@ -49,12 +63,53 @@
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); /* Deeper shadow for depth */
   overflow-y: auto; /* Enable scrolling */
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother easing for panel open/close */
   z-index: 999;
   padding: 0;
   color: #f7fafc; /* Light text */
   border: 1px solid rgba(0, 0, 0, 0.2); /* Subtle black border */
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother easing for panel open/close */
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  visibility: hidden;
+  pointer-events: none;
 }
+
+.floating-help-panel.panel-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
+  animation: panelFadeIn 0.5s ease-out forwards; /* Entrance fade and slide */
+}
+
+.floating-help-panel.panel-closed {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  animation: panelFadeOut 0.4s ease-in forwards; /* Exit fade and slide */
+}
+
+@keyframes panelFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes panelFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+}
+
 /* Invisible Scrollbar */
 .floating-help-panel::-webkit-scrollbar {
   width: 0px; /* Completely hidden */
@@ -70,14 +125,27 @@
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
 }
-/* Help Header - Black gradient */
+/* Help Header - Black gradient with fade-in animation */
 .help-header {
   padding: 20px 24px 16px;
   background: linear-gradient(135deg, #000000 0%, #333333 100%);
   color: white;
   border-radius: 16px 16px 0 0;
   text-align: center;
+  animation: headerSlideIn 0.5s ease-out forwards; /* Slide in from top */
 }
+
+@keyframes headerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .help-header h4 {
   margin: 0 0 4px 0;
   font-size: 18px;
@@ -88,11 +156,29 @@
   font-size: 14px;
   opacity: 0.9;
 }
-/* Help Sections */
+/* Help Sections with staggered animations */
 .help-section {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2); /* Black accent border */
   overflow: hidden; /* For smooth section transitions */
+  opacity: 0;
+  animation: sectionFadeIn 0.6s ease-out forwards; /* Staggered fade-in for sections */
 }
+
+.help-section:nth-child(1) { animation-delay: 0.2s; }
+.help-section:nth-child(2) { animation-delay: 0.4s; }
+.help-section:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .section-header {
   width: 100%;
   background: none;
@@ -135,7 +221,7 @@
   max-height: 600px; /* Increased for more content if needed */
   opacity: 1;
 }
-/* Help Items */
+/* Help Items with individual fade-ins */
 .help-item {
   padding: 16px 24px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.3); /* Subtle black border */
@@ -143,7 +229,25 @@
   flex-direction: column;
   gap: 6px;
   transition: background-color 0.2s ease; /* Subtle hover on items */
+  opacity: 0;
+  animation: itemFadeIn 0.5s ease-out forwards; /* Staggered item entrance */
 }
+
+.help-item:nth-child(1) { animation-delay: 0.1s; }
+.help-item:nth-child(2) { animation-delay: 0.2s; }
+.help-item:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes itemFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .help-item:hover {
   background-color: rgba(0, 0, 0, 0.2); /* Dark tint on hover */
 }
@@ -166,15 +270,28 @@
   color: #ffffff;
   text-decoration: none;
   font-weight: 500;
+  transition: color 0.2s ease;
 }
 .help-item a:hover {
+  color: #ff0000; /* Red hover for links */
   text-decoration: underline;
 }
-/* Warning Item - Keep orange for contrast */
+/* Warning Item - Keep orange for contrast with pulse animation */
 .help-item.warning {
   background: rgba(45, 55, 72, 0.5);
   border-left: 4px solid #f6ad55; /* Orange border */
+  animation: warningPulse 2s infinite alternate ease-in-out; /* Gentle pulse for warning */
 }
+
+@keyframes warningPulse {
+  from {
+    border-left-color: #f6ad55;
+  }
+  to {
+    border-left-color: #ed8936;
+  }
+}
+
 .help-item.warning strong {
   color: #f6ad55;
 }

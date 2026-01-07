@@ -8,6 +8,11 @@
   justify-content: center;
   z-index: 9999;
   animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Eased fade for smoother entry */
+  transition: opacity 0.3s ease-out; /* For fade-out */
+}
+
+.instruction-overlay.fade-out {
+  opacity: 0;
 }
 
 /* Modal: Dark theme with refined red glows and better shadows */
@@ -25,6 +30,12 @@
   animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncier, smoother pop */
   overflow: hidden; /* Clean edges */
   backdrop-filter: blur(10px); /* Subtle blur for modern glass-morphism feel */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* For pop-out */
+}
+
+.instruction-modal.pop-out {
+  transform: scale(0.95);
+  opacity: 0;
 }
 
 /* Header: Clean, with refined red accent and better spacing */
@@ -67,7 +78,7 @@
 .close-btn:focus-visible {
   color: #ffffff;
   background: rgba(239, 68, 68, 0.2); /* Stronger red tint on hover/focus */
-  transform: scale(1.1); /* Slightly larger scale */
+  transform: scale(1.1) rotate(90deg); /* Rotate for fun interaction */
   outline: none; /* Remove default focus outline */
 }
 
@@ -127,7 +138,7 @@
   padding: 16px;
   background: rgba(26, 26, 26, 0.8); /* Dark card bg */
   border-radius: 12px;
-  border-left: 3px solid rgba(239, 68, 68, 0.4); /* Red bar */
+  border-left: 3px solid rgb(255, 0, 0); /* Red bar */
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother transitions */
   line-height: 1.4;
   opacity: 0; /* Start hidden for stagger */
@@ -152,14 +163,25 @@
 
 .features-list .icon {
   font-size: 1.2rem;
-  color: #f472b6; /* Pink/red icon like app highlights */
+  color: #ff0000; /* Pink/red icon like app highlights */
   flex-shrink: 0;
   margin-top: 2px;
   transition: transform 0.2s ease; /* Icon bounce on hover */
+  animation: iconBounce 0.8s ease-in-out infinite alternate; /* Gentle bounce for icons */
+}
+
+@keyframes iconBounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-3px);
+  }
 }
 
 .features-list li:hover .icon {
   transform: scale(1.1) rotate(5deg); /* Playful icon animation */
+  animation: none; /* Pause bounce on hover */
 }
 
 .features-list span:last-of-type {
@@ -230,7 +252,7 @@
 
 .primary-btn:hover {
   background: linear-gradient(135deg, #dc2626, #ec4899);
-  transform: translateY(-2px); /* Stronger lift */
+  transform: translateY(-2px) scale(1.05); /* Stronger lift and slight scale */
   box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
 }
 
