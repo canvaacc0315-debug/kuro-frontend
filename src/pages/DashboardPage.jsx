@@ -23,7 +23,10 @@ export default function DashboardPage() {
       <header className="navbar">
         <div className="navbar-brand">
           <KuroLogo size={36} />
-          <div className="navbar-brand-text">RovexAI</div>
+          <span className="logo-text">
+            <span className="logo-red">Rovex</span>
+            <span className="logo-ai">AI</span>
+          </span>
         </div>
         <nav className="navbar-links">
           <a href="/homepage" className="nav-link">Home</a>
