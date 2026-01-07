@@ -297,12 +297,6 @@ export default function DashboardPage() {
           </div>
 
           <div className="footer-section">
-            <h4>Product</h4>
-            <a href="#features" className="footer-link">Features</a>
-            <a href="#how-it-works" className="nav-link">Working</a>
-          </div>
-
-          <div className="footer-section">
             <h4>Company</h4>
             <Link to="/about" className="footer-link">About</Link>
             <Link to="/contact" className="footer-link">Contact</Link>
