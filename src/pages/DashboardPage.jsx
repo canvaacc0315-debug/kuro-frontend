@@ -1,9 +1,5 @@
-import { motion } from "framer-motion";
-import { useNavigate, Link } from "react-router-dom";
-import { SignedIn, SignedOut } from "@clerk/nextjs"; // Assuming Clerk is used for auth
-import { useState, useEffect } from "react";
-import logoIcon from '../assets/kuro-logo.png'; // Replace with actual path to logo icon
-import "../styles/grid-fix.css";
+import { useNavigate } from "react-router-dom";
+import "../styles/kuro-dashboard.css";
 import "../styles/kuro-dashboard.css";
 
 export default function DashboardPanel({ pdfs = [] }) {
