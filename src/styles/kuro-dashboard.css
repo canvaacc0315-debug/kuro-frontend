@@ -472,66 +472,6 @@ body {
 }
 
 /* ===========================
-   FOOTER - Black bg, grid, hover animations
-=========================== */
-
-.footer {
-  background: #000000;
-  color: #ffffff;
-  padding: 60px 80px;
-}
-
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
-  margin-bottom: 40px;
-}
-
-.footer-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.footer-title {
-  font-size: 18px;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.footer-desc {
-  font-size: 14px;
-  color: #cccccc;
-}
-
-.footer-links {
-  list-style: none;
-}
-
-.footer-links li {
-  margin-bottom: 12px;
-}
-
-.footer-links a {
-  color: #ffffff;
-  text-decoration: none;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.footer-links a:hover {
-  color: #ff0000;
-  transform: translateX(4px);
-}
-
-.footer-bottom {
-  text-align: center;
-  font-size: 14px;
-  color: #999999;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 20px;
-}
-
-/* ===========================
    RESPONSIVE - Enhanced Breakpoints
 =========================== */
 
