@@ -19,26 +19,6 @@ export default function DashboardPage() {
 
   return (
     <div className="kuro-dashboard-page">
-      {/* ===== NAVBAR / HEADER ===== */}
-      <header className="navbar">
-        {/* LEFT: logo + brand text (same pattern as workspace page) */}
-        <div className="navbar-brand">
-          <KuroLogo size={36} />
-          <div className="navbar-brand-text">RovexAI</div>
-        </div>
-
-        {/* RIGHT: user info (unchanged) */}
-        <div className="navbar-right">
-          <div className="user-info" onClick={openUserProfile}>
-            <div className="user-avatar">
-              {displayName?.[0]?.toUpperCase() || "U"}
-            </div>
-            <div className="user-name">{displayName}</div>
-          </div>
-          <UserButton afterSignOutUrl="/login" />
-        </div>
-      </header>
-
       {/* ===== MAIN CONTENT ===== */}
       <main className="main-container">
         {/* HERO */}
