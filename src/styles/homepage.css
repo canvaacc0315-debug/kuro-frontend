@@ -460,7 +460,7 @@
 .feature-icon-red {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, rgb(255, 0, 0), rgb(255, 0, 0));
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.1), rgba(239, 68, 68, 0.1));
   border-radius: 16px;
   display: flex;
   align-items: center;
