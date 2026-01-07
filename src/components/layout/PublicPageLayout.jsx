@@ -51,8 +51,6 @@ export default function PublicPageLayout({ children }) {
       >
         {children}
       </main>
-
-      <Footer />
     </div>
   );
 }
