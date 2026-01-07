@@ -14,7 +14,7 @@ html {
 }
 
 /* ===========================
-   BASE PAGE - Refined (Light Pink Theme)
+   BASE PAGE - Refined
 =========================== */
 
 html,
@@ -27,8 +27,8 @@ body {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-  background: linear-gradient(135deg, #ffebf2 0%, #ffdce5 100%);
-  color: #333333;
+  background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2e 100%);
+  color: #e0e0e0;
   line-height: 1.6; /* Improved readability */
 }
 
@@ -66,12 +66,16 @@ body {
 }
 
 /* ===========================
-   HERO SECTION - Enhanced with Gradient Overlay (Pink Theme)
+   HERO SECTION - Enhanced with Gradient Overlay
 =========================== */
 
 .hero-banner {
-  background: linear-gradient(135deg, #ffd1dc 0%, #ffc4d6 100%);
-  border: 1px solid rgba(227, 27, 35, 0.2); /* Red accent border */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.15) 0%,
+    rgba(240, 68, 68, 0.1) 100%
+  );
+  border: 1px solid rgba(255, 107, 107, 0.2);
   border-radius: 20px; /* Softer corners */
   padding: 60px 50px; /* More padding */
   margin-bottom: 60px;
@@ -90,7 +94,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(227, 27, 35, 0.05) 50%, transparent 70%);
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 107, 107, 0.05) 50%, transparent 70%);
   animation: shimmer 3s ease-in-out infinite; /* Subtle shimmer */
   pointer-events: none;
 }
@@ -106,41 +110,33 @@ body {
 
 .hero-banner:hover {
   transform: translateY(-4px); /* Lift on hover */
+  /* Removed glow shadow */
 }
 
 .hero-title {
   font-size: 48px;
   font-weight: 800;
-  color: #333333;
+  color: #ffffff;
   margin-bottom: 12px;
   position: relative;
   z-index: 1; /* Above shimmer */
 }
 
 .hero-title-accent {
-  background: linear-gradient(135deg, #e31b23 0%, #c8102e 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  /* Removed pulsing glow animation */
 }
 
 .hero-subtitle {
   font-size: 18px;
-  color: #555555;
+  color: #b0b0b0;
   margin-bottom: 30px;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-}
-
-.hero-illustration {
-  margin-top: 20px;
-}
-
-.illustration-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 20px;
 }
 
 /* ===========================
@@ -159,34 +155,34 @@ body {
   left: 0;
   width: 60px;
   height: 2px;
-  background: linear-gradient(135deg, #e31b23 0%, #c8102e 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   border-radius: 1px;
 }
 
 .section-title {
   font-size: 36px;
   font-weight: 700;
-  color: #333333;
+  color: #ffffff;
   margin-bottom: 8px;
   transition: color 0.3s ease;
 }
 
 .section-title:hover {
-  color: #e31b23; /* Accent on hover */
+  color: #ff6b6b; /* Accent on hover */
 }
 
 .section-title-accent {
-  color: #e31b23;
+  color: #ff6b6b;
 }
 
 .section-subtitle {
   font-size: 15px;
-  color: #666666;
+  color: #888888;
   max-width: 500px; /* Prevent overflow */
 }
 
 /* ===========================
-   WORKSPACE GRID (3 x 2) - Enhanced Cards (Light Theme)
+   WORKSPACE GRID (3 x 2) - Enhanced Cards
 =========================== */
 
 .workspace-grid {
@@ -217,8 +213,8 @@ body {
 
 /* Workspace Card: 3D hover and inner glow */
 .workspace-card {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(20, 20, 30, 0.6);
+  border: 1px solid rgba(255, 107, 107, 0.15);
   border-radius: 20px; /* Softer */
   padding: 40px;
   cursor: pointer;
@@ -226,7 +222,6 @@ body {
   position: relative;
   overflow: hidden;
   backdrop-filter: blur(10px); /* Frosted glass */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .workspace-card::before {
@@ -236,7 +231,7 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(135deg, #e31b23 0%, #c8102e 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.4s ease;
@@ -247,16 +242,17 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(227, 27, 35, 0.05) 0%, transparent 100%);
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1) 0%, transparent 100%);
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
 }
 
 .workspace-card:hover {
-  background: #fcfcfc;
-  border-color: rgba(227, 27, 35, 0.2);
+  background: rgba(20, 20, 30, 0.8);
+  border-color: rgba(255, 107, 107, 0.4);
   transform: translateY(-8px) rotateX(2deg); /* 3D tilt */
+  /* Removed glow shadow */
 }
 
 .workspace-card:hover::before {
@@ -272,6 +268,7 @@ body {
   margin-bottom: 20px;
   display: inline-block;
   transition: transform 0.3s ease; /* Icon bounce */
+  /* Removed drop-shadow filter */
 }
 
 .workspace-card:hover .workspace-icon {
@@ -281,26 +278,20 @@ body {
 .workspace-name {
   font-size: 24px;
   font-weight: 700;
-  color: #333333;
+  color: #ffffff;
   margin-bottom: 12px;
   transition: color 0.3s ease;
 }
 
 .workspace-card:hover .workspace-name {
-  color: #e31b23;
+  color: #ff6b6b;
 }
 
 .workspace-description {
   font-size: 14px;
-  color: #666666;
+  color: #888888;
   line-height: 1.6;
   margin-bottom: 24px;
-}
-
-.workspace-stats {
-  font-size: 13px;
-  color: #888888;
-  font-weight: 600;
 }
 
 .workspace-features {
@@ -310,7 +301,7 @@ body {
 
 .workspace-features li {
   font-size: 13px;
-  color: #666666;
+  color: #888888;
   margin-bottom: 8px;
   display: flex;
   align-items: center;
@@ -320,12 +311,12 @@ body {
 }
 
 .workspace-card:hover .workspace-features li {
-  color: #444444; /* Darker on hover */
+  color: #b0b0b0; /* Lighter on hover */
 }
 
 .workspace-features li::before {
   content: "✓";
-  color: #e31b23;
+  color: #ff6b6b;
   font-weight: 700;
   font-size: 14px;
   transition: transform 0.2s ease;
@@ -338,7 +329,7 @@ body {
 .workspace-btn {
   width: 100%;
   padding: 14px 24px;
-  background: linear-gradient(135deg, #e31b23 0%, #c8102e 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   color: white;
   border: none;
   border-radius: 12px; /* Softer */
@@ -373,6 +364,7 @@ body {
 
 .workspace-btn:hover {
   transform: translateY(-2px) scale(1.02);
+  /* Removed glow shadow */
 }
 
 .workspace-btn:active {
@@ -380,7 +372,7 @@ body {
 }
 
 /* ===========================
-   FEATURES SECTION - Enhanced Grid (Light Theme)
+   FEATURES SECTION - Enhanced Grid
 =========================== */
 
 .features-section {
@@ -394,14 +386,13 @@ body {
 }
 
 .feature-card {
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px; /* Consistent with workspace */
   padding: 30px;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 .feature-card::before {
@@ -411,7 +402,7 @@ body {
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(135deg, #e31b23 0%, #c8102e 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
   transform: scaleX(0);
   transition: transform 0.3s ease;
 }
@@ -421,15 +412,16 @@ body {
 }
 
 .feature-card:hover {
-  background: #fcfcfc;
-  border-color: rgba(227, 27, 35, 0.2);
+  background: rgba(255, 107, 107, 0.08);
+  border-color: rgba(255, 107, 107, 0.3);
   transform: translateY(-4px);
+  /* Removed glow shadow */
 }
 
 .feature-icon {
   font-size: 32px;
   margin-bottom: 16px;
-  color: #e31b23; /* Accent color */
+  color: #ff6b6b; /* Accent color */
   transition: transform 0.3s ease;
 }
 
@@ -440,29 +432,28 @@ body {
 .feature-title {
   font-size: 16px;
   font-weight: 600;
-  color: #333333;
+  color: #ffffff;
   margin-bottom: 10px;
 }
 
 .feature-desc {
   font-size: 13px;
-  color: #666666;
+  color: #888888;
   line-height: 1.6;
 }
 
 /* ===========================
-   FOOTER - Polished (Dark Theme to Match Image)
+   FOOTER - Polished
 =========================== */
 
 .footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 40px;
   text-align: center;
-  color: #cccccc;
+  color: #666666;
   font-size: 13px;
   margin-top: 40px;
   position: relative;
-  background: #1a1a1e;
 }
 
 .footer::before {
@@ -472,35 +463,11 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(135deg, transparent, #e31b23, transparent);
-}
-
-.footer-logo {
-  font-size: 24px;
-  font-weight: 800;
-  color: #e31b23;
-  margin-bottom: 16px;
-}
-
-.footer-nav {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 16px;
-}
-
-.footer-nav a {
-  color: #cccccc;
-  text-decoration: none;
-  transition: color 0.3s ease;
-}
-
-.footer-nav a:hover {
-  color: #ffffff;
+  background: linear-gradient(135deg, transparent, #ff6b6b, transparent);
 }
 
 /* ===========================
-   CHAT UI SPACING FIX - New Section for RovexAI Chat (Light Adjustments)
+   CHAT UI SPACING FIX - New Section for RovexAI Chat
 =========================== */
 
 /* More specific selectors for toolbar and buttons; added !important for forcing distance */
@@ -512,8 +479,8 @@ body {
   align-items: center !important;
   gap: 12px !important;
   padding: 12px 16px !important;
-  background: #ffffff !important;
-  border-bottom: 1px solid rgba(227, 27, 35, 0.1) !important;
+  background: rgba(20, 20, 30, 0.8) !important;
+  border-bottom: 1px solid rgba(255, 107, 107, 0.1) !important;
   margin-bottom: 60px !important; /* Aggressively increased to force separation from frame */
   border-radius: 12px 12px 0 0 !important; /* Top-rounded to blend with chat */
   flex-wrap: wrap !important;
@@ -533,7 +500,7 @@ body {
 .save-conversation-btn,
 .clear-conversation-btn {
   padding: 8px 16px !important;
-  background: linear-gradient(135deg, #e31b23 0%, #c8102e 100%) !important;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%) !important;
   color: white !important;
   border: none !important;
   border-radius: 8px !important;
@@ -551,23 +518,24 @@ body {
 .chat-toolbar button:hover,
 .toolbar button:hover {
   transform: translateY(-1px) !important;
+  /* Removed glow shadow */
 }
 
 .chat-toolbar select,
 .answer-style-select {
   padding: 8px 12px !important;
-  background: rgba(0, 0, 0, 0.05) !important;
-  border: 1px solid rgba(227, 27, 35, 0.2) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 107, 107, 0.2) !important;
   border-radius: 6px !important;
-  color: #333333 !important;
+  color: #e0e0e0 !important;
   font-size: 13px !important;
 }
 
 .chat-frame,
 .chat-container,
 .messages-frame {
-  background: #ffffff !important;
-  border: 1px solid rgba(227, 27, 35, 0.2) !important;
+  background: rgba(15, 15, 18, 0.95) !important;
+  border: 1px solid rgba(255, 107, 107, 0.2) !important;
   border-radius: 0 0 12px 12px !important; /* Bottom-rounded to match toolbar */
   padding: 20px !important;
   margin-top: 0 !important; /* Ensure no extra top margin */
@@ -589,7 +557,7 @@ body {
 
 .chat-message.user,
 .user-message {
-  background: linear-gradient(135deg, #e31b23 0%, #c8102e 100%) !important;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%) !important;
   color: white !important;
   align-self: flex-end !important;
   margin-left: auto !important;
@@ -597,8 +565,8 @@ body {
 
 .chat-message.assistant,
 .assistant-message {
-  background: rgba(0, 0, 0, 0.05) !important;
-  color: #333333 !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #e0e0e0 !important;
   align-self: flex-start !important;
 }
 
@@ -618,7 +586,7 @@ body {
   border: none !important; /* Force remove red border */
   box-shadow: none !important; /* Force remove glow/shadow */
   outline: none !important; /* Remove any outline */
-  background: #ffffff !important; /* Subtle background instead */
+  background: rgba(20, 20, 30, 0.6) !important; /* Subtle background instead */
   border-radius: 12px !important;
   filter: none !important; /* Remove any filters like glow */
 }
@@ -627,7 +595,7 @@ body {
 .try-asking-panel h3,
 .suggestions-panel h3,
 .suggestion-category {
-  color: #333333 !important;
+  color: #e0e0e0 !important;
   border-bottom: none !important;
   background: none !important;
   box-shadow: none !important;
@@ -641,17 +609,17 @@ body {
   border: none !important;
   box-shadow: none !important;
   background: transparent !important;
-  color: #666666 !important;
+  color: #b0b0b0 !important;
 }
 
 .suggestion-item:hover,
 .try-asking-item:hover {
-  background: rgba(227, 27, 35, 0.1) !important; /* Subtle hover without glow */
+  background: rgba(255, 107, 107, 0.1) !important; /* Subtle hover without glow */
   box-shadow: none !important;
 }
 
 /* ===========================
-   CHAT INPUT FIX - Remove Duplicate Frames (Light Adjustments)
+   CHAT INPUT FIX - Remove Duplicate Frames
 =========================== */
 
 /* Target the chat input container to ensure single instance and no duplicate borders */
@@ -663,8 +631,8 @@ body {
   align-items: center !important;
   gap: 12px !important;
   padding: 16px !important;
-  background: #ffffff !important;
-  border: 1px solid rgba(227, 27, 35, 0.2) !important;
+  background: rgba(15, 15, 18, 0.95) !important;
+  border: 1px solid rgba(255, 107, 107, 0.2) !important;
   border-radius: 20px !important; /* Single rounded frame */
   margin: 0 !important; /* Remove any extra margins causing duplication */
   width: 100% !important;
@@ -683,11 +651,11 @@ body {
 .input-field,
 .message-input input {
   flex: 1 !important;
-  background: rgba(0, 0, 0, 0.05) !important;
-  border: 1px solid rgba(227, 27, 35, 0.3) !important;
+  background: rgba(20, 20, 30, 0.8) !important;
+  border: 1px solid rgba(255, 107, 107, 0.3) !important;
   border-radius: 12px !important;
   padding: 12px 16px !important;
-  color: #333333 !important;
+  color: #e0e0e0 !important;
   font-size: 14px !important;
   outline: none !important;
   margin: 0 !important;
@@ -696,7 +664,7 @@ body {
 /* Style the send button */
 .send-btn,
 .chat-send-button {
-  background: linear-gradient(135deg, #e31b23 0%, #c8102e 100%) !important;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%) !important;
   color: white !important;
   border: none !important;
   border-radius: 12px !important;
@@ -713,6 +681,7 @@ body {
 .send-btn:hover,
 .chat-send-button:hover {
   transform: translateY(-2px) !important;
+  /* No glow */
 }
 
 /* Ensure only one input frame is visible and styled correctly */
@@ -730,18 +699,19 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.5); /* Semi-transparent */
+  background: rgba(15, 15, 15, 0.5); /* Semi-transparent */
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #e31b23, #c8102e);
+  background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
   border-radius: 10px;
   transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #f04e56, #e31b23);
+  background: linear-gradient(135deg, #ff8787, #ff6b6b);
+  /* Removed transform scale */
 }
 
 /* ===========================
@@ -1191,6 +1161,6 @@ body {
 
 /* Dark mode is default, but ensure focus visibility */
 *:focus-visible {
-  outline: 2px solid #e31b23;
+  outline: 2px solid #ff6b6b;
   outline-offset: 2px;
 }
