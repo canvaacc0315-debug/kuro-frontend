@@ -313,7 +313,6 @@ export default function DashboardPage() {
             <Link to="/privacy-policy" className="footer-link">Privacy Policy</Link>
           </div>
         </div>
-
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} RovexAI. All rights reserved.</p>
         </div>
