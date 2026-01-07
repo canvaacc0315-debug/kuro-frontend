@@ -5,6 +5,7 @@ import "../styles/kuro-dashboard.css";
 import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import { useRef } from "react";
+import logoIcon from "../assets/logo.svg"; // Add your logo image
 
 export default function DashboardPage() {
   const { user } = useUser();
