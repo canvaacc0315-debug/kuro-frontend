@@ -36,6 +36,8 @@ export default function DashboardPage() {
             Settings
           </button>
         </nav>
+        {/* RIGHT: user info */}
+        <UserButton showName afterSignOutUrl="/login" />
       </header>
 
       {/* ===== MAIN CONTENT ===== */}
