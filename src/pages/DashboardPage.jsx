@@ -20,7 +20,7 @@ export default function DashboardPanel({ pdfs = [] }) {
           <div className="hero-illustration">
             {/* Replace with your own image asset */}
             <img
-              src="https://www.shutterstock.com/image-illustration/3d-graphics-ai-robot-character-260nw-2595088299.jpg"
+              src="https://media.discordapp.net/attachments/1399772839296630907/1458462138048712774/content.png?ex=695fba36&is=695e68b6&hm=ad9808bea83ee49df2ac71c103e50de4a70c70b557f8058c5b4f3d9be155bbcf&=&format=webp&quality=lossless&width=670&height=1006"
               alt="AI Robot Assistant"
               className="illustration-image"
             />
