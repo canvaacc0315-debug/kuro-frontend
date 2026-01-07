@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "../styles/kuro-dashboard.css";
 import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
-import Footer from "../components/layout/Footer";
 
 export default function DashboardPage() {
   const { user } = useUser();
