@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import "../styles/grid-fix.css";
+import "../styles/kuro-dashboard.css";
 
 export default function DashboardPanel({ pdfs = [] }) {
   const totalPdfs = pdfs.length;
