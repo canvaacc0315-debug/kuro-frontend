@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import "../styles/kuro-dashboard.css";
 import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
+import { useRef } from "react";
 
 export default function DashboardPage() {
   const { user } = useUser();
   const navigate = useNavigate();
   const { openUserProfile } = useClerk();
+  const footerRef = useRef(null);
 
   const displayName =
     user?.fullName ||
