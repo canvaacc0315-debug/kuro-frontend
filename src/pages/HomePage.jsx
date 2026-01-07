@@ -1,7 +1,7 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "../styles/homepage.css";
+import "./styles/homepage.css";
 import logoIcon from "../assets/logo.svg"; // Add your logo image
 
 // Import icons for features - you can use react-icons or your own SVG
@@ -217,10 +217,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* footer1 */}
-      <footer1 className="footer1">
-        <div className="footer1-content">
-          <div className="footer1-section">
+      {/* footer */}
+      <footer className="footer">
+        <div className="footer-content">
+          <div className="footer-section">
             <div className="logo-container" onClick={() => navigate("/")}>
               <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
               <span className="logo-text">
@@ -228,33 +228,33 @@ export default function HomePage() {
                 <span className="logo-ai">AI</span>
               </span>
             </div>
-            <p className="footer1-tagline">
+            <p className="footer-tagline">
               Transforming how you work with documents through AI
             </p>
           </div>
 
-          <div className="footer1-section">
+          <div className="footer-section">
             <h4>Product</h4>
-            <a href="#features" className="footer1-link">Features</a>
+            <a href="#features" className="footer-link">Features</a>
             <a href="#how-it-works" className="nav-link">Working</a>
           </div>
 
-          <div className="footer1-section">
+          <div className="footer-section">
             <h4>Company</h4>
-            <Link to="/about" className="footer1-link">About</Link>
-            <Link to="/contact" className="footer1-link">Contact</Link>
+            <Link to="/about" className="footer-link">About</Link>
+            <Link to="/contact" className="footer-link">Contact</Link>
           </div>
 
-          <div className="footer1-section">
+          <div className="footer-section">
             <h4>Legal</h4>
-            <Link to="/privacy-policy" className="footer1-link">Privacy Policy</Link>
+            <Link to="/privacy-policy" className="footer-link">Privacy Policy</Link>
           </div>
         </div>
 
-        <div className="footer1-bottom">
+        <div className="footer-bottom">
           <p>© {new Date().getFullYear()} RovexAI. All rights reserved.</p>
         </div>
-      </footer1>
+      </footer>
     </div>
   );
 }
