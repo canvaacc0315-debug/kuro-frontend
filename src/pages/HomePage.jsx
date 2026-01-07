@@ -241,45 +241,6 @@ export default function HomePage() {
           </button>
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer ref={footerRef} className="footer">
-        <div className="footer-content">
-          <div className="footer-left">
-            <div className="logo-container">
-              <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
-              <span className="logo-text">
-                <span className="logo-red">Rovex</span>
-                <span className="logo-ai">AI</span>
-              </span>
-            </div>
-            <p className="footer-tagline">
-              Transforming how you work with documents through AI
-            </p>
-          </div>
-
-          <div className="footer-menus">
-            <div className="footer-column">
-              <h4>Product</h4>
-              <Link to="#features" className="footer-link">Features</Link>
-              <Link to="#how-it-works" className="footer-link">How it Works</Link>
-            </div>
-            <div className="footer-column">
-              <h4>Company</h4>
-              <Link to="/about" className="footer-link">About</Link>
-              <Link to="/contact" className="footer-link">Contact</Link>
-            </div>
-            <div className="footer-column">
-              <h4>Legal</h4>
-              <Link to="/privacy" className="footer-link">Privacy Policy</Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="footer-bottom">
-          <p>&copy; 2026 RovexAI. All rights reserved.</p>
-        </div>
-      </footer>
     </div>
   );
 }
@@ -309,6 +270,8 @@ function Step({ number, title, description, delay }) {
       <div className="step-number-red">{number}</div>
       <h3>{title}</h3>
       <p>{description}</p>
+      
+
     </div>
   );
 }
