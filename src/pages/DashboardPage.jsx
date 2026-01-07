@@ -28,7 +28,7 @@ export default function DashboardPage() {
         <nav className="navbar-links">
           <a href="/homepage" className="nav-link">Home</a>
           <a href="/app" className="nav-link">Workspace</a>
-          <a href="/contact us" className="nav-link">Help Center</a>
+          <a href="/https://www.rovexai.com/about" className="nav-link">Help Center</a>
           <button onClick={openUserProfile} className="nav-link settings-link">
             Settings
           </button>
