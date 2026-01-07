@@ -5,10 +5,10 @@
   color: #000;
   min-height: 100vh;
   overflow-x: hidden;
-
   /* 🔑 KEY FIX */
   display: flex;
   flex-direction: column;
+  padding-top: 80px; /* Matches approximate header height to prevent overlap */
 }
 
 /* Animations */
@@ -261,11 +261,6 @@
   justify-content: center;
 }
 
-/* Ensure home-root accounts for fixed header if needed */
-.home-root {
-  padding-top: 80px; /* Matches approximate header height to prevent overlap */
-}
-
 .hero-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -447,6 +442,13 @@
   box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2);
 }
 
+.step-number-red {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #dc2626;
+  margin-bottom: 1rem;
+}
+
 /* FEATURES - Red Cards */
 .features {
   padding: 6rem 2rem;
@@ -552,6 +554,7 @@
   color: #fff;
   padding: 2rem;
   margin-top: auto; /* If using flex on root, pushes to bottom */
+  margin-top: 4rem; /* Add space between CTA and footer */
 }
 
 .footer-content {
@@ -565,6 +568,13 @@
   flex-direction: column;
 }
 
+.footer-section h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
 .footer-tagline {
   color: #ccc;
   font-size: 0.9rem;
@@ -574,10 +584,22 @@
   color: #fff;
   text-decoration: none;
   margin-bottom: 0.5rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
 }
 
 .footer-link:hover {
   color: #dc2626;
+}
+
+.footer-ai {
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
 }
 
 .footer-bottom {
