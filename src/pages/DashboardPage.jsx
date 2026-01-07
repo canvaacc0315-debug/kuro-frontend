@@ -1,5 +1,9 @@
-import { useNavigate } from "react-router-dom";
-import "../styles/kuro-dashboard.css";
+import { useNavigate, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { motion } from "framer-motion";
+
+import logoIcon from "../assets/logo.svg";
 import "../styles/kuro-dashboard.css";
 
 export default function DashboardPanel({ pdfs = [] }) {
@@ -179,7 +183,7 @@ export default function DashboardPanel({ pdfs = [] }) {
           <div className="footer-section">
             <h4>Product</h4>
             <a href="#features" className="footer-link">Features</a>
-            <a href="#how-it-works" className="nav-link">Working</a>
+            <a href="#how-it-works" className="footer-link">Working</a>
           </div>
 
           <div className="footer-section">
