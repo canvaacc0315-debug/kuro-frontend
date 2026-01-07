@@ -11,7 +11,7 @@ export default function HomeOverlayButton() {
       type="button"
       className="home-overlay-btn"
       aria-label="Back to main page"
-      onClick={() => navigate("/dashboard")} // or "/app" if you prefer
+      onClick={() => navigate("/homepage")} // or "/app" if you prefer
     />
   );
 }

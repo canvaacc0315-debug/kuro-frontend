@@ -97,7 +97,7 @@ export default function App() {
         />
 
         {/* FALLBACK */}
-        <Route path="*" element={<Navigate to={isSignedIn ? "/dashboard" : "/"} replace />} />
+        <Route path="*" element={<Navigate to={isSignedIn ? "/homepage" : "/"} replace />} />
       </Routes>
     </>
   );
