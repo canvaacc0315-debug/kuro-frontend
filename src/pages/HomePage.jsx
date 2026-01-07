@@ -51,7 +51,7 @@ export default function HomePage() {
     {
       icon: <FaDna />,
       title: "Deep PDF Insights",
-      description: "Automatically generate summaries, key points, and structured outputs."
+      description: "Integrating advanced data to provide hyper-personalized assessments and plans."
     }
   ];
 
