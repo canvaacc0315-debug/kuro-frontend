@@ -278,42 +278,45 @@ export default function DashboardPage() {
           </div>
         </section>
       </main>
-
+      
       {/* ===== FOOTER ===== */}
-      <footer className="footer" ref={footerRef}>
-        <div className="footer-grid">
-          <div className="footer-column">
-            <h4 className="footer-title">RovexAI</h4>
-            <p className="footer-desc">Intelligent PDF solutions powered by AI.</p>
+      <footer1 className="footer1">
+        <div className="footer1-content">
+          <div className="footer1-section">
+            <div className="logo-container" onClick={() => navigate("/")}>
+              <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
+              <span className="logo-text">
+                <span className="logo-red">Rovex</span>
+                <span className="logo-ai">AI</span>
+              </span>
+            </div>
+            <p className="footer1-tagline">
+              Transforming how you work with documents through AI
+            </p>
           </div>
-          <div className="footer-column">
-            <h4 className="footer-title">Product</h4>
-            <ul className="footer-links">
-              <li><a href="/features">Features</a></li>
-              <li><a href="/pricing">Pricing</a></li>
-              <li><a href="/docs">Documentation</a></li>
-            </ul>
+
+          <div className="footer1-section">
+            <h4>Product</h4>
+            <a href="#features" className="footer1-link">Features</a>
+            <a href="#how-it-works" className="nav-link">Working</a>
           </div>
-          <div className="footer-column">
-            <h4 className="footer-title">Company</h4>
-            <ul className="footer-links">
-              <li><a href="/about">About Us</a></li>
-              <li><a href="/blog">Blog</a></li>
-              <li><a href="/contact">Contact</a></li>
-            </ul>
+
+          <div className="footer1-section">
+            <h4>Company</h4>
+            <Link to="/about" className="footer1-link">About</Link>
+            <Link to="/contact" className="footer1-link">Contact</Link>
           </div>
-          <div className="footer-column">
-            <h4 className="footer-title">Legal</h4>
-            <ul className="footer-links">
-              <li><a href="/privacy">Privacy Policy</a></li>
-              <li><a href="/terms">Terms of Service</a></li>
-            </ul>
+
+          <div className="footer1-section">
+            <h4>Legal</h4>
+            <Link to="/privacy-policy" className="footer1-link">Privacy Policy</Link>
           </div>
         </div>
-        <div className="footer-bottom">
-          &copy; 2026 RovexAI. All rights reserved.
+
+        <div className="footer1-bottom">
+          <p>© {new Date().getFullYear()} RovexAI. All rights reserved.</p>
         </div>
-      </footer>
+      </footer1>
     </div>
   );
 }

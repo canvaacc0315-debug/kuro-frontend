@@ -5,6 +5,8 @@
   color: #000;
   min-height: 100vh;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Animations */
@@ -537,6 +539,7 @@
   color: #fff;
   padding: 0.8rem 1.5rem 0.5rem; /* Fixed extra space */
   border-top: 1px solid rgba(220, 38, 38, 0.1);
+  margin-top: auto;
 }
 
 .footer1-content {
