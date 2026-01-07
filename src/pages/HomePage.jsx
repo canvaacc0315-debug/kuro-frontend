@@ -26,7 +26,8 @@ export default function HomePage() {
     {
       icon: <FaChartLine />,
       title: "AI & Machine Learning",
-      description: "Advanced AI models understand your PDFs contextually, not just by keywords.Ask questions, extract insights, and get answers with page‑level accuracy."
+      description: "Advanced AI models understand your PDFs contextually, not just by keywords."
+      "Ask questions, extract insights, and get answers with page‑level accuracy"
     },
     {
       icon: <FaWifi />,
