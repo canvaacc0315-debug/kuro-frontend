@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "../styles/kuro-dashboard.css";
 import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
-import { useRef, useEffect } from "react";
-import logoIcon from "../assets/logo.svg"; // Add your logo image
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -19,32 +17,6 @@ export default function DashboardPage() {
     user?.primaryEmailAddress?.emailAddress ||
     "User";
 
-  const footer1Ref = useRef(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (footer1Ref.current) {
-      observer.observe(footer1Ref.current);
-    }
-
-    return () => {
-      if (footer1Ref.current) {
-        observer.unobserve(footer1Ref.current);
-      }
-    };
-  }, []);
-
   return (
     <div className="kuro-dashboard-page">
       {/* ===== NAVBAR / HEADER ===== */}
@@ -57,7 +29,7 @@ export default function DashboardPage() {
 
         {/* RIGHT: user info (unchanged) */}
         <div className="navbar-right">
-          <div className="user-info" onClick={openUserProfile}>
+          <div className="user-info">
             <div className="user-avatar">
               {displayName?.[0]?.toUpperCase() || "U"}
             </div>
@@ -78,14 +50,6 @@ export default function DashboardPage() {
             Transform your PDF workflows with intelligent document processing
             and creation
           </p>
-          <button className="hero-cta" onClick={() => navigate("/app")}>
-            Get Started
-          </button>
-          <div className="floating-cards">
-            <div className="floating-card card1">AI-Powered Analysis</div>
-            <div className="floating-card card2">Seamless Editing</div>
-            <div className="floating-card card3">Smart OCR</div>
-          </div>
         </section>
 
         {/* WORKSPACE SECTION */}
@@ -116,7 +80,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=chat")}
             >
-              Go to Workspace
+              Enter Workspace
             </button>
           </div>
 
@@ -137,7 +101,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=analysis")}
             >
-              Go to Workspace
+              Enter Workspace
             </button>
           </div>
 
@@ -158,7 +122,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=upload")}
             >
-              Go to Workspace
+              Enter Workspace
             </button>
           </div>
 
@@ -179,7 +143,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=create")}
             >
-              Go to Workspace
+              Enter Workspace
             </button>
           </div>
 
@@ -199,7 +163,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=ocr")}
             >
-              Go to Workspace
+              Enter Workspace
             </button>
           </div>
 
@@ -216,7 +180,13 @@ export default function DashboardPage() {
               <li>Security Settings</li>
               <li>Update Profile</li>
             </ul>
-            {/* Button removed as per requirements */}
+            <button
+              type="button"
+              className="workspace-btn"
+              onClick={() => openUserProfile()}
+            >
+              OPEN SETTINGS
+            </button>
           </div>
         </section>
 
@@ -279,38 +249,6 @@ export default function DashboardPage() {
           </div>
         </section>
       </main>
-
-      {/* ===== footer1 ===== */}
-      <footer1 className="footer1">
-        <div className="footer1-content">
-          <div className="footer1-section">
-            <div className="logo-container" onClick={() => navigate("/")}>
-              <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
-              <span className="logo-text">
-                <span className="logo-red">Rovex</span>
-                <span className="logo-ai">AI</span>
-              </span>
-            </div>
-            <p className="footer1-tagline">
-              Transforming how you work with documents through AI
-            </p>
-          </div>
-
-          <div className="footer1-section">
-            <h4>Company</h4>
-            <Link to="/about" className="footer1-link">About</Link>
-            <Link to="/contact" className="footer1-link">Contact</Link>
-          </div>
-
-          <div className="footer1-section">
-            <h4>Legal</h4>
-            <Link to="/privacy-policy" className="footer1-link">Privacy Policy</Link>
-          </div>
-        </div>
-        <div className="footer1-bottom">
-          <p>© {new Date().getFullYear()} RovexAI. All rights reserved.</p>
-        </div>
-      </footer1>
     </div>
   );
 }
