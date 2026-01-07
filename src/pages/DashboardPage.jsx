@@ -6,7 +6,6 @@ import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import { useRef } from "react";
 import logoIcon from "../assets/logo.svg"; // Add your logo image
-import HomeOverlayButton from "../components/layout/HomeOverlayButton.jsx";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -28,7 +27,7 @@ export default function DashboardPage() {
         <div className="header-brand">
           <KuroLogo size={46} />
           <button>
-            <HomeOverlayButton />
+            <a href="/homepage" className="nav-link">
           </button>
           <span className="logo-text">
             <span className="logo-red">Rovex</span>
