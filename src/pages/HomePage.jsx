@@ -27,32 +27,31 @@ export default function HomePage() {
       icon: <FaChartLine />,
       title: "AI & Machine Learning",
       description: "Advanced AI models understand your PDFs contextually, not just by keywords."
-      description: "Ask questions, extract insights, and get answers with page‑level accuracy"
     },
     {
       icon: <FaWifi />,
-      title: "Wearables & IoT",
-      description: "Continuous, real-time tracking of data outside traditional settings for better insights."
+      title: "Real‑Time Document Intelligence",
+      description: "Analyze documents instantly as you upload them."
     },
     {
       icon: <FaVideo />,
-      title: "Telehealth Evolution",
-      description: "Dismantling geographical barriers to access, enabling effective remote monitoring."
+      title: "Collaborative AI Workspace",
+      description: "Work with your documents like a live workspace."
     },
     {
       icon: <FaDatabase />,
       title: "Big Data Interoperability",
-      description: "Seamlessly storing and securely sharing information across disparate systems."
+      description: "Handle multiple PDFs at once—reports, contracts, research, and more."
     },
     {
       icon: <FaShieldAlt />,
       title: "End-to-End Security",
-      description: "State-of-the-art encryption ensures your data remains private and compliant."
+      description: "Encrypted processing ensures data never leaks or trains public models."
     },
     {
       icon: <FaDna />,
-      title: "Genetic Insights",
-      description: "Integrating advanced data to provide hyper-personalized assessments and plans."
+      title: "Deep PDF Insights",
+      description: "Automatically generate summaries, key points, and structured outputs."
     }
   ];
 
