@@ -29,7 +29,7 @@ export default function DashboardPage() {
 
         {/* RIGHT: user info (unchanged) */}
         <div className="navbar-right">
-          <div className="user-info">
+          <div className="user-info" onClick={openUserProfile}>
             <div className="user-avatar">
               {displayName?.[0]?.toUpperCase() || "U"}
             </div>
@@ -50,6 +50,14 @@ export default function DashboardPage() {
             Transform your PDF workflows with intelligent document processing
             and creation
           </p>
+          <button className="hero-cta" onClick={() => navigate("/app")}>
+            Get Started
+          </button>
+          <div className="floating-cards">
+            <div className="floating-card card1">AI-Powered Analysis</div>
+            <div className="floating-card card2">Seamless Editing</div>
+            <div className="floating-card card3">Smart OCR</div>
+          </div>
         </section>
 
         {/* WORKSPACE SECTION */}
@@ -80,7 +88,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=chat")}
             >
-              Enter Workspace
+              Go to Workspace
             </button>
           </div>
 
@@ -101,7 +109,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=analysis")}
             >
-              Enter Workspace
+              Go to Workspace
             </button>
           </div>
 
@@ -122,7 +130,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=upload")}
             >
-              Enter Workspace
+              Go to Workspace
             </button>
           </div>
 
@@ -143,7 +151,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=create")}
             >
-              Enter Workspace
+              Go to Workspace
             </button>
           </div>
 
@@ -163,7 +171,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=ocr")}
             >
-              Enter Workspace
+              Go to Workspace
             </button>
           </div>
 
@@ -180,13 +188,7 @@ export default function DashboardPage() {
               <li>Security Settings</li>
               <li>Update Profile</li>
             </ul>
-            <button
-              type="button"
-              className="workspace-btn"
-              onClick={() => openUserProfile()}
-            >
-              OPEN SETTINGS
-            </button>
+            {/* Button removed as per requirements */}
           </div>
         </section>
 
@@ -249,6 +251,42 @@ export default function DashboardPage() {
           </div>
         </section>
       </main>
+
+      {/* ===== FOOTER ===== */}
+      <footer className="footer">
+        <div className="footer-grid">
+          <div className="footer-column">
+            <h4 className="footer-title">RovexAI</h4>
+            <p className="footer-desc">Intelligent PDF solutions powered by AI.</p>
+          </div>
+          <div className="footer-column">
+            <h4 className="footer-title">Product</h4>
+            <ul className="footer-links">
+              <li><a href="/features">Features</a></li>
+              <li><a href="/pricing">Pricing</a></li>
+              <li><a href="/docs">Documentation</a></li>
+            </ul>
+          </div>
+          <div className="footer-column">
+            <h4 className="footer-title">Company</h4>
+            <ul className="footer-links">
+              <li><a href="/about">About Us</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </div>
+          <div className="footer-column">
+            <h4 className="footer-title">Legal</h4>
+            <ul className="footer-links">
+              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="/terms">Terms of Service</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          &copy; 2026 RovexAI. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 }
