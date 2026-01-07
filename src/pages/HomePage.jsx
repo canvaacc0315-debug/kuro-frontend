@@ -1,7 +1,7 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import "./styles/homepage.css";
+import "../styles/homepage.css";
 import logoIcon from "../assets/logo.svg"; // Add your logo image
 
 // Import icons for features - you can use react-icons or your own SVG
