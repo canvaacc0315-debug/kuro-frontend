@@ -1,6 +1,6 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useNavigate, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../styles/homepage.css";
 import logoIcon from "../assets/logo.svg"; // Add your logo image
 
@@ -13,6 +13,7 @@ import {
 export default function HomePage() {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+  const footerRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,6 +21,30 @@ export default function HomePage() {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+
+    return () => {
+      if (footerRef.current) {
+        observer.unobserve(footerRef.current);
+      }
+    };
   }, []);
 
   const features = [
@@ -218,7 +243,7 @@ export default function HomePage() {
       </section>
 
       {/* FOOTER */}
-      <footer className="footer">
+      <footer className="footer" ref={footerRef}>
         <div className="footer-content">
           <div className="footer-section">
             <div className="logo-container" onClick={() => navigate("/")}>

@@ -541,6 +541,14 @@
   color: #fff;
   padding: 0.8rem 1.5rem 0.5rem; /* Fixed extra space */
   border-top: 1px solid rgba(220, 38, 38, 0.1);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.footer.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .footer-content {
