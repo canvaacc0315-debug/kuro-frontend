@@ -255,6 +255,15 @@
   padding: 8rem 2rem 5rem;
   max-width: 1400px;
   margin: 0 auto;
+  min-height: calc(100vh - 80px); /* Adjust based on header height (~60-80px); forces hero to fill viewport minus header */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure home-root accounts for fixed header if needed */
+.home-root {
+  padding-top: 80px; /* Matches approximate header height to prevent overlap */
 }
 
 .hero-content {
@@ -533,6 +542,49 @@
 
 .cta-section .btn-primary:hover {
   background: #fef2f2;
+}
+
+/* FOOTER - Added styles assuming missing from original; ensure normal flow */
+.footer {
+  position: relative; /* Ensure not fixed or absolute */
+  width: 100%;
+  background: #000; /* From screenshot */
+  color: #fff;
+  padding: 2rem;
+  margin-top: auto; /* If using flex on root, pushes to bottom */
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-tagline {
+  color: #ccc;
+  font-size: 0.9rem;
+}
+
+.footer-link {
+  color: #fff;
+  text-decoration: none;
+  margin-bottom: 0.5rem;
+}
+
+.footer-link:hover {
+  color: #dc2626;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 1rem;
+  color: #ccc;
+  font-size: 0.8rem;
 }
 
 /* Responsive Design */
