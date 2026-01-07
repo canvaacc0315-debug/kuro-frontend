@@ -79,7 +79,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgb(0, 0, 0);
 }
 
 .navbar-brand {
@@ -498,14 +498,6 @@ body {
   .navbar {
     padding: 20px 60px;
   }
-
-  .footer {
-    padding: 60px 60px;
-  }
-
-  .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 /* Tablet */
@@ -533,10 +525,6 @@ body {
 
   .navbar {
     padding: 20px 40px;
-  }
-
-  .footer {
-    padding: 50px 40px;
   }
 }
 
@@ -582,14 +570,6 @@ body {
     margin-bottom: 60px;
   }
 
-  .footer {
-    padding: 40px 20px;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
 
   .navbar {
     padding: 20px 20px;
@@ -656,11 +636,6 @@ body {
   .feature-desc {
     font-size: 14px;
   }
-
-  .footer {
-    padding: 30px 16px;
-  }
-
   .navbar {
     padding: 16px;
     flex-direction: column;
@@ -708,10 +683,6 @@ body {
   .workspace-btn {
     padding: 12px;
     font-size: 13px;
-  }
-
-  .footer {
-    padding: 20px 12px;
   }
 }
 
