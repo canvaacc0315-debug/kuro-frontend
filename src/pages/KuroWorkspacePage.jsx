@@ -452,11 +452,6 @@ export default function KuroWorkspacePage() {
         </div>
         <div className="navbar-right">
           <div className="user-info">
-            <div className="user-avatar">
-              {isLoaded && user?.firstName
-                ? user.firstName[0].toUpperCase()
-                : "?"}
-            </div>
             <div className="user-name">
               {isLoaded && user
                 ? user.fullName ||
