@@ -152,7 +152,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
 
   return (
     <div className="upload-panel-container">
-      <h1 className="welcome-title">“Your PDFs now have a brain.”</h1>
+      <h1 className="welcome-title">“Your PDF's now have a brain.”</h1>
       <div
         className={"upload-section" + (dragOver ? " drag-over" : "")}
         onDragOver={(e) => {
