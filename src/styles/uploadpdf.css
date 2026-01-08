@@ -302,8 +302,9 @@
 }
 
 .pdf-iframe {
-  width: 100%;
-  height: 600px;
+  width: 794px; /* A4 width at 96dpi */
+  height: 1123px; /* A4 height at 96dpi */
+  max-width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
   background: #fff;

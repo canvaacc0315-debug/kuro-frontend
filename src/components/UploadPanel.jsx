@@ -14,30 +14,11 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   const [viewedPdfId, setViewedPdfId] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0); // New state for upload progress
 
-  // ✅ ADDITION 1: restore PDFs on first load
+  // Clear uploaded files on mount (refresh)
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("rovex_uploaded_pdfs");
-      if (stored) {
-        onPdfsChange(JSON.parse(stored));
-      }
-    } catch {
-      // ignore
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    onPdfsChange([]);
+    localStorage.removeItem("rovex_uploaded_pdfs");
   }, []);
-
-  // ✅ ADDITION 2: persist PDFs whenever they change
-  useEffect(() => {
-    try {
-      localStorage.setItem(
-        "rovex_uploaded_pdfs",
-        JSON.stringify(pdfs)
-      );
-    } catch {
-      // ignore
-    }
-  }, [pdfs]);
 
   async function handleFiles(files) {
     if (!files || files.length === 0) return;
