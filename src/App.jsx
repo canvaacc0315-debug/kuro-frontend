@@ -85,7 +85,7 @@ export default function App() {
 
         {/* WORKSPACE */}
         <Route
-          path="https://www.rovexai.com/app?tab=upload"
+          path="/app"
           element={
             <ProtectedRoute>
               <>
