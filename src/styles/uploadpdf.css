@@ -12,7 +12,7 @@
   margin: 0 auto;
   padding: 40px 20px;
   background: #ffffff; /* Plain white background */
-  animation: fadeIn 0.5s ease-out; /* Fade-in animation on load */
+  animation: fadeIn 0.8s ease-in-out; /* Smoother fade-in with longer duration and ease-in-out */
   box-sizing: border-box;
 }
 
@@ -20,6 +20,12 @@
   color: #ff4d4f;
   font-size: 24px;
   margin-bottom: 40px;
+  animation: fadeInTitle 1s ease-in-out; /* Added fade-in for title */
+}
+
+@keyframes fadeInTitle {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
@@ -33,7 +39,7 @@
   max-width: none;
   padding: 40px 20px;
   text-align: center;
-  transition: all 0.3s ease; /* Smooth transitions for drag-over */
+  transition: all 0.4s ease-in-out; /* Smoother transition with ease-in-out */
 }
 
 .upload-section.drag-over {
@@ -52,12 +58,12 @@
   font-size: 48px;
   color: #a0a0a0;
   margin-bottom: 20px;
-  animation: float 2s ease-in-out infinite; /* Floating animation for icon */
+  animation: float 3s ease-in-out infinite; /* Slower float for smoother feel */
 }
 
 @keyframes float {
   0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-10px); }
   100% { transform: translateY(0); }
 }
 
@@ -83,11 +89,15 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .browse-button:hover {
   transform: scale(1.05); /* Scale on hover */
+}
+
+.browse-button:active {
+  transform: scale(0.95); /* Added active state for button press */
 }
 
 .subtext {
@@ -100,12 +110,12 @@
   margin-top: 20px;
   font-size: 12px;
   color: #ff6b6b;
-  animation: shake 0.5s ease; /* Shake animation on error */
+  animation: fadeShake 0.5s ease-in-out; /* Combined fade and shake for smoother error appearance */
 }
 
-@keyframes shake {
-  0% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
+@keyframes fadeShake {
+  0% { opacity: 0; transform: translateX(0); }
+  25% { opacity: 1; transform: translateX(-5px); }
   50% { transform: translateX(5px); }
   75% { transform: translateX(-5px); }
   100% { transform: translateX(0); }
@@ -127,6 +137,7 @@
   border-radius: 4px;
   background: #f0f0f0;
   appearance: none;
+  transition: all 0.3s ease-in-out; /* Smooth transition for progress bar */
 }
 
 .upload-progress progress::-webkit-progress-bar {
@@ -137,6 +148,13 @@
 .upload-progress progress::-webkit-progress-value {
   background: #ff4d4f;
   border-radius: 4px;
+  transition: width 0.4s ease-in-out; /* Smoother progress value transition */
+}
+
+.upload-progress progress::-moz-progress-bar {
+  background: #ff4d4f;
+  border-radius: 4px;
+  transition: width 0.4s ease-in-out;
 }
 
 .upload-progress span {
@@ -156,6 +174,7 @@
   font-weight: 600;
   color: #333;
   margin-bottom: 20px;
+  animation: fadeIn 0.8s ease-in-out; /* Added fade-in for title */
 }
 
 .files-list {
@@ -173,12 +192,12 @@
   background: #fafafa;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
-  animation: slideIn 0.4s ease-out; /* Slide-in animation for each file */
+  transition: all 0.4s ease-in-out; /* Smoother hover transition */
+  animation: slideIn 0.5s ease-in-out; /* Slightly longer slide-in for smoother add */
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(20px); }
+  from { opacity: 0; transform: translateX(30px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
@@ -191,6 +210,13 @@
   font-size: 24px;
   margin-right: 16px;
   color: #a0a0a0;
+  animation: iconBounce 0.5s ease-in-out; /* Added subtle bounce for icon */
+}
+
+@keyframes iconBounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
 .file-info {
@@ -218,7 +244,7 @@
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
   margin-right: 12px;
 }
 
@@ -230,18 +256,24 @@
 .status-badge.processing {
   background: #fff3e0;
   color: #ffa000;
-  animation: pulse 1.5s infinite; /* Pulsing animation for processing */
+  animation: pulse 2s ease-in-out infinite; /* Slower pulse for smoother animation */
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 160, 0, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(255, 160, 0, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 160, 0, 0); }
+.status-badge.uploading {
+  background: #fff3e0;
+  color: #ffa000;
+  animation: pulse 2s ease-in-out infinite; /* Added pulse for uploading status */
 }
 
 .status-badge.error {
   background: #ffebee;
   color: #d32f2f;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 160, 0, 0.3); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 160, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 160, 0, 0); }
 }
 
 .view-button {
@@ -253,13 +285,17 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
   margin-right: 12px;
 }
 
 .view-button:hover {
   background: #e63946;
   transform: translateY(-1px);
+}
+
+.view-button:active {
+  transform: scale(0.95); /* Added active state */
 }
 
 .remove-button {
@@ -271,12 +307,16 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .remove-button:hover {
   background: #5a6268;
   transform: translateY(-1px);
+}
+
+.remove-button:active {
+  transform: scale(0.95); /* Added active state */
 }
 
 /* PDF viewer section */
@@ -289,6 +329,12 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  animation: slideUp 0.6s ease-in-out; /* Added slide-up animation for viewer appearance */
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .viewer-header {
@@ -314,6 +360,7 @@
   background: #fff;
   display: block;
   margin: 0 auto;
+  transition: opacity 0.5s ease-in-out; /* Smooth fade for iframe load */
 }
 
 .close-viewer-button {
@@ -325,12 +372,16 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease-in-out;
 }
 
 .close-viewer-button:hover {
   background: #e63946;
   transform: translateY(-1px);
+}
+
+.close-viewer-button:active {
+  transform: scale(0.95); /* Added active state */
 }
 
 /* Responsive adjustments (desktop first, mobile fallback) */
