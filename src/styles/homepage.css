@@ -546,26 +546,35 @@
   background: #fef2f2;
 }
 
-/* FOOTER - Added styles assuming missing from original; ensure normal flow */
+/* FOOTER */
 .footer {
-  position: relative; /* Ensure not fixed or absolute */
+  position: relative;
   width: 100%;
-  background: #000; /* From screenshot */
+  background: #000;
   color: #fff;
-  padding: 2rem;
-  margin-top: auto; /* If using flex on root, pushes to bottom */
-  margin-top: 4rem; /* Add space between CTA and footer */
+  padding: 4rem 2rem 2rem; /* Increased top/bottom padding for taller footer */
+  margin-top: auto;
+  margin-top: 4rem;
 }
 
 .footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  gap: 2rem; /* Fallback for smaller screens */
 }
 
 .footer-section {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.brand-section {
+  max-width: 250px; /* Prevent brand from taking too much space */
 }
 
 .footer-section h4 {
@@ -578,6 +587,7 @@
 .footer-tagline {
   color: #ccc;
   font-size: 0.9rem;
+  margin-top: 0.5rem;
 }
 
 .footer-link {
@@ -586,15 +596,16 @@
   margin-bottom: 0.5rem;
   background: none;
   border: none;
-  padding: 0;
+  padding: 0 0 0 0.5rem; /* Slight indentation for links under headings */
   cursor: pointer;
-  text-align: left;
   font-size: 0.95rem;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.2s ease;
+  display: block; /* Ensure vertical stacking */
 }
 
 .footer-link:hover {
   color: #dc2626;
+  transform: translateX(5px); /* Subtle slide animation on hover */
 }
 
 .footer-ai {
@@ -604,9 +615,11 @@
 
 .footer-bottom {
   text-align: center;
-  margin-top: 1rem;
   color: #ccc;
   font-size: 0.8rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem; /* Space above copyright */
 }
 
 /* Responsive Design */
@@ -628,6 +641,11 @@
   
   .hero-stats {
     justify-content: center;
+  }
+
+  .footer-content {
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 }
 
@@ -663,14 +681,12 @@
   }
   
   .footer-content {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 2rem;
   }
   
   .footer-bottom {
-    flex-direction: column;
-    gap: 0.75rem;
-    text-align: center;
+    padding-top: 1rem;
   }
 }
 @keyframes fadeInUpSafe {
