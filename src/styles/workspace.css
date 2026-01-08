@@ -200,7 +200,9 @@ body {
 .workspace-title {
   font-size: 28px;
   font-weight: 700;
+  color: #000000;
 }
+
 
 .workspace-title-accent {
   color: #ff0000;
