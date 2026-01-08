@@ -134,7 +134,7 @@ export default function DashboardPage() {
             </ul>
             <button
               className="workspace-btn"
-              onClick={() => navigate("https://www.rovexai.com/app?tab=upload")}
+              onClick={() => navigate("/app?tab=upload")}
             >
               Go to Workspace
             </button>
