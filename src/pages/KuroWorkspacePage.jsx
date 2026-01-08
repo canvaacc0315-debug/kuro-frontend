@@ -429,7 +429,7 @@ export default function KuroWorkspacePage() {
             onClick={() => handleTabClick("upload")}
           >
             <span className="sidebar-icon">📄</span>
-            <span className="sidebar-label">Documents</span>
+            <span className="sidebar-label">Upload PDF!</span>
           </button>
           <button
             className={`sidebar-item ${activeTab === "chat" ? "active" : ""}`}
