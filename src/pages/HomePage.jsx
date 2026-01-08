@@ -124,14 +124,6 @@ export default function HomePage() {
                 : "Loading..."}
             </div>
           </div>
-          <UserButton
-            afterSignOutUrl="/"
-            appearance={{
-              elements: {
-                avatarBox: "navbar-profile-photo",
-              },
-            }}
-          />
         </div>
 
         <nav className="nav">
