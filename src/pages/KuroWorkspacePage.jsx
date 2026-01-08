@@ -429,38 +429,78 @@ export default function KuroWorkspacePage() {
     <RovexProvider>
     <InstructionModal />
     <div className="workspace-root">
-      {/* TOP NAVBAR (same style as home) */}
-      <header className="navbar">
-        <div className="navbar-brand">
-          <KuroLogo size={36} />   {/* ✅ uses same logo */}
-          <div className="navbar-brand-text">RovexAI</div>
-        </div>
-        <div className="navbar-right">
-          <div className="user-info">
-            <div className="user-avatar">
-              {isLoaded && user?.firstName
-                ? user.firstName[0].toUpperCase()
-                : "?"}
-            </div>
-            <div className="user-name">
-              {isLoaded && user
-                ? user.fullName ||
-                  user.primaryEmailAddress?.emailAddress ||
-                  "User"
-                : "Loading..."}
-            </div>
+      {/* UI CHANGE: Moved navbar to top of sidebar for integrated look, but kept logic intact. Added smooth fade-in animation via CSS. */}
+      <aside className="sidebar">
+        <div className="sidebar-header">
+          <div className="navbar-brand">
+            <KuroLogo size={36} />   {/* ✅ uses same logo */}
+            <div className="navbar-brand-text">RovexAI</div>
           </div>
-          <UserButton
-            afterSignOutUrl="/"
-            appearance={{
-              elements: {
-                avatarBox: "navbar-profile-photo",
-              },
-            }}
-          />
+          <div className="navbar-right">
+            <div className="user-info">
+              <div className="user-avatar">
+                {isLoaded && user?.firstName
+                  ? user.firstName[0].toUpperCase()
+                  : "?"}
+              </div>
+              <div className="user-name">
+                {isLoaded && user
+                  ? user.fullName ||
+                    user.primaryEmailAddress?.emailAddress ||
+                    "User"
+                  : "Loading..."}
+              </div>
+            </div>
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: "navbar-profile-photo",
+                },
+              }}
+            />
+          </div>
         </div>
-      </header>
-      {/* MAIN */}
+        {/* UI CHANGE: Replaced top tabs-nav with vertical sidebar items. Added icons, labels, hover/active animations (CSS transition). Exact order: Documents (upload), Chat, Analysis, OCR, PDF Creator. White bg, red active highlight. */}
+        <nav className="sidebar-nav">
+          <button
+            className={`sidebar-item ${activeTab === "upload" ? "active" : ""}`}
+            onClick={() => handleTabClick("upload")}
+          >
+            <span className="sidebar-icon">📄</span>
+            <span className="sidebar-label">Documents</span>
+          </button>
+          <button
+            className={`sidebar-item ${activeTab === "chat" ? "active" : ""}`}
+            onClick={() => handleTabClick("chat")}
+          >
+            <span className="sidebar-icon">💬</span>
+            <span className="sidebar-label">Chat</span>
+          </button>
+          <button
+            className={`sidebar-item ${activeTab === "analysis" ? "active" : ""}`}
+            onClick={() => handleTabClick("analysis")}
+          >
+            <span className="sidebar-icon">📊</span>
+            <span className="sidebar-label">Analysis</span>
+          </button>
+          <button
+            className={`sidebar-item ${activeTab === "ocr" ? "active" : ""}`}
+            onClick={() => handleTabClick("ocr")}
+          >
+            <span className="sidebar-icon">🔍</span>
+            <span className="sidebar-label">OCR</span>
+          </button>
+          <button
+            className={`sidebar-item ${activeTab === "create" ? "active" : ""}`}
+            onClick={() => handleTabClick("create")}
+          >
+            <span className="sidebar-icon">✏️</span>
+            <span className="sidebar-label">PDF Creator</span>
+          </button>
+        </nav>
+      </aside>
+      {/* UI CHANGE: Main now to right of sidebar, with clean spacing and card-based sections. Added transition for content fade-in when tab changes. */}
       <main className="main-container">
         <header className="workspace-header">
           <div>
@@ -470,610 +510,586 @@ export default function KuroWorkspacePage() {
             </h1>
           </div>
         </header>
-        {/* top‑level tabs */}
-        <div className="tabs-nav">
-          <button
-            className={`tab-btn ${activeTab === "upload" ? "active" : ""}`}
-            onClick={() => handleTabClick("upload")}
+        {/* UI CHANGE: Wrapped all tab contents in a container with fade transition. Removed old tabs-nav. Made sections card-like with shadows/spacing for clean SaaS look. */}
+        <div className="content-wrapper">
+          <section
+            id="uploadTab"
+            className={`tab-content card ${activeTab === "upload" ? "active" : ""}`}
           >
-            📤 Upload PDFs
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "chat" ? "active" : ""}`}
-            onClick={() => handleTabClick("chat")}
-          >
-            💬 Chat Rovex
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "analysis" ? "active" : ""}`}
-            onClick={() => handleTabClick("analysis")}
-          >
-            📊 Analysis
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "ocr" ? "active" : ""}`}
-            onClick={() => handleTabClick("ocr")}
-          >
-            🔍 OCR(PDF)
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "create" ? "active" : ""}`}
-            onClick={() => handleTabClick("create")}
-          >
-            ✏️ Create & Edit
-          </button>
-        </div>
-        {/* UPLOAD TAB */}
-        <section
-          id="uploadTab"
-          className={`tab-content ${activeTab === "upload" ? "active" : ""}`}
-        >
-          <div className="upload-container">
-            {/* LEFT: either upload UI OR PDF preview */}
-            {previewFile ? (
-              <div className="pdf-preview-panel">
-                <div className="pdf-preview-header">
-                  <div className="pdf-preview-title">
-                    📄 Preview: {previewFile.name}
-                  </div>
-                  <button
-                    type="button"
-                    className="pdf-preview-back-btn"
-                    onClick={() => setPreviewFile(null)}
-                  >
-                    ← Back to uploads
-                  </button>
-                </div>
-                <iframe
-                  className="pdf-preview-frame"
-                  src={previewFile.url}
-                  title={previewFile.name}
-                  style={{
-                    width: "100%",
-                    height: "75vh",
-                    border: "none",
-                    borderRadius: "0",
-                    boxShadow: "none",
-                    background: "#111",
-                  }}
-                />
-              </div>
-            ) : (
-              <div
-                className="upload-area"
-                onDrop={handleDrop}
-                onDragOver={handleDragOver}
-              >
-                <div className="upload-icon">📁</div>
-                <div className="upload-title">Drag & Drop PDFs Here</div>
-                <div className="upload-desc">
-                  Or click to browse from your computer. Support for multiple
-                  files.
-                </div>
-                <button
-                  className="upload-btn"
-                  type="button"
-                  onClick={() =>
-                    document.getElementById("fileInputHidden")?.click()
-                  }
-                >
-                  Select PDFs
-                </button>
-                <input
-                  id="fileInputHidden"
-                  type="file"
-                  multiple
-                  accept=".pdf"
-                  className="file-input"
-                  onChange={handleFileInputChange}
-                />
-              </div>
-            )}
-            {/* RIGHT: uploaded files list */}
-            <div className="uploaded-files">
-              <div className="uploaded-files-title">📋 Uploaded Files</div>
-              {uploadedFiles.length === 0 ? (
-                <div className="empty-state" style={{ padding: 20, margin: 0 }}>
-                  <div style={{ fontSize: 12, color: "#666" }}>
-                    No files uploaded yet
-                  </div>
-                </div>
-              ) : (
-                uploadedFiles.map((f) => (
-                  <div key={f.id} className="file-item">
-                    <div className="file-info">
-                      <div className="file-icon">📄</div>
-                      <div className="file-details">
-                        <div className="file-name">{f.name}</div>
-                        <div className="file-size">{f.sizeMB} MB</div>
-                      </div>
+            <div className="upload-container">
+              {/* LEFT: either upload UI OR PDF preview */}
+              {previewFile ? (
+                <div className="pdf-preview-panel">
+                  <div className="pdf-preview-header">
+                    <div className="pdf-preview-title">
+                      📄 Preview: {previewFile.name}
                     </div>
-                    <div className="file-actions">
-                      <button
-                        className="file-action-btn"
-                        type="button"
-                        onClick={() => setPreviewFile(f)}
-                      >
-                        View
-                      </button>
-                      <button
-                        className="file-action-btn"
-                        type="button"
-                        onClick={() => handleRemoveFile(f.id)}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </section>
-        {/* CHAT TAB */}
-        <section
-          id="chatTab"
-          className={`tab-content ${activeTab === "chat" ? "active" : ""}`}
-        >
-          {/* sub‑tabs */}
-          <div className="chat-subtabs-nav">
-            <button
-              className={`chat-subtab-btn ${
-                activeChatSubTab === "current" ? "active" : ""
-              }`}
-              onClick={() => handleChatSubTabClick("current")}
-            >
-              💬 Current Chat
-            </button>
-            <button
-              className={`chat-subtab-btn ${
-                activeChatSubTab === "history" ? "active" : ""
-              }`}
-              onClick={() => handleChatSubTabClick("history")}
-            >
-              📚 Chat History
-            </button>
-            <button
-              className={`chat-subtab-btn ${
-                activeChatSubTab === "export" ? "active" : ""
-              }`}
-              onClick={() => handleChatSubTabClick("export")}
-            >
-              📥 Export Conversation
-            </button>
-          </div>
-          {/* CURRENT CHAT */}
-          {activeChatSubTab === "current" && (
-            <div className="chat-subtab-content active">
-              <div className="chat-layout">
-
-                {/* LEFT — MAIN CHAT */}
-                <div className="chat-main">
-
-                  {/* banner with selected file */}
-                  {selectedFile && (
-                    <div className="chat-selected-file-banner">
-                      📄 Chatting with: <strong>{selectedFile.name}</strong>
-                    </div>
-                  )}
-                  {/* TOP CONTROLS */}
-                  <div className="chat-top-row">
-                    <div className="chat-scope-bar">
-                      <span className="scope-label">Scope:</span>
-
-                      <div className="scope-options">
-                        <button
-                          className={`scope-pill ${chatScope.type === "all" ? "active" : ""}`}
-                          onClick={() =>
-                            setChatScope({ type: "all", page: "", from: "", to: "" })
-                          }
-                        >
-                          Entire PDF
-                        </button>
-
-                        <button
-                          className={`scope-pill ${chatScope.type === "page" ? "active" : ""}`}
-                          onClick={() =>
-                            setChatScope({ type: "page", page: "", from: "", to: "" })
-                          }
-                        >
-                          Page
-                        </button>
-
-                        <button
-                          className={`scope-pill ${chatScope.type === "range" ? "active" : ""}`}
-                          onClick={() =>
-                            setChatScope({ type: "range", page: "", from: "", to: "" })
-                          }
-                        >
-                          Range
-                        </button>
-                      </div>
-
-                      {chatScope.type === "page" && (
-                        <input
-                          type="number"
-                          className="scope-input"
-                          placeholder="Page #"
-                          value={chatScope.page}
-                          onChange={(e) =>
-                            setChatScope((prev) => ({ ...prev, page: e.target.value }))
-                          }
-                          min="1"
-                        />
-                      )}
-
-                      {chatScope.type === "range" && (
-                        <div className="scope-range-inputs">
-                          <input
-                            type="number"
-                            className="scope-input"
-                            placeholder="From"
-                            value={chatScope.from}
-                            onChange={(e) =>
-                              setChatScope((prev) => ({ ...prev, from: e.target.value }))
-                            }
-                            min="1"
-                          />
-                          <span className="scope-separator">–</span>
-                          <input
-                            type="number"
-                            className="scope-input"
-                            placeholder="To"
-                            value={chatScope.to}
-                            onChange={(e) =>
-                              setChatScope((prev) => ({ ...prev, to: e.target.value }))
-                            }
-                            min="1"
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="chat-pdf-select">
-                      <label className="form-label">PDF to chat with</label>
-                      <select
-                        className="form-select"
-                        value={selectedPdfId}
-                        onChange={(e) => setSelectedPdfId(e.target.value)}
-                        disabled={uploadedFiles.length === 0}
-                      >
-                        {uploadedFiles.length === 0 ? (
-                          <option>No PDFs uploaded yet</option>
-                        ) : (
-                          <>
-                            <option value="">All PDFs / general chat</option>
-                            {uploadedFiles.map((f) => (
-                              <option key={f.id} value={f.id}>
-                                {f.name}
-                              </option>
-                            ))}
-                          </>
-                        )}
-                      </select>
-                    </div>
-
-                    <div className="chat-answer-style">
-                      <label className="form-label">Answer style</label>
-                      <select
-                        className="form-select"
-                        value={answerStyle}
-                        onChange={(e) => setAnswerStyle(e.target.value)}
-                      >
-                        <option value="default">Helpful explanation</option>
-                        <option value="summary">Concise summary</option>
-                        <option value="exam">Exam / questions</option>
-                        <option value="bullet">Bullet points</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* FIXED: Added gap for spacing, fixed classNames, added inline styles for less aggressive colors */}
-                  <div 
-                    className="chat-actions-row" 
-                    style={{ 
-                      display: "flex", 
-                      justifyContent: "flex-end", 
-                      padding: "5px 0", 
-                      marginBottom: "5px",
-                      gap: "12px"  // 👈 Adds breathing room between buttons
-                    }}
-                  >
                     <button
                       type="button"
-                      className="save-conversation-btn"  // 👈 Fixed className (was shared with clear)
-                      onClick={handleSaveConversation}
-                      style={{
-                        backgroundColor: "#28a745",  // 👈 Softer green for "safe" save action
-                        color: "white",
-                        border: "none",
-                        padding: "8px 16px",
-                        borderRadius: "6px",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        whiteSpace: "nowrap"
-                      }}
+                      className="pdf-preview-back-btn"
+                      onClick={() => setPreviewFile(null)}
                     >
-                      💾 Save Conversation
-                    </button>
-                    <button
-                      type="button"
-                      className="clear-conversation-btn"
-                      onClick={handleClearConversation}
-                      style={{
-                        backgroundColor: "#dc3545",  // 👈 Kept red but you can swap to #6c757d for gray if preferred
-                        color: "white",
-                        border: "none",
-                        padding: "8px 16px",
-                        borderRadius: "6px",
-                        cursor: "pointer",
-                        fontSize: "14px",
-                        whiteSpace: "nowrap"
-                      }}
-                    >
-                      🗑 Clear Conversation
+                      ← Back to uploads
                     </button>
                   </div>
-
-                  {/* CHAT MESSAGES */}
-                  <div className="chat-container">
-                    <div 
-                      ref={chatMessagesRef}
-                      className="chat-messages no-scrollbar" 
-                      style={{ 
-                        msOverflowStyle: 'none',  /* IE and Edge */
-                        scrollbarWidth: 'none',  /* Firefox */
-                      }}
-                    >
-                      {conversation.map((m) => (
-                        <div
-                          key={m.id}
-                          className={`message ${m.role === "user" ? "user" : "bot"}`}
-                        >
-                          {m.role === "bot" && (
-                            <img
-                              src="/kuro-logo.png"
-                              alt="kuro-logo"
-                              className="message-avatar"
-                            />
-                          )}
-
-                          <div className="message-bubble">{m.content}</div>
-
-                          {m.role === "user" && (
-                            <img
-                              src={user?.imageUrl}
-                              alt="User"
-                              className="message-avatar"
-                            />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* INPUT */}
-                    <div className="chat-input-area">
-                      <input
-                        className="chat-input"
-                        placeholder="Ask anything about your PDFs..."
-                        value={chatInput}
-                        onChange={(e) => setChatInput(e.target.value)}
-                        onKeyDown={handleChatKeyDown}
-                        disabled={isSending}
-                      />
-                      <button
-                        className="send-btn"
-                        type="button"
-                        onClick={handleSend}
-                        disabled={isSending}
-                      >
-                        {isSending ? "Sending..." : "Send"}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* RIGHT — QUESTION ASSIST */}
-                <div className="chat-assist">
-                  <PdfQuestionSuggestions
-                    onSelect={(q) => {
-                      setChatInput(q);
-                      setTimeout(() => handleSend(), 100);
+                  <iframe
+                    className="pdf-preview-frame"
+                    src={previewFile.url}
+                    title={previewFile.name}
+                    style={{
+                      width: "100%",
+                      height: "75vh",
+                      border: "none",
+                      borderRadius: "0",
+                      boxShadow: "none",
+                      background: "#111",
                     }}
                   />
                 </div>
-              </div>
-            </div>
-          )}
-          {/* CHAT HISTORY */}
-          {activeChatSubTab === "history" && (
-            <div className="chat-subtab-content active">
-              <div className="history-container">
-                <div className="history-header">
-                  <h3 className="history-title">📚 Your Chat History</h3>
+              ) : (
+                <div
+                  className="upload-area"
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                >
+                  <div className="upload-icon">📁</div>
+                  <div className="upload-title">Drag & Drop PDFs Here</div>
+                  <div className="upload-desc">
+                    Or click to browse from your computer. Support for multiple
+                    files.
+                  </div>
                   <button
+                    className="upload-btn"
                     type="button"
-                    className="clear-history-btn"
-                    onClick={handleClearHistory}
+                    onClick={() =>
+                      document.getElementById("fileInputHidden")?.click()
+                    }
                   >
-                    Clear All
+                    Select PDFs
                   </button>
+                  <input
+                    id="fileInputHidden"
+                    type="file"
+                    multiple
+                    accept=".pdf"
+                    className="file-input"
+                    onChange={handleFileInputChange}
+                  />
                 </div>
-                {history.length === 0 ? (
-                  <div className="empty-state">
-                    <div className="empty-icon">📭</div>
-                    <div className="empty-title">No Chat History Yet</div>
-                    <div className="empty-desc">
-                      Your saved conversations will appear here. Save a
-                      conversation from the Current Chat tab to get started.
+              )}
+              {/* RIGHT: uploaded files list */}
+              <div className="uploaded-files">
+                <div className="uploaded-files-title">📋 Uploaded Files</div>
+                {uploadedFiles.length === 0 ? (
+                  <div className="empty-state" style={{ padding: 20, margin: 0 }}>
+                    <div style={{ fontSize: 12, color: "#666" }}>
+                      No files uploaded yet
                     </div>
                   </div>
                 ) : (
-                  <div className="history-list">
-                    {history.map((h) => (
-                      <div key={h.id} className="history-item">
-                        <div>
-                          <div className="history-item-title">{h.title}</div>
-                          <div className="history-item-info">{h.meta}</div>
-                        </div>
-                        <div className="history-item-actions">
-                          <button
-                            className="history-item-btn"
-                            type="button"
-                            onClick={() => handleLoadHistoryItem(h.id)}
-                          >
-                            Load
-                          </button>
-                          <button
-                            className="history-item-btn"
-                            type="button"
-                            onClick={() => handleDeleteHistoryItem(h.id)}
-                          >
-                            Delete
-                          </button>
+                  uploadedFiles.map((f) => (
+                    <div key={f.id} className="file-item">
+                      <div className="file-info">
+                        <div className="file-icon">📄</div>
+                        <div className="file-details">
+                          <div className="file-name">{f.name}</div>
+                          <div className="file-size">{f.sizeMB} MB</div>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                      <div className="file-actions">
+                        <button
+                          className="file-action-btn"
+                          type="button"
+                          onClick={() => setPreviewFile(f)}
+                        >
+                          View
+                        </button>
+                        <button
+                          className="file-action-btn"
+                          type="button"
+                          onClick={() => handleRemoveFile(f.id)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  ))
                 )}
               </div>
             </div>
-          )}
-          {/* EXPORT CONVERSATION */}
-          {activeChatSubTab === "export" && (
-            <div className="chat-subtab-content active">
-              <div className="export-container">
-                <div className="export-header">
-                  <h3 className="export-title">📥 Export Your Conversation</h3>
-                  <p className="export-desc">
-                    Download or share your current chat conversation in multiple
-                    formats.
-                  </p>
-                </div>
-                <div className="export-options-grid export-grid-3">
-                  <div className="export-card">
-                    <span className="export-icon">📄</span>
-                    <h4 className="export-card-title">Export as PDF</h4>
-                    <p className="export-card-desc">
-                      Download your entire conversation with formatting and
-                      timestamps.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleExportPDF}
-                    >
-                      📥 Export PDF
-                    </button>
-                  </div>
-                  <div className="export-card">
-                    <span className="export-icon">📝</span>
-                    <h4 className="export-card-title">
-                      Export as Word (.DOCX)
-                    </h4>
-                    <p className="export-card-desc">
-                      Perfect for editing and sharing in Microsoft Word or
-                      Google Docs.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleExportDOCX}
-                    >
-                      📥 Export DOCX
-                    </button>
-                  </div>
-                  <div className="export-card">
-                    <span className="export-icon">📊</span>
-                    <h4 className="export-card-title">Export as CSV</h4>
-                    <p className="export-card-desc">
-                      Import to Excel or Google Sheets for analysis and
-                      processing.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleExportCSV}
-                    >
-                      📥 Export CSV
-                    </button>
-                  </div>
-                  <div className="export-card">
-                    <span className="export-icon">📋</span>
-                    <h4 className="export-card-title">
-                      Export as Text (.TXT)
-                    </h4>
-                    <p className="export-card-desc">
-                      Simple plain text format, universal compatibility.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleExportTXT}
-                    >
-                      📥 Export TXT
-                    </button>
-                  </div>
-                  <div className="export-card">
-                    <span className="export-icon">📋</span>
-                    <h4 className="export-card-title">Copy to Clipboard</h4>
-                    <p className="export-card-desc">
-                      Copy the entire conversation to paste anywhere.
-                    </p>
-                    <button
-                      className="export-btn"
-                      type="button"
-                      onClick={handleCopyText}
-                    >
-                      📋 Copy Text
-                    </button>
-                  </div>
-                </div>
-                {exportStatus && (
-                  <div className="export-status">
-                    <div className="status-icon">
-                      {exportStatus.type === "error" ? "⚠️" : "✅"}
+          </section>
+          <section
+            id="chatTab"
+            className={`tab-content card ${activeTab === "chat" ? "active" : ""}`}
+          >
+            {/* UI CHANGE: Kept subtabs but styled as horizontal in main area for clean layout. Added hover/transition. */}
+            <div className="chat-subtabs-nav">
+              <button
+                className={`chat-subtab-btn ${
+                  activeChatSubTab === "current" ? "active" : ""
+                }`}
+                onClick={() => handleChatSubTabClick("current")}
+              >
+                💬 Current Chat
+              </button>
+              <button
+                className={`chat-subtab-btn ${
+                  activeChatSubTab === "history" ? "active" : ""
+                }`}
+                onClick={() => handleChatSubTabClick("history")}
+              >
+                📚 Chat History
+              </button>
+              <button
+                className={`chat-subtab-btn ${
+                  activeChatSubTab === "export" ? "active" : ""
+                }`}
+                onClick={() => handleChatSubTabClick("export")}
+              >
+                📥 Export Conversation
+              </button>
+            </div>
+            {/* CURRENT CHAT */}
+            {activeChatSubTab === "current" && (
+              <div className="chat-subtab-content active">
+                <div className="chat-layout">
+
+                  {/* LEFT — MAIN CHAT */}
+                  <div className="chat-main">
+
+                    {/* banner with selected file */}
+                    {selectedFile && (
+                      <div className="chat-selected-file-banner">
+                        📄 Chatting with: <strong>{selectedFile.name}</strong>
+                      </div>
+                    )}
+                    {/* TOP CONTROLS */}
+                    <div className="chat-top-row">
+                      <div className="chat-scope-bar">
+                        <span className="scope-label">Scope:</span>
+
+                        <div className="scope-options">
+                          <button
+                            className={`scope-pill ${chatScope.type === "all" ? "active" : ""}`}
+                            onClick={() =>
+                              setChatScope({ type: "all", page: "", from: "", to: "" })
+                            }
+                          >
+                            Entire PDF
+                          </button>
+
+                          <button
+                            className={`scope-pill ${chatScope.type === "page" ? "active" : ""}`}
+                            onClick={() =>
+                              setChatScope({ type: "page", page: "", from: "", to: "" })
+                            }
+                          >
+                            Page
+                          </button>
+
+                          <button
+                            className={`scope-pill ${chatScope.type === "range" ? "active" : ""}`}
+                            onClick={() =>
+                              setChatScope({ type: "range", page: "", from: "", to: "" })
+                            }
+                          >
+                            Range
+                          </button>
+                        </div>
+
+                        {chatScope.type === "page" && (
+                          <input
+                            type="number"
+                            className="scope-input"
+                            placeholder="Page #"
+                            value={chatScope.page}
+                            onChange={(e) =>
+                              setChatScope((prev) => ({ ...prev, page: e.target.value }))
+                            }
+                            min="1"
+                          />
+                        )}
+
+                        {chatScope.type === "range" && (
+                          <div className="scope-range-inputs">
+                            <input
+                              type="number"
+                              className="scope-input"
+                              placeholder="From"
+                              value={chatScope.from}
+                              onChange={(e) =>
+                                setChatScope((prev) => ({ ...prev, from: e.target.value }))
+                              }
+                              min="1"
+                            />
+                            <span className="scope-separator">–</span>
+                            <input
+                              type="number"
+                              className="scope-input"
+                              placeholder="To"
+                              value={chatScope.to}
+                              onChange={(e) =>
+                                setChatScope((prev) => ({ ...prev, to: e.target.value }))
+                              }
+                              min="1"
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="chat-pdf-select">
+                        <label className="form-label">PDF to chat with</label>
+                        <select
+                          className="form-select"
+                          value={selectedPdfId}
+                          onChange={(e) => setSelectedPdfId(e.target.value)}
+                          disabled={uploadedFiles.length === 0}
+                        >
+                          {uploadedFiles.length === 0 ? (
+                            <option>No PDFs uploaded yet</option>
+                          ) : (
+                            <>
+                              <option value="">All PDFs / general chat</option>
+                              {uploadedFiles.map((f) => (
+                                <option key={f.id} value={f.id}>
+                                  {f.name}
+                                </option>
+                              ))}
+                            </>
+                          )}
+                        </select>
+                      </div>
+
+                      <div className="chat-answer-style">
+                        <label className="form-label">Answer style</label>
+                        <select
+                          className="form-select"
+                          value={answerStyle}
+                          onChange={(e) => setAnswerStyle(e.target.value)}
+                        >
+                          <option value="default">Helpful explanation</option>
+                          <option value="summary">Concise summary</option>
+                          <option value="exam">Exam / questions</option>
+                          <option value="bullet">Bullet points</option>
+                        </select>
+                      </div>
                     </div>
-                    <div className="status-message">
-                      {exportStatus.message.split("\n").map((l, i) => (
-                        <div key={i}>{l}</div>
+
+                    {/* FIXED: Added gap for spacing, fixed classNames, added inline styles for less aggressive colors */}
+                    <div 
+                      className="chat-actions-row" 
+                      style={{ 
+                        display: "flex", 
+                        justifyContent: "flex-end", 
+                        padding: "5px 0", 
+                        marginBottom: "5px",
+                        gap: "12px"  // 👈 Adds breathing room between buttons
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className="save-conversation-btn"  // 👈 Fixed className (was shared with clear)
+                        onClick={handleSaveConversation}
+                        style={{
+                          backgroundColor: "#28a745",  // 👈 Softer green for "safe" save action
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "6px",
+                          cursor: "pointer",
+                          fontSize: "14px",
+                          whiteSpace: "nowrap"
+                        }}
+                      >
+                        💾 Save Conversation
+                      </button>
+                      <button
+                        type="button"
+                        className="clear-conversation-btn"
+                        onClick={handleClearConversation}
+                        style={{
+                          backgroundColor: "#dc3545",  // 👈 Kept red but you can swap to #6c757d for gray if preferred
+                          color: "white",
+                          border: "none",
+                          padding: "8px 16px",
+                          borderRadius: "6px",
+                          cursor: "pointer",
+                          fontSize: "14px",
+                          whiteSpace: "nowrap"
+                        }}
+                      >
+                        🗑 Clear Conversation
+                      </button>
+                    </div>
+
+                    {/* CHAT MESSAGES */}
+                    <div className="chat-container">
+                      <div 
+                        ref={chatMessagesRef}
+                        className="chat-messages no-scrollbar" 
+                        style={{ 
+                          msOverflowStyle: 'none',  /* IE and Edge */
+                          scrollbarWidth: 'none',  /* Firefox */
+                        }}
+                      >
+                        {conversation.map((m) => (
+                          <div
+                            key={m.id}
+                            className={`message ${m.role === "user" ? "user" : "bot"}`}
+                          >
+                            {m.role === "bot" && (
+                              <img
+                                src="/kuro-logo.png"
+                                alt="kuro-logo"
+                                className="message-avatar"
+                              />
+                            )}
+
+                            <div className="message-bubble">{m.content}</div>
+
+                            {m.role === "user" && (
+                              <img
+                                src={user?.imageUrl}
+                                alt="User"
+                                className="message-avatar"
+                              />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* INPUT */}
+                      <div className="chat-input-area">
+                        <input
+                          className="chat-input"
+                          placeholder="Ask anything about your PDFs..."
+                          value={chatInput}
+                          onChange={(e) => setChatInput(e.target.value)}
+                          onKeyDown={handleChatKeyDown}
+                          disabled={isSending}
+                        />
+                        <button
+                          className="send-btn"
+                          type="button"
+                          onClick={handleSend}
+                          disabled={isSending}
+                        >
+                          {isSending ? "Sending..." : "Send"}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* RIGHT — QUESTION ASSIST */}
+                  <div className="chat-assist">
+                    <PdfQuestionSuggestions
+                      onSelect={(q) => {
+                        setChatInput(q);
+                        setTimeout(() => handleSend(), 100);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* CHAT HISTORY */}
+            {activeChatSubTab === "history" && (
+              <div className="chat-subtab-content active">
+                <div className="history-container">
+                  <div className="history-header">
+                    <h3 className="history-title">📚 Your Chat History</h3>
+                    <button
+                      type="button"
+                      className="clear-history-btn"
+                      onClick={handleClearHistory}
+                    >
+                      Clear All
+                    </button>
+                  </div>
+                  {history.length === 0 ? (
+                    <div className="empty-state">
+                      <div className="empty-icon">📭</div>
+                      <div className="empty-title">No Chat History Yet</div>
+                      <div className="empty-desc">
+                        Your saved conversations will appear here. Save a
+                        conversation from the Current Chat tab to get started.
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="history-list">
+                      {history.map((h) => (
+                        <div key={h.id} className="history-item">
+                          <div>
+                            <div className="history-item-title">{h.title}</div>
+                            <div className="history-item-info">{h.meta}</div>
+                          </div>
+                          <div className="history-item-actions">
+                            <button
+                              className="history-item-btn"
+                              type="button"
+                              onClick={() => handleLoadHistoryItem(h.id)}
+                            >
+                              Load
+                            </button>
+                            <button
+                              className="history-item-btn"
+                              type="button"
+                              onClick={() => handleDeleteHistoryItem(h.id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
                       ))}
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-        </section>
-        {/* OTHER TABS */}
-        {/* ANALYSIS TAB → uses AnalysisPanel */}
-        <section
-          id="analysisTab"
-          className={`tab-content ${
-            activeTab === "analysis" ? "active" : ""
-          }`}
-        >
-          <AnalysisPanel
-            pdfs={uploadedFiles}
-            selectedPdfId={selectedPdfId}
-            onPdfChange={setSelectedPdfId} // 👈 prop name so dropdown works
-          />
-        </section>
-        {/* OCR TAB → NEW ADVANCED OCR PANEL */}
-        <section
-          id="ocrTab"
-          className={`tab-content ${activeTab === "ocr" ? "active" : ""}`}
-        >
-          <OcrPanel />
-        </section>
-        {/* CREATE & EDIT TAB → uses PdfDesignCanvas */}
-        <section
-          id="createTab"
-          className={`tab-content ${activeTab === "create" ? "active" : ""}`}
-        >
-          <CreatePdfPanel />
-        </section>
+            )}
+            {/* EXPORT CONVERSATION */}
+            {activeChatSubTab === "export" && (
+              <div className="chat-subtab-content active">
+                <div className="export-container">
+                  <div className="export-header">
+                    <h3 className="export-title">📥 Export Your Conversation</h3>
+                    <p className="export-desc">
+                      Download or share your current chat conversation in multiple
+                      formats.
+                    </p>
+                  </div>
+                  <div className="export-options-grid export-grid-3">
+                    <div className="export-card">
+                      <span className="export-icon">📄</span>
+                      <h4 className="export-card-title">Export as PDF</h4>
+                      <p className="export-card-desc">
+                        Download your entire conversation with formatting and
+                        timestamps.
+                      </p>
+                      <button
+                        className="export-btn"
+                        type="button"
+                        onClick={handleExportPDF}
+                      >
+                        📥 Export PDF
+                      </button>
+                    </div>
+                    <div className="export-card">
+                      <span className="export-icon">📝</span>
+                      <h4 className="export-card-title">
+                        Export as Word (.DOCX)
+                      </h4>
+                      <p className="export-card-desc">
+                        Perfect for editing and sharing in Microsoft Word or
+                        Google Docs.
+                      </p>
+                      <button
+                        className="export-btn"
+                        type="button"
+                        onClick={handleExportDOCX}
+                      >
+                        📥 Export DOCX
+                      </button>
+                    </div>
+                    <div className="export-card">
+                      <span className="export-icon">📊</span>
+                      <h4 className="export-card-title">Export as CSV</h4>
+                      <p className="export-card-desc">
+                        Import to Excel or Google Sheets for analysis and
+                        processing.
+                      </p>
+                      <button
+                        className="export-btn"
+                        type="button"
+                        onClick={handleExportCSV}
+                      >
+                        📥 Export CSV
+                      </button>
+                    </div>
+                    <div className="export-card">
+                      <span className="export-icon">📋</span>
+                      <h4 className="export-card-title">
+                        Export as Text (.TXT)
+                      </h4>
+                      <p className="export-card-desc">
+                        Simple plain text format, universal compatibility.
+                      </p>
+                      <button
+                        className="export-btn"
+                        type="button"
+                        onClick={handleExportTXT}
+                      >
+                        📥 Export TXT
+                      </button>
+                    </div>
+                    <div className="export-card">
+                      <span className="export-icon">📋</span>
+                      <h4 className="export-card-title">Copy to Clipboard</h4>
+                      <p className="export-card-desc">
+                        Copy the entire conversation to paste anywhere.
+                      </p>
+                      <button
+                        className="export-btn"
+                        type="button"
+                        onClick={handleCopyText}
+                      >
+                        📋 Copy Text
+                      </button>
+                    </div>
+                  </div>
+                  {exportStatus && (
+                    <div className="export-status">
+                      <div className="status-icon">
+                        {exportStatus.type === "error" ? "⚠️" : "✅"}
+                      </div>
+                      <div className="status-message">
+                        {exportStatus.message.split("\n").map((l, i) => (
+                          <div key={i}>{l}</div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </section>
+          {/* OTHER TABS */}
+          {/* ANALYSIS TAB → uses AnalysisPanel */}
+          <section
+            id="analysisTab"
+            className={`tab-content card ${
+              activeTab === "analysis" ? "active" : ""
+            }`}
+          >
+            <AnalysisPanel
+              pdfs={uploadedFiles}
+              selectedPdfId={selectedPdfId}
+              onPdfChange={setSelectedPdfId} // 👈 prop name so dropdown works
+            />
+          </section>
+          {/* OCR TAB → NEW ADVANCED OCR PANEL */}
+          <section
+            id="ocrTab"
+            className={`tab-content card ${activeTab === "ocr" ? "active" : ""}`}
+          >
+            <OcrPanel />
+          </section>
+          {/* CREATE & EDIT TAB → uses PdfDesignCanvas */}
+          <section
+            id="createTab"
+            className={`tab-content card ${activeTab === "create" ? "active" : ""}`}
+          >
+            <CreatePdfPanel />
+          </section>
+        </div>
       </main>
+      {/* UI CHANGE: Added full-width black footer with minimal branding/links. */}
+      <footer className="footer">
+        <div className="footer-content">
+          <span>© 2026 RovexAI. All rights reserved.</span>
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+        </div>
+      </footer>
     </div>
     </RovexProvider>
   );
