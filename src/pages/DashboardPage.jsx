@@ -26,10 +26,12 @@ export default function DashboardPage() {
       <header className="header">
         <div className="header-brand">
           <KuroLogo size={46} />
+          <div className="logo-container" onClick={() => navigate("/")}>
           <span className="logo-text">
             <span className="logo-red">Rovex</span>
             <span className="logo-ai">AI</span>
           </span>
+          </div>
         </div>
         <nav className="header-links">
           <a href="/homepage" className="nav-link">Home</a>
