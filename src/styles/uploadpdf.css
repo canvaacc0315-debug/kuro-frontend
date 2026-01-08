@@ -27,7 +27,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Left section: Upload area */
+/* Upload area */
 .upload-section {
   width: 100%;
   max-width: none;
@@ -111,7 +111,7 @@
   100% { transform: translateX(0); }
 }
 
-/* Right section: Uploaded files */
+/* Uploaded files section */
 .files-section {
   width: 100%;
   max-width: none;
@@ -136,6 +136,9 @@
   justify-content: space-between;
   padding: 12px;
   margin-bottom: 10px;
+  background: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   transition: all 0.3s ease;
   animation: slideIn 0.4s ease-out; /* Slide-in animation for each file */
 }
@@ -147,18 +150,31 @@
 
 .file-row:hover {
   transform: translateY(-2px); /* Lift on hover */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .pdf-icon {
-  font-size: 20px;
-  margin-right: 12px;
+  font-size: 24px;
+  margin-right: 16px;
   color: #a0a0a0;
 }
 
-.file-name {
+.file-info {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-name {
   font-size: 14px;
+  font-weight: 600;
   color: #333;
+  margin-bottom: 2px;
+}
+
+.file-size {
+  font-size: 12px;
+  color: #888;
 }
 
 .status-badge {
@@ -169,7 +185,7 @@
   font-size: 12px;
   font-weight: 500;
   transition: all 0.3s ease;
-  margin-right: 8px;
+  margin-right: 12px;
 }
 
 .status-badge.ready {
@@ -198,13 +214,13 @@
   background: #ff4d4f;
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-right: 8px;
+  margin-right: 12px;
 }
 
 .view-button:hover {
@@ -216,10 +232,10 @@
   background: #6c757d;
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 12px;
-  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -229,49 +245,49 @@
   transform: translateY(-1px);
 }
 
-.remove-icon {
-  background: none;
-  border: none;
-  color: #d32f2f;
-  font-size: 14px;
-  cursor: pointer;
-  margin-left: 8px;
-  transition: transform 0.2s ease;
-}
-
-.remove-icon:hover {
-  transform: rotate(90deg); /* Rotate on hover for remove */
-}
-
-/* New PDF viewer section styles */
+/* PDF viewer section */
 .pdf-viewer-section {
   width: 100%;
   max-width: none;
   margin-top: 40px;
   padding: 20px;
   background: #f9f9f9;
-  border: 1px solid #ddd;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .viewer-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: #333;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pdf-iframe {
+  width: 100%;
+  height: 600px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
 }
 
 .close-viewer-button {
   background: #ff4d4f;
   color: #fff;
   border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
+  border-radius: 6px;
+  padding: 10px 20px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 20px;
+  display: block;
+  margin-left: auto;
 }
 
 .close-viewer-button:hover {
@@ -294,16 +310,47 @@
   .file-row {
     flex-wrap: wrap;
     justify-content: flex-start;
+    padding: 16px;
   }
   
-  .status-badge {
-    margin-right: 8px;
-    margin-bottom: 8px;
+  .pdf-icon {
+    margin-right: 12px;
+    font-size: 20px;
   }
   
+  .file-info {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+  
+  .status-badge,
   .view-button,
   .remove-button {
     margin-right: 8px;
     margin-bottom: 8px;
+  }
+  
+  .pdf-viewer-section {
+    padding: 16px;
+  }
+  
+  .pdf-iframe {
+    height: 400px; /* Smaller height on mobile */
+  }
+  
+  .close-viewer-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-title {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .browse-button {
+    padding: 10px 20px;
+    font-size: 14px;
   }
 }
