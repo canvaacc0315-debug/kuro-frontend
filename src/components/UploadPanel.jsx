@@ -11,6 +11,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState("");
   const [viewedPdfUrl, setViewedPdfUrl] = useState(null); // New state for the PDF URL to view below
+  const [viewedPdfId, setViewedPdfId] = useState(null);
 
   // ✅ ADDITION 1: restore PDFs on first load
   useEffect(() => {
@@ -40,12 +41,17 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   async function handleFiles(files) {
     if (!files || files.length === 0) return;
 
+    const pdfsToUpload = Array.from(files).filter(
+      (f) => f.type === "application/pdf"
+    );
+    if (!pdfsToUpload.length) return;
+
     try {
       setError("");
       const token = await getToken();
 
       const formData = new FormData();
-      Array.from(files).forEach((file) => {
+      pdfsToUpload.forEach((file) => {
         formData.append("files", file);
       });
 
@@ -67,7 +73,19 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       }
 
       const data = await res.json(); // { pdfs: [...] }
-      onPdfsChange((prev) => [...prev, ...data.pdfs]);
+      const backendPdfs = data?.pdfs || [];
+      const mapped = backendPdfs.map((info, idx) => {
+        const file = pdfsToUpload[idx];
+        return {
+          ...info,
+          sizeMB: (file.size / 1024 / 1024).toFixed(2),
+          url: URL.createObjectURL(file),
+        };
+      });
+      onPdfsChange((prev) => [...prev, ...mapped]);
+      if (pdfs.length === 0 && mapped.length > 0) {
+        onSelectPdf(mapped[0].id);
+      }
     } catch (err) {
       console.error(err);
       setError(err.message || "Upload failed");
@@ -77,16 +95,25 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   // Updated handleView to set the PDF URL for viewing below instead of navigating
   async function handleView(pdf) {
     try {
-      const token = await getToken();
-      const res = await fetch(`${API_BASE}/api/pdf/${pdf.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!res.ok) throw new Error('Failed to fetch PDF');
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
+      if (viewedPdfUrl) {
+        URL.revokeObjectURL(viewedPdfUrl);
+      }
+      let url;
+      if (pdf.url) {
+        url = pdf.url;
+      } else {
+        const token = await getToken();
+        const res = await fetch(`${API_BASE}/api/pdf/${pdf.id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!res.ok) throw new Error('Failed to fetch PDF');
+        const blob = await res.blob();
+        url = URL.createObjectURL(blob);
+      }
       setViewedPdfUrl(url); // Set the URL to display below
+      setViewedPdfId(pdf.id);
     } catch (err) {
       console.error(err);
       setError(err.message || "Failed to view PDF");
@@ -105,8 +132,19 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
     handleFiles(files);
   }
 
-  function handleRemove(index) {
-    onPdfsChange(pdfs.filter((_, i) => i !== index));
+  function handleRemove(id) {
+    const pdfToRemove = pdfs.find((p) => p.id === id);
+    if (pdfToRemove?.url) {
+      URL.revokeObjectURL(pdfToRemove.url);
+    }
+    onPdfsChange(pdfs.filter((p) => p.id !== id));
+    if (id === viewedPdfId) {
+      if (viewedPdfUrl) {
+        URL.revokeObjectURL(viewedPdfUrl);
+      }
+      setViewedPdfUrl(null);
+      setViewedPdfId(null);
+    }
   }
 
   return (
@@ -158,7 +196,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
         <h3 className="files-title">Uploaded Files</h3>
         <ul className="files-list">
           {pdfs.map((pdf, index) => (
-            <li key={index} className="file-row">
+            <li key={pdf.id || index} className="file-row">
               <div className="pdf-icon">📄</div>
               <span className="file-name">{pdf.name || `PDF ${index + 1}`}</span> {/* Fallback name if pdf.name is missing */}
               <div className={`status-badge ${pdf.status?.toLowerCase() || ''}`}>
@@ -171,7 +209,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
                   View
                 </button>
               )}
-              <button className="remove-button" onClick={() => handleRemove(index)}>
+              <button className="remove-button" onClick={() => handleRemove(pdf.id)}>
                 Remove
               </button>
             </li>
