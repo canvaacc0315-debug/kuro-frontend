@@ -12,6 +12,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   const [error, setError] = useState("");
   const [viewedPdfUrl, setViewedPdfUrl] = useState(null); // New state for the PDF URL to view below
   const [viewedPdfId, setViewedPdfId] = useState(null);
+  const [uploadProgress, setUploadProgress] = useState(0); // New state for upload progress
 
   // ✅ ADDITION 1: restore PDFs on first load
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
 
     try {
       setError("");
+      setUploadProgress(0); // Reset progress
       const token = await getToken();
 
       const formData = new FormData();
@@ -55,40 +57,59 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
         formData.append("files", file);
       });
 
-      const res = await fetch(`${API_BASE}/api/pdf/upload`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", `${API_BASE}/api/pdf/upload`, true);
+      xhr.setRequestHeader("Authorization", `Bearer ${token}`);
 
-      if (!res.ok) {
-        let msg = `Upload failed (${res.status})`;
-        try {
-          const data = await res.json();
-          if (data?.error) msg = data.error;
-        } catch (_) {}
-        throw new Error(msg);
-      }
+      xhr.upload.onprogress = (event) => {
+        if (event.lengthComputable) {
+          const percent = Math.round((event.loaded / event.total) * 100);
+          setUploadProgress(percent);
+        }
+      };
 
-      const data = await res.json(); // { pdfs: [...] }
-      const backendPdfs = data?.pdfs || [];
-      const mapped = backendPdfs.map((info, idx) => {
-        const file = pdfsToUpload[idx];
-        return {
-          ...info,
-          sizeMB: (file.size / 1024 / 1024).toFixed(2),
-          url: URL.createObjectURL(file),
-        };
-      });
-      onPdfsChange((prev) => [...prev, ...mapped]);
-      if (pdfs.length === 0 && mapped.length > 0) {
-        onSelectPdf(mapped[0].id);
-      }
+      xhr.onload = () => {
+        setUploadProgress(0); // Reset on complete
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try {
+            const data = JSON.parse(xhr.responseText); // { pdfs: [...] }
+            const backendPdfs = data?.pdfs || [];
+            const mapped = backendPdfs.map((info, idx) => {
+              const file = pdfsToUpload[idx];
+              return {
+                ...info,
+                sizeMB: (file.size / 1024 / 1024).toFixed(2),
+                url: URL.createObjectURL(file),
+              };
+            });
+            onPdfsChange((prev) => [...prev, ...mapped]);
+            if (pdfs.length === 0 && mapped.length > 0) {
+              onSelectPdf(mapped[0].id);
+            }
+          } catch (err) {
+            console.error(err);
+            setError("Failed to parse response");
+          }
+        } else {
+          let msg = `Upload failed (${xhr.status})`;
+          try {
+            const data = JSON.parse(xhr.responseText);
+            if (data?.error) msg = data.error;
+          } catch (_) {}
+          setError(msg);
+        }
+      };
+
+      xhr.onerror = () => {
+        setUploadProgress(0);
+        setError("Upload failed");
+      };
+
+      xhr.send(formData);
     } catch (err) {
       console.error(err);
       setError(err.message || "Upload failed");
+      setUploadProgress(0);
     }
   }
 
@@ -185,6 +206,13 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
           onChange={handleInputChange}
         />
 
+        {uploadProgress > 0 && (
+          <div className="upload-progress">
+            <progress value={uploadProgress} max="100"></progress>
+            <span>{uploadProgress}%</span>
+          </div>
+        )}
+
         {error && (
           <p className="error-message">
             {error}
@@ -198,17 +226,18 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
           {pdfs.map((pdf, index) => (
             <li key={pdf.id || index} className="file-row">
               <div className="pdf-icon">📄</div>
-              <span className="file-name">{pdf.name || `PDF ${index + 1}`}</span> {/* Fallback name if pdf.name is missing */}
+              <div className="file-info">
+                <span className="file-name">{pdf.name || `PDF ${index + 1}`}</span>
+                <span className="file-size">{pdf.sizeMB ? `${pdf.sizeMB} MB` : ''}</span>
+              </div>
               <div className={`status-badge ${pdf.status?.toLowerCase() || ''}`}>
                 {pdf.status === 'Ready' && '✅ Ready'}
                 {pdf.status === 'Processing' && '⏳ Processing'}
                 {pdf.status === 'Error' && '❌ Error'}
               </div>
-              {pdf.status === 'Ready' && (
-                <button className="view-button" onClick={() => handleView(pdf)}>
-                  View
-                </button>
-              )}
+              <button className="view-button" onClick={() => handleView(pdf)}>
+                View
+              </button>
               <button className="remove-button" onClick={() => handleRemove(pdf.id)}>
                 Remove
               </button>
@@ -223,9 +252,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
           <h3 className="viewer-title">Viewing PDF</h3>
           <iframe
             src={viewedPdfUrl}
-            width="100%"
-            height="600px"
-            style={{ border: "1px solid #ddd" }}
+            className="pdf-iframe"
             title="PDF Viewer"
           ></iframe>
           <button className="close-viewer-button" onClick={() => setViewedPdfUrl(null)}>
