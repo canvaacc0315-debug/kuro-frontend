@@ -23,6 +23,7 @@ export default function KuroWorkspacePage() {
   const { user, isLoaded } = useUser();
   const { uploadPdf } = useApiClient(); // 👈 NEW
   // --- URL tab wiring ---
+  const { openUserProfile } = useClerk();
   const [searchParams, setSearchParams] = useSearchParams();
   const getInitialTab = () => {
     const tabFromUrl = searchParams.get("tab");
