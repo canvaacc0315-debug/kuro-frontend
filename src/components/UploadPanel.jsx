@@ -29,6 +29,20 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
     );
     if (!pdfsToUpload.length) return;
 
+    // Optimistic update: Add temporary PDFs to the list
+    const optimisticPdfs = pdfsToUpload.map((file) => ({
+      uid: crypto.randomUUID(),
+      backendId: null,
+      name: file.name,
+      sizeMB: (file.size / 1024 / 1024).toFixed(2),
+      url: URL.createObjectURL(file),
+      status: "Uploading",
+    }));
+
+    const uploadedUids = optimisticPdfs.map((p) => p.uid);
+
+    onPdfsChange((prev) => [...prev, ...optimisticPdfs]);
+
     try {
       setError("");
       setUploadProgress(0);
@@ -61,25 +75,40 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
             const data = JSON.parse(xhr.responseText);
             const backendPdfs = data?.pdfs || [];
 
-            const mapped = backendPdfs.map((info, idx) => {
-              const file = pdfsToUpload[idx];
-              return {
-                ...info,
-                id: info.id, // ✅ ensure ID exists
-                name: file.name,
-                sizeMB: (file.size / 1024 / 1024).toFixed(2),
-                url: URL.createObjectURL(file),
-              };
+            if (backendPdfs.length !== pdfsToUpload.length) {
+              setError("Upload response mismatch");
+              onPdfsChange((prev) =>
+                prev.filter((p) => !uploadedUids.includes(p.uid))
+              );
+              return;
+            }
+
+            backendPdfs.forEach((info, idx) => {
+              const uid = uploadedUids[idx];
+              onPdfsChange((prev) =>
+                prev.map((p) => {
+                  if (p.uid === uid) {
+                    return {
+                      ...p,
+                      ...info,
+                      backendId: info.id || info._id || null,
+                      status: info.status || "Processing",
+                    };
+                  }
+                  return p;
+                })
+              );
             });
 
-            onPdfsChange((prev) => [...prev, ...mapped]);
-
-            if (pdfs.length === 0 && mapped.length > 0) {
-              onSelectPdf(mapped[0].id);
+            if (pdfs.length === 0 && backendPdfs.length > 0) {
+              onSelectPdf(backendPdfs[0].id || backendPdfs[0]._id);
             }
           } catch (err) {
             console.error(err);
             setError("Failed to parse server response");
+            onPdfsChange((prev) =>
+              prev.filter((p) => !uploadedUids.includes(p.uid))
+            );
           }
         } else {
           let msg = `Upload failed (${xhr.status})`;
@@ -88,12 +117,18 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
             if (data?.error) msg = data.error;
           } catch {}
           setError(msg);
+          onPdfsChange((prev) =>
+            prev.filter((p) => !uploadedUids.includes(p.uid))
+          );
         }
       };
 
       xhr.onerror = () => {
         setUploadProgress(0);
         setError("Upload failed");
+        onPdfsChange((prev) =>
+          prev.filter((p) => !uploadedUids.includes(p.uid))
+        );
       };
 
       xhr.send(formData);
@@ -101,6 +136,9 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       console.error(err);
       setError(err.message || "Upload failed");
       setUploadProgress(0);
+      onPdfsChange((prev) =>
+        prev.filter((p) => !uploadedUids.includes(p.uid))
+      );
     }
   }
 
@@ -116,7 +154,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
         url = pdf.url;
       } else {
         const token = await getToken();
-        const res = await fetch(`${API_BASE}/api/pdf/${pdf.id}`, {
+        const res = await fetch(`${API_BASE}/api/pdf/${pdf.backendId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -129,7 +167,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       }
 
       setViewedPdfUrl(url);
-      setViewedPdfId(pdf.id);
+      setViewedPdfId(pdf.uid);
     } catch (err) {
       console.error(err);
       setError(err.message || "Failed to view PDF");
@@ -137,16 +175,15 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   }
 
   function handleRemove(pdf) {
-    // revoke object URL of removed pdf
     if (pdf?.url) {
       URL.revokeObjectURL(pdf.url);
     }
 
-    // ✅ remove ONLY the selected PDF
-    onPdfsChange((prev) => prev.filter((p) => p.id !== pdf.id));
+    onPdfsChange((prev) =>
+      prev.filter((p) => p.uid !== pdf.uid)
+    );
 
-    // close viewer if the removed PDF was open
-    if (pdf.id === viewedPdfId) {
+    if (pdf.uid === viewedPdfId) {
       if (viewedPdfUrl) {
         URL.revokeObjectURL(viewedPdfUrl);
       }
@@ -218,7 +255,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
         <h3 className="files-title">Uploaded Files</h3>
         <ul className="files-list">
           {pdfs.map((pdf) => (
-            <li key={pdf.id} className="file-row">
+            <li key={pdf.uid} className="file-row">
               <div className="pdf-icon">📄</div>
 
               <div className="file-info">
@@ -234,6 +271,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
                 {pdf.status === "Ready" && "✅ Ready"}
                 {pdf.status === "Processing" && "⏳ Processing"}
                 {pdf.status === "Error" && "❌ Error"}
+                {pdf.status === "Uploading" && "⏳ Uploading"}
               </div>
 
               <button
