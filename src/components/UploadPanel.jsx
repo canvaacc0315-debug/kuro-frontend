@@ -152,7 +152,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
 
   return (
     <div className="upload-panel-container">
-      <h1 className="welcome-title">Welcome to RovexAI</h1>
+      <h1 className="welcome-title">“Your PDFs now have a brain.”</h1>
       <div
         className={"upload-section" + (dragOver ? " drag-over" : "")}
         onDragOver={(e) => {
@@ -231,15 +231,17 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       {/* New section to display the PDF below */}
       {viewedPdfUrl && (
         <div className="pdf-viewer-section">
-          <h3 className="viewer-title">Viewing PDF</h3>
+          <div className="viewer-header">
+            <h3 className="viewer-title">Viewing PDF</h3>
+            <button className="close-viewer-button" onClick={() => setViewedPdfUrl(null)}>
+              Close Viewer
+            </button>
+          </div>
           <iframe
             src={viewedPdfUrl}
             className="pdf-iframe"
             title="PDF Viewer"
           ></iframe>
-          <button className="close-viewer-button" onClick={() => setViewedPdfUrl(null)}>
-            Close Viewer
-          </button>
         </div>
       )}
     </div>

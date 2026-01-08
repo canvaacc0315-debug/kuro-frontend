@@ -386,7 +386,7 @@ export default function KuroWorkspacePage() {
     <div className="workspace-root">
       {/* UI CHANGE: Moved header to top fixed, full-width black with red accents, logo left, user right. Kept fade-in CSS animation. */}
       <header className={`home-header ${scrolled ? "scrolled" : ""}`}>
-        <div className="logo-container" onClick={() => navigate("/")}>
+        <div className="logo-container" onClick={() => navigate("/homepage")}>
           <img src="/kuro-logo.png" alt="RovexAI Logo" className="logo-icon" />
           <span className="logo-text">
             <span className="logo-red">Rovex</span>
