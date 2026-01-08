@@ -114,6 +114,25 @@ export default function HomePage() {
             <span className="logo-ai">AI</span>
           </span>
         </div>
+        <div className="navbar-right">
+          <div className="user-info">
+            <div className="user-name">
+              {isLoaded && user
+              ? user.fullName ||
+              user.primaryEmailAddress?.emailAddress ||
+              "User"
+                : "Loading..."}
+            </div>
+          </div>
+          <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                avatarBox: "navbar-profile-photo",
+              },
+            }}
+          />
+        </div>
 
         <nav className="nav">
           <a href="#features" className="nav-link">Features</a>
