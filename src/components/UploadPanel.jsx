@@ -1,6 +1,7 @@
 // frontend/src/components/UploadPanel.jsx
 import { useState, useEffect } from "react"; // ✅ added useEffect
 import { useAuth } from "@clerk/clerk-react";
+
 import "../Uploadpdf.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
