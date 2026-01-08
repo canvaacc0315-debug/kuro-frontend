@@ -73,6 +73,25 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
     }
   }
 
+  // Assume pdf object from server includes 'id' for fetching the PDF
+  async function handleView(pdf) {
+    try {
+      const token = await getToken();
+      const res = await fetch(`${API_BASE}/api/pdf/${pdf.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) throw new Error('Failed to fetch PDF');
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      window.location.href = url; // Open in same tab
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Failed to view PDF");
+    }
+  }
+
   function handleInputChange(e) {
     const files = Array.from(e.target.files || []);
     handleFiles(files);
@@ -91,6 +110,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
 
   return (
     <div className="upload-panel-container">
+      <h1 className="welcome-title">Welcome to RovexAI</h1>
       <div
         className={"upload-section" + (dragOver ? " drag-over" : "")}
         onDragOver={(e) => {
@@ -143,13 +163,16 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
               <div className={`status-badge ${pdf.status?.toLowerCase() || ''}`}>
                 {pdf.status === 'Ready' && '✅ Ready'}
                 {pdf.status === 'Processing' && '⏳ Processing'}
-                {pdf.status === 'Error' && (
-                  <>
-                    ❌ Error
-                    <button className="remove-icon" onClick={() => handleRemove(index)}>×</button>
-                  </>
-                )}
+                {pdf.status === 'Error' && '❌ Error'}
               </div>
+              {pdf.status === 'Ready' && (
+                <button className="view-button" onClick={() => handleView(pdf)}>
+                  View
+                </button>
+              )}
+              <button className="remove-button" onClick={() => handleRemove(index)}>
+                Remove
+              </button>
             </li>
           ))}
         </ul>

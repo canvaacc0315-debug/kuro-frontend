@@ -1,18 +1,25 @@
 /* UploadPanel.css - Modern, animated CSS to match screenshot with enhancements */
 
-/* Global container with flex layout for left/right split */
+/* Global container with column layout for top/bottom split to match screenshots */
 .upload-panel-container {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  max-width: 900px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: none;
+  min-height: 100vh; /* Cover full page height */
   margin: 0 auto;
   padding: 40px 20px;
   background: linear-gradient(to bottom, #f8f9fc, #ffffff); /* Light gradient background */
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Soft shadow */
-  gap: 40px;
   animation: fadeIn 0.5s ease-out; /* Fade-in animation on load */
+  box-sizing: border-box;
+}
+
+.welcome-title {
+  color: #ff4d4f;
+  font-size: 24px;
+  margin-bottom: 40px;
 }
 
 @keyframes fadeIn {
@@ -22,11 +29,10 @@
 
 /* Left section: Upload area */
 .upload-section {
-  flex: 1;
-  max-width: 45%;
+  width: 100%;
+  max-width: none;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
   padding: 40px 20px;
   text-align: center;
   transition: all 0.3s ease; /* Smooth transitions for drag-over */
@@ -36,7 +42,6 @@
   border: 2px dashed #ff4d4f; /* Red dashed border on drag */
   background: #fff5f5;
   transform: scale(1.02); /* Slight scale animation on drag */
-  box-shadow: 0 4px 15px rgba(255, 77, 79, 0.2);
 }
 
 .drag-drop-card {
@@ -112,8 +117,8 @@
 
 /* Right section: Uploaded files */
 .files-section {
-  flex: 1;
-  max-width: 50%;
+  width: 100%;
+  max-width: none;
 }
 
 .files-title {
@@ -132,6 +137,7 @@
 .file-row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 12px;
   border-radius: 8px;
   background: #f9f9f9;
@@ -171,6 +177,7 @@
   font-size: 12px;
   font-weight: 500;
   transition: all 0.3s ease;
+  margin-right: 8px;
 }
 
 .status-badge.ready {
@@ -193,6 +200,41 @@
 .status-badge.error {
   background: #ffebee;
   color: #d32f2f;
+}
+
+.view-button {
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 8px;
+}
+
+.view-button:hover {
+  background: #e63946;
+  transform: translateY(-1px);
+}
+
+.remove-button {
+  background: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.remove-button:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
 }
 
 .remove-icon {
@@ -232,12 +274,27 @@
 /* Responsive adjustments (desktop first, mobile fallback) */
 @media (max-width: 768px) {
   .upload-panel-container {
-    flex-direction: column;
-    gap: 30px;
+    padding: 20px;
   }
   
   .upload-section,
   .files-section {
     max-width: 100%;
+  }
+  
+  .file-row {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  
+  .status-badge {
+    margin-right: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .view-button,
+  .remove-button {
+    margin-right: 8px;
+    margin-bottom: 8px;
   }
 }
