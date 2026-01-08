@@ -1,4 +1,4 @@
-/* UploadPanel.css - Modern, animated CSS to match screenshot with enhancements */
+/* UploadPanel.css - Smooth, modern CSS to match screenshot with enhanced animations */
 
 /* Global container with column layout for top/bottom split to match screenshots */
 .upload-panel-container {
@@ -8,11 +8,11 @@
   justify-content: flex-start;
   width: 100%;
   max-width: none;
-  min-height: 100vh; /* Cover full page height */
+  min-height: 100vh;
   margin: 0 auto;
   padding: 40px 20px;
-  background: #ffffff; /* Plain white background */
-  animation: fadeIn 0.8s ease-in-out; /* Smoother fade-in with longer duration and ease-in-out */
+  background: #ffffff;
+  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
 }
 
@@ -20,17 +20,17 @@
   color: #ff4d4f;
   font-size: 24px;
   margin-bottom: 40px;
-  animation: fadeInTitle 1s ease-in-out; /* Added fade-in for title */
+  animation: fadeInTitle 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes fadeInTitle {
-  from { opacity: 0; transform: translateY(-10px); }
+  from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* Upload area */
@@ -39,13 +39,13 @@
   max-width: none;
   padding: 40px 20px;
   text-align: center;
-  transition: all 0.4s ease-in-out; /* Smoother transition with ease-in-out */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .upload-section.drag-over {
-  border: 2px dashed #ff4d4f; /* Red dashed border on drag */
+  border: 2px dashed #ff4d4f;
   background: #fff5f5;
-  transform: scale(1.02); /* Slight scale animation on drag */
+  transform: scale(1.01);
 }
 
 .drag-drop-card {
@@ -58,13 +58,12 @@
   font-size: 48px;
   color: #a0a0a0;
   margin-bottom: 20px;
-  animation: float 3s ease-in-out infinite; /* Slower float for smoother feel */
+  animation: float 4s ease-in-out infinite;
 }
 
 @keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 .drag-text {
@@ -81,7 +80,7 @@
 }
 
 .browse-button {
-  background: #ff4d4f; /* Red primary */
+  background: #ff4d4f;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -89,15 +88,16 @@
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .browse-button:hover {
-  transform: scale(1.05); /* Scale on hover */
+  transform: scale(1.03);
+  background: #ff383a;
 }
 
 .browse-button:active {
-  transform: scale(0.95); /* Added active state for button press */
+  transform: scale(0.98);
 }
 
 .subtext {
@@ -110,15 +110,12 @@
   margin-top: 20px;
   font-size: 12px;
   color: #ff6b6b;
-  animation: fadeShake 0.5s ease-in-out; /* Combined fade and shake for smoother error appearance */
+  animation: fadeSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes fadeShake {
-  0% { opacity: 0; transform: translateX(0); }
-  25% { opacity: 1; transform: translateX(-5px); }
-  50% { transform: translateX(5px); }
-  75% { transform: translateX(-5px); }
-  100% { transform: translateX(0); }
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* New upload progress styles */
@@ -133,28 +130,28 @@
 
 .upload-progress progress {
   flex: 1;
-  height: 8px;
-  border-radius: 4px;
+  height: 6px;
+  border-radius: 3px;
   background: #f0f0f0;
   appearance: none;
-  transition: all 0.3s ease-in-out; /* Smooth transition for progress bar */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .upload-progress progress::-webkit-progress-bar {
   background: #f0f0f0;
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 .upload-progress progress::-webkit-progress-value {
   background: #ff4d4f;
-  border-radius: 4px;
-  transition: width 0.4s ease-in-out; /* Smoother progress value transition */
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .upload-progress progress::-moz-progress-bar {
   background: #ff4d4f;
-  border-radius: 4px;
-  transition: width 0.4s ease-in-out;
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .upload-progress span {
@@ -174,7 +171,7 @@
   font-weight: 600;
   color: #333;
   margin-bottom: 20px;
-  animation: fadeIn 0.8s ease-in-out; /* Added fade-in for title */
+  animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .files-list {
@@ -192,31 +189,30 @@
   background: #fafafa;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: all 0.4s ease-in-out; /* Smoother hover transition */
-  animation: slideIn 0.5s ease-in-out; /* Slightly longer slide-in for smoother add */
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideIn {
-  from { opacity: 0; transform: translateX(30px); }
+  from { opacity: 0; transform: translateX(20px); }
   to { opacity: 1; transform: translateX(0); }
 }
 
 .file-row:hover {
-  transform: translateY(-2px); /* Lift on hover */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
 }
 
 .pdf-icon {
   font-size: 24px;
   margin-right: 16px;
   color: #a0a0a0;
-  animation: iconBounce 0.5s ease-in-out; /* Added subtle bounce for icon */
+  animation: iconAppear 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes iconBounce {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+@keyframes iconAppear {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 .file-info {
@@ -244,7 +240,7 @@
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   margin-right: 12px;
 }
 
@@ -256,13 +252,13 @@
 .status-badge.processing {
   background: #fff3e0;
   color: #ffa000;
-  animation: pulse 2s ease-in-out infinite; /* Slower pulse for smoother animation */
+  animation: gentlePulse 2.5s ease-in-out infinite;
 }
 
 .status-badge.uploading {
   background: #fff3e0;
   color: #ffa000;
-  animation: pulse 2s ease-in-out infinite; /* Added pulse for uploading status */
+  animation: gentlePulse 2.5s ease-in-out infinite;
 }
 
 .status-badge.error {
@@ -270,10 +266,9 @@
   color: #d32f2f;
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 160, 0, 0.3); }
-  70% { box-shadow: 0 0 0 12px rgba(255, 160, 0, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 160, 0, 0); }
+@keyframes gentlePulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
 }
 
 .view-button {
@@ -285,7 +280,7 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   margin-right: 12px;
 }
 
@@ -295,7 +290,7 @@
 }
 
 .view-button:active {
-  transform: scale(0.95); /* Added active state */
+  transform: scale(0.97);
 }
 
 .remove-button {
@@ -307,7 +302,7 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .remove-button:hover {
@@ -316,7 +311,7 @@
 }
 
 .remove-button:active {
-  transform: scale(0.95); /* Added active state */
+  transform: scale(0.97);
 }
 
 /* PDF viewer section */
@@ -329,11 +324,11 @@
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  animation: slideUp 0.6s ease-in-out; /* Added slide-up animation for viewer appearance */
+  animation: gentleSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
+@keyframes gentleSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -352,15 +347,21 @@
 }
 
 .pdf-iframe {
-  width: 794px; /* A4 width at 96dpi */
-  height: 1123px; /* A4 height at 96dpi */
+  width: 794px;
+  height: 1123px;
   max-width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
   background: #fff;
   display: block;
   margin: 0 auto;
-  transition: opacity 0.5s ease-in-out; /* Smooth fade for iframe load */
+  opacity: 0;
+  animation: fadeInIframe 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+}
+
+@keyframes fadeInIframe {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .close-viewer-button {
@@ -372,7 +373,7 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .close-viewer-button:hover {
@@ -381,10 +382,10 @@
 }
 
 .close-viewer-button:active {
-  transform: scale(0.95); /* Added active state */
+  transform: scale(0.97);
 }
 
-/* Responsive adjustments (desktop first, mobile fallback) */
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .upload-panel-container {
     padding: 20px;
@@ -424,7 +425,7 @@
   }
   
   .pdf-iframe {
-    height: 400px; /* Smaller height on mobile */
+    height: 400px;
   }
   
   .close-viewer-button {
