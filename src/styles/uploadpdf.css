@@ -1,0 +1,243 @@
+/* UploadPanel.css - Modern, animated CSS to match screenshot with enhancements */
+
+/* Global container with flex layout for left/right split */
+.upload-panel-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: linear-gradient(to bottom, #f8f9fc, #ffffff); /* Light gradient background */
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Soft shadow */
+  gap: 40px;
+  animation: fadeIn 0.5s ease-out; /* Fade-in animation on load */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Left section: Upload area */
+.upload-section {
+  flex: 1;
+  max-width: 45%;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  padding: 40px 20px;
+  text-align: center;
+  transition: all 0.3s ease; /* Smooth transitions for drag-over */
+}
+
+.upload-section.drag-over {
+  border: 2px dashed #ff4d4f; /* Red dashed border on drag */
+  background: #fff5f5;
+  transform: scale(1.02); /* Slight scale animation on drag */
+  box-shadow: 0 4px 15px rgba(255, 77, 79, 0.2);
+}
+
+.drag-drop-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cloud-icon {
+  font-size: 48px;
+  color: #a0a0a0;
+  margin-bottom: 20px;
+  animation: float 2s ease-in-out infinite; /* Floating animation for icon */
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.drag-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0 0 10px;
+}
+
+.or-text {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 10px;
+}
+
+.browse-button {
+  background: #ff4d4f; /* Red primary */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
+}
+
+.browse-button:hover {
+  transform: scale(1.05); /* Scale on hover */
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.4);
+}
+
+.subtext {
+  font-size: 12px;
+  color: #888;
+  margin-top: 20px;
+}
+
+.error-message {
+  margin-top: 20px;
+  font-size: 12px;
+  color: #ff6b6b;
+  animation: shake 0.5s ease; /* Shake animation on error */
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+/* Right section: Uploaded files */
+.files-section {
+  flex: 1;
+  max-width: 50%;
+}
+
+.files-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.files-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.file-row {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-radius: 8px;
+  background: #f9f9f9;
+  margin-bottom: 10px;
+  transition: all 0.3s ease;
+  animation: slideIn 0.4s ease-out; /* Slide-in animation for each file */
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.file-row:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px); /* Lift on hover */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.pdf-icon {
+  font-size: 20px;
+  margin-right: 12px;
+  color: #a0a0a0;
+}
+
+.file-name {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.status-badge.ready {
+  background: #e6f7f2;
+  color: #00b894;
+}
+
+.status-badge.processing {
+  background: #fff3e0;
+  color: #ffa000;
+  animation: pulse 1.5s infinite; /* Pulsing animation for processing */
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 160, 0, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 160, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 160, 0, 0); }
+}
+
+.status-badge.error {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.remove-icon {
+  background: none;
+  border: none;
+  color: #d32f2f;
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.remove-icon:hover {
+  transform: rotate(90deg); /* Rotate on hover for remove */
+}
+
+.view-pdfs-button {
+  width: 100%;
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
+}
+
+.view-pdfs-button:hover {
+  background: #e63946;
+  transform: translateY(-2px); /* Lift on hover */
+  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.4);
+}
+
+/* Responsive adjustments (desktop first, mobile fallback) */
+@media (max-width: 768px) {
+  .upload-panel-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .upload-section,
+  .files-section {
+    max-width: 100%;
+  }
+}
