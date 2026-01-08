@@ -19,13 +19,108 @@ body {
   min-height: 100vh;
 }
 
-/* UI CHANGE: Fixed sidebar, white bg, vertical nav. Added hover (scale + opacity), active (red bg). Subtle transitions. */
-.sidebar {
+/* HEADER */
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  background: #000;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(220, 38, 38, 0.1);
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.home-header.scrolled {
+  padding: 0.8rem 2rem;
+  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.1);
+  background: #000;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.logo-container:hover {
+  transform: scale(1.05);
+}
+
+.logo-icon {
+  width: 46px;
+  height: 46px;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-weight: 800;
+  background: linear-gradient(135deg, #000, #000);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo-red {
+  color: #dc2626;
+  -webkit-text-fill-color: #dc2626;
+}
+
+.logo-ai {
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+}
+
+.nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #dc2626;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* UI CHANGE: Fixed sidebar, white bg, vertical nav. Added hover (scale + opacity), active (red bg). Subtle transitions. Added margin-top for top header. */
+.sidebar {
+  position: fixed;
+  top: 80px; /* Below header height */
+  left: 0;
   width: 250px;
-  height: 100vh;
+  height: calc(100vh - 80px);
   background: #ffffff;
   border-right: 1px solid #e0e0e0;
   display: flex;
@@ -37,51 +132,6 @@ body {
 
 .sidebar:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* UI CHANGE: Sidebar header with scrolled class (adds shadow), transition for smooth change. */
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  padding: 10px;
-  transition: box-shadow 0.3s ease;
-}
-
-.sidebar-header.scrolled {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* UI CHANGE: Added styles for logo-container (flex, cursor), logo-icon (size), logo-text (bold), logo-red (red color), logo-ai (black). */
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.logo-container:hover {
-  opacity: 0.8;
-}
-
-.logo-icon {
-  width: 36px;
-  height: 36px;
-}
-
-.logo-text {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.logo-red {
-  color: #ff0000;
-}
-
-.logo-ai {
-  color: #000000;
 }
 
 .sidebar-nav {
@@ -124,10 +174,11 @@ body {
   font-weight: 600;
 }
 
-/* UI CHANGE: Main shifted right for sidebar space, added padding/spacing for clean look. */
+/* UI CHANGE: Main shifted right for sidebar space, added padding/spacing for clean look. Added margin-top for top header. */
 .main-container {
   flex: 1;
   margin-left: 250px;
+  margin-top: 80px; /* Below header */
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -611,7 +662,11 @@ body {
 }
 
 @media (max-width: 768px) {
+  .home-header {
+    padding: 1rem;
+  }
   .sidebar {
+    top: 60px; /* Adjusted for smaller header */
     width: 100%;
     height: auto;
     position: relative;
@@ -620,6 +675,7 @@ body {
   }
   .main-container {
     margin-left: 0;
+    margin-top: 60px;
     padding: 20px;
   }
   .sidebar-nav {

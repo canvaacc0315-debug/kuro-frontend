@@ -400,7 +400,7 @@ export default function KuroWorkspacePage() {
     showStatus(`Loaded conversation "${item.title}".`);
   };
   const handleDeleteHistoryItem = (id) => {
-    const nextHistory = history.filter((h) => h.id === id);
+    const nextHistory = history.filter((h) => h.id !== id);
     setHistory(nextHistory);
     saveHistoryToStorage(nextHistory);
     showStatus("Conversation deleted from history.");
@@ -441,42 +441,42 @@ export default function KuroWorkspacePage() {
     <RovexProvider>
     <InstructionModal />
     <div className="workspace-root">
-      {/* UI CHANGE: Moved navbar to top of sidebar for integrated look, but kept logic intact. Added smooth fade-in animation via CSS. */}
-      <aside className="sidebar">
-        {/* UI CHANGE: Changed to <header> with scrolled class, added logo-container with onClick navigate, replaced KuroLogo with img (using existing /kuro-logo.png), updated text to spanned Rovex (red) and AI. */}
-        <header className={`sidebar-header ${scrolled ? "scrolled" : ""}`}>
-          <div className="logo-container" onClick={() => navigate("/")}>
-            <img src="/kuro-logo.png" alt="RovexAI Logo" className="logo-icon" />
-            <span className="logo-text">
-              <span className="logo-red">Rovex</span>
-              <span className="logo-ai">AI</span>
-            </span>
-          </div>
-          <div className="navbar-right">
-            <div className="user-info">
-              <div className="user-avatar">
-                {isLoaded && user?.firstName
-                  ? user.firstName[0].toUpperCase()
-                  : "?"}
-              </div>
-              <div className="user-name">
-                {isLoaded && user
-                  ? user.fullName ||
-                    user.primaryEmailAddress?.emailAddress ||
-                    "User"
-                  : "Loading..."}
-              </div>
+      {/* UI CHANGE: Moved header to top fixed, full-width black with red accents, logo left, user right. Kept fade-in CSS animation. */}
+      <header className={`home-header ${scrolled ? "scrolled" : ""}`}>
+        <div className="logo-container" onClick={() => navigate("/")}>
+          <img src="/kuro-logo.png" alt="RovexAI Logo" className="logo-icon" />
+          <span className="logo-text">
+            <span className="logo-red">Rovex</span>
+            <span className="logo-ai">AI</span>
+          </span>
+        </div>
+        <div className="navbar-right">
+          <div className="user-info">
+            <div className="user-avatar">
+              {isLoaded && user?.firstName
+                ? user.firstName[0].toUpperCase()
+                : "?"}
             </div>
-            <UserButton
-              afterSignOutUrl="/"
-              appearance={{
-                elements: {
-                  avatarBox: "navbar-profile-photo",
-                },
-              }}
-            />
+            <div className="user-name">
+              {isLoaded && user
+                ? user.fullName ||
+                  user.primaryEmailAddress?.emailAddress ||
+                  "User"
+                : "Loading..."}
+            </div>
           </div>
-        </header>
+          <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                avatarBox: "navbar-profile-photo",
+              },
+            }}
+          />
+        </div>
+      </header>
+      {/* UI CHANGE: Sidebar now without header, starts below top header height. */}
+      <aside className="sidebar">
         {/* UI CHANGE: Replaced top tabs-nav with vertical sidebar items. Added icons, labels, hover/active animations (CSS transition). Exact order: Documents (upload), Chat, Analysis, OCR, PDF Creator. White bg, red active highlight. */}
         <nav className="sidebar-nav">
           <button
@@ -516,7 +516,7 @@ export default function KuroWorkspacePage() {
           </button>
         </nav>
       </aside>
-      {/* UI CHANGE: Main now to right of sidebar, with clean spacing and card-based sections. Added transition for content fade-in when tab changes. */}
+      {/* UI CHANGE: Main now to right of sidebar, with clean spacing and card-based sections. Added transition for content fade-in when tab changes. Added margin-top for top header. */}
       <main className="main-container">
         <header className="workspace-header">
           <div>
