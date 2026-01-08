@@ -243,6 +243,42 @@
   transform: rotate(90deg); /* Rotate on hover for remove */
 }
 
+/* New PDF viewer section styles */
+.pdf-viewer-section {
+  width: 100%;
+  max-width: none;
+  margin-top: 40px;
+  padding: 20px;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.viewer-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.close-viewer-button {
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.close-viewer-button:hover {
+  background: #e63946;
+  transform: translateY(-1px);
+}
+
 /* Responsive adjustments (desktop first, mobile fallback) */
 @media (max-width: 768px) {
   .upload-panel-container {
@@ -250,7 +286,8 @@
   }
   
   .upload-section,
-  .files-section {
+  .files-section,
+  .pdf-viewer-section {
     max-width: 100%;
   }
   

@@ -10,6 +10,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   const { getToken } = useAuth();
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState("");
+  const [viewedPdfUrl, setViewedPdfUrl] = useState(null); // New state for the PDF URL to view below
 
   // ✅ ADDITION 1: restore PDFs on first load
   useEffect(() => {
@@ -73,7 +74,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
     }
   }
 
-  // Assume pdf object from server includes 'id' for fetching the PDF
+  // Updated handleView to set the PDF URL for viewing below instead of navigating
   async function handleView(pdf) {
     try {
       const token = await getToken();
@@ -85,7 +86,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       if (!res.ok) throw new Error('Failed to fetch PDF');
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
-      window.location.href = url; // Open in same tab
+      setViewedPdfUrl(url); // Set the URL to display below
     } catch (err) {
       console.error(err);
       setError(err.message || "Failed to view PDF");
@@ -159,7 +160,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
           {pdfs.map((pdf, index) => (
             <li key={index} className="file-row">
               <div className="pdf-icon">📄</div>
-              <span className="file-name">{pdf.name}</span>
+              <span className="file-name">{pdf.name || `PDF ${index + 1}`}</span> {/* Fallback name if pdf.name is missing */}
               <div className={`status-badge ${pdf.status?.toLowerCase() || ''}`}>
                 {pdf.status === 'Ready' && '✅ Ready'}
                 {pdf.status === 'Processing' && '⏳ Processing'}
@@ -177,6 +178,23 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
           ))}
         </ul>
       </div>
+
+      {/* New section to display the PDF below */}
+      {viewedPdfUrl && (
+        <div className="pdf-viewer-section">
+          <h3 className="viewer-title">Viewing PDF</h3>
+          <iframe
+            src={viewedPdfUrl}
+            width="100%"
+            height="600px"
+            style={{ border: "1px solid #ddd" }}
+            title="PDF Viewer"
+          ></iframe>
+          <button className="close-viewer-button" onClick={() => setViewedPdfUrl(null)}>
+            Close Viewer
+          </button>
+        </div>
+      )}
     </div>
   );
 }
