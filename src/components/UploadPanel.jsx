@@ -176,9 +176,6 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
             </li>
           ))}
         </ul>
-        <button className="view-pdfs-button" onClick={onSelectPdf}>
-          View PDFs →
-        </button>
       </div>
     </div>
   );

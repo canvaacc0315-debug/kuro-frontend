@@ -11,7 +11,7 @@
   min-height: 100vh; /* Cover full page height */
   margin: 0 auto;
   padding: 40px 20px;
-  background: linear-gradient(to bottom, #f8f9fc, #ffffff); /* Light gradient background */
+  background: #ffffff; /* Plain white background */
   animation: fadeIn 0.5s ease-out; /* Fade-in animation on load */
   box-sizing: border-box;
 }
@@ -31,8 +31,6 @@
 .upload-section {
   width: 100%;
   max-width: none;
-  background: #ffffff;
-  border-radius: 12px;
   padding: 40px 20px;
   text-align: center;
   transition: all 0.3s ease; /* Smooth transitions for drag-over */
@@ -86,12 +84,10 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
 }
 
 .browse-button:hover {
   transform: scale(1.05); /* Scale on hover */
-  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.4);
 }
 
 .subtext {
@@ -139,8 +135,6 @@
   align-items: center;
   justify-content: space-between;
   padding: 12px;
-  border-radius: 8px;
-  background: #f9f9f9;
   margin-bottom: 10px;
   transition: all 0.3s ease;
   animation: slideIn 0.4s ease-out; /* Slide-in animation for each file */
@@ -152,9 +146,7 @@
 }
 
 .file-row:hover {
-  background: #f0f0f0;
   transform: translateY(-2px); /* Lift on hover */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .pdf-icon {
@@ -249,26 +241,6 @@
 
 .remove-icon:hover {
   transform: rotate(90deg); /* Rotate on hover for remove */
-}
-
-.view-pdfs-button {
-  width: 100%;
-  background: #ff4d4f;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 14px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(255, 77, 79, 0.3);
-}
-
-.view-pdfs-button:hover {
-  background: #e63946;
-  transform: translateY(-2px); /* Lift on hover */
-  box-shadow: 0 4px 12px rgba(255, 77, 79, 0.4);
 }
 
 /* Responsive adjustments (desktop first, mobile fallback) */
