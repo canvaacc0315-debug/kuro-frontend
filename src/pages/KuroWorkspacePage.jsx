@@ -450,6 +450,13 @@ export default function KuroWorkspacePage() {
             <span className="logo-ai">AI</span>
           </span>
         </div>
+        <div className="header-links">
+          <a href="/homepage" className="nav-link">Home</a>
+          <a href="https://rovexai.com/contact" className="nav-link">Help</a>
+          <button onClick={openUserProfile} className="nav-link settings-link">
+            Settings
+          </button>
+        </div>
         <div className="navbar-right">
           <div className="user-info">
             <div className="user-name">

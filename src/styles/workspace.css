@@ -80,7 +80,7 @@ body {
   -webkit-text-fill-color: #ffffff;
 }
 
-.nav {
+.header-links {
   display: flex;
   gap: 2rem;
   align-items: center;
@@ -93,6 +93,10 @@ body {
   position: relative;
   padding: 0.5rem 0;
   transition: color 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
 }
 
 .nav-link:hover {
@@ -112,6 +116,10 @@ body {
 
 .nav-link:hover::after {
   width: 100%;
+}
+
+.settings-link {
+  padding: 0.5rem 0;
 }
 
 /* UI CHANGE: Fixed sidebar, white bg, vertical nav. Added hover (scale + opacity), active (red bg). Subtle transitions. Added margin-top for top header. */
