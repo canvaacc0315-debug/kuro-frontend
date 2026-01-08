@@ -1083,13 +1083,6 @@ export default function KuroWorkspacePage() {
         </div>
       </main>
       {/* UI CHANGE: Added full-width black footer with minimal branding/links. */}
-      <footer className="footer">
-        <div className="footer-content">
-          <span>© 2026 RovexAI. All rights reserved.</span>
-          <a href="/privacy">Privacy</a>
-          <a href="/terms">Terms</a>
-        </div>
-      </footer>
     </div>
     </RovexProvider>
   );
