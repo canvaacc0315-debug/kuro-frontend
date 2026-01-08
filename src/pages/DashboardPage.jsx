@@ -56,7 +56,7 @@ export default function DashboardPage() {
             Transform your PDF workflows with intelligent document processing
             and creation
           </p>
-          <button className="hero-cta" onClick={() => navigate("/app")}>
+          <button className="hero-cta" onClick={() => navigate("/app?tab=upload")}>
             Get Started
           </button>
           <div className="floating-cards">
