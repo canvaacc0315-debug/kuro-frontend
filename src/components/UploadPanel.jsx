@@ -78,6 +78,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
               const file = pdfsToUpload[idx];
               return {
                 ...info,
+                name: file.name,
                 sizeMB: (file.size / 1024 / 1024).toFixed(2),
                 url: URL.createObjectURL(file),
               };
