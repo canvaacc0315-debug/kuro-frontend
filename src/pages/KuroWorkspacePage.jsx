@@ -1,7 +1,7 @@
 // src/pages/KuroWorkspacePage.jsx
 import { useState, useEffect, useRef } from "react";
 import { useUser, UserButton } from "@clerk/clerk-react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
 import PdfQuestionSuggestions from "../components/PdfQuestionSuggestions";
 import "../styles/workspace.css";
@@ -400,7 +400,7 @@ export default function KuroWorkspacePage() {
     showStatus(`Loaded conversation "${item.title}".`);
   };
   const handleDeleteHistoryItem = (id) => {
-    const nextHistory = history.filter((h) => h.id !== id);
+    const nextHistory = history.filter((h) => h.id === id);
     setHistory(nextHistory);
     saveHistoryToStorage(nextHistory);
     showStatus("Conversation deleted from history.");
@@ -425,16 +425,32 @@ export default function KuroWorkspacePage() {
       });
     }
   }, [conversation]);
+
+  // UI CHANGE: Added scrolled state and useEffect for scroll listener to match provided snippet.
+  const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <RovexProvider>
     <InstructionModal />
     <div className="workspace-root">
       {/* UI CHANGE: Moved navbar to top of sidebar for integrated look, but kept logic intact. Added smooth fade-in animation via CSS. */}
       <aside className="sidebar">
-        <div className="sidebar-header">
-          <div className="navbar-brand">
-            <KuroLogo size={36} />   {/* ✅ uses same logo */}
-            <div className="navbar-brand-text">RovexAI</div>
+        {/* UI CHANGE: Changed to <header> with scrolled class, added logo-container with onClick navigate, replaced KuroLogo with img (using existing /kuro-logo.png), updated text to spanned Rovex (red) and AI. */}
+        <header className={`sidebar-header ${scrolled ? "scrolled" : ""}`}>
+          <div className="logo-container" onClick={() => navigate("/")}>
+            <img src="/kuro-logo.png" alt="RovexAI Logo" className="logo-icon" />
+            <span className="logo-text">
+              <span className="logo-red">Rovex</span>
+              <span className="logo-ai">AI</span>
+            </span>
           </div>
           <div className="navbar-right">
             <div className="user-info">
@@ -460,7 +476,7 @@ export default function KuroWorkspacePage() {
               }}
             />
           </div>
-        </div>
+        </header>
         {/* UI CHANGE: Replaced top tabs-nav with vertical sidebar items. Added icons, labels, hover/active animations (CSS transition). Exact order: Documents (upload), Chat, Analysis, OCR, PDF Creator. White bg, red active highlight. */}
         <nav className="sidebar-nav">
           <button

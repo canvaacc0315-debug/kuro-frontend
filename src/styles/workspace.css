@@ -39,11 +39,49 @@ body {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* UI CHANGE: Sidebar header with scrolled class (adds shadow), transition for smooth change. */
 .sidebar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 40px;
+  padding: 10px;
+  transition: box-shadow 0.3s ease;
+}
+
+.sidebar-header.scrolled {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* UI CHANGE: Added styles for logo-container (flex, cursor), logo-icon (size), logo-text (bold), logo-red (red color), logo-ai (black). */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.logo-container:hover {
+  opacity: 0.8;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.logo-red {
+  color: #ff0000;
+}
+
+.logo-ai {
+  color: #000000;
 }
 
 .sidebar-nav {
@@ -109,7 +147,7 @@ body {
   color: #ff0000;
 }
 
-/* UI CHANGE: Content wrapper with grid/flex for card sections, no clutter. */
+/* UI CHANGE: Content wrapper with fade/flex for card sections, no clutter. */
 .content-wrapper {
   flex: 1;
 }
