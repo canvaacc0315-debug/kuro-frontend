@@ -15,22 +15,20 @@ import "../styles/chat-overrides.css";
 import "../styles/no-scrollbar-override.css";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
-import "./UploadPanel/jsx";
-
+import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
 
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 export default function KuroWorkspacePage() {
   const { user, isLoaded } = useUser();
-  const { uploadPdf } = useApiClient(); // 👈 NEW
+  const { uploadPdf } = useApiClient(); // Kept but unused now; UploadPanel handles uploads
   // --- URL tab wiring ---
   const { openUserProfile } = useClerk();
   const [searchParams, setSearchParams] = useSearchParams();
   const getInitialTab = () => {
     const tabFromUrl = searchParams.get("tab");
     if (
-      tabFromUrl === "upload" ||
       tabFromUrl === "chat" ||
       tabFromUrl === "analysis" ||
       tabFromUrl === "ocr" ||
@@ -44,8 +42,6 @@ export default function KuroWorkspacePage() {
   const [activeChatSubTab, setActiveChatSubTab] = useState("current");
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedPdfId, setSelectedPdfId] = useState("");
-  // which file is currently being previewed in the Upload tab
-  const [previewFile, setPreviewFile] = useState(null);
   const [chatInput, setChatInput] = useState("");
   const [answerStyle, setAnswerStyle] = useState("default");
   const [conversation, setConversation] = useState([
@@ -117,7 +113,7 @@ export default function KuroWorkspacePage() {
     const tabFromUrl = searchParams.get("tab");
     if (
       tabFromUrl &&
-      ["upload", "chat", "analysis", "ocr", "create"].includes(tabFromUrl) &&
+      ["chat", "analysis", "ocr", "create"].includes(tabFromUrl) &&
       tabFromUrl !== activeTab
     ) {
       setActiveTab(tabFromUrl);
@@ -136,60 +132,6 @@ export default function KuroWorkspacePage() {
   const handleChatSubTabClick = (sub) => {
     setActiveChatSubTab(sub);
   };
-  // ---------------- upload ----------------
-  const handleFiles = async (fileList) => {
-    const pdfs = Array.from(fileList).filter(
-      (f) => f.type === "application/pdf"
-    );
-    if (!pdfs.length) return;
-    try {
-      // ⬇️ real upload to backend so we get real pdf_id (UUID)
-      const res = await uploadPdf(pdfs); // { pdfs: [{ pdf_id, filename }, ...] }
-      const backendPdfs = res?.pdfs || [];
-      setUploadedFiles((prev) => {
-        const mapped = backendPdfs.map((info, idx) => {
-          const file = pdfs[idx];
-          return {
-            id: info.pdf_id, // 👈 this now matches backend pdf_id
-            name: info.filename,
-            sizeMB: (file.size / 1024 / 1024).toFixed(2),
-            url: URL.createObjectURL(file),
-          };
-        });
-        // auto‑select first pdf if none selected yet
-        if (!selectedPdfId && mapped.length > 0) {
-          setSelectedPdfId(mapped[0].id);
-        }
-        return [...prev, ...mapped];
-      });
-    } catch (err) {
-      console.error("PDF upload failed:", err);
-      showStatus("PDF upload failed – check backend.", "error");
-    }
-  };
-  const handleFileInputChange = (e) => handleFiles(e.target.files);
-  const handleDrop = (e) => {
-    e.preventDefault();
-    handleFiles(e.dataTransfer.files);
-  };
-  const handleDragOver = (e) => e.preventDefault();
-  const handleRemoveFile = (id) => {
-    setUploadedFiles((prev) => {
-      const fileToRemove = prev.find((f) => f.id === id);
-      // clean up preview URL
-      if (fileToRemove?.url) {
-        URL.revokeObjectURL(fileToRemove.url);
-      }
-      return prev.filter((f) => f.id !== id);
-    });
-    if (id === selectedPdfId) {
-      setSelectedPdfId("");
-    }
-    // if we were previewing this file, close preview
-    if (previewFile && previewFile.id === id) {
-      setPreviewFile(null);
-    }
-  };
   // ---------------- chat ----------------
   const handleChatKeyDown = (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
@@ -204,7 +146,7 @@ export default function KuroWorkspacePage() {
         role: "bot",
         content:
           "New conversation started. Select / upload a PDF and ask your first question!",
-        timestamp: new Date().toLocaleTimeString(),
+          timestamp: new Date().toLocaleTimeString(),
       },
     ]);
     setChatInput("");
@@ -315,8 +257,6 @@ export default function KuroWorkspacePage() {
       let cursorY = 15;
       const text = conversationAsPlainText();
       const lines = text.split("\n");
-      // ---- CHANGED: avoid setFont that passes style param (old jspdf internals) ----
-      // doc.setFont("Courier", "Normal"); // <-- older code triggered setFontType
       doc.setFont("Courier"); // minimal, safe
       doc.setFontSize(11);
       lines.forEach((line) => {
@@ -537,107 +477,11 @@ export default function KuroWorkspacePage() {
             id="uploadTab"
             className={`tab-content card ${activeTab === "upload" ? "active" : ""}`}
           >
-            <div className="upload-container">
-              {/* LEFT: either upload UI OR PDF preview */}
-              {previewFile ? (
-                <div className="pdf-preview-panel">
-                  <div className="pdf-preview-header">
-                    <div className="pdf-preview-title">
-                      📄 Preview: {previewFile.name}
-                    </div>
-                    <button
-                      type="button"
-                      className="pdf-preview-back-btn"
-                      onClick={() => setPreviewFile(null)}
-                    >
-                      ← Back to uploads
-                    </button>
-                  </div>
-                  <iframe
-                    className="pdf-preview-frame"
-                    src={previewFile.url}
-                    title={previewFile.name}
-                    style={{
-                      width: "100%",
-                      height: "75vh",
-                      border: "none",
-                      borderRadius: "0",
-                      boxShadow: "none",
-                      background: "#111",
-                    }}
-                  />
-                </div>
-              ) : (
-                <div
-                  className="upload-area"
-                  onDrop={handleDrop}
-                  onDragOver={handleDragOver}
-                >
-                  <div className="upload-icon">📁</div>
-                  <div className="upload-title">Drag & Drop PDFs Here</div>
-                  <div className="upload-desc">
-                    Or click to browse from your computer. Support for multiple
-                    files.
-                  </div>
-                  <button
-                    className="upload-btn"
-                    type="button"
-                    onClick={() =>
-                      document.getElementById("fileInputHidden")?.click()
-                    }
-                  >
-                    Select PDFs
-                  </button>
-                  <input
-                    id="fileInputHidden"
-                    type="file"
-                    multiple
-                    accept=".pdf"
-                    className="file-input"
-                    onChange={handleFileInputChange}
-                  />
-                </div>
-              )}
-              {/* RIGHT: uploaded files list */}
-              <div className="uploaded-files">
-                <div className="uploaded-files-title">📋 Uploaded Files</div>
-                {uploadedFiles.length === 0 ? (
-                  <div className="empty-state" style={{ padding: 20, margin: 0 }}>
-                    <div style={{ fontSize: 12, color: "#666" }}>
-                      No files uploaded yet
-                    </div>
-                  </div>
-                ) : (
-                  uploadedFiles.map((f) => (
-                    <div key={f.id} className="file-item">
-                      <div className="file-info">
-                        <div className="file-icon">📄</div>
-                        <div className="file-details">
-                          <div className="file-name">{f.name}</div>
-                          <div className="file-size">{f.sizeMB} MB</div>
-                        </div>
-                      </div>
-                      <div className="file-actions">
-                        <button
-                          className="file-action-btn"
-                          type="button"
-                          onClick={() => setPreviewFile(f)}
-                        >
-                          View
-                        </button>
-                        <button
-                          className="file-action-btn"
-                          type="button"
-                          onClick={() => handleRemoveFile(f.id)}
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
+            <UploadPanel 
+              pdfs={uploadedFiles} 
+              onPdfsChange={setUploadedFiles} 
+              onSelectPdf={setSelectedPdfId} 
+            />
           </section>
           <section
             id="chatTab"
