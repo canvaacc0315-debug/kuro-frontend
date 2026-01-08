@@ -32,6 +32,25 @@ export default function DashboardPage() {
             <span className="logo-ai">AI</span>
           </span>
           </div>
+          <div className="navbar-right">
+            <div className="user-info">
+              <div className="user-name">
+                {isLoaded && user
+                ? user.fullName ||
+                  user.primaryEmailAddress?.emailAddress ||
+                  "User"
+                : "Loading..."}
+              </div>
+            </div>
+            <UserButton
+            afterSignOutUrl="/"
+            appearance={{
+              elements: {
+                avatarBox: "navbar-profile-photo",
+              },
+            }}
+          />
+          </div>
         </div>
         <nav className="header-links">
           <a href="/homepage" className="nav-link">Home</a>
