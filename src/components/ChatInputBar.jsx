@@ -1,4 +1,4 @@
-import "./chatInputBar.css";
+import "./styles/chatInputBar.css";
 
 export default function ChatInputBar({ value, onChange, onSend }) {
   return (
