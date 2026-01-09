@@ -1,6 +1,6 @@
 // src/components/ChatWithPdfPanel.jsx
 import { useState, useEffect, useMemo } from "react";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import jsPDF from "jspdf";
 import "../styles/chat-panel.css";
 
@@ -62,11 +62,11 @@ const DEFAULT_HISTORY = [
   },
 ];
 
-export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
+export default function ChatWithPdfPanel({ pdfs, selectedPdfId, onSelectPdf }) {
   const { getToken } = useAuth();
   const { user } = useUser();
 
-  const [activeSubTab, setActiveSubTab] = useState("current"); // current | history | export
+  const [activeTab, setActiveTab] = useState("current");
   const [question, setQuestion] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -88,7 +88,14 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
     }
   });
 
+  const [searchHistory, setSearchHistory] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
   const [exportStatus, setExportStatus] = useState("");
+
+  const [scope, setScope] = useState("Entire PDF");
+  const [answerStyle, setAnswerStyle] = useState("Helpful explanation");
 
   // keep history in localStorage
   useEffect(() => {
@@ -205,8 +212,17 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
     if (mapped.length === 0) return;
 
     setMessages(mapped);
-    setActiveSubTab("current");
+    setActiveTab("current");
   }
+
+  // Filtered and paginated history
+  const filteredHistory = chatHistory.filter((item) =>
+    item.title.toLowerCase().includes(searchHistory.toLowerCase()) || item.preview.toLowerCase().includes(searchHistory.toLowerCase())
+  );
+  const paginatedHistory = filteredHistory.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   // === EXPORT HELPERS ===
   const conversationText = useMemo(() => {
@@ -225,6 +241,36 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
       }\n${msg.content}\n\n`;
     });
     return text;
+  }, [messages]);
+
+  const conversationHTML = useMemo(() => {
+    let html = `<html><head><title>RovexAI Chat Export</title></head><body><h1>RovexAI - CHAT CONVERSATION EXPORT</h1>`;
+    html += `<p>Exported: ${new Date().toLocaleString()}</p><hr>`;
+
+    if (!messages.length) {
+      html += "<p>No messages in this conversation.</p>";
+      return html + "</body></html>";
+    }
+
+    messages.forEach((msg) => {
+      html += `<p><strong>[${msg.role.toUpperCase()}] ${msg.timestamp || ""}</strong><br>${msg.content}</p>`;
+    });
+    return html + "</body></html>";
+  }, [messages]);
+
+  const conversationMD = useMemo(() => {
+    let md = "# RovexAI - CHAT CONVERSATION EXPORT\n";
+    md += `Exported: ${new Date().toLocaleString()}\n\n---\n\n`;
+
+    if (!messages.length) {
+      md += "No messages in this conversation.";
+      return md;
+    }
+
+    messages.forEach((msg) => {
+      md += `### [${msg.role.toUpperCase()}] ${msg.timestamp || ""}\n${msg.content}\n\n`;
+    });
+    return md;
   }, [messages]);
 
   function downloadFile(content, filename, mimeType) {
@@ -251,7 +297,7 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
       const doc = new jsPDF();
       const lines = doc.splitTextToSize(conversationText, 180);
       doc.text(lines, 10, 10);
-      doc.save(`kuro-chat-${ts}.pdf`);
+      doc.save(`rovex-chat-${ts}.pdf`);
       setExportStatus("Exported as PDF");
       return;
     }
@@ -260,7 +306,7 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
       // simple .docx‑ish text file – good enough for Word/Docs
       downloadFile(
         conversationText,
-        `kuro-chat-${ts}.docx`,
+        `rovex-chat-${ts}.docx`,
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       );
       setExportStatus("Exported as DOCX");
@@ -273,14 +319,26 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
         const msg = m.content.replace(/"/g, '""');
         csv += `"${m.role}","${m.timestamp || ""}","${msg}"\n`;
       });
-      downloadFile(csv, `kuro-chat-${ts}.csv`, "text/csv");
+      downloadFile(csv, `rovex-chat-${ts}.csv`, "text/csv");
       setExportStatus("Exported as CSV");
       return;
     }
 
     if (format === "txt") {
-      downloadFile(conversationText, `kuro-chat-${ts}.txt`, "text/plain");
+      downloadFile(conversationText, `rovex-chat-${ts}.txt`, "text/plain");
       setExportStatus("Exported as TXT");
+      return;
+    }
+
+    if (format === "html") {
+      downloadFile(conversationHTML, `rovex-chat-${ts}.html`, "text/html");
+      setExportStatus("Exported as HTML");
+      return;
+    }
+
+    if (format === "md") {
+      downloadFile(conversationMD, `rovex-chat-${ts}.md`, "text/markdown");
+      setExportStatus("Exported as MD");
       return;
     }
   }
@@ -295,7 +353,7 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
   }
 
   function handleGenerateShareLink() {
-    const link = `https://kuro.ai/share/${Math.random()
+    const link = `https://rovex.ai/share/${Math.random()
       .toString(36)
       .slice(2, 9)}`;
     // optional: also copy
@@ -308,138 +366,164 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
   }
 
   return (
-    <div className="chat-section">
-      <div className="chat-left">
-        {/* header showing which PDF */}
-        <div className="section-label">CHAT WITH ROVEXAI</div>
-        <div className="pdf-selector">
-          <div className="pdf-selector-icon">📄</div>
-          <div className="pdf-selector-text">
-            {currentPdf
-              ? `Talking to: ${currentPdf.filename || currentPdf.name}`
-              : "Upload or select a PDF in the Upload tab to start chatting."}
-          </div>
-        </div>
-
-        {/* sub-tabs */}
-        <div className="chat-subtabs-nav">
-          <button
-            type="button"
-            className={
-              "chat-subtab-btn" +
-              (activeSubTab === "current" ? " active" : "")
-            }
-            onClick={() => setActiveSubTab("current")}
-          >
-            💬 Current Chat
-          </button>
-          <button
-            type="button"
-            className={
-              "chat-subtab-btn" +
-              (activeSubTab === "history" ? " active" : "")
-            }
-            onClick={() => setActiveSubTab("history")}
-          >
-            📚 Chat History
-          </button>
-          <button
-            type="button"
-            className={
-              "chat-subtab-btn" +
-              (activeSubTab === "export" ? " active" : "")
-            }
-            onClick={() => setActiveSubTab("export")}
-          >
-            📥 Export Conversation
-          </button>
-        </div>
-
-        {/* CURRENT CHAT */}
-        <div
-          className={
-            "chat-subtab-content" +
-            (activeSubTab === "current" ? " active" : "")
-          }
+    <div className="chat-panel-container">
+      <div className="tabs">
+        <button
+          className={`tab ${activeTab === "current" ? "active" : ""}`}
+          onClick={() => setActiveTab("current")}
         >
-          <div className="chat-container chat-panel">
-            <div className="chat-messages">
-              {messages.map((m, idx) => (
-                <div
-                  key={idx}
-                  className={"message " + (m.role === "user" ? "user" : "bot")}
-                >
-                  {m.role === "bot" && (
-                    <img
-                      src="\kuro.png"
-                      alt="kuro"
-                      className="message-avatar"
-                    />
-                  )}
+          Current Chat
+        </button>
+        <button
+          className={`tab ${activeTab === "history" ? "active" : ""}`}
+          onClick={() => setActiveTab("history")}
+        >
+          Chat History
+        </button>
+        <button
+          className={`tab ${activeTab === "export" ? "active" : ""}`}
+          onClick={() => setActiveTab("export")}
+        >
+          Export Conversation
+        </button>
+      </div>
 
-                  <div className="message-bubble">{m.content}</div>
-
-                  {m.role === "user" && (
-                    <img
-                      src={user?.imageUrl}
-                      alt="User"
-                      className="message-avatar"
-                    />
-                  )}
-                </div>
-              ))}
+      <div className="tab-content">
+        {activeTab === "current" && (
+          <div className="current-chat">
+            <div className="sidebar">
+              <div className="scope-selector">
+                <button className={`scope-btn ${scope === "Entire PDF" ? "active" : ""}`} onClick={() => setScope("Entire PDF")}>
+                  Entire PDF
+                </button>
+                <button className={`scope-btn ${scope === "Page" ? "active" : ""}`} onClick={() => setScope("Page")}>
+                  Page
+                </button>
+                <button className={`scope-btn ${scope === "Range" ? "active" : ""}`} onClick={() => setScope("Range")}>
+                  Range
+                </button>
+              </div>
+              <select className="pdf-dropdown" value={selectedPdfId || ""} onChange={(e) => onSelectPdf?.(e.target.value)}>
+                <option value="">Select PDF</option>
+                {pdfs.map((pdf) => (
+                  <option key={pdf.pdf_id} value={pdf.pdf_id}>
+                    {pdf.filename || pdf.name}
+                  </option>
+                ))}
+              </select>
+              <select className="answer-style" value={answerStyle} onChange={(e) => setAnswerStyle(e.target.value)}>
+                <option>Helpful explanation</option>
+                {/* Add more options if needed */}
+              </select>
+              <div className="action-buttons">
+                <button className="save-btn" onClick={() => {
+                  // Simulate save: add current messages to history
+                  const newConv = {
+                    id: Date.now(),
+                    title: messages[1]?.content.slice(0, 50) || "New Chat",
+                    messagesCount: messages.length,
+                    ago: "Just now",
+                    preview: messages[1]?.content.slice(0, 50) || "",
+                    messages: messages.map(m => ({ role: m.role, content: m.content })),
+                  };
+                  setChatHistory(prev => [newConv, ...prev]);
+                }}>Save</button>
+                <button className="clear-btn" onClick={() => setMessages([])}>Clear Conversation</button>
+              </div>
             </div>
-            <form className="chat-input-area" onSubmit={handleSend}>
-              <textarea
-                className="chat-input"
-                placeholder="Ask anything about your PDF…"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSend();
-                  }
-                }}
-              />
-              <button
-                type="submit"
-                className="send-btn"
-                disabled={loading}
-              >
-                {loading ? "Sending…" : "Send"}
-              </button>
-            </form>
-            {error && (
-              <p className="chat-error-text">
-                {error}
-              </p>
-            )}
-          </div>
-        </div>
+            <div className="chat-main">
+              <div className="messages">
+                {messages.map((m, idx) => (
+                  <div
+                    key={idx}
+                    className={`message ${m.role === "user" ? "user" : "bot"}`}
+                  >
+                    {m.role === "bot" && (
+                      <img
+                        src="/kuro.png"
+                        alt="kuro"
+                        className="message-avatar"
+                      />
+                    )}
 
-        {/* CHAT HISTORY */}
-        <div
-          className={
-            "chat-subtab-content" +
-            (activeSubTab === "history" ? " active" : "")
-          }
-        >
-          <div className="history-container">
+                    <div className="message-bubble">{m.content}</div>
+
+                    {m.role === "user" && (
+                      <img
+                        src={user?.imageUrl}
+                        alt="User"
+                        className="message-avatar"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+              <form className="input-area" onSubmit={handleSend}>
+                <textarea
+                  className="chat-input"
+                  placeholder="Ask anything about your PDFs…"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSend();
+                    }
+                  }}
+                />
+                <button
+                  type="submit"
+                  className="send-btn"
+                  disabled={loading}
+                >
+                  {loading ? "Sending…" : "Send"}
+                </button>
+              </form>
+              {error && (
+                <p className="chat-error-text">
+                  {error}
+                </p>
+              )}
+            </div>
+            <div className="suggestions">
+              <h4>Try asking:</h4>
+              <ul>
+                <li>What is this PDF about?</li>
+                <li>What is the main objective of this PDF?</li>
+                <li>Who is the intended audience?</li>
+                <li>What problem does this document address?</li>
+                <li>Give a concise summary of this PDF</li>
+                <li>What is the most important takeaways?</li>
+                <li>Extract the key points from this PDF</li>
+                <li>Summarize the document in bullet points</li>
+                <li>Summarize the document in filler points</li>
+                <li>Summarize the document in bullet points</li>
+                <li>Genefes-revison notes from this PDF</li>
+                <li>What are future sers tile mentioned?</li>
+                <li>What future scope is suggested?</li>
+                <li>Extract only the conclusions from this PDF</li>
+                <li>What parts of the document should focus on first?</li>
+              </ul>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "history" && (
+          <div className="chat-history">
             <div className="history-header">
-              <h3 className="history-title">📚 Your Chat History</h3>
-              <button
-                type="button"
-                className="clear-history-btn"
-                onClick={handleClearHistory}
-                disabled={!chatHistory.length}
-              >
+              <input
+                type="text"
+                className="search-bar"
+                placeholder="Search chat history..."
+                value={searchHistory}
+                onChange={(e) => setSearchHistory(e.target.value)}
+              />
+              <button className="clear-all-btn" onClick={handleClearHistory}>
                 Clear All
               </button>
             </div>
-
-            <div className="history-list">
-              {chatHistory.length === 0 ? (
+            <ul className="history-list">
+              {paginatedHistory.length === 0 ? (
                 <div className="empty-state">
                   <div className="empty-icon">📭</div>
                   <div className="empty-title">No Chat History Yet</div>
@@ -449,159 +533,58 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
                   </div>
                 </div>
               ) : (
-                chatHistory.map((conv) => (
-                  <div key={conv.id} className="history-item">
-                    <div className="history-item-content">
-                      <div className="history-item-title">
-                        {conv.title}
-                      </div>
-                      <div className="history-item-info">
-                        {conv.messagesCount} messages • {conv.ago}
-                      </div>
+                paginatedHistory.map((conv) => (
+                  <li key={conv.id} className="history-card">
+                    <div className="history-info">
+                      <h5>{conv.title}</h5>
+                      <p>Saved on {conv.ago}</p>
+                      <p>📄 {conv.preview}</p>
                     </div>
-                    <div className="history-item-actions">
-                      <button
-                        type="button"
-                        className="history-item-btn"
-                        onClick={() => handleLoadConversation(conv)}
-                      >
+                    <div className="history-actions">
+                      <button className="load-btn" onClick={() => handleLoadConversation(conv)}>
                         Load
                       </button>
-                      <button
-                        type="button"
-                        className="history-item-btn"
-                        onClick={() =>
-                          handleDeleteConversation(conv.id)
-                        }
-                      >
+                      <button className="delete-btn" onClick={() => handleDeleteConversation(conv.id)}>
                         Delete
                       </button>
                     </div>
-                  </div>
+                  </li>
                 ))
               )}
+            </ul>
+            <div className="pagination">
+              <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+                &lt;
+              </button>
+              <span>Page {currentPage} of {Math.ceil(filteredHistory.length / itemsPerPage)}</span>
+              <button disabled={currentPage === Math.ceil(filteredHistory.length / itemsPerPage)} onClick={() => setCurrentPage(currentPage + 1)}>
+                &gt;
+              </button>
             </div>
           </div>
-        </div>
+        )}
 
-        {/* EXPORT CONVERSATION */}
-        <div
-          className={
-            "chat-subtab-content" +
-            (activeSubTab === "export" ? " active" : "")
-          }
-        >
-          <div className="export-container">
-            <div className="export-header">
-              <h3 className="export-title">📥 Export Your Conversation</h3>
-              <p className="export-desc">
-                Download or share your current chat conversation in multiple
-                formats.
-              </p>
-            </div>
-
-            <div className="export-options-grid">
-              {/* PDF */}
-              <div className="export-card">
-                <div className="export-icon">📄</div>
-                <div className="export-card-title">Export as PDF</div>
-                <div className="export-card-desc">
-                  Download your entire conversation with formatting and
-                  timestamps.
-                </div>
-                <button
-                  type="button"
-                  className="export-btn"
-                  onClick={() => handleExport("pdf")}
-                >
-                  📥 Export PDF
+        {activeTab === "export" && (
+          <div className="export-grid">
+            {[
+              { icon: "📄", title: "Export as PDF", desc: "Download your entire conversation with timestamps.", btn: "Export PDF", format: "pdf" },
+              { icon: "📝", title: "Export as Word (DOCX)", desc: "Perfect for editing and sharing in Microsoft Word or Google Docs.", btn: "Export DOCX", format: "docx" },
+              { icon: "📊", title: "Export as CSV", desc: "Import to Excel or Google Sheets for analysis and processing.", btn: "Export CSV", format: "csv" },
+              { icon: "📄", title: "Export as Text (TXT)", desc: "Simple plain text format, universal compatibility.", btn: "Export TXT", format: "txt" },
+              { icon: "📋", title: "Copy to Clipboard", desc: "Copy the entire conversation to paste anywhere.", btn: "Copy Text", func: handleCopyToClipboard },
+              { icon: "🌐", title: "Export as HTML", desc: "Export as a web-ready HTML file with clickable links and formatting.", btn: "Export HTML", format: "html" },
+              { icon: "📝", title: "Export as Markdown (MD)", desc: "Save your conversation in Markdown syntax for easy formatting.", btn: "Export MD", format: "md" },
+              { icon: "🔗", title: "Shareable Link", desc: "Get a shareable link to your conversation for easy sharing.", btn: "Generate Link", func: handleGenerateShareLink },
+            ].map((option, idx) => (
+              <div key={idx} className="export-card">
+                <div className="export-icon">{option.icon}</div>
+                <h5>{option.title}</h5>
+                <p>{option.desc}</p>
+                <button className="export-btn" onClick={option.func || (() => handleExport(option.format))}>
+                  {option.btn}
                 </button>
               </div>
-
-              {/* DOCX */}
-              <div className="export-card">
-                <div className="export-icon">📝</div>
-                <div className="export-card-title">
-                  Export as Word (.DOCX)
-                </div>
-                <div className="export-card-desc">
-                  Perfect for editing and sharing in Microsoft Word or Google
-                  Docs.
-                </div>
-                <button
-                  type="button"
-                  className="export-btn"
-                  onClick={() => handleExport("docx")}
-                >
-                  📥 Export DOCX
-                </button>
-              </div>
-
-              {/* CSV */}
-              <div className="export-card">
-                <div className="export-icon">📊</div>
-                <div className="export-card-title">Export as CSV</div>
-                <div className="export-card-desc">
-                  Import to Excel or Google Sheets for analysis and processing.
-                </div>
-                <button
-                  type="button"
-                  className="export-btn"
-                  onClick={() => handleExport("csv")}
-                >
-                  📥 Export CSV
-                </button>
-              </div>
-
-              {/* TXT */}
-              <div className="export-card">
-                <div className="export-icon">📋</div>
-                <div className="export-card-title">Export as Text (.TXT)</div>
-                <div className="export-card-desc">
-                  Simple plain text format, universal compatibility.
-                </div>
-                <button
-                  type="button"
-                  className="export-btn"
-                  onClick={() => handleExport("txt")}
-                >
-                  📥 Export TXT
-                </button>
-              </div>
-
-              {/* Copy */}
-              <div className="export-card">
-                <div className="export-icon">📋</div>
-                <div className="export-card-title">Copy to Clipboard</div>
-                <div className="export-card-desc">
-                  Copy the entire conversation to paste anywhere.
-                </div>
-                <button
-                  type="button"
-                  className="export-btn"
-                  onClick={handleCopyToClipboard}
-                >
-                  📋 Copy Text
-                </button>
-              </div>
-
-              {/* Share link */}
-              <div className="export-card">
-                <div className="export-icon">🔗</div>
-                <div className="export-card-title">Generate Share Link</div>
-                <div className="export-card-desc">
-                  Create a shareable link to this conversation.
-                </div>
-                <button
-                  type="button"
-                  className="export-btn"
-                  onClick={handleGenerateShareLink}
-                >
-                  🔗 Generate Link
-                </button>
-              </div>
-            </div>
-
+            ))}
             {exportStatus && (
               <div className="export-status">
                 <div className="status-icon">✅</div>
@@ -609,7 +592,7 @@ export default function ChatWithPdfPanel({ pdfs, selectedPdfId }) {
               </div>
             )}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
