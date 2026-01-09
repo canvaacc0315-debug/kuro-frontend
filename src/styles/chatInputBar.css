@@ -17,7 +17,7 @@
   -webkit-backdrop-filter: blur(15px);
   z-index: 1000;
   animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 -8px 32px rgba(255, 255, 255, 0.08);
 }
 
 /* Glow effect under the input bar */
@@ -38,6 +38,7 @@
 
 .chat-input-wrapper {
   position: relative;
+  color: #ffffff;
   width: 100%;
   max-width: 400px; /* Make input area small and not stretched */
   margin: 0 auto;
@@ -51,7 +52,7 @@
   border-radius: 25px;
   border: 1px solid #00000015;
   background: rgba(255, 255, 255, 0.95);
-  color: #000000;
+  color: #ffffff;
   outline: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 
@@ -85,7 +86,10 @@
 }
 
 .chat-input-bar button {
-  position: relative;
+  position: absolute;
+  right: 4px;
+  bottom: 50%;
+  transform: translateY(50%);
   width: 26px;
   height: 26px;
   background: linear-gradient(135deg, #ff3b3b 0%, #ff1a1a 100%);
@@ -104,122 +108,6 @@
     0 4px 16px rgba(255, 59, 59, 0.25),
     inset 0 -1px 0 rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
-}
-
-/* Red pulse ring effect */
-.chat-input-bar button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 50%;
-  border: 2px solid #ff3b3b;
-  animation: pulseRing 2s infinite;
-  opacity: 0;
-}
-
-.chat-input-bar button::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.1) 0%, 
-    rgba(255, 255, 255, 0) 100%
-  );
-  border-radius: 50%;
-}
-
-.chat-input-bar button:hover:not(:disabled) {
-  transform: translateY(-3px) scale(1.05);
-  background: linear-gradient(135deg, #ff1a1a 0%, #ff0000 100%);
-  box-shadow: 
-    0 12px 28px rgba(255, 59, 59, 0.35),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  animation: buttonWiggle 0.5s ease;
-}
-
-.chat-input-bar button:active:not(:disabled) {
-  transform: translateY(-1px) scale(0.98);
-  box-shadow: 
-    0 4px 12px rgba(255, 59, 59, 0.25),
-    inset 0 1px 0 rgba(0, 0, 0, 0.2);
-  transition-duration: 0.1s;
-}
-
-.chat-input-bar button:disabled {
-  background: linear-gradient(135deg, #cccccc 0%, #aaaaaa 100%);
-  cursor: not-allowed;
-  transform: none !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  animation: none !important;
-}
-
-.chat-input-bar button span {
-  position: relative;
-  z-index: 2;
-  font-size: 10px;
-  font-weight: 600;
-  line-height: 1;
-  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
-}
-
-.chat-input-bar button:hover:not(:disabled) span {
-  transform: translateX(2px) scale(1.1);
-}
-
-/* Send icon animation */
-.send-icon {
-  position: relative;
-  width: 10px;
-  height: 10px;
-  transform: rotate(-45deg);
-  transition: transform 0.3s ease;
-}
-
-.chat-input-bar button:hover:not(:disabled) .send-icon {
-  transform: rotate(-45deg) translateX(2px) scale(1.1);
-}
-
-/* Keyboard shortcuts hint */
-.input-hints {
-  position: absolute;
-  bottom: calc(100% + 10px);
-  right: 0;
-  display: flex;
-  gap: 12px;
-  opacity: 0;
-  animation: fadeInUp 0.5s ease-out 0.8s forwards;
-}
-
-.hint-item {
-  font-size: 12px;
-  color: #666666;
-  background: rgba(0, 0, 0, 0.03);
-  padding: 6px 12px;
-  border-radius: 15px;
-  border: 1px solid #0000000d;
-  backdrop-filter: blur(5px);
-  transform: translateY(10px);
-  animation: hintSlideUp 0.4s ease-out forwards;
-}
-
-.hint-item:nth-child(1) { animation-delay: 0.9s; }
-.hint-item:nth-child(2) { animation-delay: 1s; }
-
-.hint-item kbd {
-  display: inline-block;
-  padding: 2px 6px;
-  background: #ff3b3b;
-  color: white;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  margin-right: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Animations */
