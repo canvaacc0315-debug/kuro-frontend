@@ -434,12 +434,14 @@ export default function KuroWorkspacePage() {
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
+  // Full-screen state
+  const [isFullScreen, setIsFullScreen] = useState(false);
   return (
     <RovexProvider>
     <InstructionModal />
     <div className="workspace-root">
       {/* UI CHANGE: Moved header to top fixed, full-width black with red accents, logo left, user right. Kept fade-in CSS animation. */}
-      <header className={`home-header ${scrolled ? "scrolled" : ""}`}>
+      <header className={`home-header ${scrolled ? "scrolled" : ""}`} style={{ display: isFullScreen ? "none" : "flex" }}>
         <div className="logo-container" onClick={() => navigate("https://www.rovexai.com/")}>
           <img src="/kuro-logo.png" alt="RovexAI Logo" className="logo-icon" />
           <span className="logo-text">
@@ -475,7 +477,7 @@ export default function KuroWorkspacePage() {
         </div>
       </header>
       {/* UI CHANGE: Sidebar now without header, starts below top header height. */}
-      <aside className="sidebar">
+      <aside className="sidebar" style={{ display: isFullScreen ? "none" : "block" }}>
         {/* UI CHANGE: Replaced top tabs-nav with vertical sidebar items. Added icons, labels, hover/active animations (CSS transition). Exact order: Documents (upload), Chat, Analysis, OCR, PDF Creator. White bg, red active highlight. */}
         <nav className="sidebar-nav">
           <button
@@ -516,7 +518,7 @@ export default function KuroWorkspacePage() {
         </nav>
       </aside>
       {/* UI CHANGE: Main now to right of sidebar, with clean spacing and card-based sections. Added transition for content fade-in when tab changes. Added margin-top for top header. */}
-      <main className="main-container">
+      <main className="main-container" style={{ display: isFullScreen ? "none" : "flex" }}>
         <header className="workspace-header">
           <div>
             <h1 className="workspace-title">
@@ -815,7 +817,7 @@ export default function KuroWorkspacePage() {
                     </button>
                   </div>
                   {/* CHAT CONTAINER */}
-                  <div className="chat-container" style={{ backgroundColor: "#ffffff", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", overflow: "hidden", display: "flex", flexDirection: "column", height: "60vh" }}>
+                  <div className="chat-container" style={{ backgroundColor: "#ffffff", display: "flex", flexDirection: "column", height: "60vh" }}>
                     {/* FIXED TOP INPUT AREA WITH SUGGESTIONS ABOVE */}
                     <div style={{ position: "sticky", top: "0", zIndex: "1", backgroundColor: "#ffffff", padding: "16px 24px", borderBottom: "1px solid #e5e5e5" }}>
                       <div style={{ display: "flex", overflowX: "auto", gap: "8px", marginBottom: "16px", whiteSpace: "nowrap" }}>
