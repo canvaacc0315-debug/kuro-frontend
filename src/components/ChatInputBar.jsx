@@ -1,6 +1,6 @@
 import "../styles/chatInputBar.css";
 import { useState, useRef, useEffect } from "react";
-import "../PdfQuestionSuggestions.jsx";
+import "./PdfQuestionSuggestions.jsx";
 
 export default function ChatInputBar({ value, onChange, onSend, disabled = false }) {
   const inputRef = useRef(null);
