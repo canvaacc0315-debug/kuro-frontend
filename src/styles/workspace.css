@@ -8,7 +8,7 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
   background: #ffffff;
-  color: #333333;
+  color: #000000;
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -25,9 +25,9 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 2rem;
-  background: #000;
+  background: #000000;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(220, 38, 38, 0.1);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.1);
   position: fixed;
   top: 0;
   left: 0;
@@ -38,8 +38,8 @@ body {
 
 .home-header.scrolled {
   padding: 0.8rem 2rem;
-  box-shadow: 0 4px 20px rgba(220, 38, 38, 0.1);
-  background: #000;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.1);
+  background: #000000;
 }
 
 .logo-container {
@@ -64,15 +64,15 @@ body {
 
 .logo-text {
   font-weight: 800;
-  background: linear-gradient(135deg, #000, #000);
+  background: linear-gradient(135deg, #000000, #000000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .logo-red {
-  color: #dc2626;
-  -webkit-text-fill-color: #dc2626;
+  color: #ef4444;
+  -webkit-text-fill-color: #ef4444;
 }
 
 .logo-ai {
@@ -100,7 +100,7 @@ body {
 }
 
 .nav-link:hover {
-  color: #dc2626;
+  color: #ef4444;
 }
 
 .nav-link::after {
@@ -110,7 +110,7 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #dc2626, #ef4444);
+  background: linear-gradient(90deg, #ef4444, #ef4444);
   transition: width 0.3s ease;
 }
 
@@ -130,7 +130,7 @@ body {
   width: 250px;
   height: calc(100vh - 80px);
   background: #ffffff;
-  border-right: 1px solid #e0e0e0;
+  border-right: 1px solid #e5e5e5;
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -155,7 +155,7 @@ body {
   padding: 12px 16px;
   background: transparent;
   border: none;
-  color: #333333;
+  color: #000000;
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;
@@ -164,13 +164,13 @@ body {
 }
 
 .sidebar-item:hover {
-  background: #f0f0f0;
+  background: #f9f9f9;
   transform: scale(1.02);
   opacity: 0.9;
 }
 
 .sidebar-item.active {
-  background: #ff0000;
+  background: #ef4444;
   color: #ffffff;
 }
 
@@ -205,7 +205,7 @@ body {
 
 
 .workspace-title-accent {
-  color: #ff0000;
+  color: #ef4444;
 }
 
 /* UI CHANGE: Content wrapper with fade/flex for card sections, no clutter. */
@@ -243,7 +243,7 @@ body {
 }
 
 .upload-area {
-  border: 2px dashed #e0e0e0;
+  border: 2px dashed #e5e5e5;
   border-radius: 12px;
   padding: 40px;
   text-align: center;
@@ -251,7 +251,7 @@ body {
 }
 
 .upload-area:hover {
-  border-color: #ff0000;
+  border-color: #ef4444;
   transform: scale(1.01);
 }
 
@@ -267,23 +267,24 @@ body {
 
 .upload-desc {
   font-size: 14px;
-  color: #666666;
+  color: #4b5563;
   margin-bottom: 20px;
 }
 
 .upload-btn {
   padding: 12px 24px;
-  background: #ff0000;
+  background: #ef4444;
   color: #ffffff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .upload-btn:hover {
   transform: scale(1.05);
+  background-color: #dc2626;
 }
 
 /* UI CHANGE: Uploaded files as clean list, card-like items with hover. */
@@ -304,7 +305,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 12px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
   transition: box-shadow 0.3s ease;
 }
@@ -329,7 +330,7 @@ body {
 
 .file-size {
   font-size: 12px;
-  color: #666666;
+  color: #4b5563;
 }
 
 .file-actions {
@@ -339,21 +340,21 @@ body {
 
 .file-action-btn {
   padding: 8px 16px;
-  background: #f0f0f0;
+  background: #f9f9f9;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .file-action-btn:hover {
-  background: #ff0000;
+  background: #ef4444;
   color: #ffffff;
 }
 
 /* UI CHANGE: PDF preview cleaner, with shadow. */
 .pdf-preview-panel {
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -371,22 +372,22 @@ body {
 
 .pdf-preview-back-btn {
   padding: 8px 16px;
-  background: #f0f0f0;
+  background: #f9f9f9;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .pdf-preview-back-btn:hover {
-  background: #ff0000;
+  background: #ef4444;
   color: #ffffff;
 }
 
 .pdf-preview-frame {
   width: 100%;
   height: 70vh;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e5e5e5;
   border-radius: 8px;
 }
 
@@ -394,7 +395,7 @@ body {
 .empty-state {
   text-align: center;
   padding: 40px;
-  color: #666666;
+  color: #4b5563;
 }
 
 .empty-icon {
@@ -416,27 +417,28 @@ body {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .chat-subtab-btn {
   padding: 12px 20px;
   background: transparent;
   border: none;
-  color: #666666;
+  color: #000000;
   cursor: pointer;
   font-weight: 600;
-  transition: color 0.3s ease, transform 0.2s ease;
+  transition: color 0.3s ease, transform 0.2s ease, border-bottom 0.3s ease;
   border-bottom: 2px solid transparent;
 }
 
 .chat-subtab-btn:hover {
-  color: #ff0000;
+  color: #ef4444;
   transform: translateY(-2px);
 }
 
 .chat-subtab-btn.active {
-  color: #ff0000;
-  border-bottom: 2px solid #ff0000;
+  color: #ef4444;
+  border-bottom: 2px solid #ef4444;
 }
 
 /* UI CHANGE: Chat layout flex, clean spacing. Added subtle message hover lift. */
@@ -454,10 +456,10 @@ body {
 }
 
 .chat-container {
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   height: 520px;
   display: flex;
   flex-direction: column;
@@ -466,7 +468,7 @@ body {
 .chat-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 24px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -474,14 +476,18 @@ body {
 
 .message {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: flex-start;
+  margin-bottom: 16px;
+  animation: fadeIn 300ms ease;
 }
 
 .message-bubble {
-  padding: 12px 16px;
-  border-radius: 12px;
-  background: #f0f0f0;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+  background: #ffffff;
+  color: #000000;
   transition: transform 0.2s ease;
 }
 
@@ -490,7 +496,7 @@ body {
 }
 
 .message.bot .message-bubble {
-  background: #f0f0f0;
+  background: #ffffff;
 }
 
 .message.user {
@@ -498,40 +504,43 @@ body {
 }
 
 .message.user .message-bubble {
-  background: #ff0000;
-  color: #ffffff;
+  background: #f3f4f6;
+  color: #000000;
 }
 
 .chat-input-area {
   display: flex;
-  padding: 16px;
-  border-top: 1px solid #e0e0e0;
+  padding: 8px;
+  border-top: 1px solid #e5e5e5;
 }
 
 .chat-input {
   flex: 1;
-  padding: 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  padding: 8px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
   transition: border 0.3s ease;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .chat-input:focus {
-  border-color: #ff0000;
+  border-color: #ef4444;
 }
 
 .send-btn {
-  padding: 12px 24px;
-  background: #ff0000;
+  padding: 8px 16px;
+  background: #ef4444;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
-  margin-left: 12px;
+  border-radius: 4px;
+  margin-left: 8px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .send-btn:hover {
+  background-color: #dc2626;
   transform: scale(1.05);
 }
 
@@ -545,87 +554,236 @@ body {
 
 .scope-pill {
   padding: 8px 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e5e5e5;
   border-radius: 20px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease;
+  background: #ffffff;
+  color: #000000;
 }
 
 .scope-pill:hover {
-  background: #f0f0f0;
+  background: #f9f9f9;
   transform: scale(1.05);
 }
 
 .scope-pill.active {
-  background: #ff0000;
+  background: #ef4444;
   color: #ffffff;
-  border-color: #ff0000;
+  border-color: #ef4444;
 }
 
 /* UI CHANGE: Form selects with red focus. */
 .form-select {
   padding: 12px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
   transition: border 0.3s ease;
+  color: #000000;
+  background-color: #ffffff;
 }
 
 .form-select:focus {
-  border-color: #ff0000;
+  border-color: #ef4444;
 }
 
 /* UI CHANGE: History container card-like, items with hover lift. */
 .history-container {
-  padding: 24px;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+  background-color: #ffffff;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.history-title {
+  color: #000000;
+}
+
+.clear-history-btn {
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clear-history-btn:hover {
+  background-color: #dc2626;
+}
+
+.history-search input {
+  width: 100%;
+  border: 1px solid #e5e5e5;
+  padding: 8px;
+  border-radius: 4px;
+  color: #000000;
+  background-color: #ffffff;
+  transition: border-color 0.2s ease;
+}
+
+.history-search input:focus {
+  border-color: #ef4444;
 }
 
 .history-item {
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
   padding: 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
   margin-bottom: 12px;
-  transition: transform 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .history-item:hover {
-  transform: translateY(-4px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-color: #ef4444;
+  transform: translateY(-2px);
+}
+
+.history-item-title {
+  font-weight: bold;
+  color: #000000;
+}
+
+.history-item-info,
+.history-item-pdf {
+  font-size: 0.875rem;
+  color: #4b5563;
+}
+
+.history-item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.history-item-btn {
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.history-item-btn:hover {
+  background-color: #dc2626;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.pagination button {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #e5e5e5;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination button.active {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.pagination button:disabled {
+  background-color: #e5e5e5;
+  cursor: not-allowed;
+}
+
+.pagination button:not(:disabled):hover {
+  background-color: #f9f9f9;
 }
 
 /* UI CHANGE: Export grid cards with red buttons, hover scale. */
+.export-container {
+  padding: 16px;
+  background-color: #ffffff;
+}
+
+.export-header {
+  margin-bottom: 24px;
+}
+
+.export-title {
+  color: #000000;
+}
+
+.export-desc {
+  color: #4b5563;
+}
+
 .export-options-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 24px;
+  gap: 16px;
 }
 
 .export-card {
-  padding: 24px;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 16px;
   text-align: center;
-  transition: transform 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .export-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-color: #ef4444;
   transform: scale(1.02);
+}
+
+.export-icon {
+  font-size: 24px;
+}
+
+.export-card-title {
+  color: #000000;
+}
+
+.export-card-desc {
+  color: #4b5563;
 }
 
 .export-btn {
   width: 100%;
-  padding: 12px;
-  background: #ff0000;
+  padding: 8px 16px;
+  background: #ef4444;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: transform 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .export-btn:hover {
+  background-color: #dc2626;
   transform: scale(1.05);
+}
+
+.export-status {
+  margin-top: 16px;
+  text-align: center;
+  color: #000000;
 }
 
 /* UI CHANGE: Footer black, full-width, minimal. */
@@ -655,7 +813,7 @@ body {
 }
 
 .footer-content a:hover {
-  color: #ff0000;
+  color: #ef4444;
 }
 
 /* UI CHANGE: User info and avatar styles for compact Clerk profile. */
@@ -712,7 +870,7 @@ body {
     height: auto;
     position: relative;
     border-right: none;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e5e5e5;
   }
   .main-container {
     margin-left: 0;
@@ -722,5 +880,11 @@ body {
   .sidebar-nav {
     flex-direction: row;
     overflow-x: auto;
+  }
+  .chat-layout {
+    flex-direction: column;
+  }
+  .export-options-grid {
+    grid-template-columns: 1fr;
   }
 }
