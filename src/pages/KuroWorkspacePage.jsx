@@ -12,7 +12,6 @@ import OcrPanel from "../components/OcrPanel";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
-
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -846,7 +845,7 @@ export default function KuroWorkspacePage() {
                               style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
                             />
                           )}
-                          <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
+                          <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#ef4444" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", color: m.role === "user" ? "#ffffff" : "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
                             {m.content}
                           </div>
                           {m.role === "user" && (
