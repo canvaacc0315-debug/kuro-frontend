@@ -1,6 +1,7 @@
 export const PDF_QUESTION_SETS = [
   {
-    title: "General Understanding",
+    id: 1,
+    title: "📄 Document Overview",
     questions: [
       "What is this document about?",
       "What is the main objective of this PDF?",
@@ -9,7 +10,8 @@ export const PDF_QUESTION_SETS = [
     ]
   },
   {
-    title: "Summary & Key Points",
+    id: 2,
+    title: "📝 Quick Summaries",
     questions: [
       "Give a concise summary of this PDF.",
       "Summarize the document in bullet points.",
@@ -18,7 +20,8 @@ export const PDF_QUESTION_SETS = [
     ]
   },
   {
-    title: "Study / Revision",
+    id: 3,
+    title: "📚 Study Notes",
     questions: [
       "Create short notes from this PDF.",
       "List important dates and events mentioned.",
@@ -27,7 +30,8 @@ export const PDF_QUESTION_SETS = [
     ]
   },
   {
-    title: "Analysis & Insights",
+    id: 4,
+    title: "🔍 Analysis",
     questions: [
       "What are the strengths of this document?",
       "What limitations are mentioned?",
@@ -36,21 +40,13 @@ export const PDF_QUESTION_SETS = [
     ]
   },
   {
-    title: "Quick Extraction",
+    id: 5,
+    title: "✨ Key Extractions",
     questions: [
       "Extract only the conclusions from this PDF.",
-      "Extract key recommendations..",
-      "Highlight the most important sections.",
-      "What parts of the document should I focus on first?"
-    ]
-  },
-  {
-    title: "Facts & Data",
-    questions: [
+      "Extract key recommendations.",
       "Extract all the key facts from this PDF.",
-      "List all the main points in bullet form.",
-      "Identify and list all the data points.",
-      "Extract all the important information."
+      "List all the main points in bullet form."
     ]
   }
 ];
