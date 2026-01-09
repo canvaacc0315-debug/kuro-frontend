@@ -85,7 +85,7 @@ export default function App() {
 
         {/* WORKSPACE */}
         <Route
-          path="/app?tab=upload"
+          path="/app"
           element={
             <ProtectedRoute>
               <>
