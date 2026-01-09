@@ -1,6 +1,6 @@
 import { useState } from "react";
-import pdfQuestionSets from "../config/pdfQuestionSets.js";
 import "../styles/fixedChatInput.css";
+import pdfQuestionSets from "../config/pdfQuestionSets.js";
 
 export default function FixedChatInput({ chatInput, setChatInput, onSend }) {
   const [view, setView] = useState("groups"); // groups | questionsdsadsd
