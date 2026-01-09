@@ -452,7 +452,7 @@ body {
 }
 
 .chat-main {
-  flex: 3; /* Increased flex to make chat bigger */
+  flex: 5; /* Increased flex to make chat panel wider */
 }
 
 .chat-assist {
@@ -466,7 +466,7 @@ body {
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  height: calc(100vh - 300px); /* Made taller to make chat section big */
+  height: calc(100vh - 200px); /* Reduced subtraction to make chat panel taller */
   display: flex;
   flex-direction: column;
 }
