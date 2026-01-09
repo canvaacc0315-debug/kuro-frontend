@@ -281,7 +281,7 @@ body {
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
-/* UI CHANGE: Uploaded files as clean list, card-like items with hover. No borders, use shadows. */
+/* UI CHANGE: Uploaded files as clean list, card-like items with hover. */
 .uploaded-files {
   display: flex;
   flex-direction: column;
@@ -452,21 +452,21 @@ body {
 }
 
 .chat-main {
-  flex: 2;
+  flex: 3; /* Increased flex to make chat bigger */
 }
 
 .chat-assist {
   flex: 1;
   padding: 24px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  border-radius: 4px;
 }
 
 .chat-container {
-  border-radius: 8px;
+  border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  height: 600px; /* Increased height for spacious */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  height: calc(100vh - 300px); /* Made taller to make chat section big */
   display: flex;
   flex-direction: column;
 }
@@ -482,7 +482,7 @@ body {
 
 .message {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   align-items: flex-start;
   animation: fadeIn 300ms ease;
 }
@@ -500,16 +500,18 @@ body {
 
 .message-bubble {
   padding: 12px 16px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   background: #ffffff;
   color: #000000;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  max-width: 80%;
+  line-height: 1.5;
 }
 
 .message-bubble:hover {
   transform: translateY(-2px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .message.bot .message-bubble {
@@ -527,18 +529,20 @@ body {
 
 .chat-input-area {
   display: flex;
-  padding: 16px 24px;
+  padding: 16px;
   border-top: 1px solid #e5e5e5;
+  align-items: center;
 }
 
 .chat-input {
   flex: 1;
-  padding: 12px 16px;
   border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 4px;
+  padding: 12px 16px;
   color: #000000;
   background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
 }
 
 .chat-input:focus {
@@ -547,20 +551,22 @@ body {
 }
 
 .send-btn {
-  padding: 12px 24px;
-  background: #ef4444;
+  background-color: #ef4444;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
-  margin-left: 12px;
+  padding: 12px 24px;
+  border-radius: 4px;
+  margin-left: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 200ms ease, box-shadow 200ms ease;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 .send-btn:hover {
   background-color: #dc2626;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 /* UI CHANGE: Scope bar flex, pills with red active, hover scale. No borders on inactive. */
@@ -572,274 +578,188 @@ body {
 }
 
 .scope-pill {
-  padding: 8px 20px;
-  border-radius: 9999px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease, box-shadow 0.3s ease;
-  background: #ffffff;
+  background-color: #ffffff;
   color: #000000;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  border: none;
+  border: 1px solid #e5e5e5;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  transition: all 200ms ease;
 }
 
 .scope-pill:hover {
-  background: #f9f9f9;
-  transform: scale(1.05);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
 }
 
 .scope-pill.active {
-  background: #ef4444;
+  background-color: #ef4444;
   color: #ffffff;
-  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
 }
 
 /* UI CHANGE: Form selects with red focus. */
 .form-select {
-  padding: 12px 16px;
   border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
   color: #000000;
   background-color: #ffffff;
-}
-
-.form-select:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+  padding: 8px 12px;
+  border-radius: 4px;
 }
 
 /* UI CHANGE: History container no bg/border, items card-like with shadows only. Fixed alignment, spacing, hierarchy. No duplicates. Clean rows. Premium modern. */
 .history-container {
-  padding: 0;
+  background-color: #ffffff;
+  padding: 16px;
 }
 
 .history-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px; /* Increased spacing */
+  margin-bottom: 16px;
 }
 
 .history-title {
   color: #000000;
-  font-size: 24px;
-  font-weight: 600;
 }
 
 .clear-history-btn {
   background-color: #ef4444;
   color: #ffffff;
   border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 200ms ease;
 }
 
 .clear-history-btn:hover {
   background-color: #dc2626;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
-.history-search input {
-  width: 100%;
-  border: 1px solid #e5e5e5;
-  padding: 12px 16px;
-  border-radius: 8px;
-  color: #000000;
-  background-color: #ffffff;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.history-search input:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
-}
-
-.history-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.history-search {
+  margin-bottom: 16px;
 }
 
 .history-item {
   background-color: #ffffff;
-  border-radius: 8px;
-  padding: 20px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 200ms ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .history-item:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transform: translateY(-2px);
-}
-
-.history-item > div:first-child {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.history-item-title {
-  font-weight: 600;
-  color: #000000;
-  font-size: 16px;
-}
-
-.history-item-info,
-.history-item-pdf {
-  font-size: 14px;
-  color: #4b5563;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-color: #ef4444;
 }
 
 .history-item-actions {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 
 .history-item-btn {
   background-color: #ef4444;
   color: #ffffff;
   border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
+  padding: 6px 12px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 200ms ease;
 }
 
 .history-item-btn:hover {
   background-color: #dc2626;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 32px;
-}
-
-.pagination button {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #e5e5e5;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-.pagination button.active {
-  background-color: #ef4444;
-  color: #ffffff;
-  border-color: #ef4444;
-}
-
-.pagination button:disabled {
-  background-color: #e5e5e5;
-  cursor: not-allowed;
-}
-
-.pagination button:not(:disabled):hover {
-  background-color: #f9f9f9;
-  transform: scale(1.05);
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  gap: 8px;
+  margin-top: 16px;
 }
 
 /* UI CHANGE: Export grid cards no borders, shadows only. Hover scale. Full-width grid. */
 .export-container {
-  padding: 0;
+  background-color: #ffffff;
+  padding: 16px;
 }
 
 .export-header {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .export-title {
   color: #000000;
-  font-size: 24px;
-  font-weight: 600;
 }
 
 .export-desc {
   color: #4b5563;
-  font-size: 16px;
 }
 
 .export-options-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
 }
 
 .export-card {
   background-color: #ffffff;
-  border-radius: 8px;
-  padding: 24px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 16px;
   text-align: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 200ms ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .export-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  transform: translateY(-4px);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-color: #ef4444;
 }
 
 .export-icon {
-  font-size: 32px;
-  margin-bottom: 12px;
+  font-size: 24px;
 }
 
 .export-card-title {
   color: #000000;
-  font-size: 18px;
-  font-weight: 600;
 }
 
 .export-card-desc {
   color: #4b5563;
-  font-size: 14px;
-  margin-bottom: 16px;
 }
 
 .export-btn {
-  width: 100%;
-  padding: 12px 24px;
-  background: #ef4444;
+  background-color: #ef4444;
   color: #ffffff;
   border: none;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 200ms ease;
 }
 
 .export-btn:hover {
   background-color: #dc2626;
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
 .export-status {
-  margin-top: 24px;
+  margin-top: 16px;
   text-align: center;
   color: #000000;
-  font-size: 16px;
 }
 
 /* UI CHANGE: Footer black, full-width, minimal. */
 .footer {
   background: #000000;
   color: #ffffff;
-  padding: 24px;
+  padding: 20px;
   text-align: center;
   position: fixed;
   bottom: 0;
@@ -851,7 +771,7 @@ body {
 .footer-content {
   display: flex;
   justify-content: center;
-  gap: 24px;
+  gap: 16px;
   font-size: 14px;
 }
 
@@ -869,7 +789,7 @@ body {
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .user-info {
@@ -878,8 +798,8 @@ body {
 }
 
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   background: #007bff; /* Blue like screenshot */
   color: #ffffff;
   border-radius: 50%;
@@ -887,23 +807,22 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .navbar-profile-photo {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
 }
 
-/* Responsive adjustments preserved/adapted for desktop-first. Increased breakpoints for better spacing. */
+/* Responsive adjustments preserved/adapted for desktop-first. */
 @media (max-width: 1200px) {
   .sidebar {
-    width: 220px;
+    width: 200px;
   }
   .main-container {
-    margin-left: 220px;
-    padding: 40px 30px;
+    margin-left: 200px;
   }
   .upload-container {
     grid-template-columns: 1fr;
@@ -920,21 +839,18 @@ body {
     height: auto;
     position: relative;
     border-bottom: 1px solid #e5e5e5;
-    padding: 20px;
   }
   .main-container {
     margin-left: 0;
     margin-top: 60px;
-    padding: 30px 20px;
+    padding: 20px;
   }
   .sidebar-nav {
     flex-direction: row;
     overflow-x: auto;
-    gap: 12px;
   }
   .chat-layout {
     flex-direction: column;
-    gap: 24px;
   }
   .export-options-grid {
     grid-template-columns: 1fr;
