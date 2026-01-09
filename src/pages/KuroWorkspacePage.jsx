@@ -12,7 +12,7 @@ import OcrPanel from "../components/OcrPanel";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
-
+import ChatInputBar from "../components/ChatInputBar.jsx"; // Added import for ChatInputBar
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -601,7 +601,9 @@ export default function KuroWorkspacePage() {
             <div
               className="chat-subtab-content"
               style={{
-                display: activeChatSubTab === "current" ? "block" : "none",
+                display: activeChatSubTab === "current" ? "flex" : "none",
+                flexDirection: "column",
+                flex: 1,
                 transition: "opacity 300ms ease",
                 opacity: activeChatSubTab === "current" ? 1 : 0,
                 padding: "24px",
@@ -609,9 +611,9 @@ export default function KuroWorkspacePage() {
                 boxSizing: "border-box"
               }}
             >
-              <div className="chat-layout" style={{ backgroundColor: "#ffffff", display: "flex", width: "100%", gap: "24px" }}>
+              <div className="chat-layout" style={{ backgroundColor: "#ffffff", display: "flex", flexDirection: "column", flex: 1, width: "100%", gap: "24px" }}>
                 {/* LEFT — MAIN CHAT */}
-                <div className="chat-main" style={{ flex: 1, minWidth: 0 }}>
+                <div className="chat-main" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
                   {/* banner with selected file */}
                   {selectedFile && (
                     <div className="chat-selected-file-banner" style={{ color: "#000000", backgroundColor: "#f9f9f9", padding: "12px 16px", borderRadius: "4px", marginBottom: "24px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}>
@@ -810,54 +812,54 @@ export default function KuroWorkspacePage() {
                       Clear Conversation
                     </button>
                   </div>
-                  {/* CHAT CONTAINER */}
-                  <div className="chat-container" style={{ backgroundColor: "#ffffff", display: "flex", flexDirection: "column", height: "60vh" }}>
-                    {/* CHAT MESSAGES */}
-                    <div
-                      ref={chatMessagesRef}
-                      className="chat-messages no-scrollbar"
-                      style={{
-                        msOverflowStyle: 'none',
-                        scrollbarWidth: 'none',
-                        padding: "24px",
-                        overflowY: "auto",
-                        flex: 1
-                      }}
-                    >
-                      {conversation.map((m) => (
-                        <div
-                          key={m.id}
-                          className={`message ${m.role === "user" ? "user" : "bot"}`}
-                          style={{
-                            display: "flex",
-                            alignItems: "flex-start",
-                            marginBottom: "24px",
-                            animation: "fadeIn 300ms ease",
-                          }}
-                        >
-                          {m.role === "bot" && (
-                            <img
-                              src="/kuro-logo.png"
-                              alt="kuro-logo"
-                              className="message-avatar"
-                              style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
-                            />
-                          )}
-                          <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
-                            {m.content}
-                          </div>
-                          {m.role === "user" && (
-                            <img
-                              src={user?.imageUrl}
-                              alt="User"
-                              className="message-avatar"
-                              style={{ width: "40px", height: "40px", borderRadius: "50%", marginLeft: "16px" }}
-                            />
-                          )}
+                  {/* CHAT MESSAGES */}
+                  <div
+                    ref={chatMessagesRef}
+                    className="chat-messages no-scrollbar"
+                    style={{
+                      msOverflowStyle: 'none',
+                      scrollbarWidth: 'none',
+                      padding: "24px",
+                      paddingBottom: "80px",
+                      overflowY: "auto",
+                      flex: 1,
+                      backgroundColor: "#ffffff"
+                    }}
+                  >
+                    {conversation.map((m) => (
+                      <div
+                        key={m.id}
+                        className={`message ${m.role === "user" ? "user" : "bot"}`}
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          marginBottom: "24px",
+                          animation: "fadeIn 300ms ease",
+                        }}
+                      >
+                        {m.role === "bot" && (
+                          <img
+                            src="/kuro-logo.png"
+                            alt="kuro-logo"
+                            className="message-avatar"
+                            style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
+                          />
+                        )}
+                        <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
+                          {m.content}
                         </div>
-                      ))}
-                    </div>
+                        {m.role === "user" && (
+                          <img
+                            src={user?.imageUrl}
+                            alt="User"
+                            className="message-avatar"
+                            style={{ width: "40px", height: "40px", borderRadius: "50%", marginLeft: "16px" }}
+                          />
+                        )}
+                      </div>
+                    ))}
                   </div>
+                  <ChatInputBar value={message} onChange={setMessage} onSend={handleSend} disabled={isSending} />
                 </div>
               </div>
             </div>
@@ -865,7 +867,9 @@ export default function KuroWorkspacePage() {
             <div
               className="chat-subtab-content"
               style={{
-                display: activeChatSubTab === "history" ? "block" : "none",
+                display: activeChatSubTab === "history" ? "flex" : "none",
+                flexDirection: "column",
+                flex: 1,
                 transition: "opacity 300ms ease",
                 opacity: activeChatSubTab === "history" ? 1 : 0,
                 padding: "24px",
@@ -1062,7 +1066,9 @@ export default function KuroWorkspacePage() {
             <div
               className="chat-subtab-content"
               style={{
-                display: activeChatSubTab === "export" ? "block" : "none",
+                display: activeChatSubTab === "export" ? "flex" : "none",
+                flexDirection: "column",
+                flex: 1,
                 transition: "opacity 300ms ease",
                 opacity: activeChatSubTab === "export" ? 1 : 0,
                 padding: "24px",
