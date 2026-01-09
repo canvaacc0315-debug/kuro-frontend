@@ -10,8 +10,8 @@ import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
 import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import OcrPanel from "../components/OcrPanel";
-/*import "../styles/chat-overrides.css";
-import "../styles/no-scrollbar-override.css";*/
+import "../styles/chat-overrides.css";
+import "../styles/no-scrollbar-override.css";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
