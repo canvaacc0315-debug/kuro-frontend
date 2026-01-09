@@ -15,6 +15,9 @@ import "../styles/no-scrollbar-override.css";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
+
+
+
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
