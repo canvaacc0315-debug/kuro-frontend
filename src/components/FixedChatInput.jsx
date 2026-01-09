@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "../styles/fixedChatInput.css";
-import pdfQuestionSets from "../config/pdfQuestionSets.js";
+import { PDF_QUESTION_SETS } from "../config/pdfQuestionSets.js";
+
 
 export default function FixedChatInput({ chatInput, setChatInput, onSend }) {
   const [view, setView] = useState("groups"); // groups | questionsdsadsd
@@ -33,7 +34,7 @@ export default function FixedChatInput({ chatInput, setChatInput, onSend }) {
       {/* Buttons */}
       <div className="buttons-container">
         {view === "groups" &&
-          pdfQuestionSets.map((group) => (
+          PDF_QUESTION_SETS.map((group) => (
             <div
               key={group.id}
               className="group-header"
