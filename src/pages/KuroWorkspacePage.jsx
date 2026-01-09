@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
-import PdfQuestionSuggestions from "../components/PdfQuestionSuggestions";
 import "../styles/workspace.css";
 import AnalysisPanel from "../components/AnalysisPanel.jsx";
 import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
@@ -13,6 +12,7 @@ import OcrPanel from "../components/OcrPanel";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
+import ChatInputBar from "../components/ChatInputBar";
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -37,7 +37,7 @@ export default function KuroWorkspacePage() {
   const [activeChatSubTab, setActiveChatSubTab] = useState("current");
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedPdfId, setSelectedPdfId] = useState("");
-  const [chatInput, setChatInput] = useState("");
+  const [message, setMessage] = useState("");
   const [answerStyle, setAnswerStyle] = useState("default");
   const [conversation, setConversation] = useState([
     {
@@ -128,12 +128,6 @@ export default function KuroWorkspacePage() {
     setActiveChatSubTab(sub);
   };
   // ---------------- chat ----------------
-  const handleChatKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
   const handleClearConversation = () => {
     setConversation([
       {
@@ -144,10 +138,10 @@ export default function KuroWorkspacePage() {
         timestamp: new Date().toLocaleTimeString(),
       },
     ]);
-    setChatInput("");
+    setMessage("");
   };
   const handleSend = async () => {
-    const text = chatInput.trim();
+    const text = message.trim();
     if (!text || isSending) return;
     const time = new Date().toLocaleTimeString();
     const userMsg = {
@@ -157,7 +151,7 @@ export default function KuroWorkspacePage() {
       timestamp: time,
     };
     setConversation((prev) => [...prev, userMsg]);
-    setChatInput("");
+    setMessage("");
     setIsSending(true);
     try {
       const mode = mapAnswerStyleToMode(answerStyle);
@@ -818,51 +812,6 @@ export default function KuroWorkspacePage() {
                   </div>
                   {/* CHAT CONTAINER */}
                   <div className="chat-container" style={{ backgroundColor: "#ffffff", display: "flex", flexDirection: "column", height: "60vh" }}>
-                    {/* FIXED TOP INPUT AREA WITH SUGGESTIONS ABOVE */}
-                    <div style={{ position: "sticky", top: "0", zIndex: "1", backgroundColor: "#ffffff", padding: "16px 24px", borderBottom: "1px solid #e5e5e5" }}>
-                      <div style={{ display: "flex", overflowX: "auto", gap: "8px", marginBottom: "16px", whiteSpace: "nowrap" }}>
-                        <PdfQuestionSuggestions
-                          onSelect={(q) => {
-                            setChatInput(q);
-                            setTimeout(() => handleSend(), 100);
-                          }}
-                        />
-                      </div>
-                      <div className="chat-input-area" style={{ display: "flex", alignItems: "center" }}>
-                        <input
-                          className="chat-input"
-                          placeholder="Ask anything about your PDFs..."
-                          value={chatInput}
-                          onChange={(e) => setChatInput(e.target.value)}
-                          onKeyDown={handleChatKeyDown}
-                          disabled={isSending}
-                          style={{ flex: 1, border: "1px solid #e5e5e5", borderRadius: "4px", padding: "12px 16px", color: "#000000", backgroundColor: "#ffffff", fontSize: "14px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
-                        />
-                        <button
-                          className="send-btn"
-                          type="button"
-                          onClick={handleSend}
-                          disabled={isSending}
-                          style={{
-                            backgroundColor: "#ef4444",
-                            color: "#ffffff",
-                            border: "none",
-                            padding: "12px 24px",
-                            borderRadius: "4px",
-                            marginLeft: "16px",
-                            cursor: "pointer",
-                            transition: "background-color 200ms ease, box-shadow 200ms ease",
-                            fontSize: "14px",
-                            fontWeight: "500",
-                            boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                          }}
-                          onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                          onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                        >
-                          {isSending ? "Sending..." : "Send"}
-                        </button>
-                      </div>
-                    </div>
                     {/* CHAT MESSAGES */}
                     <div
                       ref={chatMessagesRef}
@@ -908,6 +857,11 @@ export default function KuroWorkspacePage() {
                         </div>
                       ))}
                     </div>
+                    <ChatInputBar
+                      value={message}
+                      onChange={setMessage}
+                      onSend={handleSend}
+                    />
                   </div>
                 </div>
               </div>
