@@ -1,5 +1,6 @@
 import { PDF_QUESTION_SETS } from "../config/pdfQuestionSets";
-
+import "../styles/chat-overrides.css";
+import "../styles/no-scrollbar-override.css";
 export default function PdfQuestionSuggestions({ onSelect }) {
   return (
     <div className="question-suggestions">
