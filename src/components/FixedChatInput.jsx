@@ -1,5 +1,5 @@
 import { useState } from "react";
-import pdfQuestionSets from "../data/pdfQuestionSets";
+import pdfQuestionSets from "../config/pdfQuestionSets.js";
 import "../styles/fixedChatInput.css";
 
 export default function FixedChatInput({ chatInput, setChatInput, onSend }) {
