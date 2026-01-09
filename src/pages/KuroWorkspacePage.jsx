@@ -9,17 +9,14 @@ import AnalysisPanel from "../components/AnalysisPanel.jsx";
 import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
 import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
-import KuroLogo from "../components/layout/KuroLogo.jsx";
 import OcrPanel from "../components/OcrPanel";
 import "../styles/chat-overrides.css";
 import "../styles/no-scrollbar-override.css";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
-
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-
 export default function KuroWorkspacePage() {
   const { user, isLoaded } = useUser();
   const { uploadPdf } = useApiClient(); // Kept but unused now; UploadPanel handles uploads
@@ -414,7 +411,6 @@ export default function KuroWorkspacePage() {
       });
     }
   }, [conversation]);
-
   // UI CHANGE: Added scrolled state and useEffect for scroll listener to match provided snippet.
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
@@ -425,12 +421,10 @@ export default function KuroWorkspacePage() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   // NEW STATES FOR HISTORY TAB
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
   const filteredHistory = history.filter((h) =>
     h.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -439,11 +433,9 @@ export default function KuroWorkspacePage() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
-
   return (
     <RovexProvider>
     <InstructionModal />
@@ -539,20 +531,20 @@ export default function KuroWorkspacePage() {
         <div className="content-wrapper">
           <section
             id="uploadTab"
-            className={`tab-content card ${activeTab === "upload" ? "active" : ""}`}
+            className={`tab-content ${activeTab === "upload" ? "active" : ""}`}
           >
-            <UploadPanel 
-              pdfs={uploadedFiles} 
-              onPdfsChange={setUploadedFiles} 
-              onSelectPdf={setSelectedPdfId} 
+            <UploadPanel
+              pdfs={uploadedFiles}
+              onPdfsChange={setUploadedFiles}
+              onSelectPdf={setSelectedPdfId}
             />
           </section>
           <section
             id="chatTab"
-            className={`tab-content card ${activeTab === "chat" ? "active" : ""}`}
+            className={`tab-content ${activeTab === "chat" ? "active" : ""}`}
           >
             {/* REDESIGN: Styled subtabs as modern tabs with red accents, smooth animated switching (transition-all duration-300). */}
-            <div className="chat-subtabs-nav" style={{ backgroundColor: "#ffffff", borderBottom: "1px solid #e5e5e5" }}>
+            <div className="chat-subtabs-nav" style={{ backgroundColor: "#ffffff", borderBottom: "1px solid #e5e5e5", display: "flex", justifyContent: "flex-start", gap: "24px", padding: "0 24px 0 24px", height: "60px", alignItems: "center" }}>
               <button
                 className={`chat-subtab-btn ${activeChatSubTab === "current" ? "active" : ""}`}
                 onClick={() => handleChatSubTabClick("current")}
@@ -560,6 +552,14 @@ export default function KuroWorkspacePage() {
                   color: activeChatSubTab === "current" ? "#ef4444" : "#000000",
                   borderBottom: activeChatSubTab === "current" ? "2px solid #ef4444" : "none",
                   transition: "all 300ms ease",
+                  fontWeight: "500",
+                  fontSize: "16px",
+                  padding: "0 0 8px 0",
+                  background: "none",
+                  borderTop: "none",
+                  borderLeft: "none",
+                  borderRight: "none",
+                  cursor: "pointer"
                 }}
               >
                 Current Chat
@@ -571,6 +571,14 @@ export default function KuroWorkspacePage() {
                   color: activeChatSubTab === "history" ? "#ef4444" : "#000000",
                   borderBottom: activeChatSubTab === "history" ? "2px solid #ef4444" : "none",
                   transition: "all 300ms ease",
+                  fontWeight: "500",
+                  fontSize: "16px",
+                  padding: "0 0 8px 0",
+                  background: "none",
+                  borderTop: "none",
+                  borderLeft: "none",
+                  borderRight: "none",
+                  cursor: "pointer"
                 }}
               >
                 Chat History
@@ -582,36 +590,44 @@ export default function KuroWorkspacePage() {
                   color: activeChatSubTab === "export" ? "#ef4444" : "#000000",
                   borderBottom: activeChatSubTab === "export" ? "2px solid #ef4444" : "none",
                   transition: "all 300ms ease",
+                  fontWeight: "500",
+                  fontSize: "16px",
+                  padding: "0 0 8px 0",
+                  background: "none",
+                  borderTop: "none",
+                  borderLeft: "none",
+                  borderRight: "none",
+                  cursor: "pointer"
                 }}
               >
                 Export Conversation
               </button>
             </div>
             {/* CURRENT CHAT */}
-            <div 
-              className="chat-subtab-content" 
-              style={{ 
+            <div
+              className="chat-subtab-content"
+              style={{
                 display: activeChatSubTab === "current" ? "block" : "none",
                 transition: "opacity 300ms ease",
                 opacity: activeChatSubTab === "current" ? 1 : 0,
+                padding: "24px",
+                width: "100%",
+                boxSizing: "border-box"
               }}
             >
-              <div className="chat-layout" style={{ backgroundColor: "#ffffff" }}>
-
+              <div className="chat-layout" style={{ backgroundColor: "#ffffff", display: "flex", width: "100%", gap: "24px" }}>
                 {/* LEFT — MAIN CHAT */}
-                <div className="chat-main">
-
+                <div className="chat-main" style={{ flex: 1, minWidth: 0 }}>
                   {/* banner with selected file */}
                   {selectedFile && (
-                    <div className="chat-selected-file-banner" style={{ color: "#000000", backgroundColor: "#f9f9f9", border: "1px solid #e5e5e5" }}>
+                    <div className="chat-selected-file-banner" style={{ color: "#000000", backgroundColor: "#f9f9f9", padding: "12px 16px", borderRadius: "4px", marginBottom: "24px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}>
                       📄 Chatting with: <strong>{selectedFile.name}</strong>
                     </div>
                   )}
                   {/* TOP CONTROLS */}
-                  <div className="chat-top-row" style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-                    <div className="chat-scope-bar">
-                      <span className="scope-label" style={{ color: "#000000" }}>Scope:</span>
-
+                  <div className="chat-top-row" style={{ display: "flex", gap: "24px", flexWrap: "wrap", marginBottom: "24px" }}>
+                    <div className="chat-scope-bar" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+                      <span className="scope-label" style={{ color: "#000000", fontWeight: "500" }}>Scope:</span>
                       <div className="scope-options" style={{ display: "flex", gap: "8px" }}>
                         <button
                           className={`scope-pill ${chatScope.type === "all" ? "active" : ""}`}
@@ -622,12 +638,15 @@ export default function KuroWorkspacePage() {
                             backgroundColor: chatScope.type === "all" ? "#ef4444" : "#ffffff",
                             color: chatScope.type === "all" ? "#ffffff" : "#000000",
                             border: "1px solid #e5e5e5",
+                            padding: "8px 16px",
+                            borderRadius: "9999px",
                             transition: "all 200ms ease",
+                            cursor: "pointer",
+                            fontSize: "14px"
                           }}
                         >
                           Entire PDF
                         </button>
-
                         <button
                           className={`scope-pill ${chatScope.type === "page" ? "active" : ""}`}
                           onClick={() =>
@@ -637,12 +656,15 @@ export default function KuroWorkspacePage() {
                             backgroundColor: chatScope.type === "page" ? "#ef4444" : "#ffffff",
                             color: chatScope.type === "page" ? "#ffffff" : "#000000",
                             border: "1px solid #e5e5e5",
+                            padding: "8px 16px",
+                            borderRadius: "9999px",
                             transition: "all 200ms ease",
+                            cursor: "pointer",
+                            fontSize: "14px"
                           }}
                         >
                           Page
                         </button>
-
                         <button
                           className={`scope-pill ${chatScope.type === "range" ? "active" : ""}`}
                           onClick={() =>
@@ -652,13 +674,16 @@ export default function KuroWorkspacePage() {
                             backgroundColor: chatScope.type === "range" ? "#ef4444" : "#ffffff",
                             color: chatScope.type === "range" ? "#ffffff" : "#000000",
                             border: "1px solid #e5e5e5",
+                            padding: "8px 16px",
+                            borderRadius: "9999px",
                             transition: "all 200ms ease",
+                            cursor: "pointer",
+                            fontSize: "14px"
                           }}
                         >
                           Range
                         </button>
                       </div>
-
                       {chatScope.type === "page" && (
                         <input
                           type="number"
@@ -669,12 +694,11 @@ export default function KuroWorkspacePage() {
                             setChatScope((prev) => ({ ...prev, page: e.target.value }))
                           }
                           min="1"
-                          style={{ border: "1px solid #e5e5e5", color: "#000000" }}
+                          style={{ border: "1px solid #e5e5e5", color: "#000000", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
                         />
                       )}
-
                       {chatScope.type === "range" && (
-                        <div className="scope-range-inputs" style={{ display: "flex", gap: "8px" }}>
+                        <div className="scope-range-inputs" style={{ display: "flex", gap: "8px", alignItems: "center" }}>
                           <input
                             type="number"
                             className="scope-input"
@@ -684,7 +708,7 @@ export default function KuroWorkspacePage() {
                               setChatScope((prev) => ({ ...prev, from: e.target.value }))
                             }
                             min="1"
-                            style={{ border: "1px solid #e5e5e5", color: "#000000" }}
+                            style={{ border: "1px solid #e5e5e5", color: "#000000", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
                           />
                           <span className="scope-separator" style={{ color: "#000000" }}>–</span>
                           <input
@@ -696,20 +720,19 @@ export default function KuroWorkspacePage() {
                               setChatScope((prev) => ({ ...prev, to: e.target.value }))
                             }
                             min="1"
-                            style={{ border: "1px solid #e5e5e5", color: "#000000" }}
+                            style={{ border: "1px solid #e5e5e5", color: "#000000", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
                           />
                         </div>
                       )}
                     </div>
-
-                    <div className="chat-pdf-select">
-                      <label className="form-label" style={{ color: "#000000" }}>PDF to chat with:</label>
+                    <div className="chat-pdf-select" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <label className="form-label" style={{ color: "#000000", fontWeight: "500", fontSize: "14px" }}>PDF to chat with:</label>
                       <select
                         className="form-select"
                         value={selectedPdfId}
                         onChange={(e) => setSelectedPdfId(e.target.value)}
                         disabled={uploadedFiles.length === 0}
-                        style={{ border: "1px solid #e5e5e5", color: "#000000", backgroundColor: "#ffffff" }}
+                        style={{ border: "1px solid #e5e5e5", color: "#000000", backgroundColor: "#ffffff", padding: "8px 12px", borderRadius: "4px", fontSize: "14px", minWidth: "200px" }}
                       >
                         {uploadedFiles.length === 0 ? (
                           <option>No PDFs uploaded yet</option>
@@ -725,14 +748,13 @@ export default function KuroWorkspacePage() {
                         )}
                       </select>
                     </div>
-
-                    <div className="chat-answer-style">
-                      <label className="form-label" style={{ color: "#000000" }}>Answer style:</label>
+                    <div className="chat-answer-style" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <label className="form-label" style={{ color: "#000000", fontWeight: "500", fontSize: "14px" }}>Answer style:</label>
                       <select
                         className="form-select"
                         value={answerStyle}
                         onChange={(e) => setAnswerStyle(e.target.value)}
-                        style={{ border: "1px solid #e5e5e5", color: "#000000", backgroundColor: "#ffffff" }}
+                        style={{ border: "1px solid #e5e5e5", color: "#000000", backgroundColor: "#ffffff", padding: "8px 12px", borderRadius: "4px", fontSize: "14px", minWidth: "200px" }}
                       >
                         <option value="default">Helpful explanation</option>
                         <option value="summary">Concise summary</option>
@@ -741,15 +763,14 @@ export default function KuroWorkspacePage() {
                       </select>
                     </div>
                   </div>
-
                   {/* CHAT ACTIONS */}
-                  <div 
-                    className="chat-actions-row" 
-                    style={{ 
-                      display: "flex", 
-                      justifyContent: "flex-start", 
-                      padding: "8px 0", 
-                      gap: "12px" 
+                  <div
+                    className="chat-actions-row"
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-start",
+                      padding: "0 0 24px 0",
+                      gap: "16px"
                     }}
                   >
                     <button
@@ -760,13 +781,16 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Save
                     </button>
@@ -778,28 +802,31 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Clear Conversation
                     </button>
                   </div>
-
                   {/* CHAT MESSAGES */}
-                  <div className="chat-container" style={{ backgroundColor: "#ffffff", border: "1px solid #e5e5e5", borderRadius: "4px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>
-                    <div 
+                  <div className="chat-container" style={{ backgroundColor: "#ffffff", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", overflow: "hidden" }}>
+                    <div
                       ref={chatMessagesRef}
-                      className="chat-messages no-scrollbar" 
-                      style={{ 
+                      className="chat-messages no-scrollbar"
+                      style={{
                         msOverflowStyle: 'none',
                         scrollbarWidth: 'none',
-                        padding: "16px",
+                        padding: "24px",
                         overflowY: "auto",
+                        height: "400px" // Adjustable height for spacious feel
                       }}
                     >
                       {conversation.map((m) => (
@@ -809,7 +836,7 @@ export default function KuroWorkspacePage() {
                           style={{
                             display: "flex",
                             alignItems: "flex-start",
-                            marginBottom: "16px",
+                            marginBottom: "24px",
                             animation: "fadeIn 300ms ease",
                           }}
                         >
@@ -818,28 +845,25 @@ export default function KuroWorkspacePage() {
                               src="/kuro-logo.png"
                               alt="kuro-logo"
                               className="message-avatar"
-                              style={{ width: "32px", height: "32px", borderRadius: "50%", marginRight: "8px" }}
+                              style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
                             />
                           )}
-
-                          <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "8px 12px", borderRadius: "4px", border: "1px solid #e5e5e5", color: "#000000" }}>
+                          <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
                             {m.content}
                           </div>
-
                           {m.role === "user" && (
                             <img
                               src={user?.imageUrl}
                               alt="User"
                               className="message-avatar"
-                              style={{ width: "32px", height: "32px", borderRadius: "50%", marginLeft: "8px" }}
+                              style={{ width: "40px", height: "40px", borderRadius: "50%", marginLeft: "16px" }}
                             />
                           )}
                         </div>
                       ))}
                     </div>
-
                     {/* INPUT */}
-                    <div className="chat-input-area" style={{ display: "flex", padding: "8px", borderTop: "1px solid #e5e5e5" }}>
+                    <div className="chat-input-area" style={{ display: "flex", padding: "16px 24px", borderTop: "1px solid #e5e5e5", alignItems: "center" }}>
                       <input
                         className="chat-input"
                         placeholder="Ask anything about your PDFs..."
@@ -847,7 +871,7 @@ export default function KuroWorkspacePage() {
                         onChange={(e) => setChatInput(e.target.value)}
                         onKeyDown={handleChatKeyDown}
                         disabled={isSending}
-                        style={{ flex: 1, border: "1px solid #e5e5e5", borderRadius: "4px", padding: "8px", color: "#000000", backgroundColor: "#ffffff" }}
+                        style={{ flex: 1, border: "1px solid #e5e5e5", borderRadius: "4px", padding: "12px 16px", color: "#000000", backgroundColor: "#ffffff", fontSize: "14px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
                       />
                       <button
                         className="send-btn"
@@ -858,23 +882,25 @@ export default function KuroWorkspacePage() {
                           backgroundColor: "#ef4444",
                           color: "#ffffff",
                           border: "none",
-                          padding: "8px 16px",
+                          padding: "12px 24px",
                           borderRadius: "4px",
-                          marginLeft: "8px",
+                          marginLeft: "16px",
                           cursor: "pointer",
-                          transition: "background-color 200ms ease",
+                          transition: "background-color 200ms ease, box-shadow 200ms ease",
+                          fontSize: "14px",
+                          fontWeight: "500",
+                          boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                         }}
-                        onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                        onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                        onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                        onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                       >
                         {isSending ? "Sending..." : "Send"}
                       </button>
                     </div>
                   </div>
                 </div>
-
                 {/* RIGHT — QUESTION ASSIST */}
-                <div className="chat-assist" style={{ backgroundColor: "#ffffff", padding: "16px", borderLeft: "1px solid #e5e5e5" }}>
+                <div className="chat-assist" style={{ backgroundColor: "#ffffff", padding: "24px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", borderRadius: "4px", width: "300px", minWidth: "300px" }}>
                   <PdfQuestionSuggestions
                     onSelect={(q) => {
                       setChatInput(q);
@@ -885,17 +911,20 @@ export default function KuroWorkspacePage() {
               </div>
             </div>
             {/* CHAT HISTORY */}
-            <div 
-              className="chat-subtab-content" 
-              style={{ 
+            <div
+              className="chat-subtab-content"
+              style={{
                 display: activeChatSubTab === "history" ? "block" : "none",
                 transition: "opacity 300ms ease",
                 opacity: activeChatSubTab === "history" ? 1 : 0,
+                padding: "24px",
+                width: "100%",
+                boxSizing: "border-box"
               }}
             >
-              <div className="history-container" style={{ backgroundColor: "#ffffff", padding: "16px" }}>
-                <div className="history-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-                  <h3 className="history-title" style={{ color: "#000000" }}>Chat History</h3>
+              <div className="history-container" style={{ backgroundColor: "#ffffff" }}>
+                <div className="history-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+                  <h3 className="history-title" style={{ color: "#000000", fontSize: "24px", fontWeight: "600" }}>Chat History</h3>
                   <button
                     type="button"
                     className="clear-history-btn"
@@ -904,68 +933,67 @@ export default function KuroWorkspacePage() {
                       backgroundColor: "#ef4444",
                       color: "#ffffff",
                       border: "none",
-                      padding: "8px 16px",
+                      padding: "10px 20px",
                       borderRadius: "4px",
                       cursor: "pointer",
-                      transition: "background-color 200ms ease",
+                      transition: "background-color 200ms ease, box-shadow 200ms ease",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                     }}
-                    onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                    onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                    onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                    onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                   >
                     Clear All
                   </button>
                 </div>
-                <div className="history-search" style={{ marginBottom: "16px" }}>
+                <div className="history-search" style={{ marginBottom: "24px" }}>
                   <input
                     type="text"
                     placeholder="Search chat history..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    style={{ width: "100%", border: "1px solid #e5e5e5", padding: "8px", borderRadius: "4px", color: "#000000", backgroundColor: "#ffffff" }}
+                    style={{ width: "100%", border: "1px solid #e5e5e5", padding: "12px 16px", borderRadius: "4px", color: "#000000", backgroundColor: "#ffffff", fontSize: "14px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
                   />
                 </div>
                 {paginatedHistory.length === 0 ? (
-                  <div className="empty-state" style={{ textAlign: "center", color: "#000000" }}>
-                    <div className="empty-icon">📭</div>
-                    <div className="empty-title">No Chat History Yet</div>
-                    <div className="empty-desc">
+                  <div className="empty-state" style={{ textAlign: "center", color: "#000000", padding: "48px 0" }}>
+                    <div className="empty-icon" style={{ fontSize: "48px", marginBottom: "16px" }}>📭</div>
+                    <div className="empty-title" style={{ fontSize: "20px", fontWeight: "600", marginBottom: "8px" }}>No Chat History Yet</div>
+                    <div className="empty-desc" style={{ fontSize: "14px", color: "#4b5563" }}>
                       Your saved conversations will appear here. Save a
                       conversation from the Current Chat tab to get started.
                     </div>
                   </div>
                 ) : (
-                  <div className="history-list">
+                  <div className="history-list" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                     {paginatedHistory.map((h) => (
-                      <div 
-                        key={h.id} 
-                        className="history-item" 
-                        style={{ 
-                          backgroundColor: "#ffffff", 
-                          border: "1px solid #e5e5e5", 
-                          borderRadius: "4px", 
-                          padding: "16px", 
-                          marginBottom: "12px", 
-                          display: "flex", 
-                          justifyContent: "space-between", 
+                      <div
+                        key={h.id}
+                        className="history-item"
+                        style={{
+                          backgroundColor: "#ffffff",
+                          borderRadius: "4px",
+                          padding: "20px",
+                          display: "flex",
+                          justifyContent: "space-between",
                           alignItems: "center",
                           transition: "all 200ms ease",
-                          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                          boxShadow: "0 2px 4px rgba(0,0,0,0.05)"
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                          e.currentTarget.style.borderColor = "#ef4444";
+                          e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                          e.currentTarget.style.borderColor = "#e5e5e5";
+                          e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                         }}
                       >
-                        <div style={{ color: "#000000" }}>
-                          <div className="history-item-title" style={{ fontWeight: "bold" }}>{h.title}</div>
-                          <div className="history-item-info" style={{ fontSize: "0.875rem", color: "#4b5563" }}>{h.meta}</div>
-                          <div className="history-item-pdf" style={{ fontSize: "0.875rem", color: "#4b5563" }}>PDF: {h.pdfName}</div>
+                        <div style={{ color: "#000000", display: "flex", flexDirection: "column", gap: "4px", flex: 1 }}>
+                          <div className="history-item-title" style={{ fontWeight: "600", fontSize: "16px" }}>{h.title}</div>
+                          <div className="history-item-info" style={{ fontSize: "14px", color: "#4b5563" }}>{h.meta}</div>
+                          <div className="history-item-pdf" style={{ fontSize: "14px", color: "#4b5563" }}>PDF: {h.pdfName}</div>
                         </div>
-                        <div className="history-item-actions" style={{ display: "flex", gap: "8px" }}>
+                        <div className="history-item-actions" style={{ display: "flex", gap: "12px" }}>
                           <button
                             className="history-item-btn"
                             type="button"
@@ -974,13 +1002,16 @@ export default function KuroWorkspacePage() {
                               backgroundColor: "#ef4444",
                               color: "#ffffff",
                               border: "none",
-                              padding: "6px 12px",
+                              padding: "8px 16px",
                               borderRadius: "4px",
                               cursor: "pointer",
-                              transition: "background-color 200ms ease",
+                              transition: "background-color 200ms ease, box-shadow 200ms ease",
+                              fontSize: "14px",
+                              fontWeight: "500",
+                              boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                             }}
-                            onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                            onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                            onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                            onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                           >
                             Load
                           </button>
@@ -992,13 +1023,16 @@ export default function KuroWorkspacePage() {
                               backgroundColor: "#ef4444",
                               color: "#ffffff",
                               border: "none",
-                              padding: "6px 12px",
+                              padding: "8px 16px",
                               borderRadius: "4px",
                               cursor: "pointer",
-                              transition: "background-color 200ms ease",
+                              transition: "background-color 200ms ease, box-shadow 200ms ease",
+                              fontSize: "14px",
+                              fontWeight: "500",
+                              boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                             }}
-                            onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                            onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                            onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                            onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                           >
                             Delete
                           </button>
@@ -1008,7 +1042,7 @@ export default function KuroWorkspacePage() {
                   </div>
                 )}
                 {totalPages > 1 && (
-                  <div className="pagination" style={{ display: "flex", justifyContent: "center", gap: "8px", marginTop: "16px" }}>
+                  <div className="pagination" style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "32px" }}>
                     <button
                       disabled={currentPage === 1}
                       onClick={() => setCurrentPage((p) => p - 1)}
@@ -1016,11 +1050,15 @@ export default function KuroWorkspacePage() {
                         backgroundColor: currentPage === 1 ? "#e5e5e5" : "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "6px 12px",
+                        padding: "8px 16px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                       }}
+                      onMouseEnter={(e) => { if (currentPage !== 1) e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { if (currentPage !== 1) e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       &lt;
                     </button>
@@ -1033,11 +1071,15 @@ export default function KuroWorkspacePage() {
                           backgroundColor: page === currentPage ? "#ef4444" : "#ffffff",
                           color: page === currentPage ? "#ffffff" : "#000000",
                           border: "1px solid #e5e5e5",
-                          padding: "6px 12px",
+                          padding: "8px 16px",
                           borderRadius: "4px",
                           cursor: "pointer",
                           transition: "all 200ms ease",
+                          fontSize: "14px",
+                          boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                         }}
+                        onMouseEnter={(e) => { e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                        onMouseLeave={(e) => { e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                       >
                         {page}
                       </button>
@@ -1049,11 +1091,15 @@ export default function KuroWorkspacePage() {
                         backgroundColor: currentPage === totalPages ? "#e5e5e5" : "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "6px 12px",
+                        padding: "8px 16px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                       }}
+                      onMouseEnter={(e) => { if (currentPage !== totalPages) e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { if (currentPage !== totalPages) e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       &gt;
                     </button>
@@ -1062,45 +1108,49 @@ export default function KuroWorkspacePage() {
               </div>
             </div>
             {/* EXPORT CONVERSATION */}
-            <div 
-              className="chat-subtab-content" 
-              style={{ 
+            <div
+              className="chat-subtab-content"
+              style={{
                 display: activeChatSubTab === "export" ? "block" : "none",
                 transition: "opacity 300ms ease",
                 opacity: activeChatSubTab === "export" ? 1 : 0,
+                padding: "24px",
+                width: "100%",
+                boxSizing: "border-box"
               }}
             >
-              <div className="export-container" style={{ backgroundColor: "#ffffff", padding: "16px" }}>
-                <div className="export-header" style={{ marginBottom: "24px" }}>
-                  <h3 className="export-title" style={{ color: "#000000" }}>Export Conversation</h3>
-                  <p className="export-desc" style={{ color: "#4b5563" }}>
+              <div className="export-container" style={{ backgroundColor: "#ffffff" }}>
+                <div className="export-header" style={{ marginBottom: "32px" }}>
+                  <h3 className="export-title" style={{ color: "#000000", fontSize: "24px", fontWeight: "600" }}>Export Conversation</h3>
+                  <p className="export-desc" style={{ color: "#4b5563", fontSize: "16px", marginTop: "8px" }}>
                     Choose a format to export your current conversation.
                   </p>
                 </div>
-                <div className="export-options-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "16px" }}>
-                  <div 
-                    className="export-card" 
-                    style={{ 
-                      backgroundColor: "#ffffff", 
-                      border: "1px solid #e5e5e5", 
-                      borderRadius: "4px", 
-                      padding: "16px", 
+                <div className="export-options-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", width: "100%" }}>
+                  <div
+                    className="export-card"
+                    style={{
+                      backgroundColor: "#ffffff",
+                      borderRadius: "4px",
+                      padding: "24px",
                       textAlign: "center",
                       transition: "all 200ms ease",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "16px"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.borderColor = "#ef4444";
+                      e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = "#e5e5e5";
+                      e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                     }}
                   >
-                    <span className="export-icon" style={{ fontSize: "24px" }}>📄</span>
-                    <h4 className="export-card-title" style={{ color: "#000000" }}>Export as PDF</h4>
-                    <p className="export-card-desc" style={{ color: "#4b5563" }}>
+                    <span className="export-icon" style={{ fontSize: "32px" }}>📄</span>
+                    <h4 className="export-card-title" style={{ color: "#000000", fontSize: "18px", fontWeight: "600" }}>Export as PDF</h4>
+                    <p className="export-card-desc" style={{ color: "#4b5563", fontSize: "14px" }}>
                       Download as a formatted PDF document.
                     </p>
                     <button
@@ -1111,40 +1161,45 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                        width: "100%"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Export
                     </button>
                   </div>
-                  <div 
-                    className="export-card" 
-                    style={{ 
-                      backgroundColor: "#ffffff", 
-                      border: "1px solid #e5e5e5", 
-                      borderRadius: "4px", 
-                      padding: "16px", 
+                  <div
+                    className="export-card"
+                    style={{
+                      backgroundColor: "#ffffff",
+                      borderRadius: "4px",
+                      padding: "24px",
                       textAlign: "center",
                       transition: "all 200ms ease",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "16px"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.borderColor = "#ef4444";
+                      e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = "#e5e5e5";
+                      e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                     }}
                   >
-                    <span className="export-icon" style={{ fontSize: "24px" }}>📝</span>
-                    <h4 className="export-card-title" style={{ color: "#000000" }}>Export as DOCX</h4>
-                    <p className="export-card-desc" style={{ color: "#4b5563" }}>
+                    <span className="export-icon" style={{ fontSize: "32px" }}>📝</span>
+                    <h4 className="export-card-title" style={{ color: "#000000", fontSize: "18px", fontWeight: "600" }}>Export as DOCX</h4>
+                    <p className="export-card-desc" style={{ color: "#4b5563", fontSize: "14px" }}>
                       Download as a Word document.
                     </p>
                     <button
@@ -1155,40 +1210,45 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                        width: "100%"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Export
                     </button>
                   </div>
-                  <div 
-                    className="export-card" 
-                    style={{ 
-                      backgroundColor: "#ffffff", 
-                      border: "1px solid #e5e5e5", 
-                      borderRadius: "4px", 
-                      padding: "16px", 
+                  <div
+                    className="export-card"
+                    style={{
+                      backgroundColor: "#ffffff",
+                      borderRadius: "4px",
+                      padding: "24px",
                       textAlign: "center",
                       transition: "all 200ms ease",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "16px"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.borderColor = "#ef4444";
+                      e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = "#e5e5e5";
+                      e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                     }}
                   >
-                    <span className="export-icon" style={{ fontSize: "24px" }}>📊</span>
-                    <h4 className="export-card-title" style={{ color: "#000000" }}>Export as CSV</h4>
-                    <p className="export-card-desc" style={{ color: "#4b5563" }}>
+                    <span className="export-icon" style={{ fontSize: "32px" }}>📊</span>
+                    <h4 className="export-card-title" style={{ color: "#000000", fontSize: "18px", fontWeight: "600" }}>Export as CSV</h4>
+                    <p className="export-card-desc" style={{ color: "#4b5563", fontSize: "14px" }}>
                       Download as a spreadsheet-compatible CSV.
                     </p>
                     <button
@@ -1199,40 +1259,45 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                        width: "100%"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Export
                     </button>
                   </div>
-                  <div 
-                    className="export-card" 
-                    style={{ 
-                      backgroundColor: "#ffffff", 
-                      border: "1px solid #e5e5e5", 
-                      borderRadius: "4px", 
-                      padding: "16px", 
+                  <div
+                    className="export-card"
+                    style={{
+                      backgroundColor: "#ffffff",
+                      borderRadius: "4px",
+                      padding: "24px",
                       textAlign: "center",
                       transition: "all 200ms ease",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "16px"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.borderColor = "#ef4444";
+                      e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = "#e5e5e5";
+                      e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                     }}
                   >
-                    <span className="export-icon" style={{ fontSize: "24px" }}>📄</span>
-                    <h4 className="export-card-title" style={{ color: "#000000" }}>Export as TXT</h4>
-                    <p className="export-card-desc" style={{ color: "#4b5563" }}>
+                    <span className="export-icon" style={{ fontSize: "32px" }}>📄</span>
+                    <h4 className="export-card-title" style={{ color: "#000000", fontSize: "18px", fontWeight: "600" }}>Export as TXT</h4>
+                    <p className="export-card-desc" style={{ color: "#4b5563", fontSize: "14px" }}>
                       Download as plain text.
                     </p>
                     <button
@@ -1243,40 +1308,45 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                        width: "100%"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Export
                     </button>
                   </div>
-                  <div 
-                    className="export-card" 
-                    style={{ 
-                      backgroundColor: "#ffffff", 
-                      border: "1px solid #e5e5e5", 
-                      borderRadius: "4px", 
-                      padding: "16px", 
+                  <div
+                    className="export-card"
+                    style={{
+                      backgroundColor: "#ffffff",
+                      borderRadius: "4px",
+                      padding: "24px",
                       textAlign: "center",
                       transition: "all 200ms ease",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "16px"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.borderColor = "#ef4444";
+                      e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = "#e5e5e5";
+                      e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                     }}
                   >
-                    <span className="export-icon" style={{ fontSize: "24px" }}>📋</span>
-                    <h4 className="export-card-title" style={{ color: "#000000" }}>Copy to Clipboard</h4>
-                    <p className="export-card-desc" style={{ color: "#4b5563" }}>
+                    <span className="export-icon" style={{ fontSize: "32px" }}>📋</span>
+                    <h4 className="export-card-title" style={{ color: "#000000", fontSize: "18px", fontWeight: "600" }}>Copy to Clipboard</h4>
+                    <p className="export-card-desc" style={{ color: "#4b5563", fontSize: "14px" }}>
                       Copy the conversation text.
                     </p>
                     <button
@@ -1287,40 +1357,45 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                        width: "100%"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Copy
                     </button>
                   </div>
-                  <div 
-                    className="export-card" 
-                    style={{ 
-                      backgroundColor: "#ffffff", 
-                      border: "1px solid #e5e5e5", 
-                      borderRadius: "4px", 
-                      padding: "16px", 
+                  <div
+                    className="export-card"
+                    style={{
+                      backgroundColor: "#ffffff",
+                      borderRadius: "4px",
+                      padding: "24px",
                       textAlign: "center",
                       transition: "all 200ms ease",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "16px"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.borderColor = "#ef4444";
+                      e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = "#e5e5e5";
+                      e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                     }}
                   >
-                    <span className="export-icon" style={{ fontSize: "24px" }}>🌐</span>
-                    <h4 className="export-card-title" style={{ color: "#000000" }}>Export as HTML</h4>
-                    <p className="export-card-desc" style={{ color: "#4b5563" }}>
+                    <span className="export-icon" style={{ fontSize: "32px" }}>🌐</span>
+                    <h4 className="export-card-title" style={{ color: "#000000", fontSize: "18px", fontWeight: "600" }}>Export as HTML</h4>
+                    <p className="export-card-desc" style={{ color: "#4b5563", fontSize: "14px" }}>
                       Download as an HTML file.
                     </p>
                     <button
@@ -1331,40 +1406,45 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                        width: "100%"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Export
                     </button>
                   </div>
-                  <div 
-                    className="export-card" 
-                    style={{ 
-                      backgroundColor: "#ffffff", 
-                      border: "1px solid #e5e5e5", 
-                      borderRadius: "4px", 
-                      padding: "16px", 
+                  <div
+                    className="export-card"
+                    style={{
+                      backgroundColor: "#ffffff",
+                      borderRadius: "4px",
+                      padding: "24px",
                       textAlign: "center",
                       transition: "all 200ms ease",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "16px"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.borderColor = "#ef4444";
+                      e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = "#e5e5e5";
+                      e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                     }}
                   >
-                    <span className="export-icon" style={{ fontSize: "24px" }}>📝</span>
-                    <h4 className="export-card-title" style={{ color: "#000000" }}>Export as Markdown</h4>
-                    <p className="export-card-desc" style={{ color: "#4b5563" }}>
+                    <span className="export-icon" style={{ fontSize: "32px" }}>📝</span>
+                    <h4 className="export-card-title" style={{ color: "#000000", fontSize: "18px", fontWeight: "600" }}>Export as Markdown</h4>
+                    <p className="export-card-desc" style={{ color: "#4b5563", fontSize: "14px" }}>
                       Download as a Markdown file.
                     </p>
                     <button
@@ -1375,40 +1455,45 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                        width: "100%"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Export
                     </button>
                   </div>
-                  <div 
-                    className="export-card" 
-                    style={{ 
-                      backgroundColor: "#ffffff", 
-                      border: "1px solid #e5e5e5", 
-                      borderRadius: "4px", 
-                      padding: "16px", 
+                  <div
+                    className="export-card"
+                    style={{
+                      backgroundColor: "#ffffff",
+                      borderRadius: "4px",
+                      padding: "24px",
                       textAlign: "center",
                       transition: "all 200ms ease",
-                      boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
+                      boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: "16px"
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
-                      e.currentTarget.style.borderColor = "#ef4444";
+                      e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.05)";
-                      e.currentTarget.style.borderColor = "#e5e5e5";
+                      e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                     }}
                   >
-                    <span className="export-icon" style={{ fontSize: "24px" }}>🔗</span>
-                    <h4 className="export-card-title" style={{ color: "#000000" }}>Generate Shareable Link</h4>
-                    <p className="export-card-desc" style={{ color: "#4b5563" }}>
+                    <span className="export-icon" style={{ fontSize: "32px" }}>🔗</span>
+                    <h4 className="export-card-title" style={{ color: "#000000", fontSize: "18px", fontWeight: "600" }}>Generate Shareable Link</h4>
+                    <p className="export-card-desc" style={{ color: "#4b5563", fontSize: "14px" }}>
                       Copy a link to share the conversation.
                     </p>
                     <button
@@ -1419,21 +1504,25 @@ export default function KuroWorkspacePage() {
                         backgroundColor: "#ef4444",
                         color: "#ffffff",
                         border: "none",
-                        padding: "8px 16px",
+                        padding: "10px 20px",
                         borderRadius: "4px",
                         cursor: "pointer",
-                        transition: "background-color 200ms ease",
+                        transition: "background-color 200ms ease, box-shadow 200ms ease",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
+                        width: "100%"
                       }}
-                      onMouseEnter={(e) => (e.target.style.backgroundColor = "#dc2626")}
-                      onMouseLeave={(e) => (e.target.style.backgroundColor = "#ef4444")}
+                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
                       Generate
                     </button>
                   </div>
                 </div>
                 {exportStatus && (
-                  <div className="export-status" style={{ marginTop: "16px", textAlign: "center", color: exportStatus.type === "error" ? "#ef4444" : "#000000" }}>
-                    <div className="status-icon">
+                  <div className="export-status" style={{ marginTop: "32px", textAlign: "center", color: exportStatus.type === "error" ? "#ef4444" : "#000000", fontSize: "14px" }}>
+                    <div className="status-icon" style={{ fontSize: "24px", marginBottom: "8px" }}>
                       {exportStatus.type === "error" ? "⚠️" : "✅"}
                     </div>
                     <div className="status-message">
@@ -1450,7 +1539,7 @@ export default function KuroWorkspacePage() {
           {/* ANALYSIS TAB → uses AnalysisPanel */}
           <section
             id="analysisTab"
-            className={`tab-content card ${
+            className={`tab-content ${
               activeTab === "analysis" ? "active" : ""
             }`}
           >
@@ -1463,14 +1552,14 @@ export default function KuroWorkspacePage() {
           {/* OCR TAB → NEW ADVANCED OCR PANEL */}
           <section
             id="ocrTab"
-            className={`tab-content card ${activeTab === "ocr" ? "active" : ""}`}
+            className={`tab-content ${activeTab === "ocr" ? "active" : ""}`}
           >
             <OcrPanel />
           </section>
           {/* CREATE & EDIT TAB → uses PdfDesignCanvas */}
           <section
             id="createTab"
-            className={`tab-content card ${activeTab === "create" ? "active" : ""}`}
+            className={`tab-content ${activeTab === "create" ? "active" : ""}`}
           >
             <CreatePdfPanel />
           </section>
