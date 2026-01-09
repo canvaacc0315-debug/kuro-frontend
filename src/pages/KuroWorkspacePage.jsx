@@ -15,9 +15,6 @@ import "../styles/no-scrollbar-override.css";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
-
-
-
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -638,9 +635,9 @@ export default function KuroWorkspacePage() {
                             setChatScope({ type: "all", page: "", from: "", to: "" })
                           }
                           style={{
-                            backgroundColor: chatScope.type === "all" ? "#ef4444" : "#ffffff",
+                            backgroundColor: chatScope.type === "all" ? "#ef4444" : "transparent",
                             color: chatScope.type === "all" ? "#ffffff" : "#000000",
-                            border: "1px solid #e5e5e5",
+                            border: "none",
                             padding: "8px 16px",
                             borderRadius: "9999px",
                             transition: "all 200ms ease",
@@ -656,9 +653,9 @@ export default function KuroWorkspacePage() {
                             setChatScope({ type: "page", page: "", from: "", to: "" })
                           }
                           style={{
-                            backgroundColor: chatScope.type === "page" ? "#ef4444" : "#ffffff",
+                            backgroundColor: chatScope.type === "page" ? "#ef4444" : "transparent",
                             color: chatScope.type === "page" ? "#ffffff" : "#000000",
-                            border: "1px solid #e5e5e5",
+                            border: "none",
                             padding: "8px 16px",
                             borderRadius: "9999px",
                             transition: "all 200ms ease",
@@ -674,9 +671,9 @@ export default function KuroWorkspacePage() {
                             setChatScope({ type: "range", page: "", from: "", to: "" })
                           }
                           style={{
-                            backgroundColor: chatScope.type === "range" ? "#ef4444" : "#ffffff",
+                            backgroundColor: chatScope.type === "range" ? "#ef4444" : "transparent",
                             color: chatScope.type === "range" ? "#ffffff" : "#000000",
-                            border: "1px solid #e5e5e5",
+                            border: "none",
                             padding: "8px 16px",
                             borderRadius: "9999px",
                             transition: "all 200ms ease",
@@ -829,7 +826,7 @@ export default function KuroWorkspacePage() {
                         scrollbarWidth: 'none',
                         padding: "24px",
                         overflowY: "auto",
-                        height: "400px" // Adjustable height for spacious feel
+                        height: "60vh" // Made larger
                       }}
                     >
                       {conversation.map((m) => (
@@ -903,7 +900,8 @@ export default function KuroWorkspacePage() {
                   </div>
                 </div>
                 {/* RIGHT — QUESTION ASSIST */}
-                <div className="chat-assist" style={{ backgroundColor: "#ffffff", padding: "24px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", borderRadius: "4px", width: "300px", minWidth: "300px" }}>
+                <div className="chat-assist" style={{ backgroundColor: "#ffffff", padding: "16px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", borderRadius: "4px", width: "250px", minWidth: "250px" }}>
+                  <span style={{ fontSize: "24px", color: "#f59e0b", display: "block", marginBottom: "16px" }}>💡</span>
                   <PdfQuestionSuggestions
                     onSelect={(q) => {
                       setChatInput(q);
