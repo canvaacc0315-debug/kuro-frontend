@@ -1,6 +1,5 @@
 import "../styles/chatInputBar.css";
 import { useState, useRef, useEffect } from "react";
-import PdfQuestionSuggestions from "./PdfQuestionSuggestions.jsx";
 
 export default function ChatInputBar({ value, onChange, onSend, disabled = false }) {
   const inputRef = useRef(null);
@@ -38,7 +37,6 @@ export default function ChatInputBar({ value, onChange, onSend, disabled = false
 
   return (
     <div className="chat-input-bar">
-      <PdfQuestionSuggestions onSuggestionClick={handleSuggestionClick} />
       <div className="chat-input-wrapper">
         <div className="left-icons">
         </div>

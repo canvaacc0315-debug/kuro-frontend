@@ -87,49 +87,8 @@
   color: #666666;
 }
 
-.chat-input-bar input:focus {
-  /* No additional styles needed for focus to match minimal look */
-}
-
 .chat-input-bar input:disabled {
   cursor: not-allowed;
-}
-
-/* Styles for PdfQuestionSuggestions */
-.pdf-question-suggestions {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  justify-content: flex-start;
-  gap: 8px;
-  margin-bottom: 8px;
-  width: 100%;
-  padding: 0 10px;
-  box-sizing: border-box;
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.pdf-question-suggestions::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-.pdf-question-suggestions button {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(239, 68, 68, 0.1);
-  color: #ef4444;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
-
-.pdf-question-suggestions button:hover {
-  background: #ef4444;
-  color: white;
-  border-color: #ef4444;
 }
 
 /* Animations */
