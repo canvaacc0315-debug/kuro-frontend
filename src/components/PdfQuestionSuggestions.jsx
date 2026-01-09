@@ -1,4 +1,4 @@
-import "../styles/chat-overrides.css";
+import "../styles/workspace.css";
 import { PDF_QUESTION_SETS } from "../config/pdfQuestionSets";
 
 export default function PdfQuestionSuggestions({ onSelect }) {

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
+import PdfQuestionSuggestions from "../components/PdfQuestionSuggestions";
 import "../styles/workspace.css";
 import AnalysisPanel from "../components/AnalysisPanel.jsx";
 import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
@@ -813,8 +814,54 @@ export default function KuroWorkspacePage() {
                       Clear Conversation
                     </button>
                   </div>
-                  {/* CHAT MESSAGES */}
-                  <div className="chat-container" style={{ backgroundColor: "#ffffff", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", overflow: "hidden" }}>
+                  {/* CHAT CONTAINER */}
+                  <div className="chat-container" style={{ backgroundColor: "#ffffff", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", overflow: "hidden", display: "flex", flexDirection: "column", height: "60vh" }}>
+                    {/* FIXED TOP INPUT AREA WITH SUGGESTIONS ABOVE */}
+                    <div style={{ position: "sticky", top: "0", zIndex: "1", backgroundColor: "#ffffff", padding: "16px 24px", borderBottom: "1px solid #e5e5e5" }}>
+                      <div style={{ display: "flex", overflowX: "auto", gap: "8px", marginBottom: "16px", whiteSpace: "nowrap" }}>
+                        <PdfQuestionSuggestions
+                          onSelect={(q) => {
+                            setChatInput(q);
+                            setTimeout(() => handleSend(), 100);
+                          }}
+                        />
+                      </div>
+                      <div className="chat-input-area" style={{ display: "flex", alignItems: "center" }}>
+                        <input
+                          className="chat-input"
+                          placeholder="Ask anything about your PDFs..."
+                          value={chatInput}
+                          onChange={(e) => setChatInput(e.target.value)}
+                          onKeyDown={handleChatKeyDown}
+                          disabled={isSending}
+                          style={{ flex: 1, border: "1px solid #e5e5e5", borderRadius: "4px", padding: "12px 16px", color: "#000000", backgroundColor: "#ffffff", fontSize: "14px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
+                        />
+                        <button
+                          className="send-btn"
+                          type="button"
+                          onClick={handleSend}
+                          disabled={isSending}
+                          style={{
+                            backgroundColor: "#ef4444",
+                            color: "#ffffff",
+                            border: "none",
+                            padding: "12px 24px",
+                            borderRadius: "4px",
+                            marginLeft: "16px",
+                            cursor: "pointer",
+                            transition: "background-color 200ms ease, box-shadow 200ms ease",
+                            fontSize: "14px",
+                            fontWeight: "500",
+                            boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
+                          }}
+                          onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
+                          onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
+                        >
+                          {isSending ? "Sending..." : "Send"}
+                        </button>
+                      </div>
+                    </div>
+                    {/* CHAT MESSAGES */}
                     <div
                       ref={chatMessagesRef}
                       className="chat-messages no-scrollbar"
@@ -823,7 +870,7 @@ export default function KuroWorkspacePage() {
                         scrollbarWidth: 'none',
                         padding: "24px",
                         overflowY: "auto",
-                        height: "60vh" // Made larger
+                        flex: 1
                       }}
                     >
                       {conversation.map((m) => (
@@ -845,7 +892,7 @@ export default function KuroWorkspacePage() {
                               style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
                             />
                           )}
-                          <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#ef4444" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", color: m.role === "user" ? "#ffffff" : "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
+                          <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
                             {m.content}
                           </div>
                           {m.role === "user" && (
@@ -858,41 +905,6 @@ export default function KuroWorkspacePage() {
                           )}
                         </div>
                       ))}
-                    </div>
-                    {/* INPUT */}
-                    <div className="chat-input-area" style={{ display: "flex", padding: "16px 24px", borderTop: "1px solid #e5e5e5", alignItems: "center" }}>
-                      <input
-                        className="chat-input"
-                        placeholder="Ask anything about your PDFs..."
-                        value={chatInput}
-                        onChange={(e) => setChatInput(e.target.value)}
-                        onKeyDown={handleChatKeyDown}
-                        disabled={isSending}
-                        style={{ flex: 1, border: "1px solid #e5e5e5", borderRadius: "4px", padding: "12px 16px", color: "#000000", backgroundColor: "#ffffff", fontSize: "14px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
-                      />
-                      <button
-                        className="send-btn"
-                        type="button"
-                        onClick={handleSend}
-                        disabled={isSending}
-                        style={{
-                          backgroundColor: "#ef4444",
-                          color: "#ffffff",
-                          border: "none",
-                          padding: "12px 24px",
-                          borderRadius: "4px",
-                          marginLeft: "16px",
-                          cursor: "pointer",
-                          transition: "background-color 200ms ease, box-shadow 200ms ease",
-                          fontSize: "14px",
-                          fontWeight: "500",
-                          boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                        }}
-                        onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                        onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                      >
-                        {isSending ? "Sending..." : "Send"}
-                      </button>
                     </div>
                   </div>
                 </div>
