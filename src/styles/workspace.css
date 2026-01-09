@@ -3,7 +3,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: all 0.3s ease; /* Smooth animation for all elements */
 }
 
 body {
@@ -12,24 +11,12 @@ body {
   color: #000000;
   min-height: 100vh;
   overflow-x: hidden;
-  animation: fadeInBody 1s ease-in-out; /* Smooth fade-in animation for body */
-}
-
-@keyframes fadeInBody {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* UI CHANGE: Root now flex for sidebar + main + footer layout. */
 .workspace-root {
   display: flex;
   min-height: 100vh;
-  animation: slideInRoot 0.5s ease-out; /* Smooth slide-in animation */
-}
-
-@keyframes slideInRoot {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
 }
 
 /* HEADER */
@@ -46,24 +33,12 @@ body {
   right: 0;
   z-index: 1000;
   transition: all 0.3s ease;
-  animation: fadeInHeader 0.8s ease-in; /* Smooth fade-in for header */
-}
-
-@keyframes fadeInHeader {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .home-header.scrolled {
   padding: 0.8rem 2rem;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   background: #000000;
-  animation: scrollAnimation 0.5s ease; /* Smooth animation on scroll */
-}
-
-@keyframes scrollAnimation {
-  from { padding: 1.2rem 2rem; box-shadow: none; }
-  to { padding: 0.8rem 2rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); }
 }
 
 .logo-container {
@@ -74,13 +49,6 @@ body {
   font-weight: 700;
   font-size: 1.5rem;
   transition: transform 0.3s ease;
-  animation: pulseLogo 1.5s infinite ease-in-out; /* Smooth pulse animation */
-}
-
-@keyframes pulseLogo {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
 }
 
 .logo-container:hover {
@@ -91,12 +59,6 @@ body {
   width: 46px;
   height: 46px;
   object-fit: contain;
-  animation: rotateIcon 2s linear infinite; /* Smooth rotation for icon */
-}
-
-@keyframes rotateIcon {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 .logo-text {
@@ -105,25 +67,11 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: gradientShift 3s ease infinite; /* Smooth gradient shift */
-}
-
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 .logo-red {
   color: #ef4444;
   -webkit-text-fill-color: #ef4444;
-  animation: colorPulse 2s ease infinite; /* Smooth color pulse */
-}
-
-@keyframes colorPulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.7; }
-  100% { opacity: 1; }
 }
 
 .logo-ai {
@@ -131,25 +79,10 @@ body {
   -webkit-text-fill-color: #ffffff;
 }
 
-.logo-ai:hover {
-  animation: bounce 0.5s ease; /* Smooth bounce on hover */
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-
 .header-links {
   display: flex;
   gap: 2rem;
   align-items: center;
-  animation: fadeInLinks 1s ease-in; /* Smooth fade-in for links */
-}
-
-@keyframes fadeInLinks {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .nav-link {
@@ -163,22 +96,10 @@ body {
   border: none;
   cursor: pointer;
   font-size: inherit;
-  animation: slideInNav 0.6s ease-out; /* Smooth slide-in for nav links */
-}
-
-@keyframes slideInNav {
-  from { transform: translateX(-10px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
 }
 
 .nav-link:hover {
   color: #ef4444;
-  animation: hoverGlow 0.5s ease; /* Smooth glow on hover */
-}
-
-@keyframes hoverGlow {
-  from { text-shadow: none; }
-  to { text-shadow: 0 0 5px #ef4444; }
 }
 
 .nav-link::after {
@@ -190,12 +111,6 @@ body {
   height: 2px;
   background: #ef4444;
   transition: width 0.3s ease;
-  animation: underlineExpand 0.4s ease; /* Smooth underline expansion */
-}
-
-@keyframes underlineExpand {
-  from { width: 0; }
-  to { width: 100%; }
 }
 
 .nav-link:hover::after {
@@ -204,12 +119,6 @@ body {
 
 .settings-link {
   padding: 0.5rem 0;
-  animation: fadeInSettings 1.2s ease; /* Smooth fade-in for settings */
-}
-
-@keyframes fadeInSettings {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* UI CHANGE: Fixed sidebar, white bg, vertical nav. Added hover (scale + opacity), active (red bg). Subtle transitions. Added margin-top for top header. */
@@ -225,34 +134,16 @@ body {
   padding: 40px 20px; /* Increased padding for airy feel */
   z-index: 100;
   transition: box-shadow 0.3s ease;
-  animation: sidebarSlide 0.7s ease-out; /* Smooth sidebar slide */
-}
-
-@keyframes sidebarSlide {
-  from { left: -250px; }
-  to { left: 0; }
 }
 
 .sidebar:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  animation: sidebarHover 0.4s ease; /* Smooth hover animation */
-}
-
-@keyframes sidebarHover {
-  from { box-shadow: none; }
-  to { box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); }
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
   gap: 20px; /* Increased gap for spaciousness */
-  animation: navFade 1s ease; /* Smooth fade for nav */
-}
-
-@keyframes navFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .sidebar-item {
@@ -268,12 +159,6 @@ body {
   font-weight: 500;
   border-radius: 8px;
   transition: background 0.3s ease, transform 0.2s ease, opacity 0.2s ease;
-  animation: itemBounce 0.5s ease; /* Smooth bounce for items */
-}
-
-@keyframes itemBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
 }
 
 .sidebar-item:hover {
@@ -285,34 +170,14 @@ body {
 .sidebar-item.active {
   background: #ef4444;
   color: #ffffff;
-  animation: activePulse 1s ease infinite; /* Smooth pulse for active */
-}
-
-@keyframes activePulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.03); }
-  100% { transform: scale(1); }
 }
 
 .sidebar-icon {
   font-size: 20px;
-  animation: iconSpin 2s linear infinite; /* Smooth spin for icons */
-}
-
-@keyframes iconSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 .sidebar-label {
   font-weight: 600;
-  animation: labelGlow 1.5s ease infinite; /* Smooth glow for labels */
-}
-
-@keyframes labelGlow {
-  0% { text-shadow: none; }
-  50% { text-shadow: 0 0 5px #ef4444; }
-  100% { text-shadow: none; }
 }
 
 /* UI CHANGE: Main shifted right for sidebar space, added padding/spacing for clean look. Added margin-top for top header. */
@@ -323,24 +188,27 @@ body {
   padding: 60px 40px; /* Increased padding for open feel */
   display: flex;
   flex-direction: column;
-  animation: mainFade 1s ease; /* Smooth fade for main */
 }
 
-@keyframes mainFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* UI CHANGE: Simplified header, removed animations for subtlety. */
+.workspace-header {
+  margin-bottom: 40px; /* Increased spacing */
+}
+
+.workspace-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.workspace-title-accent {
+  color: #ef4444;
 }
 
 /* UI CHANGE: Content wrapper with fade/flex for card sections, no clutter. */
 .content-wrapper {
   flex: 1;
   width: 100%;
-  animation: wrapperSlide 0.6s ease-out; /* Smooth slide for wrapper */
-}
-
-@keyframes wrapperSlide {
-  from { transform: translateX(20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
 }
 
 /* UI CHANGE: Tab content with smooth fade-in transition on active. Removed borders/gradients, use shadows and spacing. */
@@ -349,24 +217,12 @@ body {
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   transform: translateY(10px);
-  animation: tabFade 0.5s ease; /* Smooth fade for tabs */
-}
-
-@keyframes tabFade {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .tab-content.active {
   display: block;
   opacity: 1;
   transform: translateY(0);
-  animation: activeTab 0.4s ease; /* Smooth active animation */
-}
-
-@keyframes activeTab {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* Removed .card class to avoid boxed frames, using spacing instead */
@@ -376,12 +232,6 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px; /* Increased gap */
-  animation: uploadGrid 0.7s ease; /* Smooth grid animation */
-}
-
-@keyframes uploadGrid {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
 }
 
 .upload-area {
@@ -390,13 +240,6 @@ body {
   padding: 60px; /* Increased padding for airy */
   text-align: center;
   transition: border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  animation: areaPulse 2s ease infinite; /* Smooth pulse for upload area */
-}
-
-@keyframes areaPulse {
-  0% { box-shadow: 0 0 0 rgba(239, 68, 68, 0.1); }
-  50% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
-  100% { box-shadow: 0 0 0 rgba(239, 68, 68, 0.1); }
 }
 
 .upload-area:hover {
@@ -408,35 +251,17 @@ body {
 .upload-icon {
   font-size: 64px; /* Larger icon for premium feel */
   margin-bottom: 24px;
-  animation: iconBounce 1s ease infinite; /* Smooth bounce for icon */
-}
-
-@keyframes iconBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
 }
 
 .upload-title {
   font-size: 20px;
   font-weight: 600;
-  animation: titleFade 1s ease; /* Smooth fade for title */
-}
-
-@keyframes titleFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .upload-desc {
   font-size: 16px;
   color: #4b5563;
   margin-bottom: 24px;
-  animation: descSlide 0.8s ease; /* Smooth slide for desc */
-}
-
-@keyframes descSlide {
-  from { transform: translateY(10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
 }
 
 .upload-btn {
@@ -448,13 +273,6 @@ body {
   cursor: pointer;
   font-weight: 600;
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-  animation: btnGlow 1.5s ease infinite; /* Smooth glow for button */
-}
-
-@keyframes btnGlow {
-  0% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.2); }
-  50% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
-  100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.2); }
 }
 
 .upload-btn:hover {
@@ -468,25 +286,12 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: filesFade 1s ease; /* Smooth fade for files */
-}
-
-@keyframes filesFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .uploaded-files-title {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 16px;
-  animation: titlePulse 1.2s ease infinite; /* Smooth pulse for title */
-}
-
-@keyframes titlePulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
 }
 
 .file-item {
@@ -497,12 +302,6 @@ body {
   border-radius: 8px;
   transition: box-shadow 0.3s ease, transform 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  animation: itemSlide 0.6s ease; /* Smooth slide for file items */
-}
-
-@keyframes itemSlide {
-  from { transform: translateX(-20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
 }
 
 .file-item:hover {
@@ -514,55 +313,24 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  animation: infoFade 0.8s ease; /* Smooth fade for info */
-}
-
-@keyframes infoFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .file-icon {
   font-size: 24px;
-  animation: iconRotate 2s linear infinite; /* Smooth rotate for icon */
-}
-
-@keyframes iconRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 .file-name {
   font-weight: 600;
-  animation: nameGlow 1s ease infinite; /* Smooth glow for name */
-}
-
-@keyframes nameGlow {
-  0% { text-shadow: none; }
-  50% { text-shadow: 0 0 3px #ef4444; }
-  100% { text-shadow: none; }
 }
 
 .file-size {
   font-size: 12px;
   color: #4b5563;
-  animation: sizeFade 1s ease; /* Smooth fade for size */
-}
-
-@keyframes sizeFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .file-actions {
   display: flex;
   gap: 8px;
-  animation: actionsSlide 0.7s ease; /* Smooth slide for actions */
-}
-
-@keyframes actionsSlide {
-  from { transform: translateY(10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
 }
 
 .file-action-btn {
@@ -572,12 +340,6 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  animation: btnBounce 0.5s ease; /* Smooth bounce for button */
-}
-
-@keyframes btnBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
 }
 
 .file-action-btn:hover {
@@ -591,35 +353,16 @@ body {
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  animation: previewFade 1s ease; /* Smooth fade for panel */
-}
-
-@keyframes previewFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .pdf-preview-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 24px;
-  animation: headerSlide 0.6s ease; /* Smooth slide for header */
-}
-
-@keyframes headerSlide {
-  from { transform: translateX(-10px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
 }
 
 .pdf-preview-preview-title {
   font-weight: 600;
-  animation: titleGlow 1.5s ease infinite; /* Smooth glow for title */
-}
-
-@keyframes titleGlow {
-  0% { text-shadow: none; }
-  50% { text-shadow: 0 0 5px #ef4444; }
-  100% { text-shadow: none; }
 }
 
 .pdf-preview-back-btn {
@@ -629,13 +372,6 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  animation: btnPulse 1s ease infinite; /* Smooth pulse for button */
-}
-
-@keyframes btnPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
 }
 
 .pdf-preview-back-btn:hover {
@@ -649,12 +385,6 @@ body {
   height: 70vh;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  animation: frameLoad 0.8s ease; /* Smooth load for frame */
-}
-
-@keyframes frameLoad {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
 }
 
 /* UI CHANGE: Empty state simplified, centered. Larger spacing. */
@@ -662,45 +392,20 @@ body {
   text-align: center;
   padding: 60px 0;
   color: #4b5563;
-  animation: emptyFade 1s ease; /* Smooth fade for empty state */
-}
-
-@keyframes emptyFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .empty-icon {
   font-size: 64px;
   margin-bottom: 24px;
-  animation: iconShake 1s ease infinite; /* Smooth shake for icon */
-}
-
-@keyframes iconShake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
 }
 
 .empty-title {
   font-size: 24px;
   font-weight: 600;
-  animation: titleBounce 0.5s ease; /* Smooth bounce for title */
-}
-
-@keyframes titleBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
 }
 
 .empty-desc {
   font-size: 16px;
-  animation: descFade 1.2s ease; /* Smooth fade for desc */
-}
-
-@keyframes descFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* UI CHANGE: Chat subtabs horizontal, red active, hover transition. */
@@ -711,12 +416,6 @@ body {
   border-bottom: 1px solid #e5e5e5;
   position: relative;
   padding-bottom: 8px;
-  animation: subtabsSlide 0.7s ease; /* Smooth slide for subtabs */
-}
-
-@keyframes subtabsSlide {
-  from { transform: translateY(-10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
 }
 
 .chat-subtab-btn {
@@ -729,12 +428,6 @@ body {
   font-size: 16px;
   transition: color 0.3s ease, transform 0.2s ease;
   border-bottom: 2px solid transparent;
-  animation: btnHover 0.5s ease; /* Smooth hover animation */
-}
-
-@keyframes btnHover {
-  from { transform: scale(1); }
-  to { transform: scale(1.02); }
 }
 
 .chat-subtab-btn:hover {
@@ -745,45 +438,21 @@ body {
 .chat-subtab-btn.active {
   color: #ef4444;
   border-bottom: 2px solid #ef4444;
-  animation: activeBorder 0.4s ease; /* Smooth active border */
-}
-
-@keyframes activeBorder {
-  from { border-bottom-width: 0; }
-  to { border-bottom-width: 2px; }
 }
 
 .chat-subtab-btn:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
-  animation: focusGlow 0.6s ease; /* Smooth focus glow */
-}
-
-@keyframes focusGlow {
-  from { box-shadow: none; }
-  to { box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3); }
 }
 
 /* UI CHANGE: Chat layout flex, clean spacing. Added subtle message hover lift. No borders on container. */
 .chat-layout {
   display: flex;
   gap: 32px; /* Increased gap */
-  animation: layoutFade 1s ease; /* Smooth fade for layout */
-}
-
-@keyframes layoutFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .chat-main {
   flex: 5; /* Increased flex to make chat panel wider */
-  animation: mainSlide 0.8s ease; /* Smooth slide for main */
-}
-
-@keyframes mainSlide {
-  from { transform: translateX(20px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
 }
 
 .chat-container {
@@ -793,12 +462,6 @@ body {
   height: calc(100vh - 200px); /* Reduced subtraction to make chat panel taller */
   display: flex;
   flex-direction: column;
-  animation: containerExpand 0.5s ease; /* Smooth expand for container */
-}
-
-@keyframes containerExpand {
-  from { height: 0; }
-  to { height: calc(100vh - 200px); }
 }
 
 .chat-messages {
@@ -808,12 +471,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 24px; /* Increased gap */
-  animation: messagesScroll 1s ease; /* Smooth scroll animation */
-}
-
-@keyframes messagesScroll {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .message {
@@ -821,11 +478,6 @@ body {
   gap: 16px;
   align-items: flex-start;
   animation: fadeIn 300ms ease;
-  transition: transform 0.2s ease; /* Smooth transform for message */
-}
-
-.message:hover {
-  transform: translateY(-2px); /* Smooth hover lift */
 }
 
 @keyframes fadeIn {
@@ -848,12 +500,6 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   max-width: 80%;
   line-height: 1.5;
-  animation: bubblePop 0.4s ease; /* Smooth pop for bubble */
-}
-
-@keyframes bubblePop {
-  from { transform: scale(0.9); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
 }
 
 .message-bubble:hover {
@@ -863,12 +509,6 @@ body {
 
 .message.bot .message-bubble {
   background: #ffffff;
-  animation: botBubble 0.5s ease; /* Smooth animation for bot bubble */
-}
-
-@keyframes botBubble {
-  from { background: #f9f9f9; }
-  to { background: #ffffff; }
 }
 
 .message.user {
@@ -878,12 +518,6 @@ body {
 .message.user .message-bubble {
   background: #f3f4f6;
   color: #000000;
-  animation: userBubble 0.5s ease; /* Smooth animation for user bubble */
-}
-
-@keyframes userBubble {
-  from { background: #ffffff; }
-  to { background: #f3f4f6; }
 }
 
 .chat-input-area {
@@ -891,12 +525,6 @@ body {
   padding: 16px;
   border-top: 1px solid #e5e5e5;
   align-items: center;
-  animation: inputFade 1s ease; /* Smooth fade for input area */
-}
-
-@keyframes inputFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .chat-input {
@@ -908,24 +536,11 @@ body {
   background-color: #ffffff;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
   transition: border-color 200ms ease, box-shadow 200ms ease;
-  animation: inputGlow 1.5s ease infinite; /* Smooth glow for input */
-}
-
-@keyframes inputGlow {
-  0% { box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-  50% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.2); }
-  100% { box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
 }
 
 .chat-input:focus {
   border-color: #ef4444;
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
-  animation: focusBorder 0.4s ease; /* Smooth focus border */
-}
-
-@keyframes focusBorder {
-  from { border-color: #e5e5e5; }
-  to { border-color: #ef4444; }
 }
 
 .send-btn {
@@ -940,13 +555,6 @@ body {
   font-size: 14px;
   font-weight: 500;
   box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-  animation: sendPulse 1s ease infinite; /* Smooth pulse for send button */
-}
-
-@keyframes sendPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
 }
 
 .send-btn:hover {
@@ -960,12 +568,6 @@ body {
   align-items: center;
   gap: 16px;
   margin-bottom: 24px;
-  animation: scopeFade 1s ease; /* Smooth fade for scope bar */
-}
-
-@keyframes scopeFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .scope-pill {
@@ -975,12 +577,6 @@ body {
   padding: 8px 16px;
   border-radius: 9999px;
   transition: all 200ms ease;
-  animation: pillHover 0.5s ease; /* Smooth hover for pill */
-}
-
-@keyframes pillHover {
-  from { transform: scale(1); }
-  to { transform: scale(1.02); }
 }
 
 .scope-pill:hover {
@@ -991,12 +587,6 @@ body {
   background-color: #ef4444;
   color: #ffffff;
   border-color: #ef4444;
-  animation: activePill 0.4s ease; /* Smooth active pill */
-}
-
-@keyframes activePill {
-  from { background-color: #ffffff; }
-  to { background-color: #ef4444; }
 }
 
 /* UI CHANGE: Form selects with red focus. */
@@ -1006,24 +596,12 @@ body {
   background-color: #ffffff;
   padding: 8px 12px;
   border-radius: 4px;
-  animation: selectFade 1s ease; /* Smooth fade for select */
-}
-
-@keyframes selectFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* UI CHANGE: History container no bg/border, items card-like with shadows only. Fixed alignment, spacing, hierarchy. No duplicates. Clean rows. Premium modern. */
 .history-container {
   background-color: #ffffff;
   padding: 16px;
-  animation: historySlide 0.8s ease; /* Smooth slide for history */
-}
-
-@keyframes historySlide {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
 }
 
 .history-header {
@@ -1031,23 +609,10 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
-  animation: headerFade 1s ease; /* Smooth fade for header */
-}
-
-@keyframes headerFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .history-title {
   color: #000000;
-  animation: titleShake 1s ease infinite; /* Smooth shake for title */
-}
-
-@keyframes titleShake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-2px); }
-  75% { transform: translateX(2px); }
 }
 
 .clear-history-btn {
@@ -1058,13 +623,6 @@ body {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 200ms ease;
-  animation: btnHoverGlow 1s ease infinite; /* Smooth hover glow */
-}
-
-@keyframes btnHoverGlow {
-  0% { box-shadow: none; }
-  50% { box-shadow: 0 0 5px #dc2626; }
-  100% { box-shadow: none; }
 }
 
 .clear-history-btn:hover {
@@ -1073,12 +631,6 @@ body {
 
 .history-search {
   margin-bottom: 16px;
-  animation: searchFade 1s ease; /* Smooth fade for search */
-}
-
-@keyframes searchFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .history-item {
@@ -1092,12 +644,6 @@ body {
   align-items: center;
   transition: all 200ms ease;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  animation: itemHover 0.5s ease; /* Smooth hover for item */
-}
-
-@keyframes itemHover {
-  from { transform: scale(1); }
-  to { transform: scale(1.01); }
 }
 
 .history-item:hover {
@@ -1108,12 +654,6 @@ body {
 .history-item-actions {
   display: flex;
   gap: 8px;
-  animation: actionsFade 1s ease; /* Smooth fade for actions */
-}
-
-@keyframes actionsFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .history-item-btn {
@@ -1124,13 +664,6 @@ body {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 200ms ease;
-  animation: btnPulse 1s ease infinite; /* Smooth pulse for button */
-}
-
-@keyframes btnPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
 }
 
 .history-item-btn:hover {
@@ -1142,56 +675,24 @@ body {
   justify-content: center;
   gap: 8px;
   margin-top: 16px;
-  animation: paginationFade 1s ease; /* Smooth fade for pagination */
-}
-
-@keyframes paginationFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* UI CHANGE: Export grid cards no borders, shadows only. Hover scale. Full-width grid. */
 .export-container {
   background-color: #ffffff;
   padding: 16px;
-  animation: exportSlide 0.8s ease; /* Smooth slide for export */
-}
-
-@keyframes exportSlide {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
 }
 
 .export-header {
   margin-bottom: 24px;
-  animation: headerPulse 1s ease infinite; /* Smooth pulse for header */
-}
-
-@keyframes headerPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.02); }
-  100% { transform: scale(1); }
 }
 
 .export-title {
   color: #000000;
-  animation: titleFade 1s ease; /* Smooth fade for title */
-}
-
-@keyframes titleFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .export-desc {
   color: #4b5563;
-  animation: descGlow 1.5s ease infinite; /* Smooth glow for desc */
-}
-
-@keyframes descGlow {
-  0% { text-shadow: none; }
-  50% { text-shadow: 0 0 3px #4b5563; }
-  100% { text-shadow: none; }
 }
 
 .export-options-grid {
@@ -1199,12 +700,6 @@ body {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, auto);
     gap: 16px;
-    animation: gridExpand 0.6s ease; /* Smooth expand for grid */
-}
-
-@keyframes gridExpand {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
 }
 
 .export-card {
@@ -1215,12 +710,6 @@ body {
   text-align: center;
   transition: all 200ms ease;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  animation: cardHover 0.5s ease; /* Smooth hover for card */
-}
-
-@keyframes cardHover {
-  from { transform: scale(1); }
-  to { transform: scale(1.02); }
 }
 
 .export-card:hover {
@@ -1230,32 +719,14 @@ body {
 
 .export-icon {
   font-size: 24px;
-  animation: iconSpin 2s linear infinite; /* Smooth spin for icon */
-}
-
-@keyframes iconSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 .export-card-title {
   color: #000000;
-  animation: titleBounce 0.5s ease; /* Smooth bounce for title */
-}
-
-@keyframes titleBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
 }
 
 .export-card-desc {
   color: #4b5563;
-  animation: descFade 1s ease; /* Smooth fade for desc */
-}
-
-@keyframes descFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .export-btn {
@@ -1266,13 +737,6 @@ body {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 200ms ease;
-  animation: btnGlow 1.5s ease infinite; /* Smooth glow for button */
-}
-
-@keyframes btnGlow {
-  0% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.2); }
-  50% { box-shadow: 0 0 10px rgba(239, 68, 68, 0.4); }
-  100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.2); }
 }
 
 .export-btn:hover {
@@ -1283,12 +747,6 @@ body {
   margin-top: 16px;
   text-align: center;
   color: #000000;
-  animation: statusFade 1s ease; /* Smooth fade for status */
-}
-
-@keyframes statusFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 /* UI CHANGE: Footer black, full-width, minimal. */
@@ -1302,12 +760,6 @@ body {
   left: 0;
   width: 100%;
   z-index: 50;
-  animation: footerSlide 0.7s ease; /* Smooth slide for footer */
-}
-
-@keyframes footerSlide {
-  from { bottom: -50px; }
-  to { bottom: 0; }
 }
 
 .footer-content {
@@ -1315,24 +767,12 @@ body {
   justify-content: center;
   gap: 16px;
   font-size: 14px;
-  animation: contentFade 1s ease; /* Smooth fade for content */
-}
-
-@keyframes contentFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
 }
 
 .footer-content a {
   color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
-  animation: linkHover 0.5s ease; /* Smooth hover for links */
-}
-
-@keyframes linkHover {
-  from { color: #ffffff; }
-  to { color: #ef4444; }
 }
 
 .footer-content a:hover {
@@ -1344,28 +784,4 @@ body {
   display: flex;
   align-items: center; 
   gap: 16px;
-  animation: navbarFade 1s ease; /* Smooth fade for navbar */
-}
-
-@keyframes navbarFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.chat-messages {
-  padding-bottom: 220px;
-}
-.user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-  animation: avatarBounce 1s ease infinite; /* Smooth bounce for avatar */
-}
-@keyframes avatarBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-}
-@keyframes avatarBounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
 }
