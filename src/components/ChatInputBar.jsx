@@ -1,6 +1,6 @@
 import "../styles/chatInputBar.css";
 import { useState, useRef, useEffect } from "react";
-import "./PdfQuestionSuggestions.jsx";
+import PdfQuestionSuggestions from "./PdfQuestionSuggestions.jsx";
 
 export default function ChatInputBar({ value, onChange, onSend, disabled = false }) {
   const inputRef = useRef(null);
@@ -31,15 +31,18 @@ export default function ChatInputBar({ value, onChange, onSend, disabled = false
     }
   };
 
-  const isSendDisabled = !value.trim() || disabled;
-
   return (
     <div className="chat-input-bar">
+      <PdfQuestionSuggestions />
       <div className="chat-input-wrapper">
+        <div className="left-icons">
+          <button className="icon-btn" aria-label="Upload" disabled={disabled}>+</button>
+          <button className="icon-btn" aria-label="Voice input" disabled={disabled}>🎤</button>
+        </div>
         <input
           ref={inputRef}
           type="text"
-          placeholder="Type your message here..."
+          placeholder="Describe symptoms..."
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -52,34 +55,7 @@ export default function ChatInputBar({ value, onChange, onSend, disabled = false
           autoCorrect="off"
           spellCheck="true"
         />
-        
-        <button
-          onClick={handleSend}
-          disabled={isSendDisabled}
-          aria-label="Send message"
-          aria-disabled={isSendDisabled}
-          className={isSendDisabled ? "disabled" : ""}
-        >
-          <svg 
-            width="20" 
-            height="20" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path 
-              d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" 
-              stroke="currentColor" 
-              strokeWidth="2" 
-              strokeLinecap="round" 
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span id="send-instructions" className="visually-hidden">
-            Press Enter to send, Shift+Enter for new line
-          </span>
-        </button>
+        <button className="icon-btn right-icon" aria-label="Emoji picker" disabled={disabled}>😀</button>
       </div>
     </div>
   );
