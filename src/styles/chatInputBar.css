@@ -79,9 +79,9 @@
 }
 
 .chat-input-bar input:hover:not(:focus) {
-  border-color: #00000025;
+  border-color: #ffffff;
   box-shadow: 
-    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 4px 16px rgb(255, 255, 255),
     inset 0 1px 2px rgba(255, 255, 255, 0.9);
 }
 
