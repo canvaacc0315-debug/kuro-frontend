@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
-import PdfQuestionSuggestions from "../components/PdfQuestionSuggestions";
 import "../styles/workspace.css";
 import AnalysisPanel from "../components/AnalysisPanel.jsx";
 import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
@@ -897,16 +896,6 @@ export default function KuroWorkspacePage() {
                       </button>
                     </div>
                   </div>
-                </div>
-                {/* RIGHT — QUESTION ASSIST */}
-                <div className="chat-assist" style={{ backgroundColor: "#ffffff", padding: "16px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", borderRadius: "4px", width: "250px", minWidth: "250px" }}>
-                  <span style={{ fontSize: "24px", color: "#f59e0b", display: "block", marginBottom: "16px" }}>💡</span>
-                  <PdfQuestionSuggestions
-                    onSelect={(q) => {
-                      setChatInput(q);
-                      setTimeout(() => handleSend(), 100);
-                    }}
-                  />
                 </div>
               </div>
             </div>
