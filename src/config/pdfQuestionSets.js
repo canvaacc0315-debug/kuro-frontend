@@ -11,7 +11,7 @@ export const PDF_QUESTION_SETS = [
   },
   {
     id: 2,
-    title: "📝 Quick Summaries",
+    title: "📝 Quick Summaries!",
     questions: [
       "Give a concise summary of this PDF.",
       "Summarize the document in bullet points.",
