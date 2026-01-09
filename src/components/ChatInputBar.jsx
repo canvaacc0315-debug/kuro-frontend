@@ -1,6 +1,6 @@
 import "../styles/chatInputBar.css";
 import { useState, useRef, useEffect } from "react";
-import "./PdfQuestionSuggestions.jsx";
+import PdfQuestionSuggestions from "./PdfQuestionSuggestions.jsx"; // Assuming this component renders the suggestion buttons
 
 export default function ChatInputBar({ value, onChange, onSend, disabled = false }) {
   const inputRef = useRef(null);
@@ -35,11 +35,13 @@ export default function ChatInputBar({ value, onChange, onSend, disabled = false
 
   return (
     <div className="chat-input-bar">
+      <PdfQuestionSuggestions /> {/* Render PDF suggested questions above the input */}
+      
       <div className="chat-input-wrapper">
         <input
           ref={inputRef}
           type="text"
-          placeholder="Type your message here..."
+          placeholder="Describe symptoms..."
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}

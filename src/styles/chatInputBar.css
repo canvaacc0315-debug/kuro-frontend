@@ -9,6 +9,7 @@
   );
   padding: 8px 10px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 6px;
   border-top: 1px solid #0000000d;
@@ -36,8 +37,10 @@
 }
 
 .chat-input-wrapper {
-  flex: 1;
   position: relative;
+  width: 100%;
+  max-width: 400px; /* Make input area small and not stretched */
+  margin: 0 auto;
 }
 
 .chat-input-bar input {
@@ -418,4 +421,32 @@
     background: rgba(255, 255, 255, 0.05);
     border-color: #ffffff0d;
   }
+}
+
+/* Styles for PdfQuestionSuggestions - assuming it's a row of buttons */
+.pdf-question-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+  max-width: 800px; /* Wider for suggestions */
+}
+
+.pdf-question-suggestions button {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #ff3b3b33;
+  color: #ff3b3b;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pdf-question-suggestions button:hover {
+  background: #ff3b3b;
+  color: white;
+  border-color: #ff3b3b;
 }
