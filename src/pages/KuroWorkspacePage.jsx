@@ -897,11 +897,7 @@ export default function KuroWorkspacePage() {
                     </div>
                   </div>
                 </div>
-                {/* RIGHT — QUESTION ASSIST */}
-                <div className="chat-assist" style={{ backgroundColor: "#ffffff", padding: "16px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", borderRadius: "4px", width: "250px", minWidth: "250px" }}>
-                  <span style={{ fontSize: "24px", color: "#f59e0b", display: "block", marginBottom: "16px" }}>💡</span>
-                  
-                </div>
+                
               </div>
             </div>
             {/* CHAT HISTORY */}
