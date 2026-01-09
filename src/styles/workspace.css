@@ -418,6 +418,7 @@ body {
   gap: 16px;
   margin-bottom: 24px;
   border-bottom: 1px solid #e5e5e5;
+  position: relative;
 }
 
 .chat-subtab-btn {
@@ -429,6 +430,8 @@ body {
   font-weight: 600;
   transition: color 0.3s ease, transform 0.2s ease, border-bottom 0.3s ease;
   border-bottom: 2px solid transparent;
+  position: relative;
+  z-index: 1;
 }
 
 .chat-subtab-btn:hover {
@@ -439,6 +442,24 @@ body {
 .chat-subtab-btn.active {
   color: #ef4444;
   border-bottom: 2px solid #ef4444;
+}
+
+.chat-subtab-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5);
+}
+
+/* Add sliding indicator for tab switching animation */
+.chat-subtabs-nav::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background-color: #ef4444;
+  transition: transform 300ms ease-in-out, width 300ms ease-in-out;
+  transform: translateX(var(--indicator-left, 0));
+  width: var(--indicator-width, 0);
 }
 
 /* UI CHANGE: Chat layout flex, clean spacing. Added subtle message hover lift. */
@@ -480,6 +501,17 @@ body {
   align-items: flex-start;
   margin-bottom: 16px;
   animation: fadeIn 300ms ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .message-bubble {
@@ -611,11 +643,12 @@ body {
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .clear-history-btn:hover {
   background-color: #dc2626;
+  transform: scale(1.05);
 }
 
 .history-search input {
@@ -674,11 +707,12 @@ body {
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .history-item-btn:hover {
   background-color: #dc2626;
+  transform: scale(1.05);
 }
 
 .pagination {
@@ -710,6 +744,7 @@ body {
 
 .pagination button:not(:disabled):hover {
   background-color: #f9f9f9;
+  transform: scale(1.05);
 }
 
 /* UI CHANGE: Export grid cards with red buttons, hover scale. */
@@ -749,7 +784,7 @@ body {
 .export-card:hover {
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   border-color: #ef4444;
-  transform: scale(1.02);
+  transform: translateY(-2px);
 }
 
 .export-icon {
