@@ -1,4 +1,4 @@
-export const PDF_QUESTION_SETS = [
+const PDF_QUESTION_SETS = [
   {
     id: 1,
     title: "📄 Document Overview",
