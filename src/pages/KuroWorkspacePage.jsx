@@ -12,7 +12,7 @@ import OcrPanel from "../components/OcrPanel";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
-import ChatInputBar from "../components/ChatInputBar";
+
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -857,11 +857,6 @@ export default function KuroWorkspacePage() {
                         </div>
                       ))}
                     </div>
-                    <ChatInputBar
-                      value={message}
-                      onChange={setMessage}
-                      onSend={handleSend}
-                    />
                   </div>
                 </div>
               </div>
