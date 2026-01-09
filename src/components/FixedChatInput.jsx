@@ -3,7 +3,7 @@ import pdfQuestionSets from "../config/pdfQuestionSets.js";
 import "../styles/fixedChatInput.css";
 
 export default function FixedChatInput({ chatInput, setChatInput, onSend }) {
-  const [view, setView] = useState("groups"); // groups | questions
+  const [view, setView] = useState("groups"); // groups | questionsdsadsd
   const [activeGroup, setActiveGroup] = useState(null);
 
   const showQuestions = (group) => {
