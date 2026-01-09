@@ -31,9 +31,14 @@ export default function ChatInputBar({ value, onChange, onSend, disabled = false
     }
   };
 
+  const handleSuggestionClick = (suggestion) => {
+    onChange(suggestion);
+    inputRef.current?.focus();
+  };
+
   return (
     <div className="chat-input-bar">
-      <PdfQuestionSuggestions />
+      <PdfQuestionSuggestions onSuggestionClick={handleSuggestionClick} />
       <div className="chat-input-wrapper">
         <div className="left-icons">
           <button className="icon-btn" aria-label="Upload" disabled={disabled}>+</button>
