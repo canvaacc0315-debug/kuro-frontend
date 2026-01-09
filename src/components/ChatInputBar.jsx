@@ -41,13 +41,11 @@ export default function ChatInputBar({ value, onChange, onSend, disabled = false
       <PdfQuestionSuggestions onSuggestionClick={handleSuggestionClick} />
       <div className="chat-input-wrapper">
         <div className="left-icons">
-          <button className="icon-btn" aria-label="Upload" disabled={disabled}>+</button>
-          <button className="icon-btn" aria-label="Voice input" disabled={disabled}>🎤</button>
         </div>
         <input
           ref={inputRef}
           type="text"
-          placeholder="Describe symptoms..."
+          placeholder="Talk to tour PDF!....."
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -60,7 +58,6 @@ export default function ChatInputBar({ value, onChange, onSend, disabled = false
           autoCorrect="off"
           spellCheck="true"
         />
-        <button className="icon-btn right-icon" aria-label="Emoji picker" disabled={disabled}>😀</button>
       </div>
     </div>
   );
