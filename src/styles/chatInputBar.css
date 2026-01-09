@@ -7,10 +7,10 @@
     rgba(255, 255, 255, 0.95) 0%,
     rgba(255, 255, 255, 0.98) 100%
   );
-  padding: 16px 20px;
+  padding: 8px 10px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
   border-top: 1px solid #0000000d;
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
@@ -42,11 +42,11 @@
 
 .chat-input-bar input {
   width: 100%;
-  padding: 14px 48px 14px 20px;
-  font-size: 16px;
+  padding: 7px 24px 7px 10px;
+  font-size: 13px;
   line-height: 1.5;
   border-radius: 25px;
-  border: 2px solid #00000015;
+  border: 1px solid #00000015;
   background: rgba(255, 255, 255, 0.95);
   color: #000000;
   outline: none;
@@ -83,8 +83,8 @@
 
 .chat-input-bar button {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: 26px;
+  height: 26px;
   background: linear-gradient(135deg, #ff3b3b 0%, #ff1a1a 100%);
   color: white;
   border: none;
@@ -157,7 +157,7 @@
 .chat-input-bar button span {
   position: relative;
   z-index: 2;
-  font-size: 20px;
+  font-size: 10px;
   font-weight: 600;
   line-height: 1;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -171,8 +171,8 @@
 /* Send icon animation */
 .send-icon {
   position: relative;
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
   transform: rotate(-45deg);
   transition: transform 0.3s ease;
 }
@@ -316,8 +316,8 @@
 .chat-input-bar button.loading::before {
   content: '';
   position: absolute;
-  width: 20px;
-  height: 20px;
+  width: 10px;
+  height: 10px;
   border: 2px solid white;
   border-top-color: transparent;
   border-radius: 50%;
@@ -329,7 +329,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Message send animation */
+/* Send animation */
 @keyframes sendSuccess {
   0% {
     background: #ff3b3b;
@@ -349,18 +349,18 @@
 /* Mobile responsiveness */
 @media (max-width: 768px) {
   .chat-input-bar {
-    padding: 12px 16px;
-    gap: 8px;
+    padding: 6px 8px;
+    gap: 4px;
   }
   
   .chat-input-bar input {
-    padding: 12px 44px 12px 16px;
-    font-size: 16px;
+    padding: 6px 22px 6px 8px;
+    font-size: 13px;
   }
   
   .chat-input-bar button {
-    width: 48px;
-    height: 48px;
+    width: 24px;
+    height: 24px;
   }
   
   .input-hints {
@@ -370,9 +370,9 @@
   /* Safe area support */
   @supports (padding: max(0px)) {
     .chat-input-bar {
-      padding-bottom: max(16px, env(safe-area-inset-bottom));
-      padding-left: max(20px, env(safe-area-inset-left));
-      padding-right: max(20px, env(safe-area-inset-right));
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+      padding-left: max(10px, env(safe-area-inset-left));
+      padding-right: max(10px, env(safe-area-inset-right));
     }
   }
 }
