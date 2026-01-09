@@ -12,7 +12,7 @@ import OcrPanel from "../components/OcrPanel";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
-
+import ChatInputBar from "../components/ChatInputBar.jsx"; // Added import for ChatInputBar
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -472,7 +472,7 @@ export default function KuroWorkspacePage() {
       </header>
       {/* UI CHANGE: Sidebar now without header, starts below top header height. */}
       <aside className="sidebar" style={{ display: isFullScreen ? "none" : "block" }}>
-        {/* UI CHANGE: Replaced top tabs-nav with vertical sidebar items. Added icons, labels, hover/active animations (CSS transition). Exact order: Documents (upload), Chat, Analysis, OCR, PDF Creator. White bg, red active highlight. */}
+        {/* UI CHANGE: Replaced top tabs with vertical sidebar items. Added icons, labels, hover/active animations (CSS transition). Exact order: Documents (upload), Chat, Analysis, OCR, PDF Creator. White bg, red active highlight. */}
         <nav className="sidebar-nav">
           <button
             className={`sidebar-item ${activeTab === "upload" ? "active" : ""}`}
@@ -845,7 +845,7 @@ export default function KuroWorkspacePage() {
                             style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
                           />
                         )}
-                        <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
+                        <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", border: "1px solid #e5e7eb", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
                           {m.content}
                         </div>
                         {m.role === "user" && (
@@ -859,6 +859,7 @@ export default function KuroWorkspacePage() {
                       </div>
                     ))}
                   </div>
+                  <ChatInputBar value={message} onChange={setMessage} onSend={handleSend} disabled={isSending} />
                 </div>
               </div>
             </div>
