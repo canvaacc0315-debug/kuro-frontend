@@ -1351,3 +1351,21 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
+.chat-messages {
+  padding-bottom: 220px;
+}
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  animation: avatarBounce 1s ease infinite; /* Smooth bounce for avatar */
+}
+@keyframes avatarBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes avatarBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}

@@ -12,7 +12,10 @@ import OcrPanel from "../components/OcrPanel";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
-import ChatInputBar from "../components/ChatInputBar.jsx"; // Added import for ChatInputBar
+import FixedChatInput from "../components/FixedChatInput";
+
+
+
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -837,6 +840,12 @@ export default function KuroWorkspacePage() {
                           animation: "fadeIn 300ms ease",
                         }}
                       >
+                  {/* FIXED INPUT AREA */}
+                  <FixedChatInput
+                   message={message}
+                   setMessage={setMessage}
+                   onSend={handleSend}
+                   />
                         {m.role === "bot" && (
                           <img
                             src="/kuro-logo.png"
@@ -859,11 +868,11 @@ export default function KuroWorkspacePage() {
                       </div>
                     ))}
                   </div>
-                  <ChatInputBar value={message} onChange={setMessage} onSend={handleSend} disabled={isSending} />
                 </div>
               </div>
             </div>
             {/* CHAT HISTORY */}
+
             <div
               className="chat-subtab-content"
               style={{

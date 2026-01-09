@@ -1,0 +1,140 @@
+.fixed-input-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  padding: 16px;
+  box-shadow: 0 -4px 20px rgba(244, 67, 54, 0.15);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.title-text {
+  color: #d32f2f;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.back-btn {
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #f44336;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.buttons-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.group-header,
+.question-chip {
+  padding: 10px 16px;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.2);
+}
+
+.group-header {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+  color: white;
+  font-weight: 600;
+}
+
+.question-chip {
+  background: white;
+  color: #c62828;
+  border: 1px solid #ef9a9a;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  padding: 14px 18px;
+  border-radius: 28px;
+  border: 2px solid #ffcdd2;
+}
+
+.main-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  background: none;
+  color: #d32f2f;
+}
+
+.send-icon {
+  width: 24px;
+  height: 24px;
+  fill: #f44336;
+  cursor: pointer;
+}
+.send-icon:hover {
+  fill: #d32f2f;
+}   
+.send-icon:active {
+  transform: scale(0.9);
+}
+.send-icon.disabled {
+  fill: #ef9a9a;
+  cursor: not-allowed;
+}
+.send-icon.disabled:hover {
+  fill: #ef9a9a;
+}
+.send-icon.disabled:active {
+  transform: none;
+}
+@media (max-width: 600px) {
+  .fixed-input-area {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .title-text {
+    font-size: 14px;
+  }
+
+  .back-btn {
+    padding: 4px 10px;
+    font-size: 14px;
+  }
+
+  .group-header,
+  .question-chip {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .input-wrapper {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+
+  .main-input {
+    font-size: 14px;
+  }
+
+  .send-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
