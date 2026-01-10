@@ -1,17 +1,19 @@
 html, body {
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  height: 100%;
 }
 
 .fixed-input-area {
   position: fixed;
-  bottom: 0;
+  bottom: -20px;
   left: 50%;
   transform: translateX(-50%);
   width: 80%;
   height: 10%;
   z-index: 9999;
+}
+.fixed-input-area {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -77,6 +79,7 @@ html, body {
   padding: 14px 18px;
   border-radius: 28px;
   border: 2px solid #ffcdd2;
+  align-items: bottom;
 }
 
 .main-input {
@@ -110,14 +113,6 @@ html, body {
 .send-icon.disabled:active {
   transform: none;
 }
-
-/* Assuming your chat messages are in a container; adjust the class name if different */
-.chat-container {
-  padding-bottom: 150px; /* Adjust based on the height of your input area to prevent overlap */
-  overflow-y: auto;
-  max-height: 100vh;
-}
-
 @media (max-width: 600px) {
   .fixed-input-area {
     padding: 12px;
