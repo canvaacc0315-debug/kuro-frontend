@@ -310,9 +310,10 @@ html, body {
 .export-options-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, auto);
   gap: 16px;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   animation: fadeInUp 0.5s ease-out 0.2s;
   animation-fill-mode: backwards;
 }
@@ -379,6 +380,12 @@ html, body {
   }
 }
 
+@media (max-width: 1024px) {
+  .export-options-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .fixed-input-area {
     padding: 10px 3% 14px 3% !important;
@@ -425,5 +432,15 @@ html, body {
   .send-icon {
     width: 18px;
     height: 18px;
+  }
+
+  .export-options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .export-options-grid {
+    grid-template-columns: 1fr;
   }
 }
