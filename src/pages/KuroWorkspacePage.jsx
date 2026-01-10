@@ -13,7 +13,6 @@ import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
 import FixedChatInput from "../components/FixedChatInput";
-
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -403,13 +402,12 @@ export default function KuroWorkspacePage() {
         element.scrollTop = element.scrollHeight;
       }
     };
-
     // Immediate scroll
     scrollToBottom();
-    
+   
     // Delayed scroll to catch any late-rendering content
     const timeoutId = setTimeout(scrollToBottom, 100);
-    
+   
     return () => clearTimeout(timeoutId);
   }, [conversation]);
   // UI CHANGE: Added scrolled state and useEffect for scroll listener to match provided snippet.
@@ -883,12 +881,6 @@ export default function KuroWorkspacePage() {
                         </div>
                       ))}
                     </div>
-                    {/* FIXED INPUT AREA */}
-                    <FixedChatInput
-                      message={message}
-                      setMessage={setMessage}
-                      onSend={handleSend}
-                    />
                   </div>
                 </div>
               </div>
@@ -1553,6 +1545,13 @@ export default function KuroWorkspacePage() {
         </div>
       </main>
       {/* UI CHANGE: Added full-width black footer with minimal branding/links. */}
+      {activeTab === "chat" && activeChatSubTab === "current" && (
+        <FixedChatInput
+          message={message}
+          setMessage={setMessage}
+          onSend={handleSend}
+        />
+      )}
     </div>
     </RovexProvider>
   );
