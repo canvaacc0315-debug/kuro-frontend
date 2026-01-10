@@ -396,12 +396,20 @@ export default function KuroWorkspacePage() {
   // ---------------- render ----------------
   const chatMessagesRef = useRef(null);
   useEffect(() => {
-    if (chatMessagesRef.current) {
-      chatMessagesRef.current.scrollTo({
-        top: chatMessagesRef.current.scrollHeight,
-        behavior: 'smooth'
-      });
-    }
+    const scrollToBottom = () => {
+      if (chatMessagesRef.current) {
+        const element = chatMessagesRef.current;
+        element.scrollTop = element.scrollHeight;
+      }
+    };
+
+    // Immediate scroll
+    scrollToBottom();
+    
+    // Delayed scroll to catch any late-rendering content
+    const timeoutId = setTimeout(scrollToBottom, 100);
+    
+    return () => clearTimeout(timeoutId);
   }, [conversation]);
   // UI CHANGE: Added scrolled state and useEffect for scroll listener to match provided snippet.
   const [scrolled, setScrolled] = useState(false);
@@ -837,7 +845,8 @@ export default function KuroWorkspacePage() {
                         padding: "24px",
                         overflowY: "auto",
                         flex: 1,
-                        backgroundColor: "#ffffff"
+                        backgroundColor: "#ffffff",
+                        maxHeight: "calc(100vh - 300px)"
                       }}
                     >
                       {conversation.map((m) => (

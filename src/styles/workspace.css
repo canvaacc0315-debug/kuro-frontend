@@ -225,7 +225,7 @@ body {
   transform: translateY(0);
 }
 
-/* Removed .card class to avoid boxed frames, using spacing instead */
+/* Removed .card class to avoid boxed frames to avoid clutter */
 
 /* UI CHANGE: Upload to grid, cleaner spacing, red accents on buttons/hover. Subtle hover scale. */
 .upload-container {
@@ -789,7 +789,7 @@ body {
   overflow: hidden; /* Prevents overflow from wrapper itself */
 }
 
-/* FIX: Complete scrollbar hiding for .no-scrollbar across browsers (WebKit/Chrome/Safari) */
+/* FIX: Add missing scrollbar hiding for .no-scrollbar across browsers (WebKit/Chrome/Safari) */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
