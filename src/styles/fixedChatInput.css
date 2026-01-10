@@ -28,7 +28,7 @@
 .back-btn {
   padding: 6px 12px;
   border-radius: 20px;
-  background: #f44336;
+  background: #ffffff;
   color: white;
   border: none;
   cursor: pointer;
@@ -138,3 +138,7 @@
     height: 20px;
   }
 }
+.chat-messages {
+  padding-bottom: 220px;
+}
+

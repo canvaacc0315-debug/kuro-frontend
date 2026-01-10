@@ -2,9 +2,8 @@ import { useState } from "react";
 import "../styles/fixedChatInput.css";
 import { PDF_QUESTION_SETS } from "../config/pdfQuestionSets.js";
 
-
-export default function FixedChatInput({ chatInput, setChatInput, onSend }) {
-  const [view, setView] = useState("groups"); // groups | questionsdsadsd
+export default function FixedChatInput({ message, setMessage, onSend }) {
+  const [view, setView] = useState("groups"); // groups | questions
   const [activeGroup, setActiveGroup] = useState(null);
 
   const showQuestions = (group) => {
@@ -17,9 +16,15 @@ export default function FixedChatInput({ chatInput, setChatInput, onSend }) {
     setActiveGroup(null);
   };
 
+  const handleSend = () => {
+    if (!message.trim()) return;
+    onSend();
+    setView("groups");
+  };
+
   return (
     <div className="fixed-input-area">
-      {/* Title Row */}
+      {/* Title */}
       <div className="title-row">
         {view === "questions" && (
           <button className="back-btn" onClick={goBack}>
@@ -49,9 +54,7 @@ export default function FixedChatInput({ chatInput, setChatInput, onSend }) {
             <div
               key={i}
               className="question-chip"
-              onClick={() => {
-                setChatInput(q);
-              }}
+              onClick={() => setMessage(q)}
             >
               {q}
             </div>
@@ -64,23 +67,17 @@ export default function FixedChatInput({ chatInput, setChatInput, onSend }) {
           type="text"
           className="main-input"
           placeholder="Talk with your PDF..."
-          value={chatInput}
-          onChange={(e) => setChatInput(e.target.value)}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              onSend();
-              setView("groups");
-            }
+            if (e.key === "Enter") handleSend();
           }}
         />
 
         <svg
           className="send-icon"
           viewBox="0 0 24 24"
-          onClick={() => {
-            onSend();
-            setView("groups");
-          }}
+          onClick={handleSend}
         >
           <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
         </svg>
