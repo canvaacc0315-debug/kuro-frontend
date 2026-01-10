@@ -24,7 +24,7 @@ html, body {
 .fixed-input-area {
   position: absolute !important;
   bottom: 0 !important;
-  left: 250px !important;  /* Width of left panel */
+  left: 250px !important;  /* Width of lef212t panel */
   right: 250px !important; /* Width of right panel */
   transform: none !important;
   width: auto !important;
