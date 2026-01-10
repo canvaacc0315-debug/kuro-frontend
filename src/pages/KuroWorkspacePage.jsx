@@ -13,6 +13,9 @@ import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
 import FixedChatInput from "../components/FixedChatInput";
+
+
+
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -430,22 +433,6 @@ export default function KuroWorkspacePage() {
   }, [searchQuery]);
   // Full-screen state
   const [isFullScreen, setIsFullScreen] = useState(false);
-  useEffect(() => {
-    const updatePadding = () => {
-      const input = document.getElementById("fixed-input-area");
-      const chat = chatMessagesRef.current;
-
-      if (input && chat) {
-        const height = input.offsetHeight;
-        chat.style.paddingBottom = height + 20 + "px";
-      }
-    };
-
-    updatePadding();
-
-    window.addEventListener("resize", updatePadding);
-    return () => window.removeEventListener("resize", updatePadding);
-  }, []);
   return (
     <RovexProvider>
     <InstructionModal />
@@ -828,65 +815,64 @@ export default function KuroWorkspacePage() {
                       Clear Conversation
                     </button>
                   </div>
-                  {/* CHAT WRAPPER */}
-                  <div className="chat-wrapper">
-                    {/* CHAT MESSAGES */}
-                    <div
-                      ref={chatMessagesRef}
-                      className="chat-messages no-scrollbar"
-                      style={{
-                        msOverflowStyle: 'none',
-                        scrollbarWidth: 'none',
-                        padding: "24px",
-                        overflowY: "auto",
-                        flex: 1,
-                        backgroundColor: "#ffffff"
-                      }}
-                    >
-                      {conversation.map((m) => (
-                        <div
-                          key={m.id}
-                          className={`message ${m.role === "user" ? "user" : "bot"}`}
-                          style={{
-                            display: "flex",
-                            alignItems: "flex-start",
-                            marginBottom: "24px",
-                            animation: "fadeIn 300ms ease",
-                          }}
-                        >
-                          {m.role === "bot" && (
-                            <img
-                              src="/kuro-logo.png"
-                              alt="kuro-logo"
-                              className="message-avatar"
-                              style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
-                            />
-                          )}
-                          <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", border: "1px solid #e5e7eb", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
-                            {m.content}
-                          </div>
-                          {m.role === "user" && (
-                            <img
-                              src={user?.imageUrl}
-                              alt="User"
-                              className="message-avatar"
-                              style={{ width: "40px", height: "40px", borderRadius: "50%", marginLeft: "16px" }}
-                            />
-                          )}
+                  {/* CHAT MESSAGES */}
+                  <div
+                    ref={chatMessagesRef}
+                    className="chat-messages no-scrollbar"
+                    style={{
+                      msOverflowStyle: 'none',
+                      scrollbarWidth: 'none',
+                      padding: "24px",
+                      paddingBottom: "80px",
+                      overflowY: "auto",
+                      flex: 1,
+                      backgroundColor: "#ffffff"
+                    }}
+                  >
+                    {conversation.map((m) => (
+                      <div
+                        key={m.id}
+                        className={`message ${m.role === "user" ? "user" : "bot"}`}
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          marginBottom: "24px",
+                          animation: "fadeIn 300ms ease",
+                        }}
+                      >
+                  {/* FIXED INPUT AREA */}
+                  <FixedChatInput
+                   message={message}
+                   setMessage={setMessage}
+                   onSend={handleSend}
+                   />
+                        {m.role === "bot" && (
+                          <img
+                            src="/kuro-logo.png"
+                            alt="kuro-logo"
+                            className="message-avatar"
+                            style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
+                          />
+                        )}
+                        <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", border: "1px solid #e5e7eb", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
+                          {m.content}
                         </div>
-                      ))}
-                    </div>
-                    {/* FIXED INPUT AREA */}
-                    <FixedChatInput
-                      message={message}
-                      setMessage={setMessage}
-                      onSend={handleSend}
-                    />
+                        {m.role === "user" && (
+                          <img
+                            src={user?.imageUrl}
+                            alt="User"
+                            className="message-avatar"
+                            style={{ width: "40px", height: "40px", borderRadius: "50%", marginLeft: "16px" }}
+                          />
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
             </div>
             {/* CHAT HISTORY */}
+
             <div
               className="chat-subtab-content"
               style={{
