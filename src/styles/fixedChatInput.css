@@ -195,6 +195,179 @@ html, body {
   transform: none;
 }
 
+/* UI CHANGE: History container no bg/border, items card-like with shadows only. Fixed alignment, spacing, hierarchy. No duplicates. Clean rows. Premium modern. */
+.history-container {
+  background-color: transparent;
+  padding: 16px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  animation: fadeInUp 0.5s ease-out 0.1s;
+  animation-fill-mode: backwards;
+}
+
+.history-title {
+  color: #000000;
+}
+
+.clear-history-btn {
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clear-history-btn:hover {
+  background-color: #dc2626;
+  transform: scale(1.05);
+}
+
+.history-search {
+  margin-bottom: 16px;
+  animation: fadeInUp 0.5s ease-out 0.2s;
+  animation-fill-mode: backwards;
+}
+
+.history-item {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  animation: fadeInUp 0.5s ease-out 0.3s;
+  animation-fill-mode: backwards;
+}
+
+.history-item:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transform: scale(1.02);
+}
+
+.history-item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.history-item-btn {
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.history-item-btn:hover {
+  background-color: #dc2626;
+  transform: scale(1.05);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+  transition: all 0.2s ease;
+  animation: fadeInUp 0.5s ease-out 0.4s;
+  animation-fill-mode: backwards;
+}
+
+/* UI CHANGE: Export grid cards no borders, shadows only. Hover scale. Full-width grid. */
+.export-container {
+  background-color: transparent;
+  padding: 16px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.export-header {
+  margin-bottom: 24px;
+  animation: fadeInUp 0.5s ease-out 0.1s;
+  animation-fill-mode: backwards;
+}
+
+.export-title {
+  color: #000000;
+}
+
+.export-desc {
+  color: #4b5563;
+}
+
+.export-options-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, auto);
+  gap: 16px;
+  width: 100%;
+  animation: fadeInUp 0.5s ease-out 0.2s;
+  animation-fill-mode: backwards;
+}
+
+.export-card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.export-card:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transform: scale(1.05);
+}
+
+.export-icon {
+  font-size: 24px;
+  transition: all 0.2s ease;
+}
+
+.export-card-title {
+  color: #000000;
+}
+
+.export-card-desc {
+  color: #4b5563;
+}
+
+.export-btn {
+  background-color: #ef4444;
+  color: #ffffff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.export-btn:hover {
+  background-color: #dc2626;
+  transform: scale(1.05);
+}
+
+.export-status {
+  margin-top: 16px;
+  text-align: center;
+  color: #000000;
+  animation: fadeInUp 0.5s ease-out 0.3s;
+  animation-fill-mode: backwards;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
