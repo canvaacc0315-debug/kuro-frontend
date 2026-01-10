@@ -78,6 +78,7 @@ html, body {
   padding: 14px 18px;
   border-radius: 28px;
   border: 2px solid #ffcdd2;
+  align-items: bottom;
 }
 
 .main-input {
