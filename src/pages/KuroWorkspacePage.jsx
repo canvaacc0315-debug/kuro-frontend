@@ -396,7 +396,7 @@ export default function KuroWorkspacePage() {
   // ---------------- render ----------------
   const chatMessagesRef = useRef(null);
   useEffect(() => {
-    if (chatMessagesRef.current && conversation.length > 0 && conversation[conversation.length - 1].role === "bot") {
+    if (chatMessagesRef.current) {
       chatMessagesRef.current.scrollTo({
         top: chatMessagesRef.current.scrollHeight,
         behavior: 'smooth'
@@ -434,15 +434,12 @@ export default function KuroWorkspacePage() {
     const updatePadding = () => {
       const input = document.getElementById("fixed-input-area");
       const chat = chatMessagesRef.current;
-
       if (input && chat) {
         const height = input.offsetHeight;
         chat.style.paddingBottom = height + 20 + "px";
       }
     };
-
     updatePadding();
-
     window.addEventListener("resize", updatePadding);
     return () => window.removeEventListener("resize", updatePadding);
   }, []);

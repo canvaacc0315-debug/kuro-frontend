@@ -455,14 +455,7 @@ body {
   flex: 5; /* Increased flex to make chat panel wider */
 }
 
-.chat-container {
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  height: calc(100vh - 200px); /* Reduced subtraction to make chat panel taller */
-  display: flex;
-  flex-direction: column;
-}
+/* Removed unused .chat-container (not in JSX; height calc moved to .chat-wrapper below) */
 
 .chat-messages {
   flex: 1;
@@ -471,6 +464,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 24px; /* Increased gap */
+  scroll-behavior: smooth; /* Added for reliable JS smooth scrolling */
+  -webkit-overflow-scrolling: touch; /* Added for better mobile scrolling */
 }
 
 .message {
@@ -784,4 +779,17 @@ body {
   display: flex;
   align-items: center; 
   gap: 16px;
+}
+
+/* FIX: Add missing styles for .chat-wrapper to constrain height and enable flex for scrolling */
+.chat-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensures it fills the parent (.chat-main) */
+  overflow: hidden; /* Prevents overflow from wrapper itself */
+}
+
+/* FIX: Complete scrollbar hiding for .no-scrollbar across browsers (WebKit/Chrome/Safari) */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
