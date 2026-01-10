@@ -33,7 +33,7 @@ html, body {
   z-index: 999999 !important;
   display: flex !important;
   flex-direction: column;
-  align-items: 60% !important;
+  align-items: 100% !important;
   gap: 10px;
   background: transparent !important;
   padding: 12px 5% 16px 5%;
