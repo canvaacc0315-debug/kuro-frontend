@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import FixedChatInput from "./FixedChatInput"; // Adjust the import path based on your project structure
-import "../styles/kuroWorkspacePage.css"; // Assuming you have a CSS file for this component; adjust as needed
+import "../styles/fixedChatInput.css";
 
 // Import any other dependencies, such as API handlers, config, or additional components
 
