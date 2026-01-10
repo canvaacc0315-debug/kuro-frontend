@@ -25,7 +25,7 @@ html, body {
 .fixed-input-area {
   position: fixed !important;
   bottom: 0 !important;
-  left: 200px !important;
+  left: 180px !important;
   right: 250px !important;
   transform: none !important;
   width: 100% !important;
