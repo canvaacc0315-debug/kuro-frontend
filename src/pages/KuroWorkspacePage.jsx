@@ -59,7 +59,9 @@ export default function KuroWorkspacePage() {
   // ✅ Real history state (replaces demoHistory)
   const [history, setHistory] = useState([]);
   const selectedFile =
-    uploadedFiles.find((f) => f.id === selectedPdfId) || null;
+    uploadedFiles.find(
+      (f) => f.backendId === selectedPdfId || f.uid === selectedPdfId
+    ) || null;
   // ---------------- helpers ----------------
   const showStatus = (message, type = "success") => {
     setExportStatus({ message, type });
@@ -163,7 +165,7 @@ export default function KuroWorkspacePage() {
         body: JSON.stringify({
           question: text,
           mode,
-          pdfId: selectedPdfId || null,
+          pdfId: selectedFile?.backendId || null,
         }),
       });
       if (!res.ok) {
@@ -404,10 +406,10 @@ export default function KuroWorkspacePage() {
     };
     // Immediate scroll
     scrollToBottom();
-   
+  
     // Delayed scroll to catch any late-rendering content
     const timeoutId = setTimeout(scrollToBottom, 100);
-   
+  
     return () => clearTimeout(timeoutId);
   }, [conversation]);
   // UI CHANGE: Added scrolled state and useEffect for scroll listener to match provided snippet.
@@ -750,7 +752,7 @@ export default function KuroWorkspacePage() {
                           <>
                             <option value="">All PDFs / general chat</option>
                             {uploadedFiles.map((f) => (
-                              <option key={f.id} value={f.id}>
+                              <option key={f.uid} value={f.backendId || f.uid}>
                                 {f.name}
                               </option>
                             ))}
