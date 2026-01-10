@@ -21,15 +21,15 @@ html, body {
   overflow-y: auto;
 }
 
-/* FIXED INPUT - CENTERED & RED THEME */
+/* FIXED INPUT - CENTERED & NO BORDER */
 .fixed-input-area {
   position: fixed !important;
   bottom: 0 !important;
   left: 50% !important;
   right: auto !important;
   transform: translateX(-50%) !important;
-  width: 90% !important;
-  max-width: 1400px !important;
+  width: 85% !important;
+  max-width: 1200px !important;
   z-index: 999999 !important;
   display: flex !important;
   flex-direction: column;
@@ -124,15 +124,16 @@ html, body {
   background: #fff;
   padding: 10px 16px;
   border-radius: 25px;
-  border: 2px solid #ef4444;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+  border: 1px solid #e5e5e5; /* Changed to subtle gray border */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   margin: 0 auto;
   width: 100%;
+  transition: all 0.2s ease;
 }
 
 .input-wrapper:focus-within {
-  border-color: #dc2626;
-  box-shadow: 0 2px 12px rgba(239, 68, 68, 0.25);
+  border-color: #ef4444; /* Red border only when focused */
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
 }
 
 .main-input {
@@ -146,7 +147,7 @@ html, body {
 }
 
 .main-input::placeholder {
-  color: #fca5a5;
+  color: #999; /* Changed to subtle gray */
 }
 
 .send-icon {
@@ -168,12 +169,12 @@ html, body {
 }
 
 .send-icon.disabled {
-  fill: #fca5a5;
+  fill: #ccc;
   cursor: not-allowed;
 }
 
 .send-icon.disabled:hover {
-  fill: #fca5a5;
+  fill: #ccc;
   transform: none;
 }
 
@@ -183,7 +184,7 @@ html, body {
 
 @media (max-width: 768px) {
   .fixed-input-area {
-    width: 95% !important;
+    width: 92% !important;
     padding: 10px 0 14px 0 !important;
     gap: 8px;
   }
