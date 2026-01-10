@@ -808,7 +808,7 @@ export default function KuroWorkspacePage() {
                       onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
                       onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                     >
-                      Save
+                      Save Conversation
                     </button>
                     <button
                       type="button"
