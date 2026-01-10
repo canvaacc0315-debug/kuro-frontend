@@ -12,7 +12,7 @@ html, body {
 }
 
 .main-container {
-  padding-bottom: 160px !important; /* Reduced space */
+  padding-bottom: 160px !important;
 }
 
 /* Chat messages padding */
@@ -21,21 +21,22 @@ html, body {
   overflow-y: auto;
 }
 
-/* FIXED INPUT - LOCKED AT BOTTOM - SMALLER & RED THEME */
+/* FIXED INPUT - CENTERED & RED THEME */
 .fixed-input-area {
   position: fixed !important;
   bottom: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100vw !important;
-  max-width: 100vw !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) !important;
+  width: 90% !important;
+  max-width: 1400px !important;
   z-index: 999999 !important;
   display: flex !important;
   flex-direction: column;
-  gap: 10px; /* Reduced from 16px */
-  background: transparent !important; /* No background */
-  padding: 12px 5% 16px 5%; /* Reduced padding */
-  box-shadow: none; /* Removed shadow */
+  gap: 10px;
+  background: transparent !important;
+  padding: 12px 0 16px 0;
+  box-shadow: none;
   margin: 0 !important;
 }
 
@@ -48,19 +49,19 @@ html, body {
 }
 
 .title-text {
-  color: #ef4444; /* Red theme */
-  font-size: 12px; /* Smaller */
+  color: #ef4444;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .back-btn {
-  padding: 4px 10px; /* Smaller */
+  padding: 4px 10px;
   border-radius: 20px;
-  background: #ef4444; /* Red theme */
+  background: #ef4444;
   color: white;
   border: none;
   cursor: pointer;
-  font-size: 12px; /* Smaller */
+  font-size: 12px;
   font-weight: 500;
   transition: background 0.2s ease;
 }
@@ -72,19 +73,19 @@ html, body {
 .buttons-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px; /* Reduced */
+  gap: 8px;
   justify-content: center;
   margin: 0;
   padding: 0;
-  max-height: 70px; /* Reduced */
+  max-height: 70px;
   overflow-y: auto;
 }
 
 .group-header,
 .question-chip {
-  padding: 6px 14px; /* Reduced */
-  border-radius: 20px; /* Smaller radius */
-  font-size: 13px; /* Smaller */
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.2s ease;
@@ -93,7 +94,7 @@ html, body {
 }
 
 .group-header {
-  background: #ef4444; /* Red theme */
+  background: #ef4444;
   color: #ffffff;
   border: 1px solid #ef4444;
   font-weight: 500;
@@ -106,27 +107,26 @@ html, body {
 
 .question-chip {
   background: #ffffff;
-  color: #ef4444; /* Red text */
-  border: 1px solid #ef4444; /* Red border */
+  color: #ef4444;
+  border: 1px solid #ef4444;
   font-weight: 400;
 }
 
 .question-chip:hover {
-  background: #fef2f2; /* Light red background on hover */
+  background: #fef2f2;
   border-color: #dc2626;
 }
 
 .input-wrapper {
   display: flex;
   align-items: center;
-  gap: 10px; /* Reduced */
+  gap: 10px;
   background: #fff;
-  padding: 10px 16px; /* Reduced */
-  border-radius: 25px; /* Smaller */
-  border: 2px solid #ef4444; /* Red border */
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15); /* Red shadow */
+  padding: 10px 16px;
+  border-radius: 25px;
+  border: 2px solid #ef4444;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
   margin: 0 auto;
-  max-width: 1200px;
   width: 100%;
 }
 
@@ -139,20 +139,20 @@ html, body {
   flex: 1;
   border: none;
   outline: none;
-  font-size: 14px; /* Smaller */
+  font-size: 14px;
   background: none;
   color: #333;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 .main-input::placeholder {
-  color: #fca5a5; /* Light red placeholder */
+  color: #fca5a5;
 }
 
 .send-icon {
-  width: 20px; /* Smaller */
+  width: 20px;
   height: 20px;
-  fill: #ef4444; /* Red icon */
+  fill: #ef4444;
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
@@ -183,7 +183,8 @@ html, body {
 
 @media (max-width: 768px) {
   .fixed-input-area {
-    padding: 10px 3% 14px 3% !important;
+    width: 95% !important;
+    padding: 10px 0 14px 0 !important;
     gap: 8px;
   }
 
