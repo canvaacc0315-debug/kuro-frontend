@@ -634,12 +634,6 @@ export default function KuroWorkspacePage() {
               <div className="chat-layout" style={{ backgroundColor: "#ffffff", display: "flex", flexDirection: "column", flex: 1, width: "100%", gap: "24px" }}>
                 {/* LEFT — MAIN CHAT */}
                 <div className="chat-main" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
-                  {/* banner with selected file */}
-                  {selectedFile && (
-                    <div className="chat-selected-file-banner" style={{ color: "#000000", backgroundColor: "#f9f9f9", padding: "12px 16px", borderRadius: "4px", marginBottom: "24px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}>
-                      📄 Chatting with: <strong>{selectedFile.name}</strong>
-                    </div>
-                  )}
                   {/* TOP CONTROLS */}
                   <div className="chat-top-row" style={{ display: "flex", gap: "24px", flexWrap: "wrap", marginBottom: "24px" }}>
                     <div className="chat-scope-bar" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
