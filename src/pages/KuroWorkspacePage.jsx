@@ -396,7 +396,7 @@ export default function KuroWorkspacePage() {
   // ---------------- render ----------------
   const chatMessagesRef = useRef(null);
   useEffect(() => {
-    if (chatMessagesRef.current) {
+    if (chatMessagesRef.current && conversation.length > 0 && conversation[conversation.length - 1].role === "bot") {
       chatMessagesRef.current.scrollTo({
         top: chatMessagesRef.current.scrollHeight,
         behavior: 'smooth'
