@@ -21,14 +21,15 @@ html, body {
   overflow-y: auto;
 }
 
+/* FIXED INPUT - TRULY CENTERED ON VIEWPORT */
 .fixed-input-area {
-  position: absolute !important;
+  position: fixed !important;
   bottom: 0 !important;
-  left: 250px !important;  /* Width of lef212t panel */
-  right: 250px !important; /* Width of right panel */
+  left: 250px !important;
+  right: 250px !important;
   transform: none !important;
-  width: auto !important;
-  max-width: calc(100% - 500px) !important; /* Adjust for both panels */
+  width: 100% !important;
+  max-width: 100% !important;
   z-index: 999999 !important;
   display: flex !important;
   flex-direction: column;
