@@ -21,7 +21,7 @@ html, body {
   overflow-y: auto;
 }
 
-/* FIXED INPUT - TRULY CENTERED ON VIEWPORT */
+/* FIXED INPUT - TRULY CENTERED ON VIEWPORT! */
 .fixed-input-area {
   position: fixed !important;
   bottom: 0 !important;
