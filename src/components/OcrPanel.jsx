@@ -1,6 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
+import { motion } from "framer-motion";
 import jsPDF from "jspdf";
-import "../styles/ocr-override.css";
+// Note: Import the new CSS file in your parent component or via index.css
+// e.g., import './ocr-panel.css';
 
 export default function OcrPanel() {
   const [files, setFiles] = useState([]);
@@ -8,6 +10,9 @@ export default function OcrPanel() {
   const [isRunning, setIsRunning] = useState(false);
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+
+  const fileInputRef = useRef(null);
 
   const selectedFile = useMemo(() => {
     if (selectedFileIndex === null) return null;
@@ -15,8 +20,8 @@ export default function OcrPanel() {
   }, [files, selectedFileIndex]);
 
   /* ================= FILE UPLOAD ================= */
-  async function handleFiles(e) {
-    const file = e.target.files?.[0];
+  async function handleFiles(inputFiles) {
+    const file = inputFiles[0];
     if (!file) return;
 
     if (!file.type.includes("pdf")) {
@@ -42,6 +47,29 @@ export default function OcrPanel() {
 
     const data = await res.json();
     file.pdf_id = data.pdfs[0].pdf_id;
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    setIsDragging(false);
+    const droppedFiles = e.dataTransfer.files;
+    if (droppedFiles.length > 0) {
+      handleFiles(droppedFiles);
+    }
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+  }
+
+  function handleDragEnter(e) {
+    e.preventDefault();
+    setIsDragging(true);
+  }
+
+  function handleDragLeave(e) {
+    e.preventDefault();
+    setIsDragging(false);
   }
 
   /* ================= OCR ================= */
@@ -123,33 +151,45 @@ export default function OcrPanel() {
     setOcrResult("");
     setProgress(0);
     setIsRunning(false);
-    document.getElementById("ocrFileInput").value = "";
+    if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
   /* ================= UI ================= */
   return (
-    <div className="ocr-root">
-      <div className="ocr-header">
-        <h2>OCR & <span>Recognition</span></h2>
-        <p>Extract text from PDFs</p>
-      </div>
+    <motion.div
+      className="page-canvas"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h1 className="welcome-title">
+        Welcome to <span className="brand-red">RovexAI</span>
+      </h1>
 
-      <div className="ocr-output-layout">
+      <h2 className="ocr-title">OCR & <span className="brand-red">Recognition</span></h2>
+      <p className="ocr-subtitle">Extract text from PDFs</p>
+
+      <div className="ocr-main">
         {/* LEFT */}
-        <div className="ocr-output-left">
+        <div className="ocr-left">
           <div
-            className="ocr-upload"
-            onClick={() => document.getElementById("ocrFileInput").click()}
+            className={`ocr-upload ${isDragging ? 'dragging' : ''}`}
+            onClick={() => fileInputRef.current.click()}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
           >
             <div className="ocr-upload-icon">📄</div>
             <div className="ocr-upload-title">Upload PDF</div>
-            <button className="ocr-upload-btn">Select PDF</button>
+            <button className="ocr-upload-btn" type="button">Select PDF</button>
             <input
               id="ocrFileInput"
               type="file"
               accept=".pdf"
               hidden
-              onChange={handleFiles}
+              ref={fileInputRef}
+              onChange={(e) => handleFiles(e.target.files)}
             />
           </div>
 
@@ -163,28 +203,61 @@ export default function OcrPanel() {
         </div>
 
         {/* RIGHT */}
-        <div className="ocr-output-right">
-          <h4>Actions</h4>
+        <div className="ocr-right">
+          <h4 className="ocr-actions-title">Actions</h4>
 
-          <button onClick={startOcr} disabled={!selectedFile || isRunning}>
+          <button
+            className="ocr-action-button ocr-start-btn"
+            onClick={startOcr}
+            disabled={!selectedFile || isRunning}
+          >
             {isRunning ? "Processing..." : "🚀 Start OCR"}
           </button>
 
-          <button disabled={!ocrResult} onClick={downloadTxt}>Save as TXT</button>
-          <button disabled={!ocrResult} onClick={downloadCsv}>Save as CSV</button>
-          <button disabled={!ocrResult} onClick={downloadPdf}>Save as PDF</button>
-          <button disabled={!ocrResult} onClick={copyText}>Copy To Clipboard</button>
+          <button
+            className="ocr-action-button ocr-save-btn"
+            disabled={!ocrResult}
+            onClick={downloadTxt}
+          >
+            Save as TXT
+          </button>
+          <button
+            className="ocr-action-button ocr-save-btn"
+            disabled={!ocrResult}
+            onClick={downloadCsv}
+          >
+            Save as CSV
+          </button>
+          <button
+            className="ocr-action-button ocr-save-btn"
+            disabled={!ocrResult}
+            onClick={downloadPdf}
+          >
+            Save as PDF
+          </button>
+          <button
+            className="ocr-action-button ocr-copy-btn"
+            disabled={!ocrResult}
+            onClick={copyText}
+          >
+            Copy To Clipboard
+          </button>
 
-          <div className="ocr-result-preview">
-            <h5>Extracted Text</h5>
+          <motion.div
+            className="ocr-result-preview"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h5 className="ocr-result-title">Extracted Text</h5>
             {ocrResult ? (
-              <pre>{ocrResult}</pre>
+              <pre className="ocr-result-text">{ocrResult}</pre>
             ) : (
               <div className="ocr-placeholder">
                 OCR result will appear here
               </div>
             )}
-          </div>
+          </motion.div>
 
           <button
             className="process-another-btn"
@@ -207,6 +280,6 @@ export default function OcrPanel() {
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

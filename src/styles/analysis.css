@@ -31,9 +31,10 @@ body {
 }
 
 .welcome-title {
-  font-size: 32px;
-  font-weight: 700;
+  color: #ff4d4f;
+  font-size: 24px;
   margin-bottom: 40px;
+  animation: fadeInTitle 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .brand-red {
