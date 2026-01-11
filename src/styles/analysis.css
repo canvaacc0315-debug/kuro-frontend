@@ -163,6 +163,7 @@ body {
 }
 
 .select {
+  width: 100%;
   flex: 1;
   background: var(--light-gray);
   border: 1px solid var(--border-gray);
