@@ -291,6 +291,7 @@ body {
   white-space: pre-wrap;
   font-size: 14px;
   line-height: 1.6;
+  color: var(--black);
 }
 
 .analysis-error {
