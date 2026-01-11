@@ -8,7 +8,7 @@ export default function About() {
     <PublicPageLayout>
       {/* HERO */}
       <section className="public-hero">
-        <h1>About RovexAI</h1>
+        <h1>About <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span></h1>
         <p className="public-hero-subtitle">
           Intelligent document understanding powered by AI
         </p>
@@ -22,14 +22,14 @@ export default function About() {
       {/* INTRO */}
       <div className="public-card">
         <p>
-          RovexAI is an advanced AI‑powered document intelligence platform designed
+          <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span> is an advanced AI‑powered document intelligence platform designed
           to transform how users interact with PDFs. Instead of manually reading,
-          searching, or extracting information, RovexAI allows users to chat with
+          searching, or extracting information, <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span> allows users to chat with
           documents, generate summaries, and uncover insights instantly.
         </p>
 
         <p>
-          Built for students, professionals, researchers, and businesses, RovexAI
+          Built for students, professionals, researchers, and businesses, <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span>
           helps you analyze research papers, legal documents, invoices, reports,
           and study material — faster and smarter.
         </p>
@@ -82,7 +82,7 @@ export default function About() {
           Documents should empower people — not slow them down.
         </p>
         <p>
-          RovexAI bridges the gap between static files and intelligent
+          <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span> bridges the gap between static files and intelligent
           understanding, helping users unlock the true value hidden inside their
           documents.
         </p>
