@@ -97,9 +97,8 @@ body {
   flex: 1;
   background: var(--light-gray);
   border: 1px solid var(--border-gray);
-  border-right: none;
-  border-radius: 8px 0 0 8px;
-  padding: 12px 16px;
+  border-radius: 8px;
+  padding: 12px 32px 12px 16px;
   font-size: 14px;
   color: var(--black);
   appearance: none;
