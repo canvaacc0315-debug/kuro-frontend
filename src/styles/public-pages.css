@@ -44,12 +44,12 @@
 
 /* GLASS CARDS */
 .public-card {
-  background: rgba(0, 0, 0, 0.45);
+  background: rgb(255, 255, 255);
   backdrop-filter: blur(16px);
   border-radius: 20px;
   padding: 48px;
   margin-bottom: 48px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgb(0, 0, 0);
   animation: fadeUp 0.8s ease forwards;
 }
 
