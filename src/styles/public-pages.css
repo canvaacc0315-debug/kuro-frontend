@@ -25,15 +25,6 @@
   margin-top: 12px;
 }
 
-.hero-cta {
-  margin-top: 32px;
-  display: flex;
-  gap: 48px; /* Increased gap for more separation */
-  justify-content: center;
-  flex-wrap: wrap;
-  background: transparent !important; /* Ensure no background to separate buttons visually */
-}
-
 /* BUTTONS */
 .btn-primary {
   padding: 14px 28px;
