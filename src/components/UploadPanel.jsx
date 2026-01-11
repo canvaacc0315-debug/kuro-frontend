@@ -91,7 +91,8 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
                     return {
                       ...p,
                       ...info,
-                      backendId: info.id || info._id || null,
+                      backendId: info.pdf_id,
+                      name: info.filename,
                       status: info.status || "Processing",
                     };
                   }
@@ -154,7 +155,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
         url = pdf.url;
       } else {
         const token = await getToken();
-        const res = await fetch(`${API_BASE}/api/pdf/${pdf.backendId}`, {
+        const res = await fetch(`${API_BASE}/api/pdf/view/${pdf.backendId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

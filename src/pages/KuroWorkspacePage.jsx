@@ -13,6 +13,8 @@ import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
 import FixedChatInput from "../components/FixedChatInput";
+
+
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -59,9 +61,7 @@ export default function KuroWorkspacePage() {
   // ✅ Real history state (replaces demoHistory)
   const [history, setHistory] = useState([]);
   const selectedFile =
-    uploadedFiles.find(
-      (f) => f.backendId === selectedPdfId || f.uid === selectedPdfId
-    ) || null;
+  uploadedFiles.find((f) => f.backendId === selectedPdfId) || null;
   // ---------------- helpers ----------------
   const showStatus = (message, type = "success") => {
     setExportStatus({ message, type });
@@ -752,7 +752,7 @@ export default function KuroWorkspacePage() {
                           <>
                             <option value="">All PDFs / general chat</option>
                             {uploadedFiles.map((f) => (
-                              <option key={f.uid} value={f.backendId || f.uid}>
+                              <option key={f.uid} value={f.backendId}>
                                 {f.name}
                               </option>
                             ))}
