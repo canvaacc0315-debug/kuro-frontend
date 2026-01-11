@@ -189,12 +189,18 @@ export default function DashboardPage() {
               Manage your account, preferences, and integrations for a
               personalized experience.
             </p>
+            
             <ul className="workspace-features">
               <li>Account Management</li>
               <li>Security Settings</li>
               <li>Update Profile</li>
             </ul>
-            {/* Button removed as per requirements */}
+            <button
+              className="workspace-btn"
+              onClick={openUserProfile}
+            >
+              Settings
+            </button>
           </div>
         </section>
 
