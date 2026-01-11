@@ -35,6 +35,8 @@ export default function PublicPageLayout({ children }) {
 
         <nav className="nav">
           <a href="https://rovexai.com/contact" className="nav-link">Contact</a>
+          <a href="https://www.rovexai.com/about" className="nav-link">About</a>
+          <a href="https://www.rovexai.com/privacy-policy" className="nav-link">Privacy Policy</a>
 
           <SignedOut>
             <button onClick={() => navigate("/login")} className="btn-outline">
