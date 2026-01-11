@@ -244,6 +244,7 @@ body {
   line-height: 1.6;
   max-height: 400px;
   overflow-y: auto;
+  color: #000000;
 }
 
 .ocr-placeholder {

@@ -163,10 +163,6 @@ export default function OcrPanel() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="welcome-title">
-        Welcome to <span className="brand-red">RovexAI</span>
-      </h1>
-
       <h2 className="ocr-title">OCR & <span className="brand-red">Recognition</span></h2>
       <p className="ocr-subtitle">Extract text from PDFs</p>
 
