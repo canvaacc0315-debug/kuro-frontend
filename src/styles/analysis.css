@@ -267,7 +267,7 @@ body {
 
 .analysis-placeholder {
   font-size: 14px;
-  color: var(--medium-gray);
+  color: var(--black);
   text-align: left;
   margin-top: 16px;
 }

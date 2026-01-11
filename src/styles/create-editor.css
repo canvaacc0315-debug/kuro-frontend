@@ -1,501 +1,300 @@
-/* src/styles/canva-editor.css */
-
-/* ========================================
-   ROOT LAYOUT - NO FRAMES, PURE CANVAS
-   ======================================== */
-
-.canva-editor-root {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  background: #F5F5F5;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
-  overflow: hidden;
-  animation: fadeIn 0.4s ease-out;
+/* Root layout */
+.create-editor-root {
+  display: flex;
+  gap: 16px;
+  height: 100%;
+  min-height: 540px;
+  padding: 16px 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
+    "SF Pro Text", sans-serif;
+  color: #f5f5f7;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+/* ---------- Sidebar ---------- */
+
+.create-editor-sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  padding: 16px 14px 20px; /* ⬅ bottom padding a bit larger */
+  border-radius: 18px;
+  background: radial-gradient(circle at top left, #171623 0, #0a0a11 60%);
+  border: 1px solid rgba(120, 120, 150, 0.35);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-/* ========================================
-   TOP BAR - FLOATING
-   ======================================== */
+.sidebar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-.canva-top-bar {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  right: 16px;
-  height: 56px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+.sidebar-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: #8b8da0;
+}
+
+.sidebar-primary-btn {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  z-index: 100;
-  animation: slideDown 0.5s ease-out;
-}
-
-@keyframes slideDown {
-  from { 
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to { 
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Top Left */
-.canva-top-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.canva-welcome-text {
-  fontSize: 18px;
-  fontWeight: 600;
-  color: #1A1A1A;
-  letter-spacing: -0.02em;
-}
-
-.canva-rovex-ai {
-  color: #EF4444;
-  font-weight: 700;
-}
-
-/* Top Center - Font Controls */
-.canva-top-center {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.canva-font-select,
-.canva-size-select {
-  padding: 6px 12px;
-  border: 1px solid #E5E5E5;
-  border-radius: 6px;
-  fontSize: 13px;
-  cursor: pointer;
-  background: white;
-  color: #1A1A1A;
-  transition: all 0.2s ease;
-}
-
-.canva-font-select:hover,
-.canva-size-select:hover {
-  border-color: #D1D1D1;
-  background: #FAFAFA;
-}
-
-.canva-font-select:focus,
-.canva-size-select:focus {
-  outline: none;
-  border-color: #EF4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-}
-
-.canva-size-select {
-  width: 70px;
-}
-
-.canva-format-btn {
-  width: 32px;
-  height: 32px;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
   border: none;
-  background: transparent;
+  background: linear-gradient(90deg, #ff5164, #ff9760);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  fontSize: 14px;
-  color: #666;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  transition: transform 140ms ease-out, box-shadow 140ms ease-out,
+    filter 140ms ease-out;
+}
+
+.sidebar-primary-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.6);
+}
+
+.sidebar-primary-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  position: relative;
+  font-size: 13px;
 }
 
-.canva-format-btn:hover {
-  background: #F5F5F5;
-  color: #1A1A1A;
+.text-style-card {
+  border-radius: 12px;
+  border: 1px solid rgba(120, 120, 150, 0.35);
+  background: radial-gradient(circle at top left, #1a1624 0, #0c0c13 80%);
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 140ms ease-out, border-color 140ms ease-out,
+    transform 120ms ease-out;
+}
+
+.text-style-card:hover {
+  background: radial-gradient(circle at top left, #221b31 0, #0d0d16 80%);
+  border-color: rgba(255, 115, 115, 0.65);
   transform: translateY(-1px);
 }
 
-.canva-format-btn.active {
-  background: #FEF2F2;
-  color: #EF4444;
-}
-
-.canva-format-btn:active {
-  transform: scale(0.95);
-}
-
-/* Color Dots */
-.canva-color-dots {
-  display: flex;
-  gap: 6px;
-  marginLeft: 8px;
-  padding: 0 4px;
-}
-
-.canva-color-dot {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid white;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.05);
-  transition: all 0.2s ease;
-}
-
-.canva-color-dot:hover {
-  transform: scale(1.15);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.canva-color-dot:active {
-  transform: scale(1.05);
-}
-
-/* Icon Buttons */
-.canva-icon-btn {
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  fontSize: 14px;
-  color: #666;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.canva-icon-btn:hover {
-  background: #F5F5F5;
-  color: #1A1A1A;
-}
-
-/* Top Right */
-.canva-top-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.canva-search-bar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: #F5F5F5;
-  border-radius: 8px;
-  width: 200px;
-  transition: all 0.2s ease;
-}
-
-.canva-search-bar:focus-within {
-  background: white;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
-}
-
-.canva-search-input {
-  border: none;
-  background: transparent;
-  outline: none;
-  fontSize: 13px;
-  flex: 1;
-  color: #1A1A1A;
-}
-
-.canva-search-input::placeholder {
-  color: #999;
-}
-
-.canva-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F0 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  fontSize: 18px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-}
-
-.canva-avatar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
-}
-
-.canva-dropdown-btn {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  fontSize: 12px;
-  color: #999;
-  padding: 8px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.canva-dropdown-btn:hover {
-  background: #F5F5F5;
-  color: #666;
-}
-
-/* ========================================
-   LEFT TOOL PANEL - FLOATING VERTICAL
-   ======================================== */
-
-.canva-left-panel {
-  position: absolute;
-  left: 16px;
-  top: 88px;
-  bottom: 88px;
-  width: 88px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
-  padding: 12px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  z-index: 90;
-  overflow-y: auto;
-  overflow-x: hidden;
-  animation: slideRight 0.5s ease-out;
-}
-
-@keyframes slideRight {
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.canva-left-panel::-webkit-scrollbar {
-  width: 4px;
-}
-
-.canva-left-panel::-webkit-scrollbar-thumb {
-  background: #E5E5E5;
-  border-radius: 4px;
-}
-
-.canva-tool-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 12px 8px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #666;
-  fontSize: 11px;
-  position: relative;
-  margin: 0 4px;
-  border-radius: 8px;
-}
-
-.canva-tool-item::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #FEF2F2 0%, #FFF5F5 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.canva-tool-item:hover::before {
-  opacity: 1;
-}
-
-.canva-tool-item:hover {
-  color: #EF4444;
-  transform: translateX(4px);
-}
-
-.canva-tool-item.active {
-  background: linear-gradient(135deg, #FEF2F2 0%, #FFF5F5 100%);
-  color: #EF4444;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
-}
-
-.canva-tool-item svg,
-.canva-upload-files-btn svg {
-  position: relative;
-  z-index: 1;
-}
-
-.canva-tool-label {
-  fontSize: 11px;
-  textAlign: center;
-  lineHeight: 1.3;
-  font-weight: 500;
-  position: relative;
-  z-index: 1;
-}
-
-.canva-upload-files-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 8px;
-  margin: 8px 12px;
-  border: 2px dashed #EF4444;
-  background: linear-gradient(135deg, #FEF2F2 0%, #FFF5F5 100%);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: #EF4444;
-  fontSize: 11px;
+.text-style-main {
+  font-size: 13px;
   font-weight: 600;
-  animation: pulse 2s infinite;
+  margin-bottom: 2px;
 }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.02); }
+.text-style-sub {
+  font-size: 11px;
+  color: #a5a6ba;
 }
 
-.canva-upload-files-btn:hover {
-  background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%);
-  border-color: #DC2626;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+.text-style-body .text-style-main {
+  font-weight: 500;
 }
 
-.canva-upload-files-btn:active {
-  transform: translateY(0);
-}
-
-/* ========================================
-   CANVAS AREA - INFINITE CANVAS FEEL
-   ======================================== */
-
-.canva-canvas-area {
-  position: absolute;
-  left: 120px;
-  right: 120px;
-  top: 88px;
-  bottom: 88px;
-  display: flex;
+.sidebar-pill-btn {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  overflow: auto;
-  animation: zoomIn 0.6s ease-out;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 115, 115, 0.55);
+  background: rgba(255, 81, 100, 0.12);
+  font-size: 13px;
+  color: #ffd8da;
+  cursor: pointer;
+  transition: background 140ms ease-out, border-color 140ms ease-out,
+    transform 120ms ease-out;
 }
 
-@keyframes zoomIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+.sidebar-pill-btn:hover {
+  background: rgba(255, 81, 100, 0.22);
+  border-color: rgba(255, 160, 160, 0.9);
+  transform: translateY(-0.5px);
 }
 
-.canva-canvas-area::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 0 6px 4px; /* ⬅ inset Export from border */
 }
 
-.canva-canvas-area::-webkit-scrollbar-thumb {
-  background: #D1D1D1;
-  border-radius: 5px;
+.sidebar-export-btn {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  background: linear-gradient(90deg, #ff5164, #ff9760);
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  transition: transform 140ms ease-out, box-shadow 140ms ease-out,
+    filter 140ms ease-out;
+  margin-bottom: 2px; /* ⬅ not glued to the frame */
 }
 
-.canva-canvas-area::-webkit-scrollbar-track {
+.sidebar-export-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.75);
+}
+
+/* ---------- Main area ---------- */
+
+.create-editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Toolbar */
+
+.create-toolbar {
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: #2a222f;
+  border: 1px solid rgba(120, 120, 150, 0.55);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-group-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toolbar-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: #b7b7cc;
+}
+
+.toolbar-input {
+  width: 56px;
+  border-radius: 999px;
+  border: none;
+  background: #3b343f;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #f5f5f7;
+  outline: none;
+}
+
+.toolbar-toggle-group {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 999px;
+  background: #3a313f;
+}
+
+.toolbar-toggle {
+  min-width: 26px;
+  height: 22px;
+  border-radius: 999px;
+  border: none;
+  font-size: 11px;
+  padding: 0 6px;
   background: transparent;
+  color: #f5f5f7;
+  cursor: pointer;
+  transition: background 120ms ease-out, color 120ms ease-out,
+    transform 80ms ease-out;
 }
 
-/* THE PAGE - FLOATING SHEET, NO CONTAINER */
-.canva-page {
+.toolbar-toggle:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.toolbar-toggle.active {
+  background: linear-gradient(90deg, #ff5164, #ff9760);
+  color: #0b0507;
+}
+
+/* ---------- Page ---------- */
+
+.create-page-shell {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 14px 4px 8px;
+}
+
+.create-page {
   position: relative;
-  width: 794px;
-  min-height: 1123px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
-  padding: 80px 100px;
-  margin: 40px;
-  overflow: visible;
-  transition: box-shadow 0.3s ease;
+  width: min(780px, 100%);
+  aspect-ratio: 1 / 1.414;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.7);
+  padding: 32px 40px;
+  overflow: hidden;
 }
 
-.canva-page:hover {
-  box-shadow: 0 12px 48px rgba(0,0,0,0.15), 0 4px 12px rgba(0,0,0,0.1);
-}
+/* Heading + body – NORMAL textareas (no frame) */
 
-/* TEXTAREAS - NO FRAMES, NO BORDERS, PURE CANVAS */
-.canva-heading,
-.canva-body {
+.heading-textarea,
+.body-textarea {
   width: 100%;
   border: none !important;
   outline: none !important;
   resize: none;
   background: transparent !important;
   box-shadow: none !important;
-  color: #1A1A1A;
+  color: #111111;
   box-sizing: border-box;
   position: relative;
   z-index: 1;
-  font-family: inherit;
-  line-height: 1.6;
-  transition: color 0.2s ease;
 }
 
-.canva-heading:focus,
-.canva-body:focus {
+.heading-textarea:focus,
+.body-textarea:focus {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
 }
 
-.canva-heading::placeholder,
-.canva-body::placeholder {
-  color: #C1C1C1;
-}
-
-.canva-heading {
-  min-height: 60px;
-  margin-bottom: 24px;
+/* heading at top */
+.heading-textarea {
+  min-height: 40px;
+  margin-bottom: 16px;
   overflow: visible;
 }
 
-.canva-body {
-  min-height: calc(100% - 100px);
-  overflow: visible;
+/* body fills rest of page */
+.body-textarea {
+  min-height: calc(100% - 60px);
+  overflow: visible; /* no inner scrollbar frame */
 }
 
-/* ========================================
-   IMAGES - DRAGGABLE WITH HANDLES
-   ======================================== */
+/* ---------- Images: multiple per page ---------- */
 
-.canva-image-block {
+.page-image {
   position: absolute;
   background: transparent;
   border: none;
@@ -504,362 +303,484 @@
   cursor: move;
   user-select: none;
   z-index: 3;
-  transition: all 0.2s ease;
 }
 
-.canva-image-block:hover {
-  filter: brightness(1.02);
-}
-
-.canva-image-block.active {
-  outline: 2px solid #EF4444;
-  outline-offset: 2px;
-  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.2);
-}
-
-.canva-image-block:active {
+.page-image:active {
   cursor: grabbing;
 }
 
-.canva-image-img {
+.image-block-inner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.image-block-img {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: contain;
-  border-radius: 6px;
-  pointer-events: none;
 }
 
-.canva-resize-handle {
+/* little pink corner dot for resize */
+.resize-handle {
   position: absolute;
-  right: -8px;
-  bottom: -8px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #EF4444;
+  right: -6px;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #ff6b6b;
   cursor: nwse-resize;
   z-index: 4;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2), 0 0 0 2px white;
-  transition: all 0.2s ease;
 }
 
-.canva-resize-handle:hover {
-  transform: scale(1.2);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4), 0 0 0 2px white;
-}
+/* ---------- Pages bar ---------- */
 
-/* ========================================
-   RIGHT TOOLBAR - FLOATING VERTICAL PILL
-   ======================================== */
-
-.canva-right-toolbar {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 48px;
-  background: white;
-  border-radius: 24px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12), 0 1px 3px rgba(0,0,0,0.08);
-  padding: 12px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  z-index: 90;
-  animation: slideLeft 0.5s ease-out;
-}
-
-@keyframes slideLeft {
-  from {
-    transform: translateY(-50%) translateX(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(-50%) translateX(0);
-    opacity: 1;
-  }
-}
-
-.canva-right-btn {
-  width: 100%;
-  height: 40px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  color: #666;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.canva-right-btn::before {
-  content: '';
-  position: absolute;
-  inset: 8px;
-  border-radius: 50%;
-  background: #FEF2F2;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.canva-right-btn:hover::before {
-  opacity: 1;
-}
-
-.canva-right-btn:hover {
-  color: #EF4444;
-}
-
-.canva-right-btn svg {
-  position: relative;
-  z-index: 1;
-}
-
-/* ========================================
-   BOTTOM BAR - FLOATING
-   ======================================== */
-
-.canva-bottom-bar {
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  bottom: 16px;
-  height: 56px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04);
+.pages-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
-  z-index: 100;
-  animation: slideUp 0.5s ease-out;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 0 18px 10px; /* ⬅ pushes both sides + bottom inside frame */
 }
 
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.canva-export-btn {
-  padding: 10px 24px;
-  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
-}
-
-.canva-export-btn:hover {
-  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.4);
-}
-
-.canva-export-btn:active {
-  transform: translateY(0);
-}
-
-.canva-bottom-center {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.canva-page-indicator {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: #F5F5F5;
-  border: none;
-  border-radius: 8px;
-  fontSize: 13px;
-  color: #666;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.canva-page-indicator:hover {
-  background: #EBEBEB;
-  color: #1A1A1A;
-}
-
-.canva-zoom-controls {
+.pages-list {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 8px;
-  background: #F5F5F5;
-  border-radius: 8px;
+  flex-wrap: wrap;
 }
 
-.canva-zoom-btn {
-  width: 28px;
-  height: 28px;
+.page-pill {
+  border-radius: 999px;
+  border: 1px solid rgba(140, 140, 170, 0.6);
+  background: #221c2a;
+  color: #eaeafb;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 120ms ease-out, border-color 120ms ease-out,
+    transform 80ms ease-out;
+}
+
+.page-pill:hover {
+  background: #2b2333;
+  transform: translateY(-0.5px);
+}
+
+.page-pill.active {
+  background: linear-gradient(90deg, #ff5164, #ff9760);
+  border-color: transparent;
+  color: #0b0507;
+}
+
+.add-page-pill {
+  border-style: dashed;
+}
+
+.delete-page-btn {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 116, 116, 0.8);
+  background: rgba(255, 77, 77, 0.15);
+  color: #ffd1d1;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 120ms ease-out, border-color 120ms ease-out,
+    opacity 80ms ease-out;
+  margin-right: 4px; /* ⬅ not stuck to the very edge */
+}
+
+.delete-page-btn:hover {
+  background: rgba(255, 77, 77, 0.25);
+}
+
+/* ---------- Context menu ---------- */
+
+.pdf-context-menu {
+  position: fixed;
+  z-index: 50;
+  min-width: 140px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #17131f;
+  border: 1px solid rgba(130, 130, 160, 0.65);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
+}
+
+.context-item {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 7px;
+  font-size: 12px;
   border: none;
   background: transparent;
+  color: #f5f5f7;
+  text-align: left;
   cursor: pointer;
-  color: #666;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: background 120ms ease-out, color 120ms ease-out;
+}
+
+.context-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.context-item.context-danger:hover {
+  background: rgba(255, 77, 77, 0.18);
+  color: #ffb4b4;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1024px) {
+  .create-editor-root {
+    flex-direction: column;
+  }
+
+  .create-editor-sidebar {
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+    overflow-x: auto;
+  }
+
+  .create-editor-main {
+    width: 100%;
+  }
+
+  .create-page {
+    max-height: 70vh;
+  }
+}
+
+/* --- HARD REMOVE ANY TEXT FRAMES INSIDE THE PAGE --- */
+
+.create-page textarea,
+.create-page textarea:focus,
+.create-page textarea:active {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* also catch heading/body classes just in case */
+.create-page .heading-textarea,
+.create-page .body-textarea,
+.create-page .heading-textarea:focus,
+.create-page .body-textarea:focus {
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+/* remove any debug/selection outline from anything in the page */
+.create-page * {
+  outline: 0 !important;
+}
+
+.pdf-canvas-wrapper {
+  position: relative;
+}
+
+/* keep the slider visible, pinned just below the page */
+.zoom-slider {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;          /* move it up from the very bottom */
+  transform: translateX(-50%);
+  width: 40%;            /* or whatever width you like */
+  z-index: 10;
+}
+/* ---------------- Mobile / handle fixes (APPEND ONLY) ---------------- */
+
+/* allow handles to be visible (parent containers) */
+.create-editor-root,
+.create-editor-main,
+.create-page,
+.create-page-shell,
+.pdf-canvas-wrapper {
+  position: relative !important;
+  overflow: visible !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* make the page allow extra room for handles at the bottom */
+.create-page {
+  padding-bottom: 56px; /* keeps bottom area free for handles / sliders */
+}
+
+/* enlarge the small pink handle and make it touch-friendly */
+.resize-handle {
+  right: -10px;
+  bottom: -10px;
+  width: 18px;
+  height: 18px;
   border-radius: 6px;
-  transition: all 0.2s ease;
+  background: #ff5164;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  z-index: 60;
+  touch-action: none;
 }
 
-.canva-zoom-btn:hover {
-  background: white;
-  color: #1A1A1A;
+/* react-rnd internal handle fallback (if used) */
+.rnd-resize-handle,
+.rnd-resize-handle * {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  background: #ff5164 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+  z-index: 60 !important;
+  touch-action: none !important;
 }
 
-.canva-zoom-label {
-  fontSize: 12px;
-  color: #666;
-  font-weight: 500;
-  min-width: 36px;
-  text-align: center;
+/* ensure images / page-image elements don't clip handles */
+.page-image,
+.image-block-inner {
+  overflow: visible !important;
 }
 
-.canva-add-page-btn,
-.canva-play-btn {
+/* Floating export button on small screens:
+   Reuses the existing sidebar-export-btn visual style but becomes a small FAB */
+@media (max-width: 768px) {
+  /* hide the full sidebar so the canvas gets full width */
+  .create-editor-sidebar {
+    display: none !important;
+  }
+
+  /* toolbar stays but compact */
+  .create-toolbar {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  /* canvas takes full width & height */
+  .create-page {
+    width: 100% !important;
+    max-height: none;
+    aspect-ratio: auto;
+    padding: 16px !important;
+    margin: 8px 12px;
+    border-radius: 12px;
+  }
+
+  /* increase canvas bottom padding so handles / slider visible */
+  .create-page,
+  .create-page-shell,
+  .create-editor-main {
+    padding-bottom: 120px !important;
+  }
+
+  /* turn the sidebar export button into a floating action button (FAB) */
+  .sidebar-export-btn {
+    position: fixed !important;
+    right: 16px !important;
+    bottom: 18px !important;
+    width: 56px !important;
+    height: 56px !important;
+    padding: 0 !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35) !important;
+    z-index: 9999 !important;
+    font-size: 20px !important;
+  }
+
+  /* hide text of FAB (keeps icon visible if present) */
+  .sidebar-export-btn > *:not(.export-icon) {
+    display: none !important;
+  }
+
+  /* keep the export button reachable (no accidental overlap) */
+  .pages-bar,
+  .zoom-slider {
+    z-index: 30;
+  }
+
+  /* Adjust root padding for mobile */
+  .create-editor-root {
+    padding: 8px 0;
+    gap: 8px;
+    min-height: calc(100vh - 80px);
+  }
+
+  /* Make textareas touch-friendly */
+  .heading-textarea {
+    min-height: 60px;
+    font-size: 18px;
+    padding: 12px;
+  }
+
+  .body-textarea {
+    min-height: 200px;
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  /* Compact pages bar */
+  .pages-bar {
+    padding: 8px 12px;
+    gap: 8px;
+    overflow-x: auto;
+  }
+
+  .page-pill,
+  .delete-page-btn {
+    padding: 10px 14px;
+    font-size: 14px;
+    min-width: 60px;
+  }
+
+  /* Toolbar adjustments */
+  .toolbar-input {
+    width: 48px;
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+
+  .toolbar-toggle {
+    min-width: 32px;
+    height: 28px;
+    font-size: 13px;
+    padding: 0 8px;
+  }
+
+  .toolbar-label {
+    font-size: 11px;
+  }
+
+  /* Context menu wider on mobile */
+  .pdf-context-menu {
+    min-width: 160px;
+    padding: 6px;
+  }
+
+  .context-item {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  /* Buttons touch-friendly */
+  .sidebar-primary-btn,
+  .sidebar-pill-btn,
+  .delete-page-btn,
+  .page-pill,
+  .toolbar-toggle,
+  button {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Zoom slider fixed and wider */
+  .zoom-slider {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 90px !important;
+    width: calc(100% - 32px) !important;
+    max-width: 400px !important;
+    z-index: 995 !important;
+    background: rgba(42, 34, 47, 0.9);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+
+  .zoom-slider input[type="range"] {
+    width: 100% !important;
+  }
+
+  /* Enlarge handles further for touch */
+  .resize-handle,
+  .rnd-resize-handle,
+  .rnd-resize-handle * {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    right: -12px !important;
+    bottom: -12px !important;
+    border-radius: 50% !important;
+    background: #ff5164 !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35) !important;
+    z-index: 999 !important;
+    touch-action: none !important;
+  }
+
+  /* Prevent horizontal scroll */
+  html, body, .create-editor-root {
+    overflow-x: hidden !important;
+  }
+
+  /* Safe area for bottom */
+  body, .create-editor-root {
+    padding-bottom: max(env(safe-area-inset-bottom), 12px);
+  }
+}
+
+/* Slight improvement for medium screens (tablet) */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .create-editor-sidebar {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+  }
+
+  .create-page {
+    max-height: 70vh;
+    padding: 20px;
+  }
+
+  .create-page-shell {
+    padding: 12px 4px 8px;
+  }
+}
+
+/* Small utility: ensure any element that might clip handles allows overflow visible */
+.allow-overflow {
+  overflow: visible !important;
+}
+.toolbar-color-picker {
   width: 32px;
-  height: 32px;
+  height: 22px;
   border: none;
-  background: #F5F5F5;
+  border-radius: 4px;
   cursor: pointer;
-  color: #666;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.2s ease;
+  padding: 0;
 }
 
-.canva-add-page-btn:hover,
-.canva-play-btn:hover {
-  background: #EBEBEB;
-  color: #1A1A1A;
+.page-image-active .resize-handle {
+  display: block; /* Assuming it's hidden by default in your CSS */
 }
 
-.canva-zoom-slider {
+.image-size-controls {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.canva-slider {
-  width: 120px;
-  height: 4px;
-  border-radius: 2px;
-  outline: none;
-  -webkit-appearance: none;
-  background: #E5E5E5;
-  cursor: pointer;
+.image-size-label {
+  white-space: nowrap;
 }
 
-.canva-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #EF4444;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+.image-size-range {
+  flex: 1;
+  max-width: 100px;
 }
-
-.canva-slider::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 3px 8px rgba(239, 68, 68, 0.4);
-}
-
-.canva-slider::-moz-range-thumb {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #EF4444;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s ease;
-}
-
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
-
-@media (max-width: 1200px) {
-  .canva-canvas-area {
-    left: 110px;
-    right: 110px;
-  }
-  
-  .canva-page {
-    transform: scale(0.9);
-  }
-}
-
-@media (max-width: 768px) {
-  .canva-left-panel {
-    width: 64px;
-    padding: 8px 0;
-  }
-  
-  .canva-tool-label {
-    fontSize: 9px;
-  }
-  
-  .canva-canvas-area {
-    left: 80px;
-    right: 80px;
-  }
-  
-  .canva-page {
-    transform: scale(0.7);
-    margin: 20px;
-  }
-  
-  .canva-top-center {
-    gap: 4px;
-  }
-  
-  .canva-format-btn,
-  .canva-icon-btn {
-    width: 28px;
-    height: 28px;
-    fontSize: 12px;
-  }
-}
-
-/* ========================================
-   UTILITY CLASSES
-   ======================================== */
-
-.canva-no-scroll {
-  overflow: hidden;
-}
-
-.canva-cursor-grab {
-  cursor: grab;
-}
-
-.canva-cursor-grabbing {
-  cursor: grabbing;
-}
-
-/* End of canva-editor.css */
+/* End of file */

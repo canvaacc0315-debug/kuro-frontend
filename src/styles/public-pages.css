@@ -148,7 +148,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 2rem;
-  background: #fff;
+  background: #000000;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(220, 38, 38, 0.1);
   position: fixed;

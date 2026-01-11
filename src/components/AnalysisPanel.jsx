@@ -145,10 +145,6 @@ export default function AnalysisPanel({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="welcome-title">
-        Welcome to <span className="brand-red">RovexAI</span>
-      </h1>
-
       <motion.div
         className="analysis-card"
         initial={{ opacity: 0, scale: 0.98 }}
@@ -184,13 +180,6 @@ export default function AnalysisPanel({
               </>
             )}
           </select>
-          <button
-            type="button"
-            className="upload-button"
-            onClick={() => fileInputRef.current.click()}
-          >
-            <span className="icon-upload">↑</span> Upload PDF
-          </button>
           <input
             type="file"
             accept=".pdf"
@@ -209,17 +198,6 @@ export default function AnalysisPanel({
               onChange={(e) => setTask(e.target.value)}
             >
               {TASK_OPTIONS.map((opt) => (
-                <option key={opt.id} value={opt.id}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            <select
-              className="select"
-              value={mode}
-              onChange={(e) => setMode(e.target.value)}
-            >
-              {MODE_OPTIONS.map((opt) => (
                 <option key={opt.id} value={opt.id}>
                   {opt.label}
                 </option>

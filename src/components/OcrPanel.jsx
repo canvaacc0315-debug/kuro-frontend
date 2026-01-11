@@ -1,6 +1,7 @@
 import { useState, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import jsPDF from "jspdf";
+import "/src/styles/ocr-override.css";
 // Note: Import the new CSS file in your parent component or via index.css
 // e.g., import './ocr-panel.css';
 
