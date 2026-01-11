@@ -203,12 +203,12 @@ body {
 
 .ocr-copy-btn {
   background: var(--white);
-  color: var(--dark-gray);
-  border: 1px solid var(--border-gray);
+  color: var(--red);
+  border: 1px solid var(--red);
 }
 
 .ocr-copy-btn:hover {
-  background: var(--light-gray);
+  background: rgba(239, 68, 68, 0.05);
   transform: scale(1.02);
 }
 
