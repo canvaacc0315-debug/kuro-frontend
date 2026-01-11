@@ -15,7 +15,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   const [viewedPdfId, setViewedPdfId] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  // Clear uploaded files on refresh too
+  // Clear uploaded files on refresh 
   useEffect(() => {
     onPdfsChange([]);
     localStorage.removeItem("rovex_uploaded_pdfs");
