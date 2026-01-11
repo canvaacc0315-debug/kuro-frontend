@@ -1,7 +1,10 @@
 // src/components/AnalysisPanel.jsx
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useApiClient } from "../api/client";
+import "/src/styles/analysis.css";
+// Note: Import the new CSS file in your parent component or via index.css
+// e.g., import './analysis-panel.css';
 
 const TASK_OPTIONS = [
   { id: "summary", label: "Summary" },
@@ -26,17 +29,17 @@ export default function AnalysisPanel({
   onPdfChange,         // callback: setSelectedPdfId
 }) {
   const { analysePdf } = useApiClient();
+  const fileInputRef = useRef(null);
 
   const [task, setTask] = useState("summary");
   const [mode, setMode] = useState("detailed");
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [saveStatus, setSaveStatus] = useState(""); // ✅ status for save / clear
+  const [saveStatus, setSaveStatus] = useState("");
 
   const safePdfs = Array.isArray(pdfs) ? pdfs : [];
 
-  // works with { id, name } or { pdf_id, filename }
   const selected = safePdfs.find(
     (p) => (p.id ?? p.pdf_id) === selectedPdfId
   );
@@ -62,7 +65,6 @@ export default function AnalysisPanel({
     }
   }
 
-  // small helper for file download
   function downloadTextFile(content, filename) {
     const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -75,14 +77,12 @@ export default function AnalysisPanel({
     URL.revokeObjectURL(url);
   }
 
-  // ✅ Save analysis (localStorage + download)
   function handleSaveAnalysis() {
     if (!result || !result.trim()) {
       setSaveStatus("Nothing to save – run an analysis first.");
       return;
     }
 
-    // 1) Save to localStorage (simple history)
     try {
       const key = "kuroAnalysisHistory";
       const raw = window.localStorage.getItem(key);
@@ -110,10 +110,8 @@ export default function AnalysisPanel({
       window.localStorage.setItem(key, JSON.stringify(history));
     } catch (e) {
       console.warn("Failed to save analysis to localStorage:", e);
-      // we still continue to file download
     }
 
-    // 2) Trigger a .txt download so user sees it immediately
     const baseName = selected?.name || selected?.filename || "analysis";
     const safeName = baseName.replace(/[^\w.-]+/g, "_");
     downloadTextFile(
@@ -124,59 +122,89 @@ export default function AnalysisPanel({
     setSaveStatus("Analysis saved.");
   }
 
-  // ✅ Clear current analysis
   function handleClearAnalysis() {
     setResult("");
     setError("");
     setSaveStatus("");
   }
 
+  // TODO: Implement actual PDF upload logic here (e.g., call uploadPdf from useApiClient and update pdfs via parent callback)
+  async function handleUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    // Example: const uploaded = await uploadPdf(file);
+    // onPdfChange(uploaded.id);
+    // Parent should update pdfs prop after upload.
+    console.log("Uploading PDF:", file.name); // Placeholder
+  }
+
   return (
-    <div className="analysis-panel">
-      {/* ---------- HEADER ---------- */}
-      <div className="analysis-header">
-        <div className="analysis-title-block">
-          <div className="analysis-label">ANALYSIS</div>
-          <div className="analysis-subtitle">
-            {selected
-              ? `Analysing: ${selected.name || selected.filename}`
-              : "Select a PDF from chat or upload tab"}
-          </div>
+    <motion.div
+      className="page-canvas"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h1 className="welcome-title">
+        Welcome to <span className="brand-red">RovexAI</span>
+      </h1>
+
+      <motion.div
+        className="analysis-card"
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3, delay: 0.2 }}
+      >
+        <div className="analysis-title">ANALYSIS</div>
+        <div className="analysis-subtitle">
+          Select a PDF from chat or upload tab
         </div>
 
-        <div className="analysis-controls">
-          {/* PDF DROPDOWN */}
-          <div className="analysis-control-group">
-            <label className="analysis-control-label">PDF</label>
-            <select
-              className="analysis-select"
-              value={selectedPdfId}
-              onChange={(e) => onPdfChange && onPdfChange(e.target.value)}
-              disabled={safePdfs.length === 0}
-            >
-              {safePdfs.length === 0 ? (
-                <option>No PDFs uploaded</option>
-              ) : (
-                <>
-                  <option value="">Select PDF…</option>
-                  {safePdfs.map((pdf) => (
-                    <option
-                      key={pdf.id ?? pdf.pdf_id}
-                      value={pdf.id ?? pdf.pdf_id}
-                    >
-                      {pdf.name || pdf.filename}
-                    </option>
-                  ))}
-                </>
-              )}
-            </select>
-          </div>
+        <label className="form-label">PDF</label>
+        <div className="pdf-input-group">
+          <select
+            className="pdf-select"
+            value={selectedPdfId}
+            onChange={(e) => onPdfChange && onPdfChange(e.target.value)}
+            disabled={safePdfs.length === 0}
+          >
+            {safePdfs.length === 0 ? (
+              <option>No PDFs uploaded yet</option>
+            ) : (
+              <>
+                <option value="">Select PDF…</option>
+                {safePdfs.map((pdf) => (
+                  <option
+                    key={pdf.id ?? pdf.pdf_id}
+                    value={pdf.id ?? pdf.pdf_id}
+                  >
+                    {pdf.name || pdf.filename}
+                  </option>
+                ))}
+              </>
+            )}
+          </select>
+          <button
+            type="button"
+            className="upload-button"
+            onClick={() => fileInputRef.current.click()}
+          >
+            <span className="icon-upload">↑</span> Upload PDF
+          </button>
+          <input
+            type="file"
+            accept=".pdf"
+            ref={fileInputRef}
+            hidden
+            onChange={handleUpload}
+          />
+        </div>
 
-          {/* TASK DROPDOWN */}
-          <div className="analysis-control-group">
-            <label className="analysis-control-label">Task</label>
+        <div className="task-group">
+          <label className="form-label">Task</label>
+          <div className="task-selects">
             <select
-              className="analysis-select"
+              className="select"
               value={task}
               onChange={(e) => setTask(e.target.value)}
             >
@@ -186,13 +214,8 @@ export default function AnalysisPanel({
                 </option>
               ))}
             </select>
-          </div>
-
-          {/* ANSWER STYLE DROPDOWN */}
-          <div className="analysis-control-group">
-            <label className="analysis-control-label">Answer style</label>
             <select
-              className="analysis-select"
+              className="select"
               value={mode}
               onChange={(e) => setMode(e.target.value)}
             >
@@ -203,74 +226,81 @@ export default function AnalysisPanel({
               ))}
             </select>
           </div>
+        </div>
 
-          {/* BUTTONS: GENERATE / SAVE / CLEAR */}
+        <div className="answer-style-group">
+          <label className="form-label">Answer Style</label>
+          <select
+            className="select"
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+          >
+            {MODE_OPTIONS.map((opt) => (
+              <option key={opt.id} value={opt.id}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="action-buttons">
           <button
             type="button"
-            className="analysis-generate-btn"
+            className="button generate-btn"
             onClick={runAnalysis}
             disabled={!selectedPdfId || loading}
           >
+            <span className="icon-lightbulb">💡</span>
             {loading ? "Running…" : "Generate"}
           </button>
 
           <button
             type="button"
-            className="analysis-generate-btn"
+            className="button save-btn"
             onClick={handleSaveAnalysis}
             disabled={!result || loading}
           >
-            💾 Save Analysis
+            <span className="icon-save">B</span> Save Analysis
           </button>
 
           <button
             type="button"
-            className="analysis-generate-btn"
+            className="button clear-btn"
             onClick={handleClearAnalysis}
             disabled={(!result && !error) || loading}
           >
-            🗑 Clear
+            <span className="icon-clear">🗑️</span> Clear
           </button>
         </div>
-      </div>
 
-      {/* ---------- RESULT CARD ---------- */}
-      <div className="analysis-result-card">
-        <div className="analysis-result-inner">
-          {/* small inline status for save/clear */}
-          {saveStatus && (
-            <div
-              style={{
-                fontSize: 12,
-                marginBottom: 8,
-                color: saveStatus.startsWith("Analysis")
-                  ? "#9be7ff"
-                  : "#ffb3b3",
-              }}
-            >
-              {saveStatus}
+        <div className="analysis-result-card">
+          <div className="analysis-result-inner">
+            {saveStatus && (
+              <div
+                className={`analysis-save-status ${saveStatus.startsWith("Analysis") ? "success" : ""}`}
+              >
+                {saveStatus}
+              </div>
+            )}
+
+            {error && <div className="analysis-error">{error}</div>}
+
+            {!error && !result && !loading && (
+              <div className="analysis-placeholder">
+                Choose a task (summary, flashcards, MCQs, etc.) and click Generate to see AI analysis here.
+              </div>
+            )}
+
+            <div className="analysis-result-scroll">
+              <AnimateTextBlock text={result} loading={loading} />
             </div>
-          )}
-
-          {error && <div className="analysis-error">{error}</div>}
-
-          {!error && !result && !loading && (
-            <div className="analysis-placeholder">
-              Choose a task (summary, flashcards, MCQs, etc.) and click{" "}
-              <span>Generate</span> to see AI analysis here.
-            </div>
-          )}
-
-          <div className="analysis-result-scroll">
-            <AnimateTextBlock text={result} loading={loading} />
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
-/* ---------- Animated result ---------- */
 function AnimateTextBlock({ text, loading }) {
   if (loading) {
     return (

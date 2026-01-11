@@ -1,0 +1,333 @@
+/* analysis-panel.css */
+
+:root {
+  --red: #EF4444;
+  --white: #FFFFFF;
+  --light-gray: #F3F4F6;
+  --medium-gray: #9CA3AF;
+  --dark-gray: #6B7280;
+  --text-gray: #374151;
+  --border-gray: #E5E7EB;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: var(--white);
+  color: var(--text-gray);
+}
+
+.page-canvas {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 60px 20px;
+}
+
+.welcome-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+
+.brand-red {
+  color: var(--red);
+}
+
+.analysis-card {
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  width: 100%;
+  max-width: 600px;
+  transition: box-shadow 0.3s ease;
+}
+
+.analysis-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+.analysis-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--dark-gray);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--light-gray);
+  padding-bottom: 8px;
+}
+
+.analysis-subtitle {
+  font-size: 14px;
+  color: var(--medium-gray);
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-gray);
+  margin-bottom: 8px;
+}
+
+.pdf-input-group {
+  display: flex;
+  margin-bottom: 24px;
+}
+
+.pdf-select {
+  flex: 1;
+  background: var(--light-gray);
+  border: 1px solid var(--border-gray);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--dark-gray);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  transition: border-color 0.2s ease;
+}
+
+.pdf-select:focus {
+  border-color: var(--red);
+  outline: none;
+}
+
+.pdf-select:disabled {
+  color: var(--medium-gray);
+}
+
+.upload-button {
+  display: flex;
+  align-items: center;
+  background: var(--red);
+  color: var(--white);
+  border: none;
+  border-radius: 0 8px 8px 0;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.upload-button:hover {
+  background: #DC2626;
+  transform: scale(1.02);
+}
+
+.upload-button:active {
+  transform: scale(0.98);
+}
+
+.icon-upload {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.task-group,
+.answer-style-group {
+  margin-bottom: 24px;
+}
+
+.task-selects {
+  display: flex;
+  gap: 8px;
+}
+
+.select {
+  flex: 1;
+  background: var(--light-gray);
+  border: 1px solid var(--border-gray);
+  border-radius: 8px;
+  padding: 12px 32px 12px 16px;
+  font-size: 14px;
+  color: var(--dark-gray);
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  outline: none;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.generate-btn {
+  background: var(--red);
+  color: var(--white);
+  border: none;
+}
+
+.generate-btn:hover {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+  transform: scale(1.02);
+}
+
+.generate-btn:active {
+  transform: scale(0.98);
+}
+
+.save-btn {
+  background: var(--white);
+  color: var(--red);
+  border: 1px solid var(--red);
+}
+
+.save-btn:hover {
+  background: rgba(239, 68, 68, 0.05);
+  transform: scale(1.02);
+}
+
+.save-btn:active {
+  transform: scale(0.98);
+}
+
+.clear-btn {
+  background: var(--white);
+  color: var(--dark-gray);
+  border: 1px solid var(--border-gray);
+}
+
+.clear-btn:hover {
+  background: var(--light-gray);
+  transform: scale(1.02);
+}
+
+.clear-btn:active {
+  transform: scale(0.98);
+}
+
+.icon-lightbulb,
+.icon-save {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  background: var(--red);
+  color: var(--white);
+}
+
+.icon-lightbulb {
+  border-radius: 50%;
+}
+
+.icon-save {
+  border-radius: 4px;
+}
+
+.icon-clear {
+  margin-right: 8px;
+  font-size: 16px;
+  color: var(--medium-gray);
+}
+
+.analysis-placeholder {
+  font-size: 14px;
+  color: var(--medium-gray);
+  text-align: left;
+  margin-top: 16px;
+}
+
+.analysis-result-card {
+  margin-top: 16px;
+}
+
+.analysis-result-inner {
+  padding: 16px;
+  background: var(--light-gray);
+  border-radius: 8px;
+}
+
+.analysis-result-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.analysis-result-text {
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.analysis-error {
+  color: var(--red);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.analysis-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.analysis-skeleton div {
+  height: 16px;
+  background: var(--border-gray);
+  border-radius: 4px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.analysis-skeleton div:nth-child(1) { width: 80%; }
+.analysis-skeleton div:nth-child(2) { width: 60%; }
+.analysis-skeleton div:nth-child(3) { width: 90%; }
+.analysis-skeleton div:nth-child(4) { width: 70%; }
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.3; }
+  100% { opacity: 0.6; }
+}
+
+.analysis-save-status {
+  font-size: 12px;
+  margin-bottom: 8px;
+  color: var(--medium-gray);
+}
+
+.analysis-save-status.success {
+  color: var(--red);
+}
