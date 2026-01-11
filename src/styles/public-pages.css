@@ -141,7 +141,6 @@ body {
     transform: translateY(0);
   }
 }
-
 /* HEADER */
 .home-header {
   display: flex;
@@ -162,7 +161,8 @@ body {
 .home-header.scrolled {
   padding: 0.8rem 2rem;
   box-shadow: 0 4px 20px rgba(220, 38, 38, 0.1);
-  background: #fff;
+  background: #000;
+  box-shadow: none;
 }
 
 .logo-container {
@@ -199,8 +199,8 @@ body {
 }
 
 .logo-ai {
-  color: #000;
-  -webkit-text-fill-color: #000;
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
 }
 
 .nav {
@@ -210,7 +210,7 @@ body {
 }
 
 .nav-link {
-  color: #000;
+  color: #ffffff;
   text-decoration: none;
   font-weight: 500;
   position: relative;
@@ -220,6 +220,9 @@ body {
 
 .nav-link:hover {
   color: #dc2626;
+}
+.nav-link:active {
+  color: #ffffff;
 }
 
 .nav-link::after {
