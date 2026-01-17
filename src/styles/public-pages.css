@@ -31,11 +31,11 @@
   gap: 48px; /* Increased gap for more separation */
   justify-content: center;
   flex-wrap: wrap;
-  background: none !important; /* Remove any background */
-  border: none !important; /* Remove any border */
-  box-shadow: none !important; /* Remove any shadow */
-  border-radius: 0 !important; /* Remove any rounding */
-  padding: 0 !important; /* Remove any padding that might create a frame appearance */
+  background: none  ; /* Remove any background */
+  border: none  ; /* Remove any border */
+  box-shadow: none  ; /* Remove any shadow */
+  border-radius: 0  ; /* Remove any rounding */
+  padding: 0  ; /* Remove any padding that might create a frame appearance */
 }
 
 /* BUTTONS */
