@@ -15,7 +15,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   const [viewedPdfId, setViewedPdfId] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
 
-  // Cleanup viewedPdfUrl on unmount
+  // Cleanup viewedPdfUrl on unmount or when changing viewed PDF
   useEffect(() => {
     return () => {
       if (viewedPdfUrl) {
@@ -23,8 +23,6 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       }
     };
   }, [viewedPdfUrl]);
-
-  // Removed the clearing useEffect—move to app-level if needed for true page refreshes
 
   async function handleFiles(files) {
     if (!files || files.length === 0) return;
@@ -93,7 +91,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
               onPdfsChange((prev) =>
                 prev.map((p) => {
                   if (p.uid === uid) {
-                    // Revoke local URL and clear it after upload
+                    // Revoke local URL after successful upload
                     if (p.url) {
                       URL.revokeObjectURL(p.url);
                     }
@@ -103,7 +101,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
                       backendId: info.pdf_id,
                       name: info.filename,
                       status: info.status || "Processing",
-                      url: null, // Clear local URL
+                      url: null, // No longer needed
                     };
                   }
                   return p;
@@ -111,8 +109,9 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
               );
             });
 
+            // Auto-select first uploaded PDF if the list was previously empty
             if (pdfs.length === 0 && backendPdfs.length > 0) {
-              onSelectPdf(backendPdfs[0].id || backendPdfs[0]._id);
+              onSelectPdf(backendPdfs[0].pdf_id);
             }
           } catch (err) {
             console.error(err);
@@ -155,13 +154,14 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
 
   async function handleView(pdf) {
     try {
+      // Always clean up previous viewer URL
       if (viewedPdfUrl) {
         URL.revokeObjectURL(viewedPdfUrl);
       }
 
       let url;
 
-      // Prefer backend fetch if uploaded (backendId exists)
+      // Always fetch from backend if we have backendId (preferred & stable)
       if (pdf.backendId) {
         const token = await getToken();
         const res = await fetch(`${API_BASE}/api/pdf/view/${pdf.backendId}`, {
@@ -170,12 +170,12 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
           },
         });
 
-        if (!res.ok) throw new Error("Failed to fetch PDF");
+        if (!res.ok) throw new Error("Failed to fetch PDF from server");
 
         const blob = await res.blob();
         url = URL.createObjectURL(blob);
       } else if (pdf.url) {
-        // Fallback to local only during upload
+        // Only use local blob during initial upload (before backend confirmation)
         url = pdf.url;
       } else {
         throw new Error("No PDF source available");
@@ -292,7 +292,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
               <button
                 className="view-button"
                 onClick={() => handleView(pdf)}
-                disabled={pdf.status === "Uploading" || pdf.status === "Processing"} // Optional: Disable during interim states
+                disabled={pdf.status === "Uploading" || pdf.status === "Processing"}
               >
                 View
               </button>
