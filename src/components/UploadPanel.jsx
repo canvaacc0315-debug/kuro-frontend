@@ -24,6 +24,43 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
     };
   }, [viewedPdfUrl]);
 
+  // Load existing PDFs from backend on component mount
+  useEffect(() => {
+    async function loadExistingPdfs() {
+      try {
+        const token = await getToken();
+        const res = await fetch(`${API_BASE}/api/pdf/list`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const backendPdfs = data?.pdfs || [];
+          onPdfsChange(
+            backendPdfs.map((pdf) => ({
+              uid: crypto.randomUUID(),
+              backendId: pdf.pdf_id,
+              name: pdf.filename,
+              sizeMB: pdf.size_mb ? pdf.size_mb.toFixed(2) : null, // Assume backend provides size_mb or calculate if needed
+              status: pdf.status || "Ready",
+              url: null,
+            }))
+          );
+        } else {
+          console.error("Failed to load existing PDFs");
+        }
+      } catch (err) {
+        console.error("Error loading PDFs:", err);
+      }
+    }
+
+    if (pdfs.length === 0) {
+      loadExistingPdfs();
+    }
+  }, [getToken, onPdfsChange]); // Run once on mount if no PDFs
+
   // Polling for status updates (every 5 seconds if there are processing PDFs)
   useEffect(() => {
     const pollInterval = 5000; // 5 seconds
@@ -36,40 +73,33 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
 
       try {
         const token = await getToken();
-        const res = await fetch(`${API_BASE}/api/pdf/list`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
 
-        if (res.ok) {
-          const data = await res.json();
-          const backendPdfs = data?.pdfs || [];
+        for (const pdf of processingPdfs) {
+          const res = await fetch(`${API_BASE}/api/pdf/${pdf.backendId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
 
-          onPdfsChange((prev) =>
-            prev.map((p) => {
-              if (p.backendId) {
-                const updated = backendPdfs.find(
-                  (u) => u.pdf_id === p.backendId
-                );
-                if (updated) {
-                  return {
-                    ...p,
-                    status: updated.status,
-                    // Update other fields if needed, e.g., sizeMB, name
-                  };
-                }
-              }
-              return p;
-            })
-          );
+          if (res.ok) {
+            const updatedPdf = await res.json();
+            if (updatedPdf.status && updatedPdf.status !== pdf.status) {
+              onPdfsChange((prev) =>
+                prev.map((p) =>
+                  p.backendId === pdf.backendId
+                    ? { ...p, status: updatedPdf.status }
+                    : p
+                )
+              );
+            }
+          }
         }
       } catch (err) {
         console.error("Status polling error:", err);
       }
     };
 
-    // Initial poll on mount if there are processing PDFs
+    // Initial poll
     pollStatuses();
 
     const interval = setInterval(pollStatuses, pollInterval);
@@ -343,7 +373,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
               <button
                 className="view-button"
                 onClick={() => handleView(pdf)}
-                disabled={pdf.status === "Uploading" || pdf.status === "Processing"}
+                disabled={pdf.status !== "Ready"}
               >
                 View
               </button>
