@@ -31,7 +31,8 @@ export default function Contact() {
         <div className="feature-card">
           <span>✉️</span>
           <h3>Email</h3>
-          <p>RovexAi.HelpDesk@2025</p>
+          <p>RovexAi.HelpDesk</p>
+          <p>@2025@gmail.com</p>
         </div>
 
         <div className="feature-card">
