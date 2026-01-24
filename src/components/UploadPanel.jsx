@@ -24,6 +24,59 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
     };
   }, [viewedPdfUrl]);
 
+  // Polling for status updates (every 5 seconds if there are processing PDFs)
+  useEffect(() => {
+    const pollInterval = 5000; // 5 seconds
+
+    const pollStatuses = async () => {
+      const processingPdfs = pdfs.filter(
+        (p) => p.status === "Processing" && p.backendId
+      );
+      if (processingPdfs.length === 0) return;
+
+      try {
+        const token = await getToken();
+        const res = await fetch(`${API_BASE}/api/pdf/list`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const backendPdfs = data?.pdfs || [];
+
+          onPdfsChange((prev) =>
+            prev.map((p) => {
+              if (p.backendId) {
+                const updated = backendPdfs.find(
+                  (u) => u.pdf_id === p.backendId
+                );
+                if (updated) {
+                  return {
+                    ...p,
+                    status: updated.status,
+                    // Update other fields if needed, e.g., sizeMB, name
+                  };
+                }
+              }
+              return p;
+            })
+          );
+        }
+      } catch (err) {
+        console.error("Status polling error:", err);
+      }
+    };
+
+    // Initial poll on mount if there are processing PDFs
+    pollStatuses();
+
+    const interval = setInterval(pollStatuses, pollInterval);
+
+    return () => clearInterval(interval);
+  }, [pdfs, getToken, onPdfsChange]);
+
   async function handleFiles(files) {
     if (!files || files.length === 0) return;
 
@@ -63,9 +116,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
 
       xhr.upload.onprogress = (event) => {
         if (event.lengthComputable) {
-          const percent = Math.round(
-            (event.loaded / event.total) * 100
-          );
+          const percent = Math.round((event.loaded / event.total) * 100);
           setUploadProgress(percent);
         }
       };
