@@ -14,6 +14,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   const [viewedPdfUrl, setViewedPdfUrl] = useState(null);
   const [viewedPdfId, setViewedPdfId] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [isViewingLoading, setIsViewingLoading] = useState(false);
 
   // Cleanup viewedPdfUrl on unmount or when changing viewed PDF
   useEffect(() => {
@@ -234,6 +235,9 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   }
 
   async function handleView(pdf) {
+    setError(""); // Clear previous errors
+    setIsViewingLoading(true);
+
     try {
       // Always clean up previous viewer URL
       if (viewedPdfUrl) {
@@ -242,7 +246,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
 
       let url;
 
-      // Always fetch from backend if we have backendId (preferred & stable)
+      // Prefer backend if backendId exists
       if (pdf.backendId) {
         const token = await getToken();
         const res = await fetch(`${API_BASE}/api/pdf/view/${pdf.backendId}`, {
@@ -251,12 +255,19 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
           },
         });
 
-        if (!res.ok) throw new Error("Failed to fetch PDF from server");
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          throw new Error(errorData.error || `Failed to fetch PDF (status: ${res.status})`);
+        }
+
+        if (res.headers.get("Content-Type") !== "application/pdf") {
+          throw new Error("Invalid content type from server");
+        }
 
         const blob = await res.blob();
         url = URL.createObjectURL(blob);
       } else if (pdf.url) {
-        // Only use local blob during initial upload (before backend confirmation)
+        // Fallback to local blob (e.g., during upload)
         url = pdf.url;
       } else {
         throw new Error("No PDF source available");
@@ -265,12 +276,38 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       setViewedPdfUrl(url);
       setViewedPdfId(pdf.uid);
     } catch (err) {
-      console.error(err);
+      console.error("View error:", err);
       setError(err.message || "Failed to view PDF");
+      setViewedPdfUrl(null);
+      setViewedPdfId(null);
+    } finally {
+      setIsViewingLoading(false);
     }
   }
 
-  function handleRemove(pdf) {
+  async function handleRemove(pdf) {
+    if (pdf.backendId) {
+      try {
+        const token = await getToken();
+        const res = await fetch(`${API_BASE}/api/pdf/${pdf.backendId}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          throw new Error(errorData.error || "Failed to delete PDF from server");
+        }
+      } catch (err) {
+        console.error("Delete error:", err);
+        setError(err.message || "Failed to delete PDF");
+        return; // Don't remove locally if backend delete fails
+      }
+    }
+
+    // Proceed with local cleanup
     if (pdf?.url) {
       URL.revokeObjectURL(pdf.url);
     }
@@ -373,7 +410,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
               <button
                 className="view-button"
                 onClick={() => handleView(pdf)}
-                disabled={pdf.status !== "Ready"}
+                disabled={!pdf.backendId && !pdf.url}
               >
                 View
               </button>
@@ -407,11 +444,15 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
             </button>
           </div>
 
-          <iframe
-            src={viewedPdfUrl}
-            className="pdf-iframe"
-            title="PDF Viewer"
-          />
+          {isViewingLoading ? (
+            <div className="loading-spinner">Loading PDF...</div>
+          ) : (
+            <iframe
+              src={viewedPdfUrl}
+              className="pdf-iframe"
+              title="PDF Viewer"
+            />
+          )}
         </div>
       )}
     </div>
