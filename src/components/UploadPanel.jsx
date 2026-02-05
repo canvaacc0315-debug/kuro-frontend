@@ -6,7 +6,7 @@ import "/src/styles/uploadpdf.css";
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
-export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
+export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId }) {
   const { getToken } = useAuth();
   const { user } = useUser(); // ✅ FIX 1 Step 1: Get user
   const userId = user?.id; // ✅ FIX 1 Step 1: Extract userId
@@ -155,6 +155,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       pdfsToUpload.forEach((file) => {
         formData.append("files", file);
       });
+      formData.append("session_id", sessionId);
 
       const xhr = new XMLHttpRequest();
       xhr.open("POST", `${API_BASE}/api/pdf/upload`, true);
@@ -352,6 +353,15 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
     setDragOver(false);
     handleFiles(Array.from(e.dataTransfer.files || []));
   }
+
+  useEffect(() => {
+  return () => {
+    navigator.sendBeacon(
+      `${API_BASE}/api/session/end`,
+      JSON.stringify({ session_id: sessionId })
+    );
+  };
+}, [sessionId]);
 
   return (
     <div className="upload-panel-container">

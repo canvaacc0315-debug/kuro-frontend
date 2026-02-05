@@ -13,8 +13,6 @@ import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel"; // ✅ Import the redesigned UploadPanel
 import FixedChatInput from "../components/FixedChatInput";
-
-
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 export default function KuroWorkspacePage() {
@@ -166,6 +164,7 @@ export default function KuroWorkspacePage() {
           question: text,
           mode,
           pdfId: selectedFile?.backendId || null,
+          sessionId: sessionId,
         }),
       });
       if (!res.ok) {
@@ -406,10 +405,10 @@ export default function KuroWorkspacePage() {
     };
     // Immediate scroll
     scrollToBottom();
-  
+ 
     // Delayed scroll to catch any late-rendering content
     const timeoutId = setTimeout(scrollToBottom, 100);
-  
+ 
     return () => clearTimeout(timeoutId);
   }, [conversation]);
   // UI CHANGE: Added scrolled state and useEffect for scroll listener to match provided snippet.
@@ -452,6 +451,26 @@ export default function KuroWorkspacePage() {
     window.addEventListener("resize", updatePadding);
     return () => window.removeEventListener("resize", updatePadding);
   }, []);
+  const [sessionId, setSessionId] = useState(null);
+
+useEffect(() => {
+  async function startSession() {
+    const res = await fetch(`${API_BASE}/api/session/start`, {
+      method: "POST",
+    });
+    const data = await res.json();
+    setSessionId(data.session_id);
+  }
+  startSession();
+}, []);
+useEffect(() => {
+  return () => {
+    navigator.sendBeacon(
+      `${API_BASE}/api/session/end`,
+      JSON.stringify({ session_id: sessionId })
+    );
+  };
+}, [sessionId]);
   return (
     <RovexProvider>
     <InstructionModal />
@@ -550,6 +569,7 @@ export default function KuroWorkspacePage() {
             className={`tab-content ${activeTab === "upload" ? "active" : ""}`}
           >
             <UploadPanel
+              sessionId={sessionId}
               pdfs={uploadedFiles}
               onPdfsChange={setUploadedFiles}
               onSelectPdf={setSelectedPdfId}
@@ -1519,6 +1539,7 @@ export default function KuroWorkspacePage() {
             }`}
           >
             <AnalysisPanel
+              sessionId={sessionId}
               pdfs={uploadedFiles}
               selectedPdfId={selectedPdfId}
               onPdfChange={setSelectedPdfId} // 👈 prop name so dropdown works
@@ -1529,7 +1550,7 @@ export default function KuroWorkspacePage() {
             id="ocrTab"
             className={`tab-content ${activeTab === "ocr" ? "active" : ""}`}
           >
-            <OcrPanel />
+            <OcrPanel sessionId={sessionId} />
           </section>
           {/* CREATE & EDIT TAB → uses PdfDesignCanvas */}
           <section
