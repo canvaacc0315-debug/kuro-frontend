@@ -1,6 +1,6 @@
 // frontend/src/components/UploadPanel.jsx
 import { useState, useEffect } from "react";
-import { useAuth } from "@clerk/clerk-react";
+import { useAuth, useUser } from "@clerk/clerk-react"; // ✅ FIX: Import useUser
 import "/src/styles/uploadpdf.css";
 
 const API_BASE =
@@ -8,6 +8,8 @@ const API_BASE =
 
 export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   const { getToken } = useAuth();
+  const { user } = useUser(); // ✅ FIX 1 Step 1: Get user
+  const userId = user?.id; // ✅ FIX 1 Step 1: Extract userId
 
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState("");
@@ -15,6 +17,11 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   const [viewedPdfId, setViewedPdfId] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isViewingLoading, setIsViewingLoading] = useState(false);
+
+  // ✅ FIX 3: Clear PDFs when user changes (logout/login)
+  useEffect(() => {
+    onPdfsChange([]); // clear previous user's PDFs
+  }, [userId]);
 
   // Cleanup viewedPdfUrl on unmount or when changing viewed PDF
   useEffect(() => {
@@ -28,6 +35,9 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
   // Load existing PDFs from backend on component mount
   useEffect(() => {
     async function loadExistingPdfs() {
+      // ✅ FIX: Don't load if no user is logged in
+      if (!userId) return;
+
       try {
         const token = await getToken();
         const res = await fetch(`${API_BASE}/api/pdf/list`, {
@@ -39,14 +49,16 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
         if (res.ok) {
           const data = await res.json();
           const backendPdfs = data?.pdfs || [];
+          // ✅ FIX 1 Step 2: Add ownerId when loading from backend
           onPdfsChange(
             backendPdfs.map((pdf) => ({
               uid: crypto.randomUUID(),
               backendId: pdf.pdf_id,
               name: pdf.filename,
-              sizeMB: pdf.size_mb ? pdf.size_mb.toFixed(2) : null, // Assume backend provides size_mb or calculate if needed
+              sizeMB: pdf.size_mb ? pdf.size_mb.toFixed(2) : null,
               status: pdf.status || "Ready",
               url: null,
+              ownerId: userId, // ✅ ADD
             }))
           );
         } else {
@@ -57,18 +69,20 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       }
     }
 
-    if (pdfs.length === 0) {
+    // ✅ FIX: Only load if we have a userId and no PDFs
+    if (userId && pdfs.length === 0) {
       loadExistingPdfs();
     }
-  }, [getToken, onPdfsChange]); // Run once on mount if no PDFs
+  }, [getToken, onPdfsChange, userId]); // ✅ FIX: Add userId to dependencies
 
   // Polling for status updates (every 5 seconds if there are processing PDFs)
   useEffect(() => {
     const pollInterval = 5000; // 5 seconds
 
     const pollStatuses = async () => {
+      // ✅ FIX: Only poll PDFs belonging to current user
       const processingPdfs = pdfs.filter(
-        (p) => p.status === "Processing" && p.backendId
+        (p) => p.status === "Processing" && p.backendId && p.ownerId === userId
       );
       if (processingPdfs.length === 0) return;
 
@@ -106,7 +120,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
     const interval = setInterval(pollStatuses, pollInterval);
 
     return () => clearInterval(interval);
-  }, [pdfs, getToken, onPdfsChange]);
+  }, [pdfs, getToken, onPdfsChange, userId]); // ✅ FIX: Add userId to dependencies
 
   async function handleFiles(files) {
     if (!files || files.length === 0) return;
@@ -116,7 +130,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
     );
     if (!pdfsToUpload.length) return;
 
-    // Optimistic update: Add temporary PDFs to the list
+    // ✅ FIX 1 Step 3: Add ownerId to optimistic uploads
     const optimisticPdfs = pdfsToUpload.map((file) => ({
       uid: crypto.randomUUID(),
       backendId: null,
@@ -124,6 +138,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       sizeMB: (file.size / 1024 / 1024).toFixed(2),
       url: URL.createObjectURL(file),
       status: "Uploading",
+      ownerId: userId, // ✅ ADD
     }));
 
     const uploadedUids = optimisticPdfs.map((p) => p.uid);
@@ -184,6 +199,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
                       name: info.filename,
                       status: info.status || "Processing",
                       url: null, // No longer needed
+                      // ownerId is preserved from the optimistic object
                     };
                   }
                   return p;
@@ -192,7 +208,9 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
             });
 
             // Auto-select first uploaded PDF if the list was previously empty
-            if (pdfs.length === 0 && backendPdfs.length > 0) {
+            // ✅ FIX: Only count current user's PDFs
+            const currentUserPdfs = pdfs.filter(p => p.ownerId === userId);
+            if (currentUserPdfs.length === 0 && backendPdfs.length > 0) {
               onSelectPdf(backendPdfs[0].pdf_id);
             }
           } catch (err) {
@@ -337,7 +355,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
 
   return (
     <div className="upload-panel-container">
-      <h1 className="welcome-title">“Your PDF's now have a brain.”</h1>
+      <h1 className="welcome-title">"Your PDF's now have a brain."</h1>
 
       <div
         className={`upload-section ${dragOver ? "drag-over" : ""}`}
@@ -387,7 +405,10 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf }) {
       <div className="files-section">
         <h3 className="files-title">Uploaded Files</h3>
         <ul className="files-list">
-          {pdfs.map((pdf) => (
+          {/* ✅ FIX 2: FILTER PDFs by ownerId when rendering */}
+          {pdfs
+            .filter((pdf) => pdf.ownerId === userId)
+            .map((pdf) => (
             <li key={pdf.uid} className="file-row">
               <div className="pdf-icon">📄</div>
 
