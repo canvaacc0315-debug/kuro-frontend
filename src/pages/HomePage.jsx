@@ -2,9 +2,8 @@ import { SignedIn, SignedOut } from "@clerk/clerk-react";
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import "../styles/homepage.css";
-import logoIcon from "../assets/logo.svg"; // Add your logo image
+import logoIcon from "../assets/logo.svg";
 
-// Import icons for features - you can use react-icons or your own SVG
 import { 
   FaShieldAlt, FaDna, FaChartLine,
   FaDatabase, FaWifi, FaVideo
@@ -14,6 +13,7 @@ export default function HomePage() {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const footerRef = useRef(null);
+  const statsRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,6 +45,38 @@ export default function HomePage() {
         observer.unobserve(footerRef.current);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+      const target = parseFloat(counter.getAttribute('data-target'));
+      const isDecimal = target % 1 !== 0;
+      const duration = 2000;
+      const increment = target / (duration / 16);
+      let current = 0;
+      
+      const updateCounter = () => {
+        current += increment;
+        if (current < target) {
+          counter.innerText = isDecimal ? current.toFixed(1) : Math.ceil(current);
+          requestAnimationFrame(updateCounter);
+        } else {
+          counter.innerText = target;
+        }
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            updateCounter();
+            observer.unobserve(counter);
+          }
+        });
+      });
+      
+      observer.observe(counter);
+    });
   }, []);
 
   const features = [
@@ -105,6 +137,11 @@ export default function HomePage() {
 
   return (
     <div className="home-root">
+      {/* Animated Background Grid */}
+      <div className="bg-grid"></div>
+      <div className="blob blob-1"></div>
+      <div className="blob blob-2"></div>
+
       {/* HEADER */}
       <header className={`home-header ${scrolled ? "scrolled" : ""}`}>
         <div className="logo-container" onClick={() => navigate("/")}>
@@ -116,15 +153,15 @@ export default function HomePage() {
         </div>
 
         <nav className="nav">
-          <a href="#features" className="nav-link">Features</a>
-          <a href="#how-it-works" className="nav-link">How it Works</a>
-          <a href="https://rovexai.com/contact" className="nav-link">Contact</a>
+          <a href="#features" className="nav-link magnetic-text">Features</a>
+          <a href="#how-it-works" className="nav-link magnetic-text">How it Works</a>
+          <a href="https://rovexai.com/contact" className="nav-link magnetic-text">Contact</a>
 
           <SignedOut>
-            <button onClick={() => navigate("/login")} className="btn-outline">
+            <button onClick={() => navigate("/login")} className="btn-outline magnetic-btn">
               Login
             </button>
-            <button onClick={() => navigate("/sign-up")} className="btn-primary btn-glow">
+            <button onClick={() => navigate("/sign-up")} className="btn-primary btn-glow magnetic-btn">
               Sign Up
             </button>
           </SignedOut>
@@ -132,7 +169,7 @@ export default function HomePage() {
           <SignedIn>
             <button
               onClick={() => navigate("/dashboard")}
-              className="btn-primary btn-glow"
+              className="btn-primary btn-glow magnetic-btn"
             >
               Go to Dashboard
             </button>
@@ -144,6 +181,11 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero-content">
           <div className="hero-text animate-fade-up">
+            <div className="hero-badge">
+              <span className="pulse-dot"></span>
+              Now with Real-time Collaboration
+            </div>
+            
             <h1 className="hero-title">
               <span className="hero-gradient">RovexAI</span>
               <br />
@@ -156,46 +198,67 @@ export default function HomePage() {
 
             <div className="hero-actions">
               <button
-                className="btn-primary btn-glow btn-scale"
+                className="btn-primary btn-glow btn-scale magnetic-btn"
                 onClick={() => navigate("/sign-up")}
               >
                 Get Started 
+                <svg className="btn-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
               </button>
             </div>
 
-            <div className="hero-stats">
+            <div className="hero-stats" ref={statsRef}>
               <div className="stat-item">
-                <span className="stat-number">10+</span>
-                <span className="stat-label">Users</span>
+                <span className="stat-number counter" data-target="10">0</span>
+                <span className="stat-label">K+ Users</span>
               </div>
               <div className="stat-item">
-                <span className="stat-number">99.9%</span>
-                <span className="stat-label">Uptime</span>
+                <span className="stat-number counter" data-target="99.9">0</span>
+                <span className="stat-label">% Uptime</span>
               </div>
               <div className="stat-item">
-                <span className="stat-number">1k+</span>
-                <span className="stat-label">Documents Uploaded</span>
+                <span className="stat-number counter" data-target="1000">0</span>
+                <span className="stat-label">K+ Documents</span>
               </div>
             </div>
           </div>
           
           <div className="hero-image-container animate-fade-in">
+            <div className="hero-image-glow"></div>
             <img 
               src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/52610479-8cff-42ba-a59b-41559658dfb7.png"
               alt="AI PDF Analysis Interface" 
               className="hero-image"
             />
-            <div className="floating-element floating-1"></div>
-            <div className="floating-element floating-2"></div>
-            <div className="floating-element floating-3"></div>
+            <div className="floating-card card-1">
+              <div className="floating-icon">✓</div>
+              <div>
+                <div className="floating-title">Analysis Complete</div>
+                <div className="floating-subtitle">98% Accuracy</div>
+              </div>
+            </div>
+            <div className="floating-card card-2">
+              <div className="floating-icon">📄</div>
+              <div>
+                <div className="floating-title">Documents</div>
+                <div className="floating-subtitle">1,240 Processed</div>
+              </div>
+            </div>
           </div>
+        </div>
+        
+        <div className="scroll-indicator">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+          </svg>
         </div>
       </section>
 
       {/* HOW IT WORKS */}
       <section className="how-it-works" id="how-it-works">
         <div className="section-header animate-fade-up">
-          <h2>How RovexAI Works</h2>
+          <h2>How It <span className="text-red">Works</span></h2>
           <p className="subtitle">
             RovexAI combines advanced AI with intuitive design to make document processing effortless.
           </p>
@@ -203,15 +266,15 @@ export default function HomePage() {
         
         <div className="steps-grid">
           {howItWorks.map((step, index) => (
-            <Step key={index} {...step} delay={`${index * 0.1}s`} />
+            <Step key={index} {...step} delay={`${index * 0.1}s`} index={index} />
           ))}
         </div>
       </section>
 
-      {/* FEATURES - Red Cards from your screenshot */}
+      {/* FEATURES */}
       <section className="features" id="features">
         <div className="section-header animate-fade-up">
-          <h2>Powerful Features</h2>
+          <h2>Powerful <span className="text-red">Features</span></h2>
           <p>Everything you need to work with PDFs intelligently</p>
         </div>
 
@@ -231,10 +294,11 @@ export default function HomePage() {
       {/* CTA SECTION */}
       <section className="cta-section">
         <div className="cta-content animate-fade-up">
+          <div className="cta-glow"></div>
           <h2>Ready to Transform Your PDF Workflow?</h2>
           <p>Join to save hours every week with RovexAI</p>
           <button
-            className="btn-primary btn-glow btn-scale"
+            className="btn-primary btn-glow btn-scale magnetic-btn pulse-ring"
             onClick={() => navigate("/sign-up")}
           >
             Get Started Now
@@ -245,8 +309,7 @@ export default function HomePage() {
       {/* FOOTER */}
       <footer ref={footerRef} className="footer">
         <div className="footer-content">
-          {/* LEFT: Brand */}
-          <div className="footer-section">
+          <div className="footer-section brand-section">
             <div className="logo-container" onClick={() => navigate("/")}>
               <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
               <span className="logo-text">
@@ -259,14 +322,12 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* PRODUCT */}
           <div className="footer-section">
             <h4>Product</h4>
             <a href="#features" className="footer-link">Features</a>
             <a href="#how-it-works" className="footer-link">Working</a>
           </div>
 
-          {/* COMPANY */}
           <div className="footer-section">
             <h4>Company</h4>
             <button onClick={() => navigate("/about")} className="footer-link">
@@ -277,7 +338,6 @@ export default function HomePage() {
             </button>
           </div>
 
-          {/* LEGAL */}
           <div className="footer-section">
             <h4>Legal</h4>
             <button
@@ -297,27 +357,28 @@ export default function HomePage() {
   );
 }
 
-// Feature Card Component (Red cards from your screenshot)
 function FeatureCard({ icon, title, description, delay }) {
   return (
     <div 
-      className="feature-card animate-fade-up"
+      className="feature-card tilt-card animate-fade-up"
       style={{ animationDelay: delay }}
     >
-      <div className="feature-icon-red">
-        {icon}
+      <div className="tilt-content">
+        <div className="feature-icon-red">
+          {icon}
+        </div>
+        <h3>{title}</h3>
+        <p>{description}</p>
       </div>
-      <h3>{title}</h3>
-      <p>{description}</p>
     </div>
   );
 }
 
-function Step({ number, title, description, delay }) {
+function Step({ number, title, description, delay, index }) {
   return (
     <div 
-      className="step-card animate-fade-up"
-      style={{ animationDelay: delay }}
+      className="step-card spotlight animate-fade-up"
+      style={{ animationDelay: delay, marginTop: index % 2 === 1 ? '2rem' : '0' }}
     >
       <div className="step-number-red">{number}</div>
       <h3>{title}</h3>
