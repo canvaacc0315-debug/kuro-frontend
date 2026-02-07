@@ -1,15 +1,14 @@
 // frontend/src/components/UploadPanel.jsx
 import { useState, useEffect } from "react";
-import { useAuth, useUser } from "@clerk/clerk-react"; // ✅ FIX: Import useUser
+import { useUser } from "@clerk/clerk-react"; // Removed useAuth, using prop instead
 import "/src/styles/uploadpdf.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
-export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId }) {
-  const { getToken } = useAuth();
-  const { user } = useUser(); // ✅ FIX 1 Step 1: Get user
-  const userId = user?.id; // ✅ FIX 1 Step 1: Extract userId
+// ✅ Accept getToken as prop instead of using useAuth internally
+export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId, getToken }) {
+  const { user } = useUser();
+  const userId = user?.id;
 
   const [dragOver, setDragOver] = useState(false);
   const [error, setError] = useState("");
@@ -18,38 +17,34 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isViewingLoading, setIsViewingLoading] = useState(false);
 
-  // ✅ FIX 3: Clear PDFs when user changes (logout/login)
+  // Clear PDFs when user changes
   useEffect(() => {
-    onPdfsChange([]); // clear previous user's PDFs
+    onPdfsChange([]);
   }, [userId]);
 
-  // Cleanup viewedPdfUrl on unmount or when changing viewed PDF
+  // Cleanup viewedPdfUrl on unmount
   useEffect(() => {
     return () => {
-      if (viewedPdfUrl) {
-        URL.revokeObjectURL(viewedPdfUrl);
-      }
+      if (viewedPdfUrl) URL.revokeObjectURL(viewedPdfUrl);
     };
   }, [viewedPdfUrl]);
 
-  // Load existing PDFs from backend on component mount
+  // 🔥 FIXED: Load existing PDFs WITH session_id in URL
   useEffect(() => {
     async function loadExistingPdfs() {
-      // ✅ FIX: Don't load if no user is logged in
-      if (!userId) return;
+      // ❌ CRITICAL: Must have sessionId to list PDFs
+      if (!userId || !sessionId) return;
 
       try {
         const token = await getToken();
-        const res = await fetch(`${API_BASE}/api/pdf/list`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        // 🔥 FIX #1: Added sessionId to URL path
+        const res = await fetch(`${API_BASE}/api/pdf/list/${sessionId}`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         if (res.ok) {
           const data = await res.json();
           const backendPdfs = data?.pdfs || [];
-          // ✅ FIX 1 Step 2: Add ownerId when loading from backend
           onPdfsChange(
             backendPdfs.map((pdf) => ({
               uid: crypto.randomUUID(),
@@ -58,7 +53,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
               sizeMB: pdf.size_mb ? pdf.size_mb.toFixed(2) : null,
               status: pdf.status || "Ready",
               url: null,
-              ownerId: userId, // ✅ ADD
+              ownerId: userId,
             }))
           );
         } else {
@@ -69,18 +64,16 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
       }
     }
 
-    // ✅ FIX: Only load if we have a userId and no PDFs
-    if (userId && pdfs.length === 0) {
+    if (userId && sessionId && pdfs.length === 0) {
       loadExistingPdfs();
     }
-  }, [getToken, onPdfsChange, userId]); // ✅ FIX: Add userId to dependencies
+  }, [getToken, onPdfsChange, userId, sessionId]);
 
-  // Polling for status updates (every 5 seconds if there are processing PDFs)
+  // Polling for status updates
   useEffect(() => {
-    const pollInterval = 5000; // 5 seconds
+    const pollInterval = 5000;
 
     const pollStatuses = async () => {
-      // ✅ FIX: Only poll PDFs belonging to current user
       const processingPdfs = pdfs.filter(
         (p) => p.status === "Processing" && p.backendId && p.ownerId === userId
       );
@@ -90,11 +83,11 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
         const token = await getToken();
 
         for (const pdf of processingPdfs) {
-          const res = await fetch(`${API_BASE}/api/pdf/${pdf.backendId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          // 🔥 FIX #2: Added sessionId to status URL
+          const res = await fetch(
+            `${API_BASE}/api/pdf/status/${sessionId}/${pdf.backendId}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
 
           if (res.ok) {
             const updatedPdf = await res.json();
@@ -114,23 +107,23 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
       }
     };
 
-    // Initial poll
     pollStatuses();
-
     const interval = setInterval(pollStatuses, pollInterval);
-
     return () => clearInterval(interval);
-  }, [pdfs, getToken, onPdfsChange, userId]); // ✅ FIX: Add userId to dependencies
+  }, [pdfs, getToken, onPdfsChange, userId, sessionId]);
 
   async function handleFiles(files) {
     if (!files || files.length === 0) return;
+    if (!sessionId) {
+      setError("No active session. Please refresh the page.");
+      return;
+    }
 
     const pdfsToUpload = Array.from(files).filter(
       (f) => f.type === "application/pdf"
     );
     if (!pdfsToUpload.length) return;
 
-    // ✅ FIX 1 Step 3: Add ownerId to optimistic uploads
     const optimisticPdfs = pdfsToUpload.map((file) => ({
       uid: crypto.randomUUID(),
       backendId: null,
@@ -138,11 +131,10 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
       sizeMB: (file.size / 1024 / 1024).toFixed(2),
       url: URL.createObjectURL(file),
       status: "Uploading",
-      ownerId: userId, // ✅ ADD
+      ownerId: userId,
     }));
 
     const uploadedUids = optimisticPdfs.map((p) => p.uid);
-
     onPdfsChange((prev) => [...prev, ...optimisticPdfs]);
 
     try {
@@ -152,9 +144,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
       const token = await getToken();
       const formData = new FormData();
 
-      pdfsToUpload.forEach((file) => {
-        formData.append("files", file);
-      });
+      pdfsToUpload.forEach((file) => formData.append("files", file));
       formData.append("session_id", sessionId);
 
       const xhr = new XMLHttpRequest();
@@ -189,18 +179,14 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
               onPdfsChange((prev) =>
                 prev.map((p) => {
                   if (p.uid === uid) {
-                    // Revoke local URL after successful upload
-                    if (p.url) {
-                      URL.revokeObjectURL(p.url);
-                    }
+                    if (p.url) URL.revokeObjectURL(p.url);
                     return {
                       ...p,
                       ...info,
                       backendId: info.pdf_id,
                       name: info.filename,
                       status: info.status || "Processing",
-                      url: null, // No longer needed
-                      // ownerId is preserved from the optimistic object
+                      url: null,
                     };
                   }
                   return p;
@@ -208,9 +194,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
               );
             });
 
-            // Auto-select first uploaded PDF if the list was previously empty
-            // ✅ FIX: Only count current user's PDFs
-            const currentUserPdfs = pdfs.filter(p => p.ownerId === userId);
+            const currentUserPdfs = pdfs.filter((p) => p.ownerId === userId);
             if (currentUserPdfs.length === 0 && backendPdfs.length > 0) {
               onSelectPdf(backendPdfs[0].pdf_id);
             }
@@ -253,40 +237,38 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     }
   }
 
+  // 🔥 FIX #3: View PDF with session_id in URL
   async function handleView(pdf) {
-    setError(""); // Clear previous errors
+    setError("");
     setIsViewingLoading(true);
 
     try {
-      // Always clean up previous viewer URL
-      if (viewedPdfUrl) {
-        URL.revokeObjectURL(viewedPdfUrl);
-      }
+      if (viewedPdfUrl) URL.revokeObjectURL(viewedPdfUrl);
 
       let url;
 
-      // Prefer backend if backendId exists
       if (pdf.backendId) {
         const token = await getToken();
-        const res = await fetch(`${API_BASE}/api/pdf/view/${pdf.backendId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        // 🔥 CRITICAL FIX: Added sessionId to URL path
+        const res = await fetch(
+          `${API_BASE}/api/pdf/view/${sessionId}/${pdf.backendId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
 
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
-          throw new Error(errorData.error || `Failed to fetch PDF (status: ${res.status})`);
+          throw new Error(
+            errorData.error || `Failed to fetch PDF (status: ${res.status})`
+          );
         }
 
-        if (res.headers.get("Content-Type") !== "application/pdf") {
+        if (!res.headers.get("Content-Type")?.includes("application/pdf")) {
           throw new Error("Invalid content type from server");
         }
 
         const blob = await res.blob();
         url = URL.createObjectURL(blob);
       } else if (pdf.url) {
-        // Fallback to local blob (e.g., during upload)
         url = pdf.url;
       } else {
         throw new Error("No PDF source available");
@@ -304,41 +286,39 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     }
   }
 
+  // 🔥 FIX #4: Delete PDF with session_id in URL
   async function handleRemove(pdf) {
     if (pdf.backendId) {
       try {
         const token = await getToken();
-        const res = await fetch(`${API_BASE}/api/pdf/${pdf.backendId}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        // 🔥 CRITICAL FIX: Added sessionId to URL path
+        const res = await fetch(
+          `${API_BASE}/api/pdf/${sessionId}/${pdf.backendId}`,
+          {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
-          throw new Error(errorData.error || "Failed to delete PDF from server");
+          throw new Error(
+            errorData.error || "Failed to delete PDF from server"
+          );
         }
       } catch (err) {
         console.error("Delete error:", err);
         setError(err.message || "Failed to delete PDF");
-        return; // Don't remove locally if backend delete fails
+        return;
       }
     }
 
-    // Proceed with local cleanup
-    if (pdf?.url) {
-      URL.revokeObjectURL(pdf.url);
-    }
+    if (pdf?.url) URL.revokeObjectURL(pdf.url);
 
-    onPdfsChange((prev) =>
-      prev.filter((p) => p.uid !== pdf.uid)
-    );
+    onPdfsChange((prev) => prev.filter((p) => p.uid !== pdf.uid));
 
     if (pdf.uid === viewedPdfId) {
-      if (viewedPdfUrl) {
-        URL.revokeObjectURL(viewedPdfUrl);
-      }
+      if (viewedPdfUrl) URL.revokeObjectURL(viewedPdfUrl);
       setViewedPdfUrl(null);
       setViewedPdfId(null);
     }
@@ -353,15 +333,6 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     setDragOver(false);
     handleFiles(Array.from(e.dataTransfer.files || []));
   }
-
-  useEffect(() => {
-  return () => {
-    navigator.sendBeacon(
-      `${API_BASE}/api/session/end`,
-      JSON.stringify({ session_id: sessionId })
-    );
-  };
-}, [sessionId]);
 
   return (
     <div className="upload-panel-container">
@@ -383,9 +354,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
 
           <button
             className="browse-button"
-            onClick={() =>
-              document.getElementById("pdfUploadInput")?.click()
-            }
+            onClick={() => document.getElementById("pdfUploadInput")?.click()}
           >
             Browse Files
           </button>
@@ -415,45 +384,44 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
       <div className="files-section">
         <h3 className="files-title">Uploaded Files</h3>
         <ul className="files-list">
-          {/* ✅ FIX 2: FILTER PDFs by ownerId when rendering */}
           {pdfs
             .filter((pdf) => pdf.ownerId === userId)
             .map((pdf) => (
-            <li key={pdf.uid} className="file-row">
-              <div className="pdf-icon">📄</div>
+              <li key={pdf.uid} className="file-row">
+                <div className="pdf-icon">📄</div>
 
-              <div className="file-info">
-                <span className="file-name">{pdf.name}</span>
-                <span className="file-size">
-                  {pdf.sizeMB && `${pdf.sizeMB} MB`}
-                </span>
-              </div>
+                <div className="file-info">
+                  <span className="file-name">{pdf.name}</span>
+                  <span className="file-size">
+                    {pdf.sizeMB && `${pdf.sizeMB} MB`}
+                  </span>
+                </div>
 
-              <div
-                className={`status-badge ${pdf.status?.toLowerCase() || ""}`}
-              >
-                {pdf.status === "Ready" && "✅ Ready"}
-                {pdf.status === "Processing" && "⏳ Processing"}
-                {pdf.status === "Error" && "❌ Error"}
-                {pdf.status === "Uploading" && "⏳ Uploading"}
-              </div>
+                <div
+                  className={`status-badge ${pdf.status?.toLowerCase() || ""}`}
+                >
+                  {pdf.status === "Ready" && "✅ Ready"}
+                  {pdf.status === "Processing" && "⏳ Processing"}
+                  {pdf.status === "Error" && "❌ Error"}
+                  {pdf.status === "Uploading" && "⏳ Uploading"}
+                </div>
 
-              <button
-                className="view-button"
-                onClick={() => handleView(pdf)}
-                disabled={!pdf.backendId && !pdf.url}
-              >
-                View
-              </button>
+                <button
+                  className="view-button"
+                  onClick={() => handleView(pdf)}
+                  disabled={!pdf.backendId && !pdf.url}
+                >
+                  View
+                </button>
 
-              <button
-                className="remove-button"
-                onClick={() => handleRemove(pdf)}
-              >
-                Remove
-              </button>
-            </li>
-          ))}
+                <button
+                  className="remove-button"
+                  onClick={() => handleRemove(pdf)}
+                >
+                  Remove
+                </button>
+              </li>
+            ))}
         </ul>
       </div>
 
@@ -464,9 +432,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
             <button
               className="close-viewer-button"
               onClick={() => {
-                if (viewedPdfUrl) {
-                  URL.revokeObjectURL(viewedPdfUrl);
-                }
+                if (viewedPdfUrl) URL.revokeObjectURL(viewedPdfUrl);
                 setViewedPdfUrl(null);
                 setViewedPdfId(null);
               }}
