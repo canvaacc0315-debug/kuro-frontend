@@ -109,7 +109,7 @@
       formData.append("detect_tables", false);
       formData.append("preserve_layout", false);
 
-      const res = await fetch("https://canvaacc0315-debug/canvaacc0315-debug.hf.space/api/pdf/upload", {
+      const res = await fetch("https://canvaacc0315-debug.hf.space/api/pdf/upload", {
         method: "POST",
         body: formData, // ❗ NO headers
         credentials: "include"
