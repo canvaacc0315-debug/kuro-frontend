@@ -27,7 +27,6 @@ export default function AnalysisPanel({
   pdfs = [],           // from KuroWorkspacePage: uploadedFiles
   selectedPdfId = "",  // from workspace state
   onPdfChange,         // callback: setSelectedPdfId
-  sessionId,           // from parent (KuroWorkspacePage)
 }) {
   const { analysePdf } = useApiClient();
   const fileInputRef = useRef(null);
@@ -46,7 +45,7 @@ export default function AnalysisPanel({
   );
 
   async function runAnalysis() {
-    if (!selectedPdfId || !sessionId || loading) return;
+    if (!selectedPdfId || loading) return;
 
     setLoading(true);
     setError("");
@@ -54,7 +53,7 @@ export default function AnalysisPanel({
     setSaveStatus("");
 
     try {
-      const data = await analysePdf(selectedPdfId, task, mode, sessionId);
+      const data = await analysePdf(selectedPdfId, task, mode);
       setResult(data?.result || "");
     } catch (err) {
       console.error(err);
@@ -227,7 +226,7 @@ export default function AnalysisPanel({
             type="button"
             className="button generate-btn"
             onClick={runAnalysis}
-            disabled={!selectedPdfId || !sessionId || loading}
+            disabled={!selectedPdfId || loading}
           >
             <span className="icon-lightbulb">💡</span>
             {loading ? "Running…" : "Generate"}
