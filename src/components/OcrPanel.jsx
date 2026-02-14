@@ -1,4 +1,6 @@
 import { useState, useMemo, useRef } from "react";
+const sessionRef = useRef(crypto.randomUUID());
+
 import { motion } from "framer-motion";
 import jsPDF from "jspdf";
 import "/src/styles/ocr-override.css";
@@ -36,12 +38,12 @@ export default function OcrPanel() {
 
     const formData = new FormData();
     formData.append("files", file);
+    formData.append("session_id", sessionRef.current);
 
     const res = await fetch(
       "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/upload",
       {
         method: "POST",
-        credentials: "include",
         body: formData,
       }
     );
