@@ -109,7 +109,7 @@
       formData.append("detect_tables", false);
       formData.append("preserve_layout", false);
 
-      const res = await fetch("http://localhost:8000/api/pdf/ocr", {
+      const res = await fetch("https://canvaacc0315-debug/canvaacc0315-debug.hf.space/api/pdf/upload", {
         method: "POST",
         body: formData, // ❗ NO headers
         credentials: "include"
@@ -309,4 +309,3 @@
       </motion.div>
     );
   }
-  
