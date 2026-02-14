@@ -3,8 +3,6 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useApiClient } from "../api/client";
 import "/src/styles/analysis.css";
-// Note: Import the new CSS file in your parent component or via index.css
-// e.g., import './analysis-panel.css';
 
 const TASK_OPTIONS = [
   { id: "summary", label: "Summary" },
@@ -23,10 +21,12 @@ const MODE_OPTIONS = [
   { id: "kid-friendly", label: "Explain like I'm 10" },
 ];
 
+// 🔥 FIXED: Added sessionId prop
 export default function AnalysisPanel({
-  pdfs = [],           // from KuroWorkspacePage: uploadedFiles
-  selectedPdfId = "",  // from workspace state
-  onPdfChange,         // callback: setSelectedPdfId
+  pdfs = [],
+  selectedPdfId = "",
+  onPdfChange,
+  sessionId = "", // <-- ADD THIS PROP
 }) {
   const { analysePdf } = useApiClient();
   const fileInputRef = useRef(null);
@@ -41,11 +41,18 @@ export default function AnalysisPanel({
   const safePdfs = Array.isArray(pdfs) ? pdfs : [];
 
   const selected = safePdfs.find(
-    (p) => (p.id ?? p.pdf_id) === selectedPdfId
+    (p) => (p.id ?? p.pdf_id ?? p.backendId) === selectedPdfId
   );
 
+  // 🔥 FIXED: Pass sessionId to analysePdf
   async function runAnalysis() {
     if (!selectedPdfId || loading) return;
+    
+    // 🔥 CRITICAL: Must have sessionId
+    if (!sessionId) {
+      setError("No active session. Please refresh the page.");
+      return;
+    }
 
     setLoading(true);
     setError("");
@@ -53,7 +60,8 @@ export default function AnalysisPanel({
     setSaveStatus("");
 
     try {
-      const data = await analysePdf(selectedPdfId, task, mode);
+      // 🔥 FIX: Pass sessionId as 4th argument
+      const data = await analysePdf(selectedPdfId, task, mode, sessionId);
       setResult(data?.result || "");
     } catch (err) {
       console.error(err);
@@ -128,14 +136,11 @@ export default function AnalysisPanel({
     setSaveStatus("");
   }
 
-  // TODO: Implement actual PDF upload logic here (e.g., call uploadPdf from useApiClient and update pdfs via parent callback)
+  // TODO: Implement actual PDF upload logic here
   async function handleUpload(e) {
     const file = e.target.files[0];
     if (!file) return;
-    // Example: const uploaded = await uploadPdf(file);
-    // onPdfChange(uploaded.id);
-    // Parent should update pdfs prop after upload.
-    console.log("Uploading PDF:", file.name); // Placeholder
+    console.log("Uploading PDF:", file.name);
   }
 
   return (
@@ -171,8 +176,8 @@ export default function AnalysisPanel({
                 <option value="">Select PDF…</option>
                 {safePdfs.map((pdf) => (
                   <option
-                    key={pdf.id ?? pdf.pdf_id}
-                    value={pdf.id ?? pdf.pdf_id}
+                    key={pdf.id ?? pdf.pdf_id ?? pdf.backendId}
+                    value={pdf.id ?? pdf.pdf_id ?? pdf.backendId}
                   >
                     {pdf.name || pdf.filename}
                   </option>
@@ -226,7 +231,7 @@ export default function AnalysisPanel({
             type="button"
             className="button generate-btn"
             onClick={runAnalysis}
-            disabled={!selectedPdfId || loading}
+            disabled={!selectedPdfId || !sessionId || loading} // 🔥 Also disable if no sessionId
           >
             <span className="icon-lightbulb">💡</span>
             {loading ? "Running…" : "Generate"}
@@ -238,7 +243,7 @@ export default function AnalysisPanel({
             onClick={handleSaveAnalysis}
             disabled={!result || loading}
           >
-            <span className="icon-save">B</span> Save Analysis
+            <span className="icon-save">💾</span> Save Analysis
           </button>
 
           <button
