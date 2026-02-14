@@ -14,6 +14,7 @@
     const [isDragging, setIsDragging] = useState(false);
 
     const fileInputRef = useRef(null);
+    const sessionRef = useRef(null);
 
     const selectedFile = useMemo(() => {
       if (selectedFileIndex === null) return null;
@@ -35,7 +36,13 @@
       setOcrResult("");
 
       const formData = new FormData();
-      formData.append("file", file); // Fixed: Changed from "files" to "file"
+      formData.append("files", file);
+
+      // create session id ONCE per upload
+      const sessionId = crypto.randomUUID();
+      sessionRef.current = sessionId;
+
+      formData.append("session_id", sessionId);
 
       const res = await fetch(
         "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/upload",
@@ -87,17 +94,16 @@
       setProgress(15);
       setOcrResult("");
 
+      const formData = new FormData();
+      formData.append("pdf_id", selectedFile.pdf_id);
+      formData.append("session_id", sessionRef.current);
+
       const res = await fetch(
         "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           credentials: "include",
-          body: JSON.stringify({
-            pdf_id: selectedFile.pdf_id,
-          }),
+          body: formData,
         }
       );
 
@@ -166,6 +172,7 @@
       setOcrResult("");
       setProgress(0);
       setIsRunning(false);
+      sessionRef.current = null;
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
 
