@@ -1,9 +1,10 @@
-import { useState, useMemo, useRef } from "react";;
+import { useState, useMemo, useRef } from "react";
 import { motion } from "framer-motion";
 import jsPDF from "jspdf";
+import { useAuth } from "@clerk/clerk-react"; // 🔥 ADDED: for authentication
 import "/src/styles/ocr-override.css";
-// Note: Import the new CSS file in your parent component or via index.css
-// e.g., import './ocr-panel.css';
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://canvaacc0315-debug-canvaacc0315-debug.hf.space";
 
 export default function OcrPanel() {
   const [files, setFiles] = useState([]);
@@ -12,14 +13,40 @@ export default function OcrPanel() {
   const [progress, setProgress] = useState(0);
   const [ocrResult, setOcrResult] = useState("");
   const [isDragging, setIsDragging] = useState(false);
-  const sessionRef = useRef(crypto.randomUUID())
-
+  const [sessionId, setSessionId] = useState(""); // 🔥 ADDED: session state
+  
+  const { getToken } = useAuth(); // 🔥 ADDED: auth hook
   const fileInputRef = useRef(null);
 
   const selectedFile = useMemo(() => {
     if (selectedFileIndex === null) return null;
     return files[selectedFileIndex] || null;
   }, [files, selectedFileIndex]);
+
+  /* ================= SESSION MANAGEMENT ================= */
+  // 🔥 ADDED: Start session on component mount
+  async function startSession() {
+    try {
+      const token = await getToken();
+      const res = await fetch(`${API_BASE}/api/session/start`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      setSessionId(data.session_id);
+      return data.session_id;
+    } catch (err) {
+      console.error("Failed to start session:", err);
+      return "";
+    }
+  }
+
+  // Initialize session on mount
+  useState(() => {
+    startSession();
+  }, []);
 
   /* ================= FILE UPLOAD ================= */
   async function handleFiles(inputFiles) {
@@ -31,23 +58,53 @@ export default function OcrPanel() {
       return;
     }
 
+    // 🔥 Ensure we have a session
+    let currentSessionId = sessionId;
+    if (!currentSessionId) {
+      currentSessionId = await startSession();
+    }
+
     setFiles([file]);
     setSelectedFileIndex(0);
     setOcrResult("");
 
     const formData = new FormData();
     formData.append("files", file);
+    formData.append("session_id", currentSessionId); // 🔥 ADDED: required by backend
 
-    const res = await fetch(
-      "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/upload",
-      {
+    try {
+      const token = await getToken(); // 🔥 ADDED: auth token
+      
+      // 🔥 FIXED: Removed trailing space in URL
+      const res = await fetch(`${API_BASE}/api/pdf/upload`, {
         method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`, // 🔥 ADDED: auth header
+        },
         body: formData,
-      }
-    );
+      });
 
-    const data = await res.json();
-    file.pdf_id = data.pdfs[0].pdf_id;
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || `Upload failed: ${res.status}`);
+      }
+
+      const data = await res.json();
+      
+      // 🔥 FIXED: Handle response properly
+      if (data.pdfs && data.pdfs.length > 0) {
+        file.pdf_id = data.pdfs[0].pdf_id;
+        file.backendId = data.pdfs[0].pdf_id; // 🔥 ADDED: for consistency
+        file.status = data.pdfs[0].status;
+      } else {
+        throw new Error("No PDF data in response");
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert(err.message || "Failed to upload PDF");
+      setFiles([]);
+      setSelectedFileIndex(null);
+    }
   }
 
   function handleDrop(e) {
@@ -75,7 +132,15 @@ export default function OcrPanel() {
 
   /* ================= OCR ================= */
   async function startOcr() {
-    if (!selectedFile?.pdf_id) return;
+    if (!selectedFile?.pdf_id) {
+      alert("Please upload a PDF first");
+      return;
+    }
+
+    if (!sessionId) {
+      alert("No active session. Please refresh the page.");
+      return;
+    }
 
     setIsRunning(true);
     setProgress(15);
@@ -83,20 +148,35 @@ export default function OcrPanel() {
 
     const formData = new FormData();
     formData.append("pdf_id", selectedFile.pdf_id);
+    formData.append("session_id", sessionId); // 🔥 ADDED: required by backend
+    formData.append("output_format", "text"); // 🔥 ADDED: explicit format
 
-    const res = await fetch(
-      "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
-      {
+    try {
+      const token = await getToken(); // 🔥 ADDED: auth token
+      
+      // 🔥 FIXED: Removed trailing space in URL
+      const res = await fetch(`${API_BASE}/api/pdf/ocr`, {
         method: "POST",
-        credentials: "include",
+        headers: {
+          "Authorization": `Bearer ${token}`, // 🔥 ADDED: auth header
+        },
         body: formData,
-      }
-    );
+      });
 
-    const data = await res.json();
-    setOcrResult(data.text || "");
-    setProgress(100);
-    setIsRunning(false);
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || `OCR failed: ${res.status}`);
+      }
+
+      const data = await res.json();
+      setOcrResult(data.text || data.result || "No text extracted");
+      setProgress(100);
+    } catch (err) {
+      console.error("OCR error:", err);
+      setOcrResult(`Error: ${err.message}`);
+    } finally {
+      setIsRunning(false);
+    }
   }
 
   /* ================= EXPORT ACTIONS ================= */
@@ -106,6 +186,7 @@ export default function OcrPanel() {
     a.href = URL.createObjectURL(blob);
     a.download = "ocr.txt";
     a.click();
+    URL.revokeObjectURL(a.href);
   }
 
   function downloadCsv() {
@@ -114,6 +195,7 @@ export default function OcrPanel() {
     a.href = URL.createObjectURL(blob);
     a.download = "ocr.csv";
     a.click();
+    URL.revokeObjectURL(a.href);
   }
 
   function downloadPdf() {
@@ -123,10 +205,7 @@ export default function OcrPanel() {
     const pageWidth = doc.internal.pageSize.width;
     const pageHeight = doc.internal.pageSize.height;
 
-    const lines = doc.splitTextToSize(
-      ocrResult,
-      pageWidth - margin * 2
-    );
+    const lines = doc.splitTextToSize(ocrResult, pageWidth - margin * 2);
 
     let y = margin;
     lines.forEach((line) => {
@@ -163,15 +242,17 @@ export default function OcrPanel() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="ocr-title">OCR & <span className="brand-red">Recognition</span></h2>
+      <h2 className="ocr-title">
+        OCR & <span className="brand-red">Recognition</span>
+      </h2>
       <p className="ocr-subtitle">Extract text from PDFs</p>
 
       <div className="ocr-main">
         {/* LEFT */}
         <div className="ocr-left">
           <div
-            className={`ocr-upload ${isDragging ? 'dragging' : ''}`}
-            onClick={() => fileInputRef.current.click()}
+            className={`ocr-upload ${isDragging ? "dragging" : ""}`}
+            onClick={() => fileInputRef.current?.click()}
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragEnter={handleDragEnter}
@@ -179,7 +260,9 @@ export default function OcrPanel() {
           >
             <div className="ocr-upload-icon">📄</div>
             <div className="ocr-upload-title">Upload PDF</div>
-            <button className="ocr-upload-btn" type="button">Select PDF</button>
+            <button className="ocr-upload-btn" type="button">
+              Select PDF
+            </button>
             <input
               id="ocrFileInput"
               type="file"
@@ -206,7 +289,7 @@ export default function OcrPanel() {
           <button
             className="ocr-action-button ocr-start-btn"
             onClick={startOcr}
-            disabled={!selectedFile || isRunning}
+            disabled={!selectedFile || isRunning || !sessionId} // 🔥 Also disable if no session
           >
             {isRunning ? "Processing..." : "🚀 Start OCR"}
           </button>
@@ -250,9 +333,7 @@ export default function OcrPanel() {
             {ocrResult ? (
               <pre className="ocr-result-text">{ocrResult}</pre>
             ) : (
-              <div className="ocr-placeholder">
-                OCR result will appear here
-              </div>
+              <div className="ocr-placeholder">OCR result will appear here</div>
             )}
           </motion.div>
 
