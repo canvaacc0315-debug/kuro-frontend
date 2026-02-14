@@ -5,7 +5,7 @@
   // Note: Import the new CSS file in your parent component or via index.css
   // e.g., import './ocr-panel.css';
 
-  export default function OcrPanel() {
+  export default function OcrPanel({ selectedPdfId = '', sessionId = '' } = {}) {
     const [files, setFiles] = useState([]);
     const [selectedFileIndex, setSelectedFileIndex] = useState(null);
     const [isRunning, setIsRunning] = useState(false);
@@ -14,12 +14,15 @@
     const [isDragging, setIsDragging] = useState(false);
 
     const fileInputRef = useRef(null);
-    const sessionRef = useRef(null);
+    const sessionRef = useRef(sessionId || null);
 
     const selectedFile = useMemo(() => {
       if (selectedFileIndex === null) return null;
       return files[selectedFileIndex] || null;
     }, [files, selectedFileIndex]);
+
+    const effectivePdfId = selectedPdfId || selectedFile?.pdf_id;
+    const effectiveSessionId = sessionId || sessionRef.current;
 
     /* ================= FILE UPLOAD ================= */
     async function handleFiles(inputFiles) {
@@ -35,17 +38,16 @@
       setSelectedFileIndex(0);
       setOcrResult("");
 
+      const uploadSessionId = sessionId || crypto.randomUUID();
+      sessionRef.current = uploadSessionId;
+
       const formData = new FormData();
-      formData.append("files", file);
+      formData.append("file", file); // Fixed: Changed from "files" to "file"
 
-      // create session id ONCE per upload
-      const sessionId = crypto.randomUUID();
-      sessionRef.current = sessionId;
-
-      formData.append("session_id", sessionId);
+      formData.append("session_id", uploadSessionId);
 
       const res = await fetch(
-        "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/upload",
+        "http://localhost:8000/api/pdf/upload",
         {
           method: "POST",
           credentials: "include",
@@ -87,37 +89,43 @@
     }
 
     /* ================= OCR ================= */
-    async function startOcr() {
-      if (!selectedFile?.pdf_id) return;
+    const runOCR = async () => {
+      if (!effectivePdfId || !effectiveSessionId) {
+        alert("Select a PDF first");
+        return;
+      }
 
       setIsRunning(true);
       setProgress(15);
       setOcrResult("");
 
       const formData = new FormData();
-      formData.append("pdf_id", selectedFile.pdf_id);
-      formData.append("session_id", sessionRef.current);
+      formData.append("pdf_id", effectivePdfId);
+      formData.append("session_id", effectiveSessionId);
 
-      const res = await fetch(
-        "https://canvaacc0315-debug-canvaacc0315-debug.hf.space/api/pdf/ocr",
-        {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        }
-      );
+      // Optional OCR settings
+      formData.append("output_format", "text");
+      formData.append("clean_text", true);
+      formData.append("detect_tables", false);
+      formData.append("preserve_layout", false);
+
+      const res = await fetch("http://localhost:8000/api/pdf/ocr", {
+        method: "POST",
+        body: formData, // ❗ NO headers
+        credentials: "include"
+      });
 
       if (!res.ok) {
         const text = await res.text();
-        console.error("Backend Error:", text);
-        throw new Error("OCR request failed");
+        console.error("OCR failed", text);
+        throw new Error("OCR failed");
       }
 
       const data = await res.json();
       setOcrResult(data.text || "");
       setProgress(100);
       setIsRunning(false);
-    }
+    };
 
     /* ================= EXPORT ACTIONS ================= */
     function downloadTxt() {
@@ -172,7 +180,7 @@
       setOcrResult("");
       setProgress(0);
       setIsRunning(false);
-      sessionRef.current = null;
+      if (!sessionId) sessionRef.current = null;
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
 
@@ -226,8 +234,8 @@
 
             <button
               className="ocr-action-button ocr-start-btn"
-              onClick={startOcr}
-              disabled={!selectedFile || isRunning}
+              onClick={runOCR}
+              disabled={!effectivePdfId || isRunning}
             >
               {isRunning ? "Processing..." : "🚀 Start OCR"}
             </button>
@@ -301,3 +309,4 @@
       </motion.div>
     );
   }
+  
