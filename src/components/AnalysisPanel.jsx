@@ -21,12 +21,11 @@ const MODE_OPTIONS = [
   { id: "kid-friendly", label: "Explain like I'm 10" },
 ];
 
-// 🔥 FIXED: Added sessionId prop
 export default function AnalysisPanel({
   pdfs = [],
   selectedPdfId = "",
   onPdfChange,
-  sessionId = "", // <-- ADD THIS PROP
+  sessionId = "", // 🔥 ADDED: sessionId prop
 }) {
   const { analysePdf } = useApiClient();
   const fileInputRef = useRef(null);
@@ -40,14 +39,14 @@ export default function AnalysisPanel({
 
   const safePdfs = Array.isArray(pdfs) ? pdfs : [];
 
+  // 🔥 FIXED: Handle both backendId (from UploadPanel) and id/pdf_id
   const selected = safePdfs.find(
     (p) => (p.id ?? p.pdf_id ?? p.backendId) === selectedPdfId
   );
 
-  // 🔥 FIXED: Pass sessionId to analysePdf
   async function runAnalysis() {
     if (!selectedPdfId || loading) return;
-    
+
     // 🔥 CRITICAL: Must have sessionId
     if (!sessionId) {
       setError("No active session. Please refresh the page.");
@@ -60,7 +59,7 @@ export default function AnalysisPanel({
     setSaveStatus("");
 
     try {
-      // 🔥 FIX: Pass sessionId as 4th argument
+      // 🔥 FIXED: Pass sessionId as 4th argument
       const data = await analysePdf(selectedPdfId, task, mode, sessionId);
       setResult(data?.result || "");
     } catch (err) {
