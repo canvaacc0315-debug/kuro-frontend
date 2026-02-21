@@ -1,6 +1,6 @@
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://your-huggingface-space.hf.space';
 
-class PDFApiService {
+export const pdfApi = {
   // CraftMyPDF: Get templates
   async getTemplates() {
     const response = await fetch(`${API_BASE}/api/pdf/craftmypdf/templates`, {
@@ -8,7 +8,7 @@ class PDFApiService {
     });
     if (!response.ok) throw new Error('Failed to fetch templates');
     return response.json();
-  }
+  },
 
   // CraftMyPDF: Generate PDF from template
   async generateFromTemplate(templateId, data, outputName = 'document.pdf') {
@@ -20,7 +20,7 @@ class PDFApiService {
     });
     if (!response.ok) throw new Error('Failed to generate PDF');
     return response.json();
-  }
+  },
 
   // iLovePDF: Merge PDFs
   async mergePDFs(files) {
@@ -34,7 +34,7 @@ class PDFApiService {
     });
     if (!response.ok) throw new Error('Failed to merge PDFs');
     return response.blob();
-  }
+  },
 
   // iLovePDF: Split PDF
   async splitPDF(file, ranges) {
@@ -49,7 +49,7 @@ class PDFApiService {
     });
     if (!response.ok) throw new Error('Failed to split PDF');
     return response.blob();
-  }
+  },
 
   // iLovePDF: Convert to PDF
   async convertToPDF(file) {
@@ -63,7 +63,7 @@ class PDFApiService {
     });
     if (!response.ok) throw new Error('Failed to convert file');
     return response.blob();
-  }
+  },
 
   // iLovePDF: Extract text
   async extractText(file) {
@@ -77,7 +77,7 @@ class PDFApiService {
     });
     if (!response.ok) throw new Error('Failed to extract text');
     return response.json();
-  }
+  },
 
   // iLovePDF: Add page numbers
   async addPageNumbers(file, options = {}) {
@@ -92,7 +92,7 @@ class PDFApiService {
     });
     if (!response.ok) throw new Error('Failed to add page numbers');
     return response.blob();
-  }
+  },
 
   // Helper: Download blob as file
   downloadBlob(blob, filename) {
@@ -105,6 +105,4 @@ class PDFApiService {
     document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   }
-}
-
-export const pdfApi = new PDFApiService();
+};
