@@ -75,32 +75,6 @@ export default function DashboardPanel({ pdfs }) {
           </ul>
         </PanelBlock>
       </div>
-
-      {/* ✅ NEW: PDF Tools Card */}
-      <div className="grid gap-4 md:grid-cols-1">
-        <motion.div
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="h-full rounded-xl2 border border-stroke bg-panelSoft/80 px-4 py-3 flex flex-col justify-between shadow-subtle/40 cursor-pointer hover:bg-panelSoft/60 transition-colors"
-          onClick={() => window.location.href = '/app?tab=pdftools'}
-        >
-          <div className="flex items-center gap-3">
-            <div className="text-2xl">🛠️</div>
-            <div className="flex-1">
-              <div className="text-[11px] text-inkSoft uppercase tracking-[0.18em] mb-1">
-                PDF Tools
-              </div>
-              <div className="text-sm font-medium text-ink">
-                Merge, Split, Convert & Extract
-              </div>
-            </div>
-            <div className="text-inkSoft/50">→</div>
-          </div>
-          <p className="text-[10px] text-inkSoft/80 mt-2">
-            Advanced PDF manipulation: Merge multiple PDFs, split by pages, convert Office files to PDF, and extract text using external APIs.
-          </p>
-        </motion.div>
-      </div>
     </div>
   );
 }
