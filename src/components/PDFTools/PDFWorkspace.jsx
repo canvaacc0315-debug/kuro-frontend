@@ -1,6 +1,6 @@
 import React from 'react';
-import CraftMyPDFPanel from './CraftMyPDFPanel';
-import ILovePDFPanel from './ILovePDFPanel';
+import CraftMyPDFPanel from './CraftMyPDFPanel.jsx';
+import ILovePDFPanel from './ILovePDFPanel.jsx';
 import './PDFTools.css';
 
 const PDFWorkspace = () => {
