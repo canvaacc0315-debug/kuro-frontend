@@ -18,7 +18,7 @@ import Contact from "./pages/Contact";
 import InstructionModal from "./components/modals/InstructionModal";
 
 // ✅ NEW: Import PDF Tools
-import PDFTools from "./components/PDFTools";
+import PDFWorkspace from "./components/PDFTools/PDFWorkspace";
 
 function ProtectedRoute({ children }) {
   return (
@@ -96,7 +96,7 @@ export default function App() {
           path="/pdf-tools"
           element={
             <ProtectedRoute>
-              <PDFTools />
+              <PDFWorkspace />
             </ProtectedRoute>
           }
         />
@@ -106,4 +106,4 @@ export default function App() {
       </Routes>
     </>
   );
-}
+} 
