@@ -1,193 +1,77 @@
-/* Base styles with improved typography and calming palette */
 .pdf-workspace {
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  max-width: 1240px;
+  padding: 2rem;
+  max-width: 1200px;
   margin: 0 auto;
-  font-family: system-ui, -apple-system, sans-serif;
-  color: #2c3e50;
-  background: linear-gradient(160deg, #ecf0f3 0%, #d6e0e8 100%);
-  min-height: 100vh;
-  box-sizing: border-box;
 }
 
-/* Grid with fade-in animation */
 .panels-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-  gap: clamp(1.5rem, 3vw, 2.5rem);
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
   margin-top: 2rem;
-  animation: fadeIn 1.2s ease-out forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Panels with soft hover and breathing effect */
 .craftmypdf-panel, .ilovepdf-panel {
-  background: #ffffff;
-  padding: clamp(1.5rem, 3vw, 2.25rem);
-  border-radius: 18px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
-  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  position: relative;
-  overflow: hidden;
-  animation: panelBreathe 8s ease-in-out infinite alternate;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-@keyframes panelBreathe {
-  0% { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05); }
-  100% { box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08); }
-}
-
-.craftmypdf-panel:hover, .ilovepdf-panel:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
-}
-
-/* Subtle overlay for calm hover */
-.craftmypdf-panel::before, .ilovepdf-panel::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, rgba(189, 195, 199, 0.05), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.8s ease;
-  border-radius: 18px;
-  pointer-events: none;
-}
-
-.craftmypdf-panel:hover::before, .ilovepdf-panel:hover::before {
-  opacity: 1;
-}
-
-/* Tabs with smooth activation animation */
 .tabs {
   display: flex;
   gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   flex-wrap: wrap;
-  padding: 0.4rem;
-  background: rgba(236, 240, 243, 0.8);
-  border-radius: 14px;
-  backdrop-filter: blur(10px);
 }
 
 .tabs button {
-  padding: 0.7rem 1.4rem;
+  padding: 0.5rem 1rem;
   border: none;
-  background: transparent;
-  border-radius: 12px;
+  background: #e0e0e0;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: 500;
-  color: #34495e;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.tabs button:hover {
-  background: rgba(189, 195, 199, 0.3);
-  color: #2c3e50;
-  transform: scale(1.03);
 }
 
 .tabs button.active {
-  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  background: #e53935;
   color: white;
-  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.25);
-  animation: tabActive 0.6s ease-out;
 }
 
-@keyframes tabActive {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  100% { transform: scale(1); opacity: 1; }
-}
-
-/* Form elements with calm focus effects */
 input, select, textarea {
   width: 100%;
-  margin: 0.6rem 0;
-  padding: 0.9rem 1.2rem;
-  border: 1px solid #bdc3c7;
-  border-radius: 12px;
-  font-size: 1rem;
-  background: #f9fbfc;
-  transition: all 0.35s ease;
-  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
 }
 
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.15), inset 0 1px 2px rgba(0,0,0,0.03);
-  transform: translateY(-1px);
-}
-
-textarea {
-  min-height: 120px;
-  resize: vertical;
-}
-
-/* Button with gentle pulse animation */
-button:not(.tabs button) {
+button {
   width: 100%;
-  padding: 1.15rem;
-  background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+  padding: 1rem;
+  background: #e53935;
   color: white;
   border: none;
-  border-radius: 14px;
-  font-weight: 600;
-  font-size: 1.05rem;
+  border-radius: 6px;
   cursor: pointer;
-  margin-top: 1.5rem;
-  transition: all 0.45s cubic-bezier(0.34, 1.25, 0.64, 1);
-  box-shadow: 0 4px 16px rgba(52, 152, 219, 0.2);
-  animation: buttonPulse 2s ease-in-out infinite;
-}
-
-@keyframes buttonPulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.015); }
-}
-
-button:not(.tabs button):hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 10px 28px rgba(52, 152, 219, 0.3);
+  margin-top: 1rem;
 }
 
 button:disabled {
-  opacity: 0.5;
-  transform: none;
-  box-shadow: none;
-  cursor: not-allowed;
-  background: #95a5a6;
-  animation: none;
+  opacity: 0.6;
 }
 
-/* Pre with scroll fade */
 pre {
-  background: #ecf0f3;
-  color: #2c3e50;
-  padding: 1.4rem;
-  border-radius: 12px;
-  max-height: 340px;
+  background: #f5f5f5;
+  padding: 1rem;
+  border-radius: 6px;
+  max-height: 300px;
   overflow-y: auto;
-  margin-top: 1.4rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);
-  transition: all 0.5s ease;
+  margin-top: 1rem;
 }
 
-/* Enhanced media query */
 @media (max-width: 768px) {
   .panels-grid {
     grid-template-columns: 1fr;
-    gap: 1.8rem;
-  }
-  
-  .tabs {
-    justify-content: flex-start;
-    overflow-x: auto;
   }
 }
