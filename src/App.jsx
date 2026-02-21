@@ -1,7 +1,7 @@
 // src/App.jsx
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { SignedIn, SignedOut, useUser } from "@clerk/clerk-react";
-import { useEffect } from "react"; // Removed useState
+import { useEffect } from "react";
 
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -9,17 +9,16 @@ import DashboardPage from "./pages/DashboardPage";
 import KuroWorkspacePage from "./pages/KuroWorkspacePage";
 import HomeOverlayButton from "./components/layout/HomeOverlayButton";
 import ScrollToTop from "./components/utils/ScrollToTop";
-import FloatingHelp from "./components/FloatingHelp/FloatingHelp"; // ✅ Added import
+import FloatingHelp from "./components/FloatingHelp/FloatingHelp";
 import "./styles/no-scrollbar-override.css";
 import HomePage from "./pages/HomePage";
-
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-
-
-
 import InstructionModal from "./components/modals/InstructionModal";
+
+// ✅ NEW: Import PDF Tools
+import PDFTools from "./components/PDFTools";
 
 function ProtectedRoute({ children }) {
   return (
@@ -33,7 +32,6 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
-  // ✅ Google AdSense (keep as-is)
   useEffect(() => {
     const script = document.createElement("script");
     script.async = true;
@@ -52,9 +50,7 @@ export default function App() {
 
   return (
     <>
-      {/* ✅ Instruction popup – always mounted, self-manages visibility */}
       <InstructionModal />
-
       <ScrollToTop />
 
       <Routes>
@@ -76,7 +72,6 @@ export default function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              {/* ✅ Floating help widget – only on dashboard */}
               <FloatingHelp />
               <DashboardPage />
             </ProtectedRoute>
@@ -92,6 +87,16 @@ export default function App() {
                 <HomeOverlayButton />
                 <KuroWorkspacePage />
               </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* ✅ NEW: PDF TOOLS - Protected Route */}
+        <Route
+          path="/pdf-tools"
+          element={
+            <ProtectedRoute>
+              <PDFTools />
             </ProtectedRoute>
           }
         />
