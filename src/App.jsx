@@ -17,8 +17,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import InstructionModal from "./components/modals/InstructionModal";
 
-// ✅ NEW: Import PDF Tools
-import PDFTools from "./components/PDFTools";
+// ❌ REMOVED: PDF Tools import (using workspace tab instead)
 
 function ProtectedRoute({ children }) {
   return (
@@ -36,7 +35,7 @@ export default function App() {
     const script = document.createElement("script");
     script.async = true;
     script.src =
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9545152753392718";
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9545152753392718 ";
     script.crossOrigin = "anonymous";
     document.head.appendChild(script);
   }, []);
@@ -78,7 +77,7 @@ export default function App() {
           }
         />
 
-        {/* WORKSPACE */}
+        {/* WORKSPACE - PDF Tools is inside this as a tab */}
         <Route
           path="/app"
           element={
@@ -91,15 +90,7 @@ export default function App() {
           }
         />
 
-        {/* ✅ NEW: PDF TOOLS - Protected Route */}
-        <Route
-          path="/pdf-tools"
-          element={
-            <ProtectedRoute>
-              <PDFTools />
-            </ProtectedRoute>
-          }
-        />
+        {/* ❌ REMOVED: PDF Tools standalone route (using workspace tab instead) */}
 
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to={isSignedIn ? "/homepage" : "/"} replace />} />
