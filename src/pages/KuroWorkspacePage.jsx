@@ -1,6 +1,6 @@
 // src/pages/KuroWorkspacePage.jsx
 import { useState, useEffect, useRef } from "react";
-import { useUser, UserButton, useAuth } from "@clerk/clerk-react"; // ✅ Added useAuth
+import { useUser, UserButton, useAuth } from "@clerk/clerk-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { RovexProvider } from "../core/RovexProvider";
 import "../styles/workspace.css";
@@ -13,12 +13,14 @@ import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel";
 import FixedChatInput from "../components/FixedChatInput";
+// ✅ NEW: Import PDF Tools
+import PDFTools from "../components/PDFTools";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
 export default function KuroWorkspacePage() {
   const { user, isLoaded } = useUser();
-  const { getToken } = useAuth(); // ✅ Get auth token
+  const { getToken } = useAuth();
   const { uploadPdf } = useApiClient();
   const { openUserProfile } = useClerk();
   
@@ -30,7 +32,8 @@ export default function KuroWorkspacePage() {
       tabFromUrl === "chat" ||
       tabFromUrl === "analysis" ||
       tabFromUrl === "ocr" ||
-      tabFromUrl === "create"
+      tabFromUrl === "create" ||
+      tabFromUrl === "pdftools"
     ) {
       return tabFromUrl;
     }
@@ -63,7 +66,7 @@ export default function KuroWorkspacePage() {
   const [history, setHistory] = useState([]);
   const selectedFile = uploadedFiles.find((f) => f.backendId === selectedPdfId) || null;
   
-  // ✅ SESSION STATE - Fixed with proper auth
+  // SESSION STATE
   const [sessionId, setSessionId] = useState(null);
 
   // ---------------- helpers ----------------
@@ -119,7 +122,7 @@ export default function KuroWorkspacePage() {
     const tabFromUrl = searchParams.get("tab");
     if (
       tabFromUrl &&
-      ["chat", "analysis", "ocr", "create"].includes(tabFromUrl) &&
+      ["chat", "analysis", "ocr", "create", "pdftools"].includes(tabFromUrl) &&
       tabFromUrl !== activeTab
     ) {
       setActiveTab(tabFromUrl);
@@ -141,7 +144,7 @@ export default function KuroWorkspacePage() {
     setActiveChatSubTab(sub);
   };
   
-  // ✅ FIXED: Session management with proper auth
+  // Session management with proper auth
   useEffect(() => {
     async function startSession() {
       try {
@@ -171,7 +174,7 @@ export default function KuroWorkspacePage() {
     }
   }, [user, isLoaded, getToken]);
   
-  // ✅ FIXED: Session cleanup with null check
+  // Session cleanup
   useEffect(() => {
     return () => {
       if (sessionId) {
@@ -212,13 +215,13 @@ export default function KuroWorkspacePage() {
     setIsSending(true);
     
     try {
-      const token = await getToken(); // ✅ Get auth token
+      const token = await getToken();
       const mode = mapAnswerStyleToMode(answerStyle);
       const res = await fetch(`${API_BASE}/api/chat`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`, // ✅ Add auth header
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           question: text,
@@ -535,7 +538,7 @@ export default function KuroWorkspacePage() {
       <InstructionModal />
       <div className="workspace-root">
         <header className={`home-header ${scrolled ? "scrolled" : ""}`} style={{ display: isFullScreen ? "none" : "flex" }}>
-          <div className="logo-container" onClick={() => navigate("https://www.rovexai.com/ ")}>
+          <div className="logo-container" onClick={() => navigate("https://www.rovexai.com/  ")}>
             <img src="/kuro-logo.png" alt="RovexAI Logo" className="logo-icon" />
             <span className="logo-text">
               <span className="logo-red">Rovex</span>
@@ -544,7 +547,7 @@ export default function KuroWorkspacePage() {
           </div>
           <div className="header-links">
             <a href="/homepage" className="nav-link">Home</a>
-            <a href="https://rovexai.com/contact " className="nav-link">Help</a>
+            <a href="https://rovexai.com/contact  " className="nav-link">Help</a>
             <button onClick={openUserProfile} className="nav-link settings-link">
               Settings
             </button>
@@ -607,6 +610,14 @@ export default function KuroWorkspacePage() {
               <span className="sidebar-icon">✏️</span>
               <span className="sidebar-label">PDF Creator</span>
             </button>
+            {/* ✅ NEW: PDF Tools Button */}
+            <button
+              className={`sidebar-item ${activeTab === "pdftools" ? "active" : ""}`}
+              onClick={() => handleTabClick("pdftools")}
+            >
+              <span className="sidebar-icon">🛠️</span>
+              <span className="sidebar-label">PDF Tools</span>
+            </button>
           </nav>
         </aside>
         
@@ -625,7 +636,6 @@ export default function KuroWorkspacePage() {
               id="uploadTab"
               className={`tab-content ${activeTab === "upload" ? "active" : ""}`}
             >
-              {/* ✅ Pass getToken to UploadPanel */}
               <UploadPanel
                 sessionId={sessionId}
                 pdfs={uploadedFiles}
@@ -639,6 +649,7 @@ export default function KuroWorkspacePage() {
               id="chatTab"
               className={`tab-content ${activeTab === "chat" ? "active" : ""}`}
             >
+              {/* ... chat content remains the same ... */}
               <div className="chat-subtabs-nav" style={{ backgroundColor: "#ffffff", borderBottom: "1px solid #e5e5e5", display: "flex", justifyContent: "flex-start", gap: "24px", padding: "0 24px 0 24px", height: "60px", alignItems: "center" }}>
                 <button
                   className={`chat-subtab-btn ${activeChatSubTab === "current" ? "active" : ""}`}
@@ -1282,6 +1293,14 @@ export default function KuroWorkspacePage() {
               className={`tab-content ${activeTab === "create" ? "active" : ""}`}
             >
               <CreatePdfPanel />
+            </section>
+            
+            {/* ✅ NEW: PDF Tools Tab */}
+            <section
+              id="pdftoolsTab"
+              className={`tab-content ${activeTab === "pdftools" ? "active" : ""}`}
+            >
+              <PDFTools />
             </section>
           </div>
         </main>
