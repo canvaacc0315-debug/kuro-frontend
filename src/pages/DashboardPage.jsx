@@ -183,23 +183,23 @@ export default function DashboardPage() {
 
           {/* Settings (optional placeholder) */}
           <div className="workspace-card">
-            <div className="workspace-icon">⚙️</div>
-            <h3 className="workspace-name">Settings</h3>
+            <div className="workspace-icon">🛠️</div>    
+            <h3 className="workspace-name">PDF Tools</h3>
             <p className="workspace-description">
-              Manage your account, preferences, and integrations for a
-              personalized experience.
+              Manage and transform your PDF documents with ease.
+              RovexAI’s PDF Tools let you organize, edit, and extract information from files in just a few clicks — making document handling faster, smarter, and more efficient.
             </p>
             
             <ul className="workspace-features">
-              <li>Account Management</li>
-              <li>Security Settings</li>
-              <li>Update Profile</li>
+              <li>Merge PDFs</li>
+              <li>Split PDFs</li>
+              <li>Convert to PDF</li>
             </ul>
             <button
               className="workspace-btn"
-              onClick={openUserProfile}
+              onClick={() => navigate("/app?tab=pdftools")}
             >
-              Settings
+              Go to PDF Tools
             </button>
           </div>
         </section>
