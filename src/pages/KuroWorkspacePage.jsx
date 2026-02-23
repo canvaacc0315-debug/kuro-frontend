@@ -14,7 +14,7 @@ import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel";
 import FixedChatInput from "../components/FixedChatInput";
 // ✅ NEW: Import PDF Tools
-import PDFWorkspace from "./components/PDFTools/PDFWorkspace.jsx";
+import PDFWorkspace from "../components/PDFTools/PDFWorkspace.jsx";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
