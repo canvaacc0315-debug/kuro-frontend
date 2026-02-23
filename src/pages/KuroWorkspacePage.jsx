@@ -14,7 +14,7 @@ import { useClerk } from "@clerk/clerk-react";
 import UploadPanel from "../components/UploadPanel";
 import FixedChatInput from "../components/FixedChatInput";
 // ✅ NEW: Import PDF Tools
-import PDFTools from "../components/PDFTools";
+import PDFWorkspace from "./components/PDFTools/PDFWorkspace.jsx";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -1300,7 +1300,7 @@ export default function KuroWorkspacePage() {
               id="pdftoolsTab"
               className={`tab-content ${activeTab === "pdftools" ? "active" : ""}`}
             >
-              <PDFTools />
+              <PDFWorkspace />
             </section>
           </div>
         </main>
