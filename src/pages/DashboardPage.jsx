@@ -186,8 +186,7 @@ export default function DashboardPage() {
             <div className="workspace-icon">🛠️</div>    
             <h3 className="workspace-name">PDF Tools</h3>
             <p className="workspace-description">
-              Manage and transform your PDF documents with ease.
-              RovexAI’s PDF Tools let you organize, edit, and extract information from files in just a few clicks — making document handling faster, smarter, and more efficient.
+              Manage and transform your PDF documents with ease. Merge, split, convert, and extract text from PDFs using our powerful tools.
             </p>
             
             <ul className="workspace-features">
