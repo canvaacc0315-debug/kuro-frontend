@@ -131,13 +131,12 @@ const PDFWorkspace = () => {
     <div className="pdf-workspace">
       <h1>RovexAI PDF Studio</h1>
       <div className="panels-grid">
-        <ComingSoonPanel />
         <ILovePDFPanel />
+        <ComingSoonPanel />
       </div>
     </div>
   );
 };
 
 export default PDFWorkspace;
-
 //done
