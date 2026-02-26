@@ -339,15 +339,34 @@ body {
   animation: pulse 1.5s ease-in-out infinite;
 }
 
-.analysis-skeleton div:nth-child(1) { width: 80%; }
-.analysis-skeleton div:nth-child(2) { width: 60%; }
-.analysis-skeleton div:nth-child(3) { width: 90%; }
-.analysis-skeleton div:nth-child(4) { width: 70%; }
+.analysis-skeleton div:nth-child(1) {
+  width: 80%;
+}
+
+.analysis-skeleton div:nth-child(2) {
+  width: 60%;
+}
+
+.analysis-skeleton div:nth-child(3) {
+  width: 90%;
+}
+
+.analysis-skeleton div:nth-child(4) {
+  width: 70%;
+}
 
 @keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 0.3; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
 }
 
 .analysis-save-status {
@@ -361,21 +380,113 @@ body {
 }
 
 @keyframes fadeInTitle {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes fadeInCard {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* =========================================================================
+   MOBILE RESPONSIVENESS
+   ========================================================================= */
+
+@media (max-width: 768px) {
+  .page-canvas {
+    padding: 20px 10px;
+    /* Extra padding at bottom to clear the new bottom nav defined in workspace.css */
+    padding-bottom: 90px;
+  }
+
+  .welcome-title {
+    font-size: 20px;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .analysis-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  /* Make PDF select input stack or allow wrapping */
+  .pdf-input-group {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .upload-button {
+    width: 100%;
+    border-radius: 8px;
+    justify-content: center;
+  }
+
+  .pdf-select {
+    border-radius: 8px;
+  }
+
+  /* Stack task selectors */
+  .task-selects {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Stack action buttons */
+  .action-buttons {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Adjust results padding */
+  .analysis-result-inner {
+    padding: 12px;
+  }
+
+  .analysis-result-text {
+    font-size: 13px;
+  }
 }

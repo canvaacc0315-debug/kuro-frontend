@@ -230,7 +230,7 @@ body {
 .ocr-result-title {
   font-size: 16px;
   font-weight: 500;
-  ccolor: #000000;
+  color: #000000;
   margin-bottom: 16px;
 }
 
@@ -304,7 +304,82 @@ body {
 }
 
 @keyframes pulse {
-  0% { border-color: rgba(239, 68, 68, 0.5); }
-  50% { border-color: var(--red); }
-  100% { border-color: rgba(239, 68, 68, 0.5); }
+  0% {
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+
+  50% {
+    border-color: var(--red);
+  }
+
+  100% {
+    border-color: rgba(239, 68, 68, 0.5);
+  }
+}
+
+/* =========================================================================
+   MOBILE RESPONSIVENESS
+   ========================================================================= */
+
+@media (max-width: 768px) {
+  .page-canvas {
+    padding: 20px 16px 120px 16px;
+    /* Extra padding at bottom for bottom nav */
+  }
+
+  .welcome-title {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  .ocr-subtitle {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .ocr-main {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .ocr-upload {
+    padding: 30px 20px;
+  }
+
+  .ocr-left,
+  .ocr-right {
+    width: 100%;
+    align-items: center;
+    /* Center everything on mobile */
+  }
+
+  .ocr-preview-frame {
+    height: 400px;
+    /* Shorter preview iframe on mobile */
+    margin-top: 24px;
+  }
+
+  /* Make action buttons take full width */
+  .ocr-action-button {
+    max-width: 100%;
+    justify-content: center;
+  }
+
+  .ocr-result-preview {
+    max-width: 100%;
+    margin-top: 24px;
+    padding: 16px;
+  }
+
+  .ocr-result-text {
+    max-height: 250px;
+  }
+
+  .process-another-btn {
+    width: 100%;
+    align-self: center;
+    justify-content: center;
+    display: flex;
+  }
 }

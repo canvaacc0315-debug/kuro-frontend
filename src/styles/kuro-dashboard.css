@@ -10,7 +10,8 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 80px; /* Account for sticky header */
+  scroll-padding-top: 80px;
+  /* Account for sticky header */
 }
 
 /* ===========================
@@ -29,7 +30,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
   background: #ffffff;
   color: #000000;
-  line-height: 1.6; /* Improved readability */
+  line-height: 1.6;
+  /* Improved readability */
 }
 
 /* ===========================
@@ -41,7 +43,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  position: relative; /* For potential overlays */
+  position: relative;
+  /* For potential overlays */
 }
 
 /* Scoped main container: improved spacing and centering */
@@ -59,11 +62,13 @@ body {
     opacity: 0;
     transform: translateY(40px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -198,6 +203,7 @@ body {
     opacity: 0;
     transform: translateY(60px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -244,7 +250,8 @@ body {
 
 .hero-cta::before {
   content: '';
-  position: absolute;  /*ftw*/
+  position: absolute;
+  /*ftw*/
   top: 50%;
   left: 50%;
   width: 0;
@@ -300,9 +307,12 @@ body {
 }
 
 @keyframes float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0) rotate(0deg);
   }
+
   50% {
     transform: translateY(-20px) rotate(2deg);
   }
@@ -442,18 +452,36 @@ body {
   opacity: 0;
 }
 
-.feature-card:nth-child(1) { animation-delay: 0.2s; }
-.feature-card:nth-child(2) { animation-delay: 0.4s; }
-.feature-card:nth-child(3) { animation-delay: 0.6s; }
-.feature-card:nth-child(4) { animation-delay: 0.8s; }
-.feature-card:nth-child(5) { animation-delay: 1.0s; }
-.feature-card:nth-child(6) { animation-delay: 1.2s; }
+.feature-card:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.feature-card:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.feature-card:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+.feature-card:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+.feature-card:nth-child(5) {
+  animation-delay: 1.0s;
+}
+
+.feature-card:nth-child(6) {
+  animation-delay: 1.2s;
+}
 
 @keyframes featureFadeIn {
   from {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -471,7 +499,8 @@ body {
 }
 
 .feature-title::before {
-  content: attr(data-icon); /* Use emoji from title */
+  content: attr(data-icon);
+  /* Use emoji from title */
   transition: transform 0.3s ease;
 }
 
@@ -486,13 +515,17 @@ body {
 
 /* FOOTER - Added styles assuming missing from original; ensure normal flow */
 .footer {
-  position: relative; /* Ensure not fixed or absolute */
+  position: relative;
+  /* Ensure not fixed or absolute */
   width: 100%;
-  background: #000; /* From screenshot */
+  background: #000;
+  /* From screenshot */
   color: #fff;
   padding: 2rem;
-  margin-top: auto; /* If using flex on root, pushes to bottom */
-  margin-top: 4rem; /* Add space between CTA and footer */
+  margin-top: auto;
+  /* If using flex on root, pushes to bottom */
+  margin-top: 4rem;
+  /* Add space between CTA and footer */
 }
 
 .footer-content {
@@ -546,6 +579,7 @@ body {
   color: #ccc;
   font-size: 0.8rem;
 }
+
 /* ===========================
    RESPONSIVE - Enhanced Breakpoints
 =========================== */
@@ -606,7 +640,8 @@ body {
 /* Mobile Landscape */
 @media (max-width: 768px) {
   .kuro-dashboard-page .main-container {
-    padding: 40px 20px;
+    padding: 40px 20px 100px 20px;
+    /* added bottom padding to clear potential bottom nav */
   }
 
   .workspace-grid,
@@ -658,7 +693,8 @@ body {
 /* Small Mobile */
 @media (max-width: 480px) {
   .kuro-dashboard-page .main-container {
-    padding: 30px 16px;
+    padding: 30px 16px 100px 16px;
+    /* added bottom padding */
   }
 
   .workspace-btn,
@@ -715,6 +751,7 @@ body {
   .feature-desc {
     font-size: 14px;
   }
+
   .header {
     padding: 16px;
     flex-direction: column;
@@ -771,6 +808,7 @@ body {
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -783,6 +821,7 @@ body {
 
 /* High contrast enhancements */
 @media (prefers-contrast: high) {
+
   .workspace-card,
   .feature-card,
   .hero-banner {
