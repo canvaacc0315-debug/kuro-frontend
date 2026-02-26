@@ -175,7 +175,7 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                     <div style={{ marginTop: '20px', display: 'flex', gap: '10px', width: '100%', maxWidth: '500px' }}>
                         <select
                             className="study-select"
-                            style={{ flexGrow: 1, padding: '12px 20px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
+                            style={{ flexGrow: 1, padding: '10px 15px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
                             value={selectedPdfId}
                             onChange={(e) => setSelectedPdfId(e.target.value)}
                         >
@@ -299,7 +299,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                     <div style={{ marginTop: '20px', display: 'flex', gap: '10px', width: '100%', maxWidth: '500px' }}>
                         <select
                             className="study-select"
-                            style={{ flexGrow: 1, padding: '12px 20px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
+                            style={{ flexGrow: 1, padding: '10px 15px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
                             value={selectedPdfId}
                             onChange={(e) => setSelectedPdfId(e.target.value)}
                         >
