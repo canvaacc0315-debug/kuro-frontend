@@ -359,5 +359,5 @@ export default function OcrPanel() {
         </div>
       </div>
     </motion.div>
-  );  
+  );
 }
