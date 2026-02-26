@@ -1,4 +1,4 @@
-// src/pages/KuroWorkspacePage.jsx
+z// src/pages/KuroWorkspacePage.jsx
 import { useState, useEffect, useRef } from "react";
 import { useUser, UserButton, useAuth } from "@clerk/clerk-react";
 import { useSearchParams, useNavigate } from "react-router-dom";
@@ -15,6 +15,8 @@ import UploadPanel from "../components/UploadPanel";
 import FixedChatInput from "../components/FixedChatInput";
 // ✅ NEW: Import PDF Tools
 import PDFWorkspace from "../components/PDFTools/PDFWorkspace.jsx";
+// ✅ NEW: Import Study Mode
+import StudyWorkspace from "../components/StudyMode/StudyWorkspace.jsx";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -23,7 +25,7 @@ export default function KuroWorkspacePage() {
   const { getToken } = useAuth();
   const { uploadPdf } = useApiClient();
   const { openUserProfile } = useClerk();
-  
+
   // --- URL tab wiring ---
   const [searchParams, setSearchParams] = useSearchParams();
   const getInitialTab = () => {
@@ -39,7 +41,7 @@ export default function KuroWorkspacePage() {
     }
     return "chat";
   };
-  
+
   const [activeTab, setActiveTab] = useState(getInitialTab);
   const [activeChatSubTab, setActiveChatSubTab] = useState("current");
   const [uploadedFiles, setUploadedFiles] = useState([]);
@@ -65,7 +67,7 @@ export default function KuroWorkspacePage() {
   const [isSending, setIsSending] = useState(false);
   const [history, setHistory] = useState([]);
   const selectedFile = uploadedFiles.find((f) => f.backendId === selectedPdfId) || null;
-  
+
   // SESSION STATE
   const [sessionId, setSessionId] = useState(null);
 
@@ -74,7 +76,7 @@ export default function KuroWorkspacePage() {
     setExportStatus({ message, type });
     setTimeout(() => setExportStatus(null), 3000);
   };
-  
+
   const mapAnswerStyleToMode = (style) => {
     switch (style) {
       case "summary":
@@ -86,7 +88,7 @@ export default function KuroWorkspacePage() {
         return "detailed";
     }
   };
-  
+
   // ----- history <-> localStorage helpers -----
   const HISTORY_KEY = "kuroChatHistory";
   const loadHistoryFromStorage = () => {
@@ -100,7 +102,7 @@ export default function KuroWorkspacePage() {
       return [];
     }
   };
-  
+
   const saveHistoryToStorage = (nextHistory) => {
     try {
       window.localStorage.setItem(HISTORY_KEY, JSON.stringify(nextHistory));
@@ -108,7 +110,7 @@ export default function KuroWorkspacePage() {
       // ignore
     }
   };
-  
+
   // load history on mount
   useEffect(() => {
     const stored = loadHistoryFromStorage();
@@ -116,20 +118,20 @@ export default function KuroWorkspacePage() {
       setHistory(stored);
     }
   }, []);
-  
+
   // ---------------- tabs ----------------
   useEffect(() => {
     const tabFromUrl = searchParams.get("tab");
     if (
       tabFromUrl &&
-      ["chat", "analysis", "ocr", "create", "pdftools"].includes(tabFromUrl) &&
+      ["chat", "analysis", "ocr", "create", "pdftools", "study"].includes(tabFromUrl) &&
       tabFromUrl !== activeTab
     ) {
       setActiveTab(tabFromUrl);
       if (tabFromUrl === "chat") setActiveChatSubTab("current");
     }
   }, [searchParams, activeTab]);
-  
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (tab === "chat") setActiveChatSubTab("current");
@@ -139,11 +141,11 @@ export default function KuroWorkspacePage() {
       return next;
     });
   };
-  
+
   const handleChatSubTabClick = (sub) => {
     setActiveChatSubTab(sub);
   };
-  
+
   // Session management with proper auth
   useEffect(() => {
     async function startSession() {
@@ -156,24 +158,24 @@ export default function KuroWorkspacePage() {
             "Content-Type": "application/json"
           }
         });
-        
+
         if (!res.ok) {
           console.error("Failed to start session:", res.status);
           return;
         }
-        
+
         const data = await res.json();
         setSessionId(data.session_id);
       } catch (err) {
         console.error("Error starting session:", err);
       }
     }
-    
+
     if (user && isLoaded) {
       startSession();
     }
   }, [user, isLoaded, getToken]);
-  
+
   // Session cleanup
   useEffect(() => {
     return () => {
@@ -185,7 +187,7 @@ export default function KuroWorkspacePage() {
       }
     };
   }, [sessionId]);
-  
+
   // ---------------- chat ----------------
   const handleClearConversation = () => {
     setConversation([
@@ -199,7 +201,7 @@ export default function KuroWorkspacePage() {
     ]);
     setMessage("");
   };
-  
+
   const handleSend = async () => {
     const text = message.trim();
     if (!text || isSending) return;
@@ -213,7 +215,7 @@ export default function KuroWorkspacePage() {
     setConversation((prev) => [...prev, userMsg]);
     setMessage("");
     setIsSending(true);
-    
+
     try {
       const token = await getToken();
       const mode = mapAnswerStyleToMode(answerStyle);
@@ -230,7 +232,7 @@ export default function KuroWorkspacePage() {
           sessionId: sessionId,
         }),
       });
-      
+
       if (!res.ok) {
         const errorText = await res.text();
         const botErr = {
@@ -242,7 +244,7 @@ export default function KuroWorkspacePage() {
         setConversation((prev) => [...prev, botErr]);
         return;
       }
-      
+
       const data = await res.json();
       const answer =
         data.answer && typeof data.answer === "string"
@@ -269,7 +271,7 @@ export default function KuroWorkspacePage() {
       setIsSending(false);
     }
   };
-  
+
   // ---------------- export helpers ----------------
   const conversationAsPlainText = () => {
     if (!conversation.length) return "No active conversation.";
@@ -281,7 +283,7 @@ export default function KuroWorkspacePage() {
     });
     return txt;
   };
-  
+
   const conversationAsCSV = () => {
     if (!conversation.length) return "role,timestamp,message\n";
     let csv = "role,timestamp,message\n";
@@ -291,7 +293,7 @@ export default function KuroWorkspacePage() {
     });
     return csv;
   };
-  
+
   const conversationAsHTML = () => {
     if (!conversation.length) return "<html><body>No active conversation.</body></html>";
     let html = '<html><head><title>RovexAI Chat Export</title></head><body>';
@@ -304,7 +306,7 @@ export default function KuroWorkspacePage() {
     html += '</body></html>';
     return html;
   };
-  
+
   const conversationAsMarkdown = () => {
     if (!conversation.length) return "# No active conversation.";
     let md = "# RovexAI - Chat Conversation Export\n\n";
@@ -315,7 +317,7 @@ export default function KuroWorkspacePage() {
     });
     return md;
   };
-  
+
   const downloadBlob = (content, filename, mime) => {
     const blob = new Blob([content], { type: mime });
     const url = URL.createObjectURL(blob);
@@ -327,7 +329,7 @@ export default function KuroWorkspacePage() {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
-  
+
   const handleExportPDF = () => {
     if (!conversation.length) {
       showStatus("No conversation to export.", "error");
@@ -360,7 +362,7 @@ export default function KuroWorkspacePage() {
       showStatus("Failed to export PDF.", "error");
     }
   };
-  
+
   const handleExportDOCX = () => {
     const txt = conversationAsPlainText();
     downloadBlob(
@@ -370,31 +372,31 @@ export default function KuroWorkspacePage() {
     );
     showStatus("Exported DOCX (simple text version).");
   };
-  
+
   const handleExportCSV = () => {
     const csv = conversationAsCSV();
     downloadBlob(csv, `kuro-chat-${Date.now()}.csv`, "text/csv");
     showStatus("Exported CSV.");
   };
-  
+
   const handleExportTXT = () => {
     const txt = conversationAsPlainText();
     downloadBlob(txt, `kuro-chat-${Date.now()}.txt`, "text/plain");
     showStatus("Exported TXT.");
   };
-  
+
   const handleExportHTML = () => {
     const html = conversationAsHTML();
     downloadBlob(html, `kuro-chat-${Date.now()}.html`, "text/html");
     showStatus("Exported HTML.");
   };
-  
+
   const handleExportMarkdown = () => {
     const md = conversationAsMarkdown();
     downloadBlob(md, `kuro-chat-${Date.now()}.md`, "text/markdown");
     showStatus("Exported Markdown.");
   };
-  
+
   const handleCopyText = async () => {
     try {
       const txt = conversationAsPlainText();
@@ -404,7 +406,7 @@ export default function KuroWorkspacePage() {
       showStatus("Clipboard permission denied.", "error");
     }
   };
-  
+
   const handleGenerateShareableLink = async () => {
     try {
       const txt = conversationAsPlainText();
@@ -416,7 +418,7 @@ export default function KuroWorkspacePage() {
       showStatus("Failed to generate shareable link.", "error");
     }
   };
-  
+
   // ---------------- history actions ----------------
   const handleSaveConversation = () => {
     const realMessages = conversation.filter(
@@ -442,7 +444,7 @@ export default function KuroWorkspacePage() {
     saveHistoryToStorage(nextHistory);
     showStatus("Conversation saved to history.");
   };
-  
+
   const handleLoadHistoryItem = (id) => {
     const item = history.find((h) => h.id === id);
     if (!item) {
@@ -455,14 +457,14 @@ export default function KuroWorkspacePage() {
     setActiveChatSubTab("current");
     showStatus(`Loaded conversation "${item.title}".`);
   };
-  
+
   const handleDeleteHistoryItem = (id) => {
     const nextHistory = history.filter((h) => h.id !== id);
     setHistory(nextHistory);
     saveHistoryToStorage(nextHistory);
     showStatus("Conversation deleted from history.");
   };
-  
+
   const handleClearHistory = () => {
     if (!window.confirm("Clear all saved conversations?")) return;
     setHistory([]);
@@ -473,7 +475,7 @@ export default function KuroWorkspacePage() {
     }
     showStatus("All history cleared.");
   };
-  
+
   // ---------------- render ----------------
   const chatMessagesRef = useRef(null);
   useEffect(() => {
@@ -487,10 +489,10 @@ export default function KuroWorkspacePage() {
     const timeoutId = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timeoutId);
   }, [conversation]);
-  
+
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
@@ -498,7 +500,7 @@ export default function KuroWorkspacePage() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-  
+
   // NEW STATES FOR HISTORY TAB
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -511,14 +513,14 @@ export default function KuroWorkspacePage() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-  
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery]);
-  
+
   // Full-screen state
   const [isFullScreen, setIsFullScreen] = useState(false);
-  
+
   useEffect(() => {
     const updatePadding = () => {
       const input = document.getElementById("fixed-input-area");
@@ -557,8 +559,8 @@ export default function KuroWorkspacePage() {
               <div className="user-name">
                 {isLoaded && user
                   ? user.fullName ||
-                    user.primaryEmailAddress?.emailAddress ||
-                    "User"
+                  user.primaryEmailAddress?.emailAddress ||
+                  "User"
                   : "Loading..."}
               </div>
             </div>
@@ -572,7 +574,7 @@ export default function KuroWorkspacePage() {
             />
           </div>
         </header>
-        
+
         <aside className="sidebar" style={{ display: isFullScreen ? "none" : "block" }}>
           <nav className="sidebar-nav">
             <button
@@ -618,9 +620,17 @@ export default function KuroWorkspacePage() {
               <span className="sidebar-icon">🛠️</span>
               <span className="sidebar-label">PDF Tools</span>
             </button>
+            {/* ✅ NEW: Study Mode Button */}
+            <button
+              className={`sidebar-item ${activeTab === "study" ? "active" : ""}`}
+              onClick={() => handleTabClick("study")}
+            >
+              <span className="sidebar-icon">📚</span>
+              <span className="sidebar-label">Study Mode</span>
+            </button>
           </nav>
         </aside>
-        
+
         <main className="main-container" style={{ display: isFullScreen ? "none" : "flex" }}>
           <header className="workspace-header">
             <div>
@@ -630,7 +640,7 @@ export default function KuroWorkspacePage() {
               </h1>
             </div>
           </header>
-          
+
           <div className="content-wrapper">
             <section
               id="uploadTab"
@@ -644,7 +654,7 @@ export default function KuroWorkspacePage() {
                 getToken={getToken}
               />
             </section>
-            
+
             <section
               id="chatTab"
               className={`tab-content ${activeTab === "chat" ? "active" : ""}`}
@@ -709,7 +719,7 @@ export default function KuroWorkspacePage() {
                   Export Conversation
                 </button>
               </div>
-              
+
               {/* CURRENT CHAT */}
               <div
                 className="chat-subtab-content"
@@ -864,7 +874,7 @@ export default function KuroWorkspacePage() {
                         </select>
                       </div>
                     </div>
-                    
+
                     <div
                       className="chat-actions-row"
                       style={{
@@ -917,7 +927,7 @@ export default function KuroWorkspacePage() {
                         Clear Conversation
                       </button>
                     </div>
-                    
+
                     <div className="chat-wrapper">
                       <div
                         ref={chatMessagesRef}
@@ -969,7 +979,7 @@ export default function KuroWorkspacePage() {
                   </div>
                 </div>
               </div>
-              
+
               {/* CHAT HISTORY */}
               <div
                 className="chat-subtab-content"
@@ -1169,7 +1179,7 @@ export default function KuroWorkspacePage() {
                   )}
                 </div>
               </div>
-              
+
               {/* EXPORT CONVERSATION */}
               <div
                 className="chat-subtab-content"
@@ -1267,7 +1277,7 @@ export default function KuroWorkspacePage() {
                 </div>
               </div>
             </section>
-            
+
             {/* OTHER TABS */}
             <section
               id="analysisTab"
@@ -1280,21 +1290,21 @@ export default function KuroWorkspacePage() {
                 onPdfChange={setSelectedPdfId}
               />
             </section>
-            
+
             <section
               id="ocrTab"
               className={`tab-content ${activeTab === "ocr" ? "active" : ""}`}
             >
               <OcrPanel sessionId={sessionId} />
             </section>
-            
+
             <section
               id="createTab"
               className={`tab-content ${activeTab === "create" ? "active" : ""}`}
             >
               <CreatePdfPanel />
             </section>
-            
+
             {/* ✅ NEW: PDF Tools Tab */}
             <section
               id="pdftoolsTab"
@@ -1302,9 +1312,17 @@ export default function KuroWorkspacePage() {
             >
               <PDFWorkspace />
             </section>
+
+            {/* ✅ NEW: Study Mode Tab */}
+            <section
+              id="studyTab"
+              className={`tab-content ${activeTab === "study" ? "active" : ""}`}
+            >
+              <StudyWorkspace />
+            </section>
           </div>
         </main>
-        
+
         {activeTab === "chat" && activeChatSubTab === "current" && (
           <FixedChatInput
             message={message}

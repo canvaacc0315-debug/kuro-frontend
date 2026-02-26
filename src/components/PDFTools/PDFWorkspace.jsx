@@ -2,57 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { pdfApi } from '../../services/pdfApi';
 import './PDFTools.css';
 
-// CraftMyPDFPanel component
-const CraftMyPDFPanel = () => {
-  const [templates, setTemplates] = useState([]);
-  const [selectedTemplate, setSelectedTemplate] = useState('');
-  const [templateData, setTemplateData] = useState('{"name": "John Doe", "amount": 100}');
-  const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState(null);
-
-  useEffect(() => {
-    loadTemplates();
-  }, []);
-
-  const loadTemplates = async () => {
-    try {
-      const data = await pdfApi.getTemplates();
-      setTemplates(data.templates || []);
-    } catch (error) {
-      console.error('Failed to load templates:', error);
-    }
-  };
-
-  const handleGenerate = async () => {
-    setLoading(true);
-    try {
-      const data = JSON.parse(templateData);
-      const response = await pdfApi.generateFromTemplate(selectedTemplate, data);
-      setResult(response);
-      if (response.download_url) {
-        window.open(response.download_url, '_blank');
-      }
-    } catch (error) {
-      alert('Error: ' + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+// CraftMyPDFPanel component has been removed (pending new PDF Tool selection)
+const ComingSoonPanel = () => {
   return (
-    <div className="craftmypdf-panel">
-      <h2>📄 Generate PDF from Template</h2>
-      <select value={selectedTemplate} onChange={(e) => setSelectedTemplate(e.target.value)}>
-        <option value="">Select Template...</option>
-        {templates.map(t => (
-          <option key={t.id} value={t.id}>{t.name}</option>
-        ))}
-      </select>
-      <textarea value={templateData} onChange={(e) => setTemplateData(e.target.value)} rows={6} />
-      <button onClick={handleGenerate} disabled={loading || !selectedTemplate}>
-        {loading ? 'Generating...' : 'Generate PDF'}
-      </button>
-      {result?.download_url && <a href={result.download_url} target="_blank" rel="noreferrer">Download PDF</a>}
+    <div className="craftmypdf-panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', textAlign: 'center', background: '#f8fafc', border: '2px dashed #cbd5e1', borderRadius: '12px' }}>
+      <div style={{ fontSize: '3rem', marginBottom: '15px' }}>✨</div>
+      <h3 style={{ color: '#334155', marginBottom: '10px' }}>New Tool Coming Soon</h3>
+      <p style={{ color: '#64748b' }}>We are building a brand new PDF utility to replace the template generator.</p>
     </div>
   );
 };
@@ -156,10 +112,10 @@ const ILovePDFPanel = () => {
       ) : (
         <input type="file" multiple={current.multi} accept={activeTab === 'convert' ? '.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.png' : '.pdf'} onChange={handleFileChange} />
       )}
-      
+
       {activeTab === 'split' && <input type="text" placeholder="Page ranges" value={ranges} onChange={(e) => setRanges(e.target.value)} />}
-      <button 
-        onClick={current.handler} 
+      <button
+        onClick={current.handler}
         disabled={loading || (activeTab === 'merge' ? (!mergeFile1 || !mergeFile2) : files.length === 0)}
       >
         {loading ? 'Processing...' : current.label}
@@ -175,7 +131,7 @@ const PDFWorkspace = () => {
     <div className="pdf-workspace">
       <h1>RovexAI PDF Studio</h1>
       <div className="panels-grid">
-        <CraftMyPDFPanel />
+        <ComingSoonPanel />
         <ILovePDFPanel />
       </div>
     </div>
