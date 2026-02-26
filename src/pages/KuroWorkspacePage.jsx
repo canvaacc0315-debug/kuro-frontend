@@ -1318,7 +1318,7 @@ export default function KuroWorkspacePage() {
               id="studyTab"
               className={`tab-content ${activeTab === "study" ? "active" : ""}`}
             >
-              <StudyWorkspace />
+              <StudyWorkspace uploadedFiles={uploadedFiles} />
             </section>
           </div>
         </main>

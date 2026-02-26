@@ -139,7 +139,8 @@
 
 .study-upload-btn {
   margin-top: 20px;
-  background: #3b82f6;
+  background: #ef4444;
+  /* Changed to red as requested */
   color: white;
   border: none;
   padding: 10px 24px;
@@ -150,7 +151,8 @@
 }
 
 .study-upload-btn:hover {
-  background: #2563eb;
+  background: #dc2626;
+  /* Darker red on hover */
 }
 
 /* Pomodoro Specific Styles */

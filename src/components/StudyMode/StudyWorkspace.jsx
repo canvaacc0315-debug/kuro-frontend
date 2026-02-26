@@ -180,8 +180,10 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                             onChange={(e) => setSelectedPdfId(e.target.value)}
                         >
                             <option value="">-- Choose a PDF --</option>
-                            {uploadedFiles.map(f => (
-                                <option key={f.backendId} value={f.backendId}>{f.name}</option>
+                            {uploadedFiles.filter(f => f.backendId).map(f => (
+                                <option key={f.backendId} value={f.backendId}>
+                                    {f.name || `PDF Document (${f.backendId.substring(0, 8)})`}
+                                </option>
                             ))}
                         </select>
                         <button
@@ -302,8 +304,10 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                             onChange={(e) => setSelectedPdfId(e.target.value)}
                         >
                             <option value="">-- Choose a PDF --</option>
-                            {uploadedFiles.map(f => (
-                                <option key={f.backendId} value={f.backendId}>{f.name}</option>
+                            {uploadedFiles.filter(f => f.backendId).map(f => (
+                                <option key={f.backendId} value={f.backendId}>
+                                    {f.name || `PDF Document (${f.backendId.substring(0, 8)})`}
+                                </option>
                             ))}
                         </select>
                         <button
