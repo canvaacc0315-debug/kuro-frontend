@@ -1,0 +1,219 @@
+/* src/components/layout/PublicPageLayout.css */
+
+.public-layout-root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-off);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+}
+
+/* Header */
+.public-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: transparent;
+    transition: all 0.3s ease;
+    padding: 1.5rem 2rem;
+}
+
+.public-header.scrolled {
+    background: var(--bg-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    padding: 1rem 2rem;
+}
+
+.public-nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.public-nav-desktop {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.public-nav-link {
+    color: var(--text-inverse);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.public-header:not(.scrolled) .public-nav-link,
+.public-header:not(.scrolled) .logo-text span:last-child {
+    color: var(--text-primary);
+}
+
+.public-nav-link:hover {
+    color: var(--brand-red);
+}
+
+.public-auth-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-left: 1rem;
+}
+
+.btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border-light);
+    color: inherit;
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.public-header.scrolled .btn-ghost {
+    color: var(--text-inverse);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-ghost:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.public-header.scrolled .btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary-small {
+    background: var(--brand-red);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    transition: all 0.2s;
+}
+
+.btn-primary-small:hover {
+    background: var(--brand-red-hover);
+    transform: translateY(-1px);
+}
+
+/* Main Content */
+.public-main-content {
+    flex: 1;
+    padding: 8rem 2rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.public-content-card {
+    background: var(--bg-pure);
+    border-radius: var(--radius-2xl);
+    padding: 3rem;
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-light);
+    border-top: 6px solid var(--brand-red);
+}
+
+/* Typography styles for nested content */
+.public-content-card h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.public-content-card h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 2rem 0 1rem;
+}
+
+.public-content-card p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* Footer */
+.public-footer {
+    text-align: center;
+    padding: 2rem;
+    background: var(--bg-dark);
+    color: var(--text-inverse-secondary);
+    font-size: 0.9rem;
+}
+
+/* Mobile Nav */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+.public-header.scrolled .mobile-menu-btn {
+    color: var(--text-inverse);
+}
+
+.public-nav-mobile {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-dark);
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-bottom: 2px solid var(--brand-red);
+}
+
+.mobile-link {
+    color: var(--text-inverse);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-auth {
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+
+    .public-nav-desktop,
+    .public-auth-buttons {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .public-content-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .public-main-content {
+        padding: 6rem 1rem 3rem;
+    }
+}

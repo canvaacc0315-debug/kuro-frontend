@@ -1,307 +1,162 @@
-// src/pages/DashboardPage.jsx
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import "../styles/kuro-dashboard.css";
 import { useClerk } from "@clerk/clerk-react";
+import { motion } from "framer-motion";
+import {
+  MessageSquare,
+  BarChart,
+  UploadCloud,
+  LayoutTemplate,
+  Scan,
+  Wrench,
+  ArrowRight
+} from "lucide-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
-import { useRef } from "react";
-import logoIcon from "../assets/logo.svg"; // Add your logo image
+import AnimatedCard from "../components/animations/AnimatedCard.jsx";
+import "../styles/theme-red.css";
+import "./DashboardPage.css";
 
 export default function DashboardPage() {
   const { user } = useUser();
   const navigate = useNavigate();
   const { openUserProfile } = useClerk();
-  const footerRef = useRef(null);
 
-  const displayName =
-    user?.fullName ||
-    user?.firstName ||
-    user?.username ||
-    user?.primaryEmailAddress?.emailAddress ||
-    "User";
+  const displayName = user?.firstName || user?.username || "Explorer";
 
   return (
-    <div className="kuro-dashboard-page">
-      {/* ===== header ===== */}
-      <header className="header">
-        <div className="header-brand">
-          <KuroLogo size={46} />
-          <div className="logo-container" onClick={() => navigate("/")}>
-          <span className="logo-text">
-            <span className="logo-red">Rovex</span>
-            <span className="logo-ai">AI</span>
+    <div className="dashboard-root">
+
+      {/* Sleek Dark Header */}
+      <header className="dash-header">
+        <div className="dash-brand" onClick={() => navigate("/")}>
+          <KuroLogo size={32} />
+          <span className="dash-logo-text">
+            <span>Rovex</span><span className="text-white">AI</span>
           </span>
-          </div>
         </div>
-        <nav className="header-links">
-          <a href="/homepage" className="nav-link">Home</a>
-          <a href="/app?tab=upload" className="nav-link">Workspace</a>
-          <a href="https://rovexai.com/contact" className="nav-link">Help</a>
-          <button onClick={openUserProfile} className="nav-link settings-link">
-            Settings
-          </button>
+
+        <nav className="dash-nav">
+          <button onClick={() => navigate("/")} className="dash-nav-link">Home</button>
+          <button onClick={() => navigate("/app?tab=upload")} className="dash-nav-link active">Workspace</button>
+          <a href="https://rovexai.com/contact" className="dash-nav-link">Help</a>
+          <button onClick={openUserProfile} className="dash-nav-link">Settings</button>
         </nav>
-        {/* RIGHT: user info */}
-        <UserButton showName afterSignOutUrl="/login" />
+
+        <div className="dash-user">
+          <UserButton afterSignOutUrl="/" />
+        </div>
       </header>
 
-      {/* ===== MAIN CONTENT ===== */}
-      <main className="main-container">
-        {/* HERO */}
-        <section className="hero-banner">
-          <h1 className="hero-title">
-            Welcome to <span className="hero-title-accent">RovexAI</span>
-          </h1>
-          <p className="hero-subtitle">
-            Transform your PDF workflows with intelligent document processing
-            and creation
-          </p>
-          <button className="hero-cta" onClick={() => navigate("/app?tab=upload")}>
-            Get Started
-          </button>
-          <div className="floating-cards">
-            <div className="floating-card card1">AI-Powered Analysis</div>
-            <div className="floating-card card2">Seamless Editing</div>
-            <div className="floating-card card3">Smart OCR</div>
-          </div>
-        </section>
-
-        {/* WORKSPACE SECTION */}
-        <section className="section-header">
-          <h2 className="section-title">
-            Choose Your <span className="section-title-accent">Workspace</span>
-          </h2>
-          <p className="section-subtitle">
-            Select a workspace to get started with your PDF tasks
-          </p>
-        </section>
-
-        <section className="workspace-grid">
-          {/* PDF Chat */}
-          <div className="workspace-card">
-            <div className="workspace-icon">💬</div>
-            <h3 className="workspace-name">PDF Chat</h3>
-            <p className="workspace-description">
-              Interact with your PDFs using natural language. Ask questions,
-              extract information, and get instant answers.
+      <main className="dash-main">
+        {/* Quick Start / Welcome Hero */}
+        <motion.section
+          className="dash-welcome-section"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="dash-welcome-content">
+            <h1 className="dash-title">
+              Welcome back, <span className="text-gradient-red">{displayName}</span>
+            </h1>
+            <p className="dash-subtitle">
+              Ready to transform your workflow? Follow our Quick Start guide below.
             </p>
-            <ul className="workspace-features">
-              <li>Smart Q&amp;A Engine</li>
-              <li>Context Understanding</li>
-              <li>Real-time Responses</li>
-            </ul>
-            <button
-              className="workspace-btn"
+
+            {/* Quick Start Instructions Box */}
+            <div className="quick-start-box">
+              <div className="qs-step">
+                <div className="qs-number">1</div>
+                <div>
+                  <h4>Upload a PDF</h4>
+                  <p>Head to the Workspace and drop your file securely.</p>
+                </div>
+              </div>
+              <ArrowRight className="qs-arrow" />
+              <div className="qs-step">
+                <div className="qs-number">2</div>
+                <div>
+                  <h4>Select a Tool</h4>
+                  <p>Choose Chat, Analysis, OCR, or PDF Modding.</p>
+                </div>
+              </div>
+              <ArrowRight className="qs-arrow" />
+              <div className="qs-step">
+                <div className="qs-number">3</div>
+                <div>
+                  <h4>Extract Intelligence</h4>
+                  <p>Let RovexAI do the heavy lifting instantly.</p>
+                </div>
+              </div>
+            </div>
+
+            <button className="dash-cta-btn" onClick={() => navigate("/app?tab=upload")}>
+              Launch Workspace <ArrowRight size={18} style={{ marginLeft: '8px' }} />
+            </button>
+          </div>
+        </motion.section>
+
+        {/* Workspaces Grid */}
+        <section className="dash-workspaces-section">
+          <div className="dash-section-header">
+            <h2>Select Your <span className="text-gradient-red">Workspace</span></h2>
+          </div>
+
+          <div className="dash-grid">
+            <AnimatedCard
+              icon={<MessageSquare size={28} color="var(--brand-red)" />}
+              title="PDF Chat"
+              description="Interact with your PDFs using natural language. Ask questions and get real-time answers."
               onClick={() => navigate("/app?tab=chat")}
-            >
-              Go to Workspace
-            </button>
-          </div>
-
-          {/* Analysis */}
-          <div className="workspace-card">
-            <div className="workspace-icon">📊</div>
-            <h3 className="workspace-name">Analysis</h3>
-            <p className="workspace-description">
-              Deep dive into your PDF content. Extract data, generate insights,
-              and visualize information beautifully.
-            </p>
-            <ul className="workspace-features">
-              <li>Data Extraction</li>
-              <li>Advanced Insights</li>
-              <li>Report Generation</li>
-            </ul>
-            <button
-              className="workspace-btn"
+              delay={0.1}
+            />
+            <AnimatedCard
+              icon={<BarChart size={28} color="var(--brand-red)" />}
+              title="Data Analysis"
+              description="Deep dive into your content to extract tables, insights, and visualize nested information."
               onClick={() => navigate("/app?tab=analysis")}
-            >
-              Go to Workspace
-            </button>
-          </div>
-
-          {/* Upload & Organize */}
-          <div className="workspace-card">
-            <div className="workspace-icon">⬆️</div>
-            <h3 className="workspace-name">Upload &amp; Organize</h3>
-            <p className="workspace-description">
-              Manage all your PDF documents in one place. Upload, organize, and
-              maintain your document library efficiently.
-            </p>
-            <ul className="workspace-features">
-              <li>Bulk Upload</li>
-              <li>Smart Organization</li>
-              <li>Version Control</li>
-            </ul>
-            <button
-              className="workspace-btn"
+              delay={0.2}
+            />
+            <AnimatedCard
+              icon={<UploadCloud size={28} color="var(--brand-red)" />}
+              title="Upload & Organize"
+              description="Manage all your securely vaulted documents right here in the central Rovex library."
               onClick={() => navigate("/app?tab=upload")}
-            >
-              Go to Workspace
-            </button>
-          </div>
-
-          {/* Create & Edit */}
-          <div className="workspace-card">
-            <div className="workspace-icon">✏️</div>
-            <h3 className="workspace-name">Create &amp; Edit</h3>
-            <p className="workspace-description">
-              Design and edit PDFs with Canva-like simplicity. Professional
-              templates and easy tools.
-            </p>
-            <ul className="workspace-features">
-              <li>Simple Editor</li>
-              <li>Add Text & Images</li>
-              <li>Custom PDFs</li>
-            </ul>
-            <button
-              className="workspace-btn"
+              delay={0.3}
+            />
+            <AnimatedCard
+              icon={<LayoutTemplate size={28} color="var(--brand-red)" />}
+              title="Create & Edit"
+              description="Design and edit PDFs with professional, canva-like simplicity."
               onClick={() => navigate("/app?tab=create")}
-            >
-              Go to Workspace
-            </button>
-          </div>
-
-          {/* OCR */}
-          <div className="workspace-card">
-            <div className="workspace-icon">🔍</div>
-            <h3 className="workspace-name">OCR &amp; Recognition</h3>
-            <p className="workspace-description">
-              Convert scanned documents to editable text and extract data from complex layouts.
-            </p>
-            <ul className="workspace-features">
-              <li>Text Recognition</li>
-              <li>Layout Detection</li>
-              <li>Batch Processing</li>
-            </ul>
-            <button
-              className="workspace-btn"
+              delay={0.4}
+            />
+            <AnimatedCard
+              icon={<Scan size={28} color="var(--brand-red)" />}
+              title="OCR Vision"
+              description="Convert scanned images to editable text using our advanced computer vision model."
               onClick={() => navigate("/app?tab=ocr")}
-            >
-              Go to Workspace
-            </button>
-          </div>
-
-          {/* Settings (optional placeholder) */}
-          <div className="workspace-card">
-            <div className="workspace-icon">🛠️</div>    
-            <h3 className="workspace-name">PDF Tools</h3>
-            <p className="workspace-description">
-              Manage and transform your PDF documents with ease. Merge, split, convert, and extract text from PDFs using our powerful tools.
-            </p>
-            
-            <ul className="workspace-features">
-              <li>Merge PDFs</li>
-              <li>Split PDFs</li>
-              <li>Convert to PDF</li>
-            </ul>
-            <button
-              className="workspace-btn"
+              delay={0.5}
+            />
+            <AnimatedCard
+              icon={<Wrench size={28} color="var(--brand-red)" />}
+              title="PDF Utilities"
+              description="Merge, Split, Watermark, and compress your PDFs entirely on the cloud."
               onClick={() => navigate("/app?tab=pdftools")}
-            >
-              Go to PDF Tools
-            </button>
-          </div>
-        </section>
-
-        {/* ===== FEATURES SECTION ===== */}
-        <section className="features-section">
-          <div className="section-header">
-            <h2 className="section-title">
-              Why Choose <span className="section-title-accent">RovexAI</span>?
-            </h2>
-          </div>
-
-          <div className="features-grid">
-            <div className="feature-card">
-              <h3 className="feature-title">🛡️ Military-Grade Security</h3>
-              <p className="feature-desc">
-                Your documents are encrypted and protected with industry‑leading
-                security standards.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">⚡ Lightning Fast</h3>
-              <p className="feature-desc">
-                Process and analyze documents in milliseconds with our optimized
-                infrastructure.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">🤖 AI Powered</h3>
-              <p className="feature-desc">
-                Advanced machine learning algorithms understand context and
-                provide intelligent solutions.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">📱 Fully Responsive</h3>
-              <p className="feature-desc">
-                Access RovexAI from any device. Work seamlessly on desktop,
-                tablet, or mobile.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">🔗 API Integration</h3>
-              <p className="feature-desc">
-                Integrate RovexAI into your workflows with our REST API and
-                webhooks.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <h3 className="feature-title">🎯 Precision Accuracy</h3>
-              <p className="feature-desc">
-                Industry‑leading accuracy for text recognition, data extraction,
-                and analysis.
-              </p>
-            </div>
+              delay={0.6}
+            />
           </div>
         </section>
       </main>
-      {/* FOOTER */}
-      <footer ref={footerRef} className="footer">
-        <div className="footer-content">
-          {/* LEFT: Brand */}
-          <div className="footer-section">
-            <div className="logo-container" onClick={() => navigate("/")}>
-              <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
-              <span className="logo-text">
-                <span className="logo-red">Rovex</span>
-                <span className="footer-ai">AI</span>
-              </span>
-            </div>
-            <p className="footer-tagline">
-              Transforming how you work with documents through AI
-            </p>
-          </div>
-          {/* COMPANY */}
-          <div className="footer-section">
-            <h4>Company</h4>
-            <button onClick={() => navigate("/about")} className="footer-link">
-              About
-            </button>
-            <button onClick={() => navigate("/contact")} className="footer-link">
-              Contact
-            </button>
-          </div>
-          {/* LEGAL */}
-          <div className="footer-section">
-            <h4>Legal</h4>
-            <button
-              onClick={() => navigate("/privacy-policy")}
-              className="footer-link"
-            >
-              Privacy Policy
-              </button>
-          </div>
+
+      {/* Sleek Footer */}
+      <footer className="dash-footer">
+        <div className="footer-links">
+          <button onClick={() => navigate("/about")}>About Us</button>
+          <button onClick={() => navigate("/contact")}>Contact</button>
+          <button onClick={() => navigate("/privacy-policy")}>Privacy Policy</button>
         </div>
-        <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} RovexAI. All rights reserved.</p>
-        </div>
+        <p className="footer-copyright">© {new Date().getFullYear()} RovexAI. All rights reserved.</p>
       </footer>
     </div>
   );

@@ -1,0 +1,336 @@
+/* src/pages/KuroLandingPage.css */
+
+.landing-page-root {
+    min-height: 100vh;
+    background-color: var(--bg-pure);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Header */
+.landing-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 4rem;
+    z-index: 50;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.landing-header .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Hero Split Layout */
+.landing-main-split {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.landing-hero-side {
+    flex: 1.2;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.landing-auth-side {
+    flex: 0.8;
+    background: var(--bg-off);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    border-left: 1px solid var(--border-light);
+    position: relative;
+}
+
+/* Red Accent Line dividing the screen */
+.landing-auth-side::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, transparent, var(--brand-red), transparent);
+    opacity: 0.5;
+}
+
+/* Small feature pills inside hero */
+.features-simple-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    max-width: 600px;
+    justify-content: center;
+}
+
+.feature-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-pure);
+    border: 1px solid var(--border-light);
+    padding: 10px 20px;
+    border-radius: 99px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
+    cursor: default;
+}
+
+/* Auth Panel */
+.auth-glass-panel {
+    width: 100%;
+    max-width: 420px;
+    background: var(--bg-pure);
+    padding: 3rem;
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-xl);
+    border: 1px solid var(--border-light);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Top red accent bar on the auth card */
+.auth-glass-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: var(--brand-red);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.form-group input {
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-light);
+    font-size: 1rem;
+    transition: all 0.2s;
+    background: #f9fafb;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--brand-red);
+    box-shadow: 0 0 0 3px var(--brand-red-light);
+    background: var(--bg-pure);
+}
+
+.btn-primary {
+    width: 100%;
+    background: var(--brand-red);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--brand-red-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-google {
+    width: 100%;
+    background: var(--bg-pure);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+    padding: 14px;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.2s;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-google:hover {
+    background: var(--bg-off);
+    border-color: #cbd5e1;
+}
+
+.google-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-text:hover {
+    color: var(--brand-red);
+}
+
+.divider-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.divider-line {
+    height: 1px;
+    flex: 1;
+    background: var(--border-light);
+}
+
+.divider-text {
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.auth-footer-text {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: var(--text-tertiary);
+}
+
+.auth-step-container {
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Features Section */
+.landing-features-section {
+    padding: 6rem 2rem;
+    background: var(--bg-pure);
+}
+
+.section-header-center {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 4rem;
+}
+
+.section-header-center h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.section-header-center p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+.landing-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .landing-main-split {
+        flex-direction: column;
+    }
+
+    .landing-hero-side {
+        padding-top: 6rem;
+        min-height: auto;
+    }
+
+    .landing-auth-side {
+        border-left: none;
+        border-top: 1px solid var(--border-light);
+        padding: 4rem 2rem;
+    }
+
+    .landing-auth-side::before {
+        display: none;
+    }
+
+    .landing-header {
+        padding: 1.5rem;
+    }
+
+    .auth-glass-panel {
+        padding: 2.5rem 1.5rem;
+    }
+}
