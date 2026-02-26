@@ -1,91 +1,65 @@
+import { FileText, Cpu, Eye, Infinity } from "lucide-react";
 import PublicPageLayout from "../components/layout/PublicPageLayout";
-import "../styles/public-pages.css";
-import "../styles/no-scrollbar-override.css";
-
+import AnimatedCard from "../components/animations/AnimatedCard.jsx";
 
 export default function About() {
   return (
     <PublicPageLayout>
-      {/* HERO */}
-      <section className="public-hero">
-        <h1>About <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span></h1>
-        <p className="public-hero-subtitle">
-          Intelligent document understanding powered by AI
-        </p>
-
-        <div className="hero-cta">
-          <a href="/sign-up" className="btn-primary">Get Started Free</a>
-          <a href="/contact" className="btn-secondary">Contact Us</a>
-        </div>
-      </section>
-
-      {/* INTRO */}
-      <div className="public-card">
-        <p>
-          <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span> is an advanced AI‑powered document intelligence platform designed
-          to transform how users interact with PDFs. Instead of manually reading,
-          searching, or extracting information, <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span> allows users to chat with
-          documents, generate summaries, and uncover insights instantly.
-        </p>
-
-        <p>
-          Built for students, professionals, researchers, and businesses, <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span>
-          helps you analyze research papers, legal documents, invoices, reports,
-          and study material — faster and smarter.
+      <div style={{ textAlign: "center", marginBottom: "4rem" }}>
+        <h1 style={{ fontSize: '3rem', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+          Our <span className="text-gradient-red">Mission</span>
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>
+          RovexAI is building the infrastructure to transform static documents into intelligent, interactive knowledge bases.
         </p>
       </div>
 
-      {/* FEATURES */}
-      <section className="features-grid">
-        <div className="feature-card">
-          <span>📄</span>
-          <h3>Upload & Analyze</h3>
-          <p>Upload PDFs of any size and extract insights instantly.</p>
-        </div>
+      <div style={{ marginBottom: "4rem" }}>
+        <p style={{ fontSize: '1.15rem', lineHeight: 1.7, marginBottom: '1.5rem', color: 'var(--text-primary)' }}>
+          At <span style={{ fontWeight: 600, color: 'var(--text-inverse-secondary)' }}>RovexAI</span>, we believe that human potential shouldn't be bottlenecked by how fast we can read.
+          We developed a platform designed to instantly unlock the value hidden inside massive PDFs, scanned reports, and complex datasets.
+        </p>
+        <p style={{ fontSize: '1.15rem', lineHeight: 1.7, color: 'var(--text-secondary)' }}>
+          Instead of manually searching for keywords, our users can simply ask questions and let our advanced Retrieval-Augmented Generation (RAG) models do the absolute heavy lifting—fast, accurately, and securely.
+        </p>
+      </div>
 
-        <div className="feature-card">
-          <span>💬</span>
-          <h3>Ask Questions</h3>
-          <p>Ask natural‑language questions and get accurate answers.</p>
-        </div>
+      <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem', fontWeight: 600, textAlign: 'center' }}>Technological Pillars</h2>
 
-        <div className="feature-card">
-          <span>📝</span>
-          <h3>Smart Summaries</h3>
-          <p>Generate concise summaries from long documents.</p>
-        </div>
-
-        <div className="feature-card">
-          <span>📊</span>
-          <h3>Data Extraction</h3>
-          <p>Extract tables, structured data, and key points.</p>
-        </div>
-
-        <div className="feature-card">
-          <span>🔍</span>
-          <h3>OCR & Charts</h3>
-          <p>Understand charts, images, and scanned PDFs.</p>
-        </div>
-
-        <div className="feature-card">
-          <span>✍️</span>
-          <h3>Create Notes</h3>
-          <p>Create notes, question papers, and insights.</p>
-        </div>
+      <section style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
+        <AnimatedCard
+          icon={<Cpu size={22} />}
+          title="Contextual ML"
+          description="We use sophisticated embedding models to understand the semantic meaning of your documents, not just raw text."
+          delay={0.1}
+        />
+        <AnimatedCard
+          icon={<FileText size={22} />}
+          title="Structured Output"
+          description="Extract clean JSON or tabular data from completely unstructured and messy PDFs."
+          delay={0.2}
+        />
+        <AnimatedCard
+          icon={<Eye size={22} />}
+          title="Visual OCR"
+          description="Our computer vision pipelines seamlessly comprehend terrible scans and complex academic charts."
+          delay={0.3}
+        />
+        <AnimatedCard
+          icon={<Infinity size={22} />}
+          title="Scale"
+          description="Process single pages or entire libraries of research papers simultaneously without dropping context."
+          delay={0.4}
+        />
       </section>
 
-      {/* VISION */}
-      <div className="public-card vision-card">
-        <h2>🎯 Our Vision</h2>
-        <p>
-          Our mission is to make knowledge accessible, searchable, and actionable.
-          Documents should empower people — not slow them down.
+      <div style={{ textAlign: "center", paddingTop: "3rem", borderTop: "1px solid var(--border-light)" }}>
+        <p style={{ maxWidth: '600px', margin: '0 auto', color: 'var(--text-secondary)' }}>
+          Join thousands of researchers, lawyers, and students accelerating their workflows today.
         </p>
-        <p>
-          <span className="brand-rovex">Rovex</span><span className="brand-ai">AI</span> bridges the gap between static files and intelligent
-          understanding, helping users unlock the true value hidden inside their
-          documents.
-        </p>
+        <div style={{ marginTop: '2rem' }}>
+          <a href="/sign-up" className="btn-primary-sleek" style={{ textDecoration: 'none' }}>Get Started Free</a>
+        </div>
       </div>
     </PublicPageLayout>
   );

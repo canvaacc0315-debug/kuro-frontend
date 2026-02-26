@@ -1,86 +1,63 @@
+import { Shield, Lock, Database, Trash2 } from "lucide-react";
 import PublicPageLayout from "../components/layout/PublicPageLayout";
-import "../styles/public-pages.css";
-import "../styles/no-scrollbar-override.css";
-
+import AnimatedCard from "../components/animations/AnimatedCard.jsx";
 
 export default function PrivacyPolicy() {
   return (
     <PublicPageLayout>
-      {/* HERO */}
-      <section className="public-hero">
-        <h1>Privacy Policy</h1>
-        <p className="public-hero-subtitle">
-          Your privacy is important to us. Transparency is our priority.
-        </p>
-      </section>
-
-      {/* INTRO */}
-      <div className="public-card">
-        <p>
-          This Privacy Policy explains how RovexAI collects, uses, and protects
-          your information when you use our website and services.
+      <div style={{ textAlign: "center", marginBottom: "4rem" }}>
+        <h1 style={{ fontSize: '3rem', letterSpacing: '-0.03em', marginBottom: '1rem' }}>
+          Privacy <span className="text-gradient-red">Policy</span>
+        </h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>
+          Your data is strictly yours. We do not use private documents to train public AI models.
         </p>
       </div>
 
-      {/* SECTIONS */}
-      <div className="public-card">
-        <h2>Information We Collect</h2>
-        <p>
-          RovexAI does not collect personal information unless it is required to
-          provide our services. Authentication and account management are handled
-          securely by trusted third‑party providers.
+      <div style={{ marginBottom: "4rem", color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+        <p style={{ marginBottom: '1.5rem' }}>
+          This Privacy Policy explains how RovexAI collects, uses, and safeguards your personal information and documents when you use our platform. By utilizing RovexAI, you consent to the practices described below.
         </p>
-        <p>
-          Uploaded documents are processed only to deliver AI‑powered features
-          and are never shared with third parties.
+        <h3 style={{ color: 'var(--text-primary)', marginTop: '2rem', marginBottom: '1rem' }}>Data Encryption & Security</h3>
+        <p style={{ marginBottom: '1.5rem' }}>
+          All documents uploaded to RovexAI are encrypted both in transit (TLS 1.3) and at rest (AES-256). We utilize isolated cloud storage buckets to ensure your files are completely inaccessible to anyone other than your authenticated account.
         </p>
-      </div>
-
-      <div className="public-card">
-        <h2>Advertising & Cookies</h2>
+        <h3 style={{ color: 'var(--text-primary)', marginTop: '2rem', marginBottom: '1rem' }}>Third-Party AI Models</h3>
         <p>
-          RovexAI uses Google AdSense to display advertisements. Google may use
-          cookies or similar technologies to personalize ads based on your visits
-          to this and other websites.
-        </p>
-        <p>
-          You can opt out of personalized advertising through Google’s Ads
-          Settings.
+          RovexAI leverages enterprise-grade AI APIs (such as OpenAI and Anthropic) to run our contextual processing. We have strict data processing agreements in place which guarantee that zero data sent from RovexAI is retained or used to train their foundational models.
         </p>
       </div>
 
-      <div className="public-card">
-        <h2>How We Use Your Information</h2>
-        <p>
-          Information collected is used solely to operate, maintain, and improve
-          our services. We do not sell, rent, or trade user data to third parties.
-        </p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
+        <AnimatedCard
+          icon={<Shield size={22} />}
+          title="Account Data"
+          description="We collect basic account information via Clerk authentication. You can revoke access at any time."
+          delay={0.1}
+        />
+        <AnimatedCard
+          icon={<Lock size={22} />}
+          title="Zero Training Data"
+          description="Unlike public chatbots, your private PDFs and chats are never used as training data."
+          delay={0.2}
+        />
+        <AnimatedCard
+          icon={<Database size={22} />}
+          title="Cloud Vault"
+          description="Files are securely processed in memory and encrypted when stored in your private vault."
+          delay={0.3}
+        />
+        <AnimatedCard
+          icon={<Trash2 size={22} />}
+          title="Right to Delete"
+          description="You maintain full control. Delete your account and all associated documents permanently instantly."
+          delay={0.4}
+        />
       </div>
 
-      <div className="public-card">
-        <h2>Security</h2>
-        <p>
-          We use industry‑standard security measures to protect user data. All
-          communications are encrypted wherever possible.
-        </p>
-      </div>
-
-      <div className="public-card">
-        <h2>Third‑Party Services</h2>
-        <p>
-          RovexAI may contain links to third‑party websites or services. We are
-          not responsible for their privacy practices or content.
-        </p>
-      </div>
-
-      <div className="public-card vision-card">
-        <h2>Contact Us</h2>
-        <p>
-          If you have any questions or concerns about this Privacy Policy, reach
-          out to us at:
-        </p>
-        <p style={{ color: "#ff5a5a", fontWeight: 600 }}>
-          RovexAi.HelpDesk@2025@gmail.com
+      <div style={{ textAlign: "center", paddingTop: "3rem", borderTop: "1px solid var(--border-light)" }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+          For inquiries regarding data compliance or GDPR, please contact our Data Protection team.
         </p>
       </div>
     </PublicPageLayout>
