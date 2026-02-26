@@ -14,25 +14,29 @@ const defaultTextStyle = {
 
 const createPage = (index) => ({
   id: `page-${index}`,
-  heading: {
-    text: "Add a heading",
-    style: {
-      ...defaultTextStyle,
-      fontSize: 26,
-      bold: true,
-    },
-  },
-  body: {
-    text: "",
-    style: {
-      ...defaultTextStyle,
-      fontSize: 16,
-    },
-  },
-  images: [], // { id, src (data: base64), format, scale, x, y }
+  backgroundColor: "#ffffff",
+  texts: [
+    {
+      id: `text-initial-heading-${index}`,
+      text: "Add a heading",
+      x: 150,
+      y: 100,
+      width: 300,
+      zIndex: 1,
+      style: {
+        ...defaultTextStyle,
+        fontSize: 26,
+        bold: true,
+      },
+    }
+  ],
+  shapes: [], // { id, type: 'rect' | 'circle', x, y, width, height, fill, zIndex }
+  images: [], // { id, src, format, scale, x, y, zIndex }
 });
 
 const makeImageId = () => `img-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const makeTextId = () => `txt-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const makeShapeId = () => `shp-${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
 const UNDO_REDO_LIMIT = 20;
 
@@ -42,19 +46,18 @@ export default function CreatePdfPanel({ onExportPdf }) {
   const [history, setHistory] = useState([]); // array of pages snapshots
   const [historyIndex, setHistoryIndex] = useState(-1);
 
-  const [activeTextTarget, setActiveTextTarget] = useState("body");
+  const [activeTextId, setActiveTextId] = useState(null);
+  const [activeShapeId, setActiveShapeId] = useState(null);
   const [toolbarStyle, setToolbarStyle] = useState(defaultTextStyle);
 
   const [activeImageId, setActiveImageId] = useState(null);
 
-  const [dragState, setDragState] = useState(null); // { imageId, offsetX, offsetY }
+  const [dragState, setDragState] = useState(null); // { type, id, offsetX, offsetY }
 
-  const [contextMenu, setContextMenu] = useState(null); // { x, y, target, imageId? }
+  const [contextMenu, setContextMenu] = useState(null); // { x, y, type, id }
   const [imageClipboard, setImageClipboard] = useState(null); // { src, scale, format }
 
   const pageRef = useRef(null);
-  const headingRef = useRef(null);
-  const bodyRef = useRef(null);
 
   const page = pages[activePageIndex];
 
@@ -91,7 +94,8 @@ export default function CreatePdfPanel({ onExportPdf }) {
       setActivePageIndex((prevIdx) => Math.min(prevIdx, prevPages.length - 1));
       // Reset dependent states
       setActiveImageId(null);
-      setActiveTextTarget("body");
+      setActiveTextId(null);
+      setActiveShapeId(null);
       setContextMenu(null);
     }
   }, [history, historyIndex]);
@@ -105,7 +109,8 @@ export default function CreatePdfPanel({ onExportPdf }) {
       setActivePageIndex((prevIdx) => Math.min(prevIdx, nextPages.length - 1));
       // Reset dependent states
       setActiveImageId(null);
-      setActiveTextTarget("body");
+      setActiveTextId(null);
+      setActiveShapeId(null);
       setContextMenu(null);
     }
   }, [history, historyIndex]);
@@ -113,25 +118,17 @@ export default function CreatePdfPanel({ onExportPdf }) {
   const applyStyleToSelection = useCallback((patch) => {
     setToolbarStyle((prev) => ({ ...prev, ...patch }));
 
-    updatePage((p) => {
-      if (activeTextTarget === "heading") {
-        return {
-          ...p,
-          heading: {
-            ...p.heading,
-            style: { ...p.heading.style, ...patch },
-          },
-        };
-      }
-      return {
+    if (activeTextId) {
+      updatePage((p) => ({
         ...p,
-        body: {
-          ...p.body,
-          style: { ...p.body.style, ...patch },
-        },
-      };
-    });
-  }, [activeTextTarget, updatePage]);
+        texts: p.texts.map((txt) =>
+          txt.id === activeTextId
+            ? { ...txt, style: { ...txt.style, ...patch } }
+            : txt
+        ),
+      }));
+    }
+  }, [activeTextId, updatePage]);
 
   /* ------------ toolbar ------------ */
 
@@ -154,17 +151,12 @@ export default function CreatePdfPanel({ onExportPdf }) {
 
   /* ------------ text change ------------ */
 
-  const handleHeadingChange = useCallback((text) => {
+  const handleTextChange = useCallback((id, newText) => {
     updatePage((p) => ({
       ...p,
-      heading: { ...p.heading, text },
-    }));
-  }, [updatePage]);
-
-  const handleBodyChange = useCallback((text) => {
-    updatePage((p) => ({
-      ...p,
-      body: { ...p.body, text },
+      texts: p.texts.map((txt) =>
+        txt.id === id ? { ...txt, text: newText } : txt
+      ),
     }));
   }, [updatePage]);
 
@@ -185,6 +177,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
         scale: 60,
         x: 120,
         y: 220,
+        zIndex: 10,
       };
 
       updatePage((p) => ({
@@ -199,7 +192,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
     e.target.value = "";
   }, [updatePage]);
 
-  const handleImageMouseDown = useCallback((e, img) => {
+  const handleElementMouseDown = useCallback((e, element, type) => {
     if (!pageRef.current) return;
     e.stopPropagation();
     e.preventDefault();
@@ -209,11 +202,25 @@ export default function CreatePdfPanel({ onExportPdf }) {
     const pointerY = e.clientY - pageRect.top;
 
     setDragState({
-      imageId: img.id,
-      offsetX: pointerX - img.x,
-      offsetY: pointerY - img.y,
+      type,
+      id: element.id,
+      offsetX: pointerX - element.x,
+      offsetY: pointerY - element.y,
     });
-    setActiveImageId(img.id);
+
+    if (type === "image") {
+      setActiveImageId(element.id);
+      setActiveTextId(null);
+      setActiveShapeId(null);
+    } else if (type === "text") {
+      setActiveTextId(element.id);
+      setActiveImageId(null);
+      setActiveShapeId(null);
+    } else if (type === "shape") {
+      setActiveShapeId(element.id);
+      setActiveImageId(null);
+      setActiveTextId(null);
+    }
   }, []);
 
   const handlePageMouseMove = useCallback((e) => {
@@ -226,18 +233,33 @@ export default function CreatePdfPanel({ onExportPdf }) {
     const newX = Math.max(0, Math.min(pointerX - dragState.offsetX, 600));
     const newY = Math.max(0, Math.min(pointerY - dragState.offsetY, 800));
 
-    updatePage((p) => ({
-      ...p,
-      images: p.images.map((img) =>
-        img.id === dragState.imageId
-          ? {
-            ...img,
-            x: newX,
-            y: newY,
-          }
-          : img
-      ),
-    }));
+    updatePage((p) => {
+      if (dragState.type === "image") {
+        return {
+          ...p,
+          images: p.images.map((img) =>
+            img.id === dragState.id ? { ...img, x: newX, y: newY } : img
+          ),
+        };
+      } else if (dragState.type === "shape") {
+        return {
+          ...p,
+          shapes: p.shapes.map((shp) =>
+            shp.id === dragState.id ? { ...shp, x: newX, y: newY } : shp
+          ),
+        };
+      } else if (dragState.type === "resize-shape") {
+        const dx = e.clientX - dragState.startX;
+        const dy = e.clientY - dragState.startY;
+        return {
+          ...p,
+          shapes: p.shapes.map((shp) =>
+            shp.id === dragState.id ? { ...shp, width: Math.max(10, dragState.startW + dx), height: Math.max(10, dragState.startH + dy) } : shp
+          ),
+        };
+      }
+      return p;
+    });
   }, [dragState, updatePage]);
 
   const handlePageMouseUp = useCallback(() => {
@@ -267,8 +289,8 @@ export default function CreatePdfPanel({ onExportPdf }) {
     const newIndex = pages.length;
     setPages((prev) => [...prev, newPage]);
     setActivePageIndex(newIndex);
-    setActiveTextTarget("body");
-    setToolbarStyle(newPage.body.style);
+    setActiveTextId(newPage.texts[0].id);
+    setToolbarStyle(newPage.texts[0].style);
     setActiveImageId(null);
     setContextMenu(null);
   }, [pages.length]);
@@ -282,20 +304,20 @@ export default function CreatePdfPanel({ onExportPdf }) {
       return copy;
     });
     setActivePageIndex(newIndex);
-    setActiveTextTarget("body");
+    setActiveTextId(null);
     setActiveImageId(null);
     setContextMenu(null);
   }, [pages.length, activePageIndex]);
 
   /* ------------ context menu ------------ */
 
-  const openContextMenu = useCallback((e, target, imageId) => {
+  const openContextMenu = useCallback((e, type, id) => {
     e.preventDefault();
     setContextMenu({
       x: e.clientX,
       y: e.clientY,
-      target, // 'heading' | 'body' | 'image'
-      imageId: imageId || null,
+      type, // 'text' | 'image'
+      id: id || null,
     });
   }, []);
 
@@ -304,9 +326,8 @@ export default function CreatePdfPanel({ onExportPdf }) {
   const handleContextAction = useCallback(async (action) => {
     if (!contextMenu) return;
 
-    // IMAGE actions
-    if (contextMenu.target === "image") {
-      const imgId = contextMenu.imageId;
+    if (contextMenu.type === "image") {
+      const imgId = contextMenu.id;
       const img = page.images.find((i) => i.id === imgId);
 
       if (!img && action !== "paste") {
@@ -325,6 +346,20 @@ export default function CreatePdfPanel({ onExportPdf }) {
           images: p.images.filter((i) => i.id !== imgId),
         }));
         if (activeImageId === imgId) setActiveImageId(null);
+      }
+
+      if (action === "front" && img) {
+        updatePage((p) => ({
+          ...p,
+          images: p.images.map(i => i.id === imgId ? { ...i, zIndex: Math.max(...p.images.map(img => img.zIndex || 0), ...p.texts.map(txt => txt.zIndex || 0)) + 1 } : i),
+        }));
+      }
+
+      if (action === "back" && img) {
+        updatePage((p) => ({
+          ...p,
+          images: p.images.map(i => i.id === imgId ? { ...i, zIndex: Math.min(...p.images.map(img => img.zIndex || 0), ...p.texts.map(txt => txt.zIndex || 0)) - 1 } : i),
+        }));
       }
 
       if (action === "delete" && img) {
@@ -358,92 +393,116 @@ export default function CreatePdfPanel({ onExportPdf }) {
     }
 
     // TEXT actions
-    const textarea =
-      contextMenu.target === "heading" ? headingRef.current : bodyRef.current;
-    if (!textarea) {
-      closeContextMenu();
-      return;
-    }
+    if (contextMenu.type === "text") {
+      const txtId = contextMenu.id;
+      const txt = page.texts.find((t) => t.id === txtId);
 
-    const value = textarea.value;
-    const start = textarea.selectionStart ?? 0;
-    const end = textarea.selectionEnd ?? start;
+      if (!txt) {
+        closeContextMenu();
+        return;
+      }
 
-    if (action === "copy") {
-      const selection = value.slice(start, end);
-      if (selection) {
+      const value = txt.text;
+
+      if (action === "front") {
+        updatePage((p) => ({
+          ...p,
+          texts: p.texts.map(t => t.id === txtId ? { ...t, zIndex: Math.max(...p.images.map(img => img.zIndex || 0), ...p.texts.map(text => text.zIndex || 0)) + 1 } : t),
+        }));
+      }
+
+      if (action === "back") {
+        updatePage((p) => ({
+          ...p,
+          texts: p.texts.map(t => t.id === txtId ? { ...t, zIndex: Math.min(...p.images.map(img => img.zIndex || 0), ...p.texts.map(text => text.zIndex || 0)) - 1 } : t),
+        }));
+      }
+
+      if (action === "copy") {
+        if (value) {
+          try {
+            await navigator.clipboard.writeText(value);
+          } catch { }
+        }
+      }
+
+      if (action === "cut") {
+        if (value) {
+          try {
+            await navigator.clipboard.writeText(value);
+          } catch { }
+        }
+        updatePage((p) => ({
+          ...p,
+          texts: p.texts.filter((t) => t.id !== txtId),
+        }));
+        if (activeTextId === txtId) setActiveTextId(null);
+      }
+
+      if (action === "delete") {
+        updatePage((p) => ({
+          ...p,
+          texts: p.texts.filter((t) => t.id !== txtId),
+        }));
+        if (activeTextId === txtId) setActiveTextId(null);
+      }
+
+      if (action === "paste") {
         try {
-          await navigator.clipboard.writeText(selection);
+          const clip = await navigator.clipboard.readText();
+          handleTextChange(txtId, value + clip);
         } catch { }
       }
     }
 
-    if (action === "cut") {
-      const selection = value.slice(start, end);
-      if (selection) {
-        try {
-          await navigator.clipboard.writeText(selection);
-        } catch { }
+    if (contextMenu.type === "shape") {
+      const shpId = contextMenu.id;
+      const shp = page.shapes.find((s) => s.id === shpId);
+
+      if (!shp) {
+        closeContextMenu();
+        return;
       }
-      const updated = value.slice(0, start) + value.slice(end);
-      if (contextMenu.target === "heading") handleHeadingChange(updated);
-      else handleBodyChange(updated);
-      setTimeout(() => {
-        textarea.selectionStart = textarea.selectionEnd = start;
-      }, 0);
-    }
 
-    if (action === "delete") {
-      const updated =
-        start === end ? "" : value.slice(0, start) + value.slice(end);
-      if (contextMenu.target === "heading") handleHeadingChange(updated);
-      else handleBodyChange(updated);
-      setTimeout(() => {
-        textarea.selectionStart = textarea.selectionEnd = start;
-      }, 0);
-    }
+      if (action === "front") {
+        updatePage((p) => ({
+          ...p,
+          shapes: p.shapes.map(s => s.id === shpId ? { ...s, zIndex: Math.max(...p.images.map(img => img.zIndex || 0), ...p.texts.map(t => t.zIndex || 0), ...p.shapes.map(sh => sh.zIndex || 0)) + 1 } : s),
+        }));
+      }
 
-    if (action === "paste") {
-      try {
-        const clip = await navigator.clipboard.readText();
-        const updated = value.slice(0, start) + clip + value.slice(end);
-        const newPos = start + clip.length;
-        if (contextMenu.target === "heading") handleHeadingChange(updated);
-        else handleBodyChange(updated);
-        setTimeout(() => {
-          textarea.selectionStart = textarea.selectionEnd = newPos;
-        }, 0);
-      } catch { }
+      if (action === "back") {
+        updatePage((p) => ({
+          ...p,
+          shapes: p.shapes.map(s => s.id === shpId ? { ...s, zIndex: Math.min(...p.images.map(img => img.zIndex || 0), ...p.texts.map(t => t.zIndex || 0), ...p.shapes.map(sh => sh.zIndex || 0)) - 1 } : s),
+        }));
+      }
+
+      if (action === "delete") {
+        updatePage((p) => ({
+          ...p,
+          shapes: p.shapes.filter((s) => s.id !== shpId),
+        }));
+        if (activeShapeId === shpId) setActiveShapeId(null);
+      }
     }
 
     closeContextMenu();
-  }, [contextMenu, page.images, activeImageId, imageClipboard, closeContextMenu, updatePage, handleHeadingChange, handleBodyChange]);
+  }, [contextMenu, page.images, page.texts, page.shapes, activeImageId, activeTextId, activeShapeId, imageClipboard, closeContextMenu, updatePage, handleTextChange]);
 
   /* ------------ inline text styles ------------ */
 
-  const headingInline = (() => {
-    const s = page.heading.style;
+  const getTextInlineStyle = (s) => {
+    if (!s) return {};
     return {
       fontSize: s.fontSize,
-      fontWeight: s.bold ? 700 : 600,
+      fontWeight: s.bold ? 700 : 400,
       fontStyle: s.italic ? "italic" : "normal",
       textDecoration: s.underline ? "underline" : "none",
       textAlign: s.align,
       color: s.color || "#000000",
     };
-  })();
-
-  const bodyInline = (() => {
-    const s = page.body.style;
-    return {
-      fontSize: s.fontSize,
-      fontWeight: s.bold ? 500 : 400,
-      fontStyle: s.italic ? "italic" : "normal",
-      textDecoration: s.underline ? "underline" : "none",
-      textAlign: s.align,
-      color: s.color || "#000000",
-    };
-  })();
+  };
 
   /* ------------ FRONTEND PDF EXPORT (fixed with base64 + align support) ------------ */
 
@@ -501,61 +560,72 @@ export default function CreatePdfPanel({ onExportPdf }) {
 
         if (i > 0) pdf.addPage();
 
-        // heading
-        const headingStyle = p.heading.style || {};
-        const headingFontSize = headingStyle.fontSize || 24;
-        pdf.setFontSize(headingFontSize);
-
-        const computeFontStyle = (style) => {
-          const bold = !!style.bold;
-          const italic = !!style.italic;
-          if (bold && italic) return "bolditalic";
-          if (bold) return "bold";
-          if (italic) return "italic";
-          return "normal";
-        };
-        const headingFontStyle = computeFontStyle(headingStyle);
-        pdf.setFont("helvetica", headingFontStyle);
-
-        if (headingStyle.color) {
-          const [r, g, b] = hexToRgb(headingStyle.color);
-          pdf.setTextColor(r, g, b);
+        // page background
+        if (p.backgroundColor && p.backgroundColor !== "#ffffff") {
+          const [r, g, b] = hexToRgb(p.backgroundColor);
+          pdf.setFillColor(r, g, b);
+          pdf.rect(0, 0, pageWidth, pageHeight, 'F');
         }
 
-        const headingX = margin;
-        let cursorY = margin + headingFontSize;
+        // freeform texts
+        for (const t of p.texts || []) {
+          const style = t.style || {};
+          const fontSize = style.fontSize || 16;
+          pdf.setFontSize(fontSize);
 
-        const headingLines = pdf.splitTextToSize(p.heading.text || "", contentWidth);
-        let lineY = cursorY;
-        for (const line of headingLines) {
-          const offset = getAlignOffset(pdf, line, contentWidth, headingStyle.align);
-          pdf.text(line, headingX + offset, lineY);
-          lineY += headingFontSize;
+          const computeFontStyle = (s) => {
+            const bold = !!s.bold;
+            const italic = !!s.italic;
+            if (bold && italic) return "bolditalic";
+            if (bold) return "bold";
+            if (italic) return "italic";
+            return "normal";
+          };
+          pdf.setFont("helvetica", computeFontStyle(style));
+
+          pdf.setTextColor(0, 0, 0);
+          if (style.color) {
+            const [r, g, b] = hexToRgb(style.color);
+            pdf.setTextColor(r, g, b);
+          }
+
+          const textX = margin + (t.x || 0) * SCALE_FACTOR_X;
+          let textY = margin + (t.y || 0) * SCALE_FACTOR_Y + (fontSize * 0.8); // + font ascender
+
+          const boxWidth = (t.width || 300) * SCALE_FACTOR_X;
+          const textLines = pdf.splitTextToSize(t.text || "", boxWidth);
+
+          for (const line of textLines) {
+            const offset = getAlignOffset(pdf, line, boxWidth, style.align);
+            pdf.text(line, textX + offset, textY);
+            textY += fontSize * 1.2;
+          }
         }
-        cursorY = lineY + 8; // Space after heading
 
-        // body
-        const bodyStyle = p.body.style || {};
-        const bodyFontSize = bodyStyle.fontSize || 14;
-        pdf.setFontSize(bodyFontSize);
+        // shapes
+        for (const shp of p.shapes || []) {
+          const shpX = margin + (shp.x || 0) * SCALE_FACTOR_X;
+          const shpY = margin + (shp.y || 0) * SCALE_FACTOR_Y;
+          const shpW = (shp.width || 100) * SCALE_FACTOR_X;
+          const shpH = (shp.height || 100) * SCALE_FACTOR_Y;
 
-        const bodyFontStyle = computeFontStyle(bodyStyle);
-        pdf.setFont("helvetica", bodyFontStyle);
+          if (shp.fill) {
+            const [r, g, b] = hexToRgb(shp.fill);
+            pdf.setFillColor(r, g, b);
+          } else {
+            pdf.setFillColor(200, 200, 200);
+          }
 
-        pdf.setTextColor(0, 0, 0);
-        if (bodyStyle.color) {
-          const [r, g, b] = hexToRgb(bodyStyle.color);
-          pdf.setTextColor(r, g, b);
+          if (shp.type === "rect") {
+            pdf.rect(shpX, shpY, shpW, shpH, 'F');
+          } else if (shp.type === "circle") {
+            // pdf.circle wants center X, center Y, and Radius. 
+            // since x, y are top-left bounding box, we calc radius = w/2.
+            const rX = shpW / 2;
+            const rY = shpH / 2;
+            pdf.circle(shpX + rX, shpY + rY, rX, 'F');
+          }
         }
-
-        const bodyLines = pdf.splitTextToSize(p.body.text || "", contentWidth);
-        lineY = cursorY;
-        for (const line of bodyLines) {
-          const offset = getAlignOffset(pdf, line, contentWidth, bodyStyle.align);
-          pdf.text(line, margin + offset, lineY);
-          lineY += bodyFontSize;
-        }
-        cursorY = lineY + 12; // Space after body
 
         // images
         for (const img of p.images || []) {
@@ -622,9 +692,23 @@ export default function CreatePdfPanel({ onExportPdf }) {
             type="button"
             className="sidebar-primary-btn"
             onClick={() => {
-              headingRef.current?.focus();
-              setActiveTextTarget("heading");
-              setToolbarStyle(page.heading.style);
+              const newTextId = makeTextId();
+              updatePage(p => ({
+                ...p,
+                texts: [
+                  ...p.texts,
+                  {
+                    id: newTextId,
+                    text: "New heading",
+                    x: 150,
+                    y: (p.texts.length * 30 + 100) % 600,
+                    width: 300,
+                    zIndex: 10,
+                    style: { ...defaultTextStyle, fontSize: 26, bold: true },
+                  }
+                ]
+              }));
+              setActiveTextId(newTextId);
             }}
             aria-label="Add a heading"
           >
@@ -635,9 +719,23 @@ export default function CreatePdfPanel({ onExportPdf }) {
             type="button"
             className="text-style-card text-style-body"
             onClick={() => {
-              bodyRef.current?.focus();
-              setActiveTextTarget("body");
-              setToolbarStyle(page.body.style);
+              const newTextId = makeTextId();
+              updatePage(p => ({
+                ...p,
+                texts: [
+                  ...p.texts,
+                  {
+                    id: newTextId,
+                    text: "New body text",
+                    x: 100,
+                    y: (p.texts.length * 50 + 200) % 600,
+                    width: 400,
+                    zIndex: 10,
+                    style: { ...defaultTextStyle, fontSize: 16 },
+                  }
+                ]
+              }));
+              setActiveTextId(newTextId);
             }}
             aria-label="Add body text"
           >
@@ -649,7 +747,80 @@ export default function CreatePdfPanel({ onExportPdf }) {
         </div>
 
         <div className="sidebar-section">
+          <div className="sidebar-title">Page Styling</div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 4px" }}>
+            <span style={{ fontSize: "13px", fontWeight: "500" }}>Background</span>
+            <input
+              type="color"
+              value={page.backgroundColor || "#ffffff"}
+              onChange={(e) => updatePage(p => ({ ...p, backgroundColor: e.target.value }))}
+              className="toolbar-color-picker"
+              style={{ width: "36px", height: "36px", borderRadius: "8px", border: "1px solid #e5e7eb" }}
+              aria-label="Page background color"
+            />
+          </div>
+        </div>
+
+        <div className="sidebar-section">
           <div className="sidebar-title">Elements</div>
+          <div style={{ display: "flex", gap: "8px" }}>
+            <button
+              type="button"
+              className="sidebar-pill-btn"
+              style={{ flex: 1, justifyContent: "center" }}
+              title="Add Rectangle"
+              onClick={() => {
+                const newShapeId = makeShapeId();
+                updatePage((p) => ({
+                  ...p,
+                  shapes: [
+                    ...(p.shapes || []),
+                    {
+                      id: newShapeId,
+                      type: "rect",
+                      x: 100,
+                      y: 100,
+                      width: 150,
+                      height: 100,
+                      fill: toolbarStyle.color || "#3b82f6",
+                      zIndex: 10,
+                    },
+                  ],
+                }));
+                setActiveShapeId(newShapeId);
+              }}
+            >
+              ⬛ Rect
+            </button>
+            <button
+              type="button"
+              className="sidebar-pill-btn"
+              style={{ flex: 1, justifyContent: "center" }}
+              title="Add Circle"
+              onClick={() => {
+                const newShapeId = makeShapeId();
+                updatePage((p) => ({
+                  ...p,
+                  shapes: [
+                    ...(p.shapes || []),
+                    {
+                      id: newShapeId,
+                      type: "circle",
+                      x: 150,
+                      y: 150,
+                      width: 100,
+                      height: 100,
+                      fill: toolbarStyle.color || "#ef4444",
+                      zIndex: 10,
+                    },
+                  ],
+                }));
+                setActiveShapeId(newShapeId);
+              }}
+            >
+              🔴 Circle
+            </button>
+          </div>
           <label className="sidebar-pill-btn" style={{ justifyContent: 'center' }}>
             <svg style={{ width: '16px', height: '16px', marginRight: '8px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
             Upload image
@@ -819,39 +990,109 @@ export default function CreatePdfPanel({ onExportPdf }) {
           <div
             className="create-page"
             ref={pageRef}
+            style={{ backgroundColor: page.backgroundColor || "#ffffff" }}
             onContextMenu={(e) => e.preventDefault()}
+            onClick={() => {
+              setActiveTextId(null);
+              setActiveImageId(null);
+            }}
           >
-            {/* Heading */}
-            <textarea
-              ref={headingRef}
-              className="heading-textarea"
-              value={page.heading.text}
-              onChange={(e) => handleHeadingChange(e.target.value)}
-              onFocus={() => {
-                setActiveTextTarget("heading");
-                setToolbarStyle(page.heading.style);
-              }}
-              onContextMenu={(e) => openContextMenu(e, "heading")}
-              style={headingInline}
-              placeholder="Enter your heading here..."
-              aria-label="Heading editor"
-            />
+            {/* SHAPES */}
+            {page.shapes && page.shapes.map((shp) => (
+              <div
+                key={shp.id}
+                style={{
+                  position: "absolute",
+                  left: shp.x,
+                  top: shp.y,
+                  width: shp.width,
+                  height: shp.height,
+                  cursor: dragState?.id === shp.id ? "grabbing" : "grab",
+                  zIndex: activeShapeId === shp.id ? 999 : (shp.zIndex || 10),
+                  borderRadius: shp.type === "circle" ? "50%" : "0",
+                  backgroundColor: shp.fill || "#000000",
+                  border: activeShapeId === shp.id ? "2px solid #3b82f6" : "none",
+                  boxShadow: activeShapeId === shp.id ? "0 0 0 2px white inset" : "none"
+                }}
+                onMouseDown={(e) => handleElementMouseDown(e, shp, "shape")}
+                onContextMenu={(e) => openContextMenu(e, "shape", shp.id)}
+              >
+                {activeShapeId === shp.id && (
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: "-8px",
+                      bottom: "-8px",
+                      width: "16px",
+                      height: "16px",
+                      backgroundColor: "#3b82f6",
+                      borderRadius: "50%",
+                      cursor: "se-resize",
+                      zIndex: 20
+                    }}
+                    onMouseDown={(e) => {
+                      e.stopPropagation();
+                      e.preventDefault();
+                      setDragState({ type: "resize-shape", id: shp.id, startX: e.clientX, startY: e.clientY, startW: shp.width, startH: shp.height });
+                    }}
+                  />
+                )}
+              </div>
+            ))}
 
-            {/* Body */}
-            <textarea
-              ref={bodyRef}
-              className="body-textarea"
-              placeholder="Start writing your PDF content here... Apply styles with the toolbar above."
-              value={page.body.text}
-              onChange={(e) => handleBodyChange(e.target.value)}
-              onFocus={() => {
-                setActiveTextTarget("body");
-                setToolbarStyle(page.body.style);
-              }}
-              onContextMenu={(e) => openContextMenu(e, "body")}
-              style={bodyInline}
-              aria-label="Body editor"
-            />
+            {/* Freeform Texts */}
+            {page.texts.map((txt) => (
+              <div
+                key={txt.id}
+                style={{
+                  position: "absolute",
+                  left: txt.x,
+                  top: txt.y,
+                  width: txt.width,
+                  cursor: dragState?.id === txt.id ? "grabbing" : "text",
+                  zIndex: activeTextId === txt.id ? 999 : (txt.zIndex || 10),
+                  padding: "4px",
+                  border: activeTextId === txt.id ? "1px solid #3b82f6" : "1px solid transparent",
+                  borderRadius: "4px",
+                  backgroundColor: "transparent"
+                }}
+                onMouseDown={(e) => {
+                  e.stopPropagation();
+                  setActiveTextId(txt.id);
+                  setToolbarStyle(txt.style);
+                  setActiveImageId(null);
+                }}
+                onContextMenu={(e) => openContextMenu(e, "text", txt.id)}
+              >
+                <div
+                  onMouseDown={(e) => handleElementMouseDown(e, txt, "text")}
+                  style={{
+                    position: "absolute",
+                    top: "-12px",
+                    left: "-12px",
+                    width: "24px",
+                    height: "24px",
+                    cursor: "move",
+                    backgroundColor: "transparent",
+                    display: activeTextId === txt.id ? "block" : "none",
+                    zIndex: 20
+                  }}
+                  title="Drag to move"
+                >
+                  <svg style={{ width: "100%", height: "100%", color: "#3b82f6", background: "white", borderRadius: "50%", padding: "2px", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+                  </svg>
+                </div>
+                <textarea
+                  className="heading-textarea allow-overflow"
+                  value={txt.text}
+                  onChange={(e) => handleTextChange(txt.id, e.target.value)}
+                  style={{ ...getTextInlineStyle(txt.style), minHeight: "40px", cursor: "text" }}
+                  placeholder="Type here..."
+                  aria-label="Text editor"
+                />
+              </div>
+            ))}
 
             {/* IMAGES */}
             {page.images.map((img) => (
@@ -865,8 +1106,9 @@ export default function CreatePdfPanel({ onExportPdf }) {
                   top: img.y,
                   left: img.x,
                   width: `${img.scale}%`,
+                  zIndex: activeImageId === img.id ? 999 : (img.zIndex || 10),
                 }}
-                onMouseDown={(e) => handleImageMouseDown(e, img)}
+                onMouseDown={(e) => handleElementMouseDown(e, img, "image")}
                 onContextMenu={(e) => openContextMenu(e, "image", img.id)}
                 role="img"
                 aria-label={`Image: ${img.scale}% scale`}
@@ -988,6 +1230,24 @@ export default function CreatePdfPanel({ onExportPdf }) {
           >
             Paste
           </button>
+          <hr style={{ margin: "4px 0", border: "none", borderTop: "1px solid #eee" }} />
+          <button
+            type="button"
+            className="context-item"
+            onClick={() => handleContextAction("front")}
+            role="menuitem"
+          >
+            Bring to front
+          </button>
+          <button
+            type="button"
+            className="context-item"
+            onClick={() => handleContextAction("back")}
+            role="menuitem"
+          >
+            Send to back
+          </button>
+          <hr style={{ margin: "4px 0", border: "none", borderTop: "1px solid #eee" }} />
           <button
             type="button"
             className="context-item context-danger"
