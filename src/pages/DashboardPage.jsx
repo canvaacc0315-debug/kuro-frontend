@@ -197,7 +197,7 @@ export default function DashboardPage() {
               className="workspace-btn"
               onClick={() => navigate("/app?tab=pdftools")}
             >
-              Go to PDF Tools
+              Go to Workspace
             </button>
           </div>
         </section>
