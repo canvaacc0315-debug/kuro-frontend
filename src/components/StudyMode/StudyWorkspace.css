@@ -38,16 +38,16 @@
 .study-tab-btn {
   background: white;
   border: 1px solid #e2e8f0;
-  padding: 12px 24px;
+  padding: 16px 36px;
   border-radius: 99px;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: #64748b;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
@@ -65,7 +65,7 @@
 }
 
 .tab-icon {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
 }
 
 /* Feature Panels */
@@ -143,9 +143,10 @@
   /* Changed to red as requested */
   color: white;
   border: none;
-  padding: 10px 24px;
+  padding: 14px 28px;
   border-radius: 8px;
   font-weight: 600;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -189,9 +190,9 @@
 .timer-mode-btn {
   background: transparent;
   border: none;
-  padding: 8px 20px;
+  padding: 12px 24px;
   border-radius: 99px;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #64748b;
   cursor: pointer;
@@ -220,14 +221,14 @@
 }
 
 .timer-btn {
-  padding: 12px 30px;
+  padding: 16px 36px;
   border-radius: 12px;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   border: none;
   cursor: pointer;
   transition: all 0.2s;
-  min-width: 120px;
+  min-width: 140px;
 }
 
 .timer-btn.primary {
