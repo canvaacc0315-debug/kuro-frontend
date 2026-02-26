@@ -27,10 +27,10 @@ export default function DashboardPage() {
         <div className="header-brand">
           <KuroLogo size={46} />
           <div className="logo-container" onClick={() => navigate("/")}>
-          <span className="logo-text">
-            <span className="logo-red">Rovex</span>
-            <span className="logo-ai">AI</span>
-          </span>
+            <span className="logo-text">
+              <span className="logo-red">Rovex</span>
+              <span className="logo-ai">AI</span>
+            </span>
           </div>
         </div>
         <nav className="header-links">
@@ -119,22 +119,21 @@ export default function DashboardPage() {
             </button>
           </div>
 
-          {/* Upload & Organize */}
+          {/* Study Mode */}
           <div className="workspace-card">
-            <div className="workspace-icon">⬆️</div>
-            <h3 className="workspace-name">Upload &amp; Organize</h3>
+            <div className="workspace-icon">🎓</div>
+            <h3 className="workspace-name">Study Mode</h3>
             <p className="workspace-description">
-              Manage all your PDF documents in one place. Upload, organize, and
-              maintain your document library efficiently.
+              Turn your PDFs into interactive learning materials. Generate flashcards and quizzes to master any subject.
             </p>
             <ul className="workspace-features">
-              <li>Bulk Upload</li>
-              <li>Smart Organization</li>
-              <li>Version Control</li>
+              <li>AI Flashcards</li>
+              <li>Smart Quizzes</li>
+              <li>Knowledge Testing</li>
             </ul>
             <button
               className="workspace-btn"
-              onClick={() => navigate("/app?tab=upload")}
+              onClick={() => navigate("/app?tab=study")}
             >
               Go to Workspace
             </button>
@@ -183,12 +182,12 @@ export default function DashboardPage() {
 
           {/* Settings (optional placeholder) */}
           <div className="workspace-card">
-            <div className="workspace-icon">🛠️</div>    
+            <div className="workspace-icon">🛠️</div>
             <h3 className="workspace-name">PDF Tools</h3>
             <p className="workspace-description">
               Manage and transform your PDF documents with ease. Merge, split, convert, and extract text from PDFs using our powerful tools.
             </p>
-            
+
             <ul className="workspace-features">
               <li>Merge PDFs</li>
               <li>Split PDFs</li>
@@ -296,7 +295,7 @@ export default function DashboardPage() {
               className="footer-link"
             >
               Privacy Policy
-              </button>
+            </button>
           </div>
         </div>
         <div className="footer-bottom">

@@ -2,13 +2,16 @@
 .instruction-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85); /* Heavy black for focus */
+  background: rgba(0, 0, 0, 0.5);
+  /* Lighter backdrop */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Eased fade for smoother entry */
-  transition: opacity 0.3s ease-out; /* For fade-out */
+  animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Eased fade for smoother entry */
+  transition: opacity 0.3s ease-out;
+  /* For fade-out */
 }
 
 .instruction-overlay.fade-out {
@@ -17,20 +20,27 @@
 
 /* Modal: Dark theme with refined red glows and better shadows */
 .instruction-modal {
-  background: linear-gradient(145deg, #0a0a0a, #1a1a1a); /* Matches app's black/dark bg */
-  color: #ffffff;
-  padding: 0; /* Handled in children */
+  background: #ffffff;
+  /* Bright white background */
+  color: #111827;
+  /* Dark gray text */
+  padding: 0;
+  /* Handled in children */
   width: 90%;
   max-width: 520px;
-  border-radius: 20px; /* Rounded like workspace cards */
-  box-shadow: 
-    0 25px 50px -12px rgba(0, 0, 0, 0.6), /* Softer, deeper shadow for depth */
-    0 0 0 1px rgba(239, 68, 68, 0.15), /* Subtler red border glow */
-    inset 0 1px 0 rgba(255, 255, 255, 0.03); /* Enhanced inner lift */
-  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncier, smoother pop */
-  overflow: hidden; /* Clean edges */
-  backdrop-filter: blur(10px); /* Subtle blur for modern glass-morphism feel */
-  transition: transform 0.3s ease-out, opacity 0.3s ease-out; /* For pop-out */
+  border-radius: 20px;
+  /* Rounded like workspace cards */
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.1),
+    /* Softer, ambient shadow */
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  /* Subtle border ring */
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* Bouncier, smoother pop */
+  overflow: hidden;
+  /* Clean edges */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  /* For pop-out */
 }
 
 .instruction-modal.pop-out {
@@ -45,45 +55,54 @@
   align-items: center;
   padding: 24px 28px 16px;
   /* No border-bottom */
-  position: relative; /* For potential pseudo-elements if needed */
+  position: relative;
+  /* For potential pseudo-elements if needed */
 }
 
 .instruction-header h2 {
   margin: 0;
   font-size: 1.75rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #111827;
   display: flex;
   align-items: center;
   gap: 8px;
   letter-spacing: -0.02em;
-  animation: slideInDown 0.5s ease-out 0.1s both; /* Staggered entrance */
+  animation: slideInDown 0.5s ease-out 0.1s both;
+  /* Staggered entrance */
 }
 
 /* Close Button: Enhanced with focus and scale */
 .close-btn {
   background: none;
   border: none;
-  color: #9ca3af; /* Gray for subtlety */
+  color: #6b7280;
+  /* Gray for subtlety */
   font-size: 1.5rem;
   cursor: pointer;
   padding: 8px;
   border-radius: 50%;
-  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother easing */
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Smoother easing */
   opacity: 0.8;
-  animation: slideInRight 0.5s ease-out 0.3s both; /* Entrance animation */
+  animation: slideInRight 0.5s ease-out 0.3s both;
+  /* Entrance animation */
 }
 
 .close-btn:hover,
 .close-btn:focus-visible {
-  color: #ffffff;
-  background: rgba(239, 68, 68, 0.2); /* Stronger red tint on hover/focus */
-  transform: scale(1.1) rotate(90deg); /* Rotate for fun interaction */
-  outline: none; /* Remove default focus outline */
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  /* Subtle red tint on hover/focus */
+  transform: scale(1.1) rotate(90deg);
+  /* Rotate for fun interaction */
+  outline: none;
+  /* Remove default focus outline */
 }
 
 .close-btn:active {
-  transform: scale(0.95); /* Subtle press effect */
+  transform: scale(0.95);
+  /* Subtle press effect */
 }
 
 /* Body: Spacious, card-like with custom scrollbar */
@@ -91,36 +110,39 @@
   padding: 0 28px 24px;
   max-height: 60vh;
   overflow-y: auto;
-  animation: slideInUp 0.5s ease-out 0.2s both; /* Body slides in */
+  animation: slideInUp 0.5s ease-out 0.2s both;
+  /* Body slides in */
 }
 
-/* Custom scrollbar for dark theme */
+/* Custom scrollbar for light theme */
 .instruction-body::-webkit-scrollbar {
   width: 6px;
 }
 
 .instruction-body::-webkit-scrollbar-track {
-  background: rgba(26, 26, 26, 0.5);
+  background: #f3f4f6;
   border-radius: 3px;
 }
 
 .instruction-body::-webkit-scrollbar-thumb {
-  background: rgba(239, 68, 68, 0.4);
+  background: #d1d5db;
   border-radius: 3px;
 }
 
 .instruction-body::-webkit-scrollbar-thumb:hover {
-  background: rgba(239, 68, 68, 0.6);
+  background: #9ca3af;
 }
 
 .intro-text {
   margin: 0 0 20px 0;
   font-size: 1rem;
   line-height: 1.5;
-  color: #d1d5db; /* Light gray for secondary */
+  color: #4b5563;
+  /* Dark gray for secondary */
   text-align: center;
   font-style: italic;
-  animation: fadeInUp 0.5s ease-out 0.4s both; /* Intro text fades in */
+  animation: fadeInUp 0.5s ease-out 0.4s both;
+  /* Intro text fades in */
 }
 
 /* List: Card-style items with enhanced red accents and staggered animations */
@@ -136,78 +158,128 @@
   gap: 12px;
   margin-bottom: 16px;
   padding: 16px;
-  background: rgba(26, 26, 26, 0.8); /* Dark card bg */
+  background: #f9fafb;
+  /* Light card bg */
   border-radius: 12px;
-  border-left: 3px solid rgb(255, 0, 0); /* Red bar */
-  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother transitions */
+  border: 1px solid #f3f4f6;
+  border-left: 3px solid #ef4444;
+  /* Clean Red bar */
+  color: #111827;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Smoother transitions */
   line-height: 1.4;
-  opacity: 0; /* Start hidden for stagger */
-  transform: translateY(20px); /* Start offset for slide-in */
-  animation: staggerIn 0.5s ease-out forwards; /* Staggered entrance */
+  opacity: 0;
+  /* Start hidden for stagger */
+  transform: translateY(20px);
+  /* Start offset for slide-in */
+  animation: staggerIn 0.5s ease-out forwards;
+  /* Staggered entrance */
   position: relative;
 }
 
-.features-list li:nth-child(1) { animation-delay: 0.5s; }
-.features-list li:nth-child(2) { animation-delay: 0.6s; }
-.features-list li:nth-child(3) { animation-delay: 0.7s; }
-.features-list li:nth-child(4) { animation-delay: 0.8s; }
-.features-list li:nth-child(5) { animation-delay: 0.9s; }
-.features-list li:nth-child(6) { animation-delay: 1.0s; } /* Extra for 6th step */
+.features-list li:nth-child(1) {
+  animation-delay: 0.5s;
+}
+
+.features-list li:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+.features-list li:nth-child(3) {
+  animation-delay: 0.7s;
+}
+
+.features-list li:nth-child(4) {
+  animation-delay: 0.8s;
+}
+
+.features-list li:nth-child(5) {
+  animation-delay: 0.9s;
+}
+
+.features-list li:nth-child(6) {
+  animation-delay: 1.0s;
+}
+
+/* Extra for 6th step */
 
 .features-list li:hover {
-  background: rgba(26, 26, 26, 1);
-  border-left-color: #ef4444; /* Brighter red */
-  transform: translateX(4px) scale(1.02); /* Enhanced lift and slide */
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15); /* Hover glow */
+  background: #ffffff;
+  border-color: #e5e7eb;
+  border-left-color: #dc2626;
+  /* Brighter red */
+  transform: translateX(4px) scale(1.02);
+  /* Enhanced lift and slide */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* Hover glow */
 }
 
 .features-list .icon {
   font-size: 1.2rem;
-  color: #ff0000; /* Pink/red icon like app highlights */
+  color: #ff0000;
+  /* Pink/red icon like app highlights */
   flex-shrink: 0;
   margin-top: 2px;
-  transition: transform 0.2s ease; /* Icon bounce on hover */
-  animation: iconBounce 0.8s ease-in-out infinite alternate; /* Gentle bounce for icons */
+  transition: transform 0.2s ease;
+  /* Icon bounce on hover */
+  animation: iconBounce 0.8s ease-in-out infinite alternate;
+  /* Gentle bounce for icons */
 }
 
 @keyframes iconBounce {
   from {
     transform: translateY(0);
   }
+
   to {
     transform: translateY(-3px);
   }
 }
 
 .features-list li:hover .icon {
-  transform: scale(1.1) rotate(5deg); /* Playful icon animation */
-  animation: none; /* Pause bounce on hover */
+  transform: scale(1.1) rotate(5deg);
+  /* Playful icon animation */
+  animation: none;
+  /* Pause bounce on hover */
 }
 
 .features-list span:last-of-type {
-  color: #ffffff;
+  color: #374151;
+  /* Slate text for body */
   flex: 1;
 }
 
 .features-list strong {
-  color: #ef4444; /* Matched to the red in "Choose Your Workspace" for instruction titles */
+  color: #111827;
+  /* Darker for titles */
 }
 
 /* Highlight: More prominent pink/red with extra flair */
 .features-list .highlight {
-  background: linear-gradient(90deg, rgba(244, 114, 182, 0.2), rgba(239, 68, 68, 0.15));
-  border-left: 4px solid #ff0000;
+  background: #fff1f2;
+  /* Light red fill */
+  border: 1px solid #fecdd3;
+  border-left: 4px solid #ef4444;
   margin: 12px 0;
   font-weight: 500;
-  animation-delay: 1s; /* Extra delay for highlight */
+  animation-delay: 1s;
+  /* Extra delay for highlight */
+}
+
+.features-list .highlight:hover {
+  background: #ffe4e6;
+  border-color: #fda4af;
+  border-left-color: #dc2626;
 }
 
 .features-list .highlight .icon {
-  color: #ef4444; /* Red for mobile icon */
+  color: #ef4444;
+  /* Red for mobile icon */
 }
 
 .features-list .highlight strong {
-  color: #ef4444; /* Consistent red for highlight title */
+  color: #991b1b;
+  /* Consistent red for highlight title */
 }
 
 /* Actions: Refined pink/red button with better focus and press */
@@ -215,11 +287,13 @@
   padding: 0 28px 24px;
   text-align: center;
   /* No border-top */
-  animation: slideInUp 0.5s ease-out 1s both; /* Actions slide in last */
+  animation: slideInUp 0.5s ease-out 1s both;
+  /* Actions slide in last */
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #ef4444, #ff0000); /* Red-to-pink gradient */
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  /* Red-to-dark-red gradient */
   color: #ffffff;
   border: none;
   padding: 14px 28px;
@@ -230,9 +304,10 @@
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   width: 100%;
   max-width: 220px;
-  box-shadow: 0 4px 12px rgb(0, 0, 0);
+  box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.2), 0 2px 4px -1px rgba(239, 68, 68, 0.1);
   position: relative;
-  overflow: hidden; /* For shine effect if added later */
+  overflow: hidden;
+  /* For shine effect if added later */
 }
 
 .primary-btn::before {
@@ -247,93 +322,107 @@
 }
 
 .primary-btn:hover::before {
-  left: 100%; /* Shine sweep on hover */
+  left: 100%;
+  /* Shine sweep on hover */
 }
 
 .primary-btn:hover {
-  background: linear-gradient(135deg, #dc2626, #ff0000);
-  transform: translateY(-2px) scale(1.05); /* Stronger lift and slight scale */
-  box-shadow: 0 8px 20px rgb(255, 0, 0);
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px) scale(1.05);
+  /* Stronger lift and slight scale */
+  box-shadow: 0 10px 15px -3px rgba(239, 68, 68, 0.3), 0 4px 6px -2px rgba(239, 68, 68, 0.15);
 }
 
 .primary-btn:focus-visible {
-  outline: 2px solid rgb(255, 0, 0);
+  outline: 2px solid #ef4444;
   outline-offset: 2px;
 }
 
 .primary-btn:active {
-  transform: translateY(0); /* Press back down */
-  box-shadow: 0 2px 8px rgb(255, 0, 0);
+  transform: translateY(0);
+  /* Press back down */
+  box-shadow: 0 2px 4px -1px rgba(239, 68, 68, 0.2);
 }
 
 /* Enhanced Animations */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes popIn {
-  0% { 
-    transform: scale(0.9) translateY(20px); 
-    opacity: 0; 
+  0% {
+    transform: scale(0.9) translateY(20px);
+    opacity: 0;
   }
-  60% { 
-    transform: scale(1.03) translateY(-2px); 
-    opacity: 1; 
+
+  60% {
+    transform: scale(1.03) translateY(-2px);
+    opacity: 1;
   }
-  100% { 
-    transform: scale(1) translateY(0); 
+
+  100% {
+    transform: scale(1) translateY(0);
   }
 }
 
 @keyframes slideInDown {
-  from { 
-    transform: translateY(-20px); 
-    opacity: 0; 
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
   }
-  to { 
-    transform: translateY(0); 
-    opacity: 1; 
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
 @keyframes slideInRight {
-  from { 
-    transform: translateX(20px); 
-    opacity: 0; 
+  from {
+    transform: translateX(20px);
+    opacity: 0;
   }
-  to { 
-    transform: translateX(0); 
-    opacity: 1; 
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
 @keyframes slideInUp {
-  from { 
-    transform: translateY(20px); 
-    opacity: 0; 
+  from {
+    transform: translateY(20px);
+    opacity: 0;
   }
-  to { 
-    transform: translateY(0); 
-    opacity: 1; 
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
 @keyframes fadeInUp {
-  from { 
-    transform: translateY(10px); 
-    opacity: 0; 
+  from {
+    transform: translateY(10px);
+    opacity: 0;
   }
-  to { 
-    transform: translateY(0); 
-    opacity: 1; 
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 
 @keyframes staggerIn {
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -342,37 +431,60 @@
   .instruction-modal {
     width: 95%;
     border-radius: 16px;
-    margin: 1rem; /* Extra margin to avoid edge clipping */
+    margin: 1rem;
+    /* Extra margin to avoid edge clipping */
   }
-  
+
   .instruction-body {
     padding: 0 20px 20px;
-    max-height: 50vh; /* Adjust for smaller screens */
+    max-height: 50vh;
+    /* Adjust for smaller screens */
   }
-  
+
   .features-list li {
     flex-direction: column;
     gap: 8px;
-    padding: 14px; /* Slightly larger touch target */
+    padding: 14px;
+    /* Slightly larger touch target */
   }
-  
+
   .instruction-header {
     padding: 20px 20px 12px;
   }
-  
+
   .instruction-actions {
     padding: 0 20px 20px;
   }
-  
+
   .primary-btn {
-    padding: 16px 28px; /* Larger button for touch */
+    padding: 16px 28px;
+    /* Larger button for touch */
   }
-  
+
   /* Reduce animation delays on mobile for faster feel */
-  .features-list li:nth-child(1) { animation-delay: 0.3s; }
-  .features-list li:nth-child(2) { animation-delay: 0.4s; }
-  .features-list li:nth-child(3) { animation-delay: 0.5s; }
-  .features-list li:nth-child(4) { animation-delay: 0.6s; }
-  .features-list li:nth-child(5) { animation-delay: 0.7s; }
-  .features-list li:nth-child(6) { animation-delay: 0.8s; } /* For 6th step */
+  .features-list li:nth-child(1) {
+    animation-delay: 0.3s;
+  }
+
+  .features-list li:nth-child(2) {
+    animation-delay: 0.4s;
+  }
+
+  .features-list li:nth-child(3) {
+    animation-delay: 0.5s;
+  }
+
+  .features-list li:nth-child(4) {
+    animation-delay: 0.6s;
+  }
+
+  .features-list li:nth-child(5) {
+    animation-delay: 0.7s;
+  }
+
+  .features-list li:nth-child(6) {
+    animation-delay: 0.8s;
+  }
+
+  /* For 6th step */
 }
