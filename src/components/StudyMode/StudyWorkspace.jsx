@@ -116,6 +116,7 @@ const PomodoroPanel = () => {
 // 2. AI Flashcard Builder
 const FlashcardPanel = ({ uploadedFiles = [] }) => {
     const [selectedPdfId, setSelectedPdfId] = useState('');
+    const [flashcardCount, setFlashcardCount] = useState(10);
     const [flashcards, setFlashcards] = useState(null);
     const [loading, setLoading] = useState(false);
     const [activeCard, setActiveCard] = useState(0);
@@ -127,7 +128,7 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
         setLoading(true);
         setError('');
         try {
-            const data = await studyApi.generateFlashcards(selectedPdfId, 10);
+            const data = await studyApi.generateFlashcards(selectedPdfId, flashcardCount);
             if (data.flashcards && data.flashcards.length > 0) {
                 setFlashcards(data.flashcards);
                 setActiveCard(0);
@@ -172,10 +173,10 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                     <h3>Select a PDF to Generate Flashcards</h3>
                     <p>RovexAI will scan your document and extract the most important definitions and dates into interactive cards.</p>
 
-                    <div style={{ marginTop: '20px', display: 'flex', gap: '10px', width: '100%', maxWidth: '500px' }}>
+                    <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', width: '100%', maxWidth: '400px' }}>
                         <select
                             className="study-select"
-                            style={{ flexGrow: 1, padding: '10px 15px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
+                            style={{ width: '100%', padding: '10px 15px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
                             value={selectedPdfId}
                             onChange={(e) => setSelectedPdfId(e.target.value)}
                         >
@@ -186,11 +187,27 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                                 </option>
                             ))}
                         </select>
+
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: '#f8fafc', padding: '10px 15px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                            <label style={{ fontSize: '0.95rem', fontWeight: '500', color: '#475569' }}>Number of cards:</label>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <input
+                                    type="range"
+                                    min="5"
+                                    max="25"
+                                    value={flashcardCount}
+                                    onChange={(e) => setFlashcardCount(parseInt(e.target.value))}
+                                    style={{ width: '100px', cursor: 'pointer' }}
+                                />
+                                <span style={{ fontWeight: 'bold', color: '#1e293b', width: '30px', textAlign: 'right' }}>{flashcardCount}</span>
+                            </div>
+                        </div>
+
                         <button
                             className="study-upload-btn"
                             onClick={handleGenerate}
                             disabled={!selectedPdfId || loading}
-                            style={{ opacity: (!selectedPdfId || loading) ? 0.6 : 1 }}
+                            style={{ width: '100%', marginTop: '10px', opacity: (!selectedPdfId || loading) ? 0.6 : 1 }}
                         >
                             {loading ? 'Generating...' : 'Generate AI Cards'}
                         </button>
@@ -229,6 +246,7 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
 // 3. Quiz Master
 const QuizPanel = ({ uploadedFiles = [] }) => {
     const [selectedPdfId, setSelectedPdfId] = useState('');
+    const [quizCount, setQuizCount] = useState(5);
     const [quiz, setQuiz] = useState(null);
     const [loading, setLoading] = useState(false);
     const [activeQuestion, setActiveQuestion] = useState(0);
@@ -242,7 +260,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
         setLoading(true);
         setError('');
         try {
-            const data = await studyApi.generateQuiz(selectedPdfId, 5);
+            const data = await studyApi.generateQuiz(selectedPdfId, quizCount);
             if (data.quiz && data.quiz.length > 0) {
                 setQuiz(data.quiz);
                 setActiveQuestion(0);
@@ -296,10 +314,10 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                     <h3>Ready to test yourself?</h3>
                     <p>Select any syllabus or study guide and RovexAI will generate a practice test fully graded with explanations for wrong answers.</p>
 
-                    <div style={{ marginTop: '20px', display: 'flex', gap: '10px', width: '100%', maxWidth: '500px' }}>
+                    <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', width: '100%', maxWidth: '400px' }}>
                         <select
                             className="study-select"
-                            style={{ flexGrow: 1, padding: '10px 15px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
+                            style={{ width: '100%', padding: '10px 15px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
                             value={selectedPdfId}
                             onChange={(e) => setSelectedPdfId(e.target.value)}
                         >
@@ -310,11 +328,27 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                                 </option>
                             ))}
                         </select>
+
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: '#f8fafc', padding: '10px 15px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                            <label style={{ fontSize: '0.95rem', fontWeight: '500', color: '#475569' }}>Number of questions:</label>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <input
+                                    type="range"
+                                    min="5"
+                                    max="25"
+                                    value={quizCount}
+                                    onChange={(e) => setQuizCount(parseInt(e.target.value))}
+                                    style={{ width: '100px', cursor: 'pointer' }}
+                                />
+                                <span style={{ fontWeight: 'bold', color: '#1e293b', width: '30px', textAlign: 'right' }}>{quizCount}</span>
+                            </div>
+                        </div>
+
                         <button
                             className="study-upload-btn"
                             onClick={handleGenerate}
                             disabled={!selectedPdfId || loading}
-                            style={{ opacity: (!selectedPdfId || loading) ? 0.6 : 1 }}
+                            style={{ width: '100%', marginTop: '10px', opacity: (!selectedPdfId || loading) ? 0.6 : 1 }}
                         >
                             {loading ? 'Generating...' : 'Generate Practice Test'}
                         </button>
@@ -325,7 +359,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                 <div className="quiz-results" style={{ textAlign: 'center', padding: '40px' }}>
                     <h2 style={{ fontSize: '3rem', marginBottom: '10px' }}>{Math.round((score / quiz.length) * 100)}%</h2>
                     <p style={{ fontSize: '1.2rem', color: '#64748b' }}>You scored {score} out of {quiz.length} correctly.</p>
-                    <button className="timer-btn primary" onClick={() => setQuiz(null)} style={{ marginTop: '30px' }}>Take Another Test</button>
+                    <button className="timer-btn primary" onClick={() => { setQuiz(null); handleGenerate(); }} style={{ marginTop: '30px' }}>Take Another Test</button>
                 </div>
             ) : (
                 <div className="quiz-container" style={{ marginTop: '20px' }}>
