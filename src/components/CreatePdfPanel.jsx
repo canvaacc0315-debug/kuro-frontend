@@ -231,10 +231,10 @@ export default function CreatePdfPanel({ onExportPdf }) {
       images: p.images.map((img) =>
         img.id === dragState.imageId
           ? {
-              ...img,
-              x: newX,
-              y: newY,
-            }
+            ...img,
+            x: newX,
+            y: newY,
+          }
           : img
       ),
     }));
@@ -258,7 +258,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
     page.images.length === 0
       ? null
       : page.images.find((i) => i.id === activeImageId) ||
-        page.images[page.images.length - 1];
+      page.images[page.images.length - 1];
 
   /* ------------ pages ------------ */
 
@@ -374,7 +374,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
       if (selection) {
         try {
           await navigator.clipboard.writeText(selection);
-        } catch {}
+        } catch { }
       }
     }
 
@@ -383,7 +383,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
       if (selection) {
         try {
           await navigator.clipboard.writeText(selection);
-        } catch {}
+        } catch { }
       }
       const updated = value.slice(0, start) + value.slice(end);
       if (contextMenu.target === "heading") handleHeadingChange(updated);
@@ -413,7 +413,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
         setTimeout(() => {
           textarea.selectionStart = textarea.selectionEnd = newPos;
         }, 0);
-      } catch {}
+      } catch { }
     }
 
     closeContextMenu();
@@ -617,7 +617,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
       {/* SIDEBAR */}
       <aside className="create-editor-sidebar">
         <div className="sidebar-section">
-          <div className="sidebar-title">Text</div>
+          <div className="sidebar-title">Text Options</div>
           <button
             type="button"
             className="sidebar-primary-btn"
@@ -626,10 +626,10 @@ export default function CreatePdfPanel({ onExportPdf }) {
               setActiveTextTarget("heading");
               setToolbarStyle(page.heading.style);
             }}
-            aria-label="Edit heading"
+            aria-label="Add a heading"
           >
             <span className="sidebar-primary-icon">T</span>
-            Edit heading
+            Add a heading
           </button>
           <button
             type="button"
@@ -639,49 +639,54 @@ export default function CreatePdfPanel({ onExportPdf }) {
               setActiveTextTarget("body");
               setToolbarStyle(page.body.style);
             }}
-            aria-label="Edit paragraph"
+            aria-label="Add body text"
           >
-            <div className="text-style-main">Edit paragraph</div>
+            <div className="text-style-main">Add body text</div>
             <div className="text-style-sub">
-              Click to focus main content area
+              Click to focus main document body
             </div>
           </button>
         </div>
 
         <div className="sidebar-section">
-          <div className="sidebar-title">Images</div>
-          <label className="sidebar-pill-btn">
-            🖼 Import image
+          <div className="sidebar-title">Elements</div>
+          <label className="sidebar-pill-btn" style={{ justifyContent: 'center' }}>
+            <svg style={{ width: '16px', height: '16px', marginRight: '8px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+            Upload image
             <input
               type="file"
               accept="image/*"
               style={{ display: "none" }}
               onChange={handleImageChange}
-              aria-label="Import image"
+              aria-label="Upload image"
             />
           </label>
         </div>
 
         <div className="sidebar-section">
-          <div className="sidebar-title">Actions</div>
+          <div className="sidebar-title">History</div>
           <div style={{ display: "flex", gap: "8px", marginBottom: "8px" }}>
             <button
               type="button"
               className="sidebar-pill-btn"
+              style={{ flex: 1 }}
               onClick={undo}
               disabled={historyIndex <= 0}
               aria-label="Undo"
             >
-              ↶ Undo
+              <svg style={{ width: '16px', height: '16px', marginRight: '4px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+              Undo
             </button>
             <button
               type="button"
               className="sidebar-pill-btn"
+              style={{ flex: 1 }}
               onClick={redo}
               disabled={historyIndex >= history.length - 1}
               aria-label="Redo"
             >
-              ↷ Redo
+              Redo
+              <svg style={{ width: '16px', height: '16px', marginLeft: '4px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6" /></svg>
             </button>
           </div>
         </div>

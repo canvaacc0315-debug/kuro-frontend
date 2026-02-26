@@ -1,30 +1,35 @@
 /* Root layout */
 .create-editor-root {
   display: flex;
-  gap: 16px;
   height: 100%;
-  min-height: 540px;
-  padding: 16px 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter",
-    "SF Pro Text", sans-serif;
-  color: #000000;
-  animation: fadeIn 0.8s ease-out;
+  min-height: 600px;
+  max-height: calc(100vh - 80px);
+  /* Fill screen minus header */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: #111827;
+  background: #f3f4f6;
+  /* Canva-like gray background */
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  /* sleek contained look */
+  animation: fadeIn 0.4s ease-out;
 }
 
 /* ---------- Sidebar ---------- */
 
 .create-editor-sidebar {
-  width: 260px;
+  width: 280px;
   flex-shrink: 0;
-  padding: 16px 14px 20px; /* ⬅ bottom padding a bit larger */
-  border-radius: 18px;
+  padding: 24px 16px;
   background: #ffffff;
-  border: 1px solid #dddddd;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #e5e7eb;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  animation: slideInLeft 0.6s ease-out;
+  gap: 24px;
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.02);
 }
 
 .sidebar-section {
@@ -43,24 +48,24 @@
 .sidebar-primary-btn {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border-radius: 999px;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
   border: none;
-  background: linear-gradient(90deg, #EF4444, #FCA5A5);
+  background: #ef4444;
+  /* matching the theme red */
   color: #ffffff;
-  font-size: 13px;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out,
-    filter 0.2s ease-out;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
 }
 
 .sidebar-primary-btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
 .sidebar-primary-icon {
@@ -75,21 +80,18 @@
 }
 
 .text-style-card {
-  border-radius: 12px;
-  border: 1px solid #dddddd;
-  background: #f9f9f9;
-  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  padding: 12px 14px;
   cursor: pointer;
   text-align: left;
-  transition: background 0.2s ease-out, border-color 0.2s ease-out,
-    transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  transition: all 0.2s ease;
 }
 
 .text-style-card:hover {
-  background: #f0f0f0;
-  border-color: #EF4444;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.1);
+  background: #f8fafc;
+  border-color: #ef4444;
 }
 
 .text-style-main {
@@ -112,49 +114,48 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(239, 68, 68, 0.55);
-  background: rgba(239, 68, 68, 0.05);
-  font-size: 13px;
-  color: #EF4444;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #374151;
   cursor: pointer;
-  transition: background 0.2s ease-out, border-color 0.2s ease-out,
-    transform 0.2s ease-out;
+  transition: all 0.2s ease;
 }
 
 .sidebar-pill-btn:hover {
-  background: rgba(239, 68, 68, 0.1);
-  border-color: #EF4444;
-  transform: translateY(-1px);
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #111827;
 }
 
 .sidebar-bottom {
   margin-top: auto;
-  padding: 0 6px 4px; /* ⬅ inset Export from border */
+  padding: 0 6px 4px;
+  /* ⬅ inset Export from border */
 }
 
 .sidebar-export-btn {
   width: 100%;
-  padding: 10px 14px;
-  border-radius: 999px;
+  padding: 12px 16px;
+  border-radius: 8px;
   border: none;
-  font-size: 13px;
+  font-size: 1rem;
   font-weight: 600;
   text-align: center;
-  background: linear-gradient(90deg, #EF4444, #FCA5A5);
+  background: #111827;
   color: #ffffff;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out,
-    filter 0.2s ease-out;
-  margin-bottom: 2px; /* ⬅ not glued to the frame */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
 .sidebar-export-btn:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.05);
-  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+  background: #1f2937;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* ---------- Main area ---------- */
@@ -163,27 +164,21 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  animation: fadeIn 0.8s ease-out 0.2s;
-  opacity: 0;
-  animation-fill-mode: forwards;
+  position: relative;
 }
 
 /* Toolbar */
 
 .create-toolbar {
-  border-radius: 999px;
-  padding: 8px 14px;
-  background: #f9f9f9;
-  border: 1px solid #dddddd;
+  height: 56px;
+  padding: 0 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
-  gap: 14px;
-  transition: box-shadow 0.2s ease-out;
-}
-
-.create-toolbar:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  gap: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  z-index: 10;
 }
 
 .toolbar-group {
@@ -225,32 +220,32 @@
 .toolbar-toggle-group {
   display: inline-flex;
   padding: 2px;
-  border-radius: 999px;
-  background: #f0f0f0;
+  border-radius: 6px;
+  background: #f3f4f6;
 }
 
 .toolbar-toggle {
-  min-width: 26px;
-  height: 22px;
-  border-radius: 999px;
+  min-width: 32px;
+  height: 28px;
+  border-radius: 4px;
   border: none;
-  font-size: 11px;
-  padding: 0 6px;
+  font-size: 13px;
+  padding: 0 8px;
   background: transparent;
-  color: #000000;
+  color: #4b5563;
   cursor: pointer;
-  transition: background 0.2s ease-out, color 0.2s ease-out,
-    transform 0.1s ease-out;
+  transition: all 0.2s ease;
 }
 
 .toolbar-toggle:hover {
-  background: rgba(239, 68, 68, 0.1);
-  transform: scale(1.05);
+  background: #e5e7eb;
+  color: #111827;
 }
 
 .toolbar-toggle.active {
-  background: linear-gradient(90deg, #EF4444, #FCA5A5);
-  color: #ffffff;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* ---------- Page ---------- */
@@ -259,28 +254,27 @@
   flex: 1;
   display: flex;
   justify-content: center;
-  padding: 14px 4px 8px;
+  align-items: flex-start;
+  padding: 32px 24px;
+  overflow-y: auto;
 }
 
 .create-page {
   position: relative;
   width: min(780px, 100%);
   aspect-ratio: 1 / 1.414;
-  max-height: 90vh;
+  height: fit-content;
   background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 32px 40px;
+  border-radius: 4px;
+  /* Real paper look */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  padding: 48px 56px;
   overflow: hidden;
-  transition: box-shadow 0.2s ease-out, transform 0.2s ease-out;
-  animation: fadeInCard 0.6s ease-out 0.4s;
-  opacity: 0;
-  animation-fill-mode: forwards;
+  transition: box-shadow 0.2s ease;
 }
 
 .create-page:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 /* Heading + body – NORMAL textareas (no frame) */
@@ -316,7 +310,8 @@
 /* body fills rest of page */
 .body-textarea {
   min-height: calc(100% - 60px);
-  overflow: visible; /* no inner scrollbar frame */
+  overflow: visible;
+  /* no inner scrollbar frame */
 }
 
 /* ---------- Images: multiple per page ---------- */
@@ -380,7 +375,8 @@
   justify-content: space-between;
   gap: 12px;
   margin-top: 4px;
-  padding: 0 18px 10px; /* ⬅ pushes both sides + bottom inside frame */
+  padding: 0 18px 10px;
+  /* ⬅ pushes both sides + bottom inside frame */
 }
 
 .pages-list {
@@ -427,7 +423,8 @@
   cursor: pointer;
   transition: background 0.2s ease-out, border-color 0.2s ease-out,
     opacity 0.1s ease-out;
-  margin-right: 4px; /* ⬅ not stuck to the very edge */
+  margin-right: 4px;
+  /* ⬅ not stuck to the very edge */
 }
 
 .delete-page-btn:hover {
@@ -528,11 +525,14 @@
 .zoom-slider {
   position: absolute;
   left: 50%;
-  bottom: 16px;          /* move it up from the very bottom */
+  bottom: 16px;
+  /* move it up from the very bottom */
   transform: translateX(-50%);
-  width: 40%;            /* or whatever width you like */
+  width: 40%;
+  /* or whatever width you like */
   z-index: 10;
 }
+
 /* ---------------- Mobile / handle fixes (APPEND ONLY) ---------------- */
 
 /* allow handles to be visible (parent containers) */
@@ -548,7 +548,8 @@
 
 /* make the page allow extra room for handles at the bottom */
 .create-page {
-  padding-bottom: 56px; /* keeps bottom area free for handles / sliders */
+  padding-bottom: 56px;
+  /* keeps bottom area free for handles / sliders */
 }
 
 /* enlarge the small pink handle and make it touch-friendly */
@@ -559,7 +560,7 @@
   height: 18px;
   border-radius: 6px;
   background: #EF4444;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   z-index: 60;
   touch-action: none;
 }
@@ -573,7 +574,7 @@
   min-height: 18px !important;
   background: #EF4444 !important;
   border-radius: 6px !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
   z-index: 60 !important;
   touch-action: none !important;
 }
@@ -587,6 +588,7 @@
 /* Floating export button on small screens:
    Reuses the existing sidebar-export-btn visual style but becomes a small FAB */
 @media (max-width: 768px) {
+
   /* hide the full sidebar so the canvas gets full width */
   .create-editor-sidebar {
     display: none !important;
@@ -627,13 +629,13 @@
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
     z-index: 9999 !important;
     font-size: 20px !important;
   }
 
   /* hide text of FAB (keeps icon visible if present) */
-  .sidebar-export-btn > *:not(.export-icon) {
+  .sidebar-export-btn>*:not(.export-icon) {
     display: none !important;
   }
 
@@ -729,7 +731,7 @@
     background: rgba(255, 255, 255, 0.9);
     padding: 12px;
     border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   }
 
   .zoom-slider input[type="range"] {
@@ -748,18 +750,21 @@
     bottom: -12px !important;
     border-radius: 50% !important;
     background: #EF4444 !important;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1) !important;
     z-index: 999 !important;
     touch-action: none !important;
   }
 
   /* Prevent horizontal scroll */
-  html, body, .create-editor-root {
+  html,
+  body,
+  .create-editor-root {
     overflow-x: hidden !important;
   }
 
   /* Safe area for bottom */
-  body, .create-editor-root {
+  body,
+  .create-editor-root {
     padding-bottom: max(env(safe-area-inset-bottom), 12px);
   }
 }
@@ -786,6 +791,7 @@
 .allow-overflow {
   overflow: visible !important;
 }
+
 .toolbar-color-picker {
   width: 32px;
   height: 22px;
@@ -796,14 +802,15 @@
 }
 
 .page-image-active .resize-handle {
-  display: block; /* Assuming it's hidden by default in your CSS */
+  display: block;
+  /* Assuming it's hidden by default in your CSS */
 }
 
 .image-size-controls {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: rgba(255,255,255,0.7);
+  background: rgba(255, 255, 255, 0.7);
   color: #000000;
   padding: 8px;
   border-radius: 4px;
@@ -823,17 +830,37 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideInLeft {
-  from { opacity: 0; transform: translateX(-20px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes fadeInCard {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
+
 /* End of file */
