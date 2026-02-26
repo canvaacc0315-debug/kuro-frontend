@@ -1,0 +1,172 @@
+/* src/styles/theme-red.css */
+
+:root {
+  /* Brand Colors - Sophisticated Neon Red */
+  --brand-red: #ff3333;
+  /* Brighter red for dark mode contrast */
+  --brand-red-hover: #ff4d4d;
+  --brand-red-light: rgba(255, 51, 51, 0.1);
+  --brand-red-glow: rgba(255, 51, 51, 0.5);
+
+  /* Deep Black Neutrals (The "Apple/Vercel" Dark Mode Look) */
+  --bg-pure: #000000;
+  --bg-off: #0a0a0a;
+  --bg-dark: #111111;
+  --bg-dark-secondary: #1a1a1a;
+  --bg-dark-hover: #222222;
+
+  /* Typography Colors */
+  --text-primary: #ffffff;
+  /* Pure white headers */
+  --text-secondary: #a1a1aa;
+  /* Zinc-400 for highly readable paragraph text */
+  --text-tertiary: #71717a;
+  /* Zinc-500 for subtle hints/borders */
+  --text-inverse: #000000;
+  --text-inverse-secondary: #4b5563;
+
+  /* Extremely subtle borders to mimic frosted glass edges */
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-dark: rgba(255, 255, 255, 0.15);
+
+  /* Shadows are replaced by gentle underlying glows in Dark Mode */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --shadow-red-glow: 0 0 40px rgba(255, 51, 51, 0.2);
+
+  /* Tighter Layout Radiuses for a sharper look */
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-2xl: 20px;
+}
+
+/* Base Styles */
+body {
+  margin: 0;
+  background-color: var(--bg-pure);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+}
+
+/* Glassmorphism Helpers */
+.glass-panel {
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-md);
+}
+
+.glass-panel-dark {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid var(--border-dark);
+}
+
+/* Animated Gradient Text */
+.text-gradient-red {
+  background: linear-gradient(135deg, #ffffff 0%, var(--brand-red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  line-height: 1.2;
+}
+
+.text-gradient-subtle {
+  background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom Scrollbar for sleekness */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-pure);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-dark);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Global Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes pulseRed {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 51, 51, 0.4);
+  }
+
+  70% {
+    box-shadow: 0 0 0 15px rgba(255, 51, 51, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 51, 51, 0);
+  }
+}
+
+.animate-pulse-red {
+  animation: pulseRed 2.5s infinite;
+}
+
+/* Glowing Border Wrap Utility */
+.glowing-border-wrap {
+  position: relative;
+  background: linear-gradient(to right, var(--brand-red), #550000);
+  padding: 1px;
+  /* The thickness of the glowing border */
+  border-radius: var(--radius-xl);
+  z-index: 1;
+}
+
+.glowing-border-inner {
+  background: var(--bg-pure);
+  border-radius: inherit;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+/* Global Reset overrides */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}

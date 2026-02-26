@@ -1,0 +1,233 @@
+/* src/pages/DashboardPage.css */
+
+.premium-dash-root {
+    min-height: 100vh;
+    background-color: var(--bg-pure);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.premium-dash-header {
+    background: var(--bg-pure);
+    border-bottom: 1px solid var(--border-light);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.dash-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.dash-logo-text {
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.dash-nav {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.dash-nav-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.dash-nav-link:hover,
+.dash-nav-link.active {
+    color: var(--text-primary);
+}
+
+/* Main Content */
+.premium-dash-main {
+    flex: 1;
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Welcome Section */
+.dash-welcome-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.dash-title {
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    font-weight: 600;
+    color: var(--text-secondary);
+    /* dim coloring for "Welcome back," */
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
+}
+
+.dash-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-tertiary);
+    margin: 0;
+}
+
+/* Sleek Horizontal Stepper component */
+.quick-start-stepper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: var(--bg-off);
+    padding: 12px 24px;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-light);
+}
+
+.stepper-track {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.step.active {
+    color: var(--text-primary);
+}
+
+.step-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+.step.active .step-circle {
+    background: var(--text-primary);
+    color: var(--bg-pure);
+    border-color: var(--text-primary);
+}
+
+.step-line {
+    width: 20px;
+    height: 1px;
+    background: var(--border-dark);
+}
+
+/* Bento Grid */
+.premium-bento-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Footer */
+.premium-dash-footer {
+    padding: 2rem;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    justify-content: center;
+}
+
+.premium-dash-footer .footer-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.premium-dash-footer button {
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.premium-dash-footer button:hover {
+    color: var(--text-secondary);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .dash-welcome-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+    }
+
+    .quick-start-stepper {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 768px) {
+    .premium-dash-header {
+        padding: 1rem 1.5rem;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .premium-dash-main {
+        padding: 3rem 1.5rem;
+    }
+
+    .quick-start-stepper {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 24px;
+    }
+
+    .stepper-track {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .step-line {
+        width: 1px;
+        height: 16px;
+        margin-left: 11px;
+        /* Align with circle center */
+    }
+
+    .premium-bento-layout {
+        grid-template-columns: 1fr;
+        /* True Mobile single column */
+    }
+}

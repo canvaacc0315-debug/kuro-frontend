@@ -1,0 +1,262 @@
+/* src/pages/KuroLandingPage.css */
+
+.premium-landing-root {
+    min-height: 100vh;
+    background-color: var(--bg-pure);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    position: relative;
+    color: var(--text-primary);
+}
+
+/* Custom Nav for Landing only (to avoid over-blurring the hero grid) */
+.premium-nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem 0;
+    z-index: 100;
+}
+
+.premium-nav .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.premium-nav .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.premium-nav .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.premium-nav .nav-links a {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.premium-nav .nav-links a:hover {
+    color: var(--text-primary);
+}
+
+.premium-nav .nav-auth {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Authentication Container */
+.hero-auth-container {
+    margin-top: 3rem;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+    z-index: 50;
+    /* Animate in */
+    animation: slideUpFade 0.8s ease backwards;
+    animation-delay: 0.4s;
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.premium-auth-form {
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.premium-auth-form h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    letter-spacing: -0.02em;
+}
+
+.btn-provider {
+    width: 100%;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    border: 1px solid var(--border-dark);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.2s;
+}
+
+.btn-provider:hover {
+    background: var(--bg-dark-hover);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.provider-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.auth-divider {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--border-dark);
+    z-index: 1;
+}
+
+.auth-divider span {
+    background: var(--bg-pure);
+    padding: 0 12px;
+    color: var(--text-tertiary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    position: relative;
+    z-index: 2;
+}
+
+.form-group.stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.premium-input {
+    width: 100%;
+    background: var(--bg-dark);
+    border: 1px solid var(--border-dark);
+    color: var(--text-primary);
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.premium-input::placeholder {
+    color: var(--text-tertiary);
+}
+
+.premium-input:focus {
+    outline: none;
+    border-color: var(--brand-red);
+    box-shadow: 0 0 0 1px var(--brand-red);
+}
+
+.premium-input.text-center {
+    text-align: center;
+    font-size: 1.2rem;
+    letter-spacing: 0.2em;
+}
+
+.btn-primary-sleek.full {
+    width: 100%;
+    padding: 12px;
+}
+
+/* Features Section */
+.premium-features-section {
+    padding: 8rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 1px solid var(--border-light);
+}
+
+.features-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.features-header h2 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+}
+
+.features-header p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
+/* Grid is now single column on mobile, max 3 on desktop */
+.bento-grid-landing {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* Footer */
+.landing-footer {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-tertiary);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border-light);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 900px) {
+    .bento-grid-landing {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .premium-nav .desktop-only {
+        display: none;
+    }
+
+    .premium-nav .nav-container {
+        padding: 0 1.5rem;
+    }
+
+    .bento-grid-landing {
+        grid-template-columns: 1fr;
+        /* Single column stack for mobile */
+    }
+
+    .premium-features-section {
+        padding: 5rem 1.5rem;
+    }
+}
