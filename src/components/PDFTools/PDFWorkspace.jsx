@@ -60,18 +60,22 @@ const CraftMyPDFPanel = () => {
 // ILovePDFPanel component
 const ILovePDFPanel = () => {
   const [activeTab, setActiveTab] = useState('merge');
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState([]);         // Used for non-merge tabs
+  const [mergeFile1, setMergeFile1] = useState(null); // Explicit merge file 1
+  const [mergeFile2, setMergeFile2] = useState(null); // Explicit merge file 2
   const [ranges, setRanges] = useState('1-3');
   const [loading, setLoading] = useState(false);
   const [extractedText, setExtractedText] = useState('');
 
   const handleFileChange = (e) => setFiles(Array.from(e.target.files));
+  const handleMergeFile1Change = (e) => setMergeFile1(e.target.files[0] || null);
+  const handleMergeFile2Change = (e) => setMergeFile2(e.target.files[0] || null);
 
   const handleMerge = async () => {
-    if (files.length < 2) return alert('Select at least 2 PDFs');
+    if (!mergeFile1 || !mergeFile2) return alert('Select both PDFs to merge');
     setLoading(true);
     try {
-      const blob = await pdfApi.mergePDFs(files);
+      const blob = await pdfApi.mergePDFs([mergeFile1, mergeFile2]);
       pdfApi.downloadBlob(blob, 'merged.pdf');
     } catch (error) {
       alert(error.message);
@@ -138,9 +142,28 @@ const ILovePDFPanel = () => {
           </button>
         ))}
       </div>
-      <input type="file" multiple={current.multi} accept={activeTab === 'convert' ? '.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.png' : '.pdf'} onChange={handleFileChange} />
+      {activeTab === 'merge' ? (
+        <div className="merge-inputs" style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '15px' }}>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '5px' }}>First PDF:</label>
+            <input type="file" accept=".pdf" onChange={handleMergeFile1Change} />
+          </div>
+          <div>
+            <label style={{ display: 'block', fontSize: '0.9rem', marginBottom: '5px' }}>Second PDF:</label>
+            <input type="file" accept=".pdf" onChange={handleMergeFile2Change} />
+          </div>
+        </div>
+      ) : (
+        <input type="file" multiple={current.multi} accept={activeTab === 'convert' ? '.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.png' : '.pdf'} onChange={handleFileChange} />
+      )}
+      
       {activeTab === 'split' && <input type="text" placeholder="Page ranges" value={ranges} onChange={(e) => setRanges(e.target.value)} />}
-      <button onClick={current.handler} disabled={loading || files.length === 0}>{loading ? 'Processing...' : current.label}</button>
+      <button 
+        onClick={current.handler} 
+        disabled={loading || (activeTab === 'merge' ? (!mergeFile1 || !mergeFile2) : files.length === 0)}
+      >
+        {loading ? 'Processing...' : current.label}
+      </button>
       {extractedText && activeTab === 'extract' && <pre>{extractedText}</pre>}
     </div>
   );
