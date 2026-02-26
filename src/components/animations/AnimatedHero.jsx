@@ -18,64 +18,57 @@ export default function AnimatedHero({ title, subtitle, badges, children }) {
   }, []);
 
   return (
-    <div className="animated-hero-container">
-      {/* Dynamic Background Blobs */}
-      <motion.div 
-        className="blob blob-red"
-        animate={{
-          x: mousePosition.x * 100,
-          y: mousePosition.y * 100,
-        }}
-        transition={{ type: 'spring', damping: 20, stiffness: 50 }}
-      />
-      <motion.div 
-        className="blob blob-dark"
-        animate={{
-          x: mousePosition.x * -80,
-          y: mousePosition.y * -80,
-        }}
-        transition={{ type: 'spring', damping: 20, stiffness: 50 }}
-      />
-      
-      {/* Overlay to give space depth */}
-      <div className="hero-overlay" />
+    <div className="premium-hero-container">
+      {/* 
+        A true dark mode aesthetic uses extremely subtle ambient lighting 
+        rather than large colorful blobs 
+      */}
+      <div className="hero-grid-pattern" />
 
-      {/* Content */}
+      <motion.div
+        className="ambient-glow ambient-glow-red"
+        animate={{
+          x: mousePosition.x * 60,
+          y: mousePosition.y * 60,
+        }}
+        transition={{ type: 'spring', damping: 30, stiffness: 40 }}
+      />
+
       <div className="hero-content">
-        <motion.div 
+        <motion.div
           className="hero-badge-container"
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         >
           {badges?.map((badge, idx) => (
-             <span key={idx} className="hero-badge">{badge}</span>
+            <span key={idx} className="premium-badge">{badge}</span>
           ))}
         </motion.div>
 
-        <motion.h1 
-          className="hero-animated-title"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+        <motion.h1
+          className="premium-hero-title"
+          initial={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
+          animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 1.2, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
         >
           {title}
         </motion.h1>
 
-        <motion.p 
-          className="hero-animated-subtitle"
-          initial={{ opacity: 0, y: 20 }}
+        <motion.p
+          className="premium-hero-subtitle"
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
           {subtitle}
         </motion.p>
 
-        <motion.div 
+        <motion.div
           className="hero-animated-children"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
         >
           {children}
         </motion.div>

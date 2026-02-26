@@ -2,18 +2,21 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import './AnimatedCard.css';
 
-export default function AnimatedCard({ icon, title, description, badge, onClick, delay = 0 }) {
+export default function AnimatedCard({ icon, title, description, badge, onClick, delay = 0, className = '' }) {
+    // A premium dark-mode approach: A sleek card that glows slightly on hover
+    // The structure mimics a "glowing border wrap" mentioned in the theme
     return (
         <motion.div
-            className="animated-card"
-            whileHover={{ y: -8, scale: 1.02 }}
-            initial={{ opacity: 0, y: 20 }}
+            className={`premium-bento-card ${className}`}
+            whileHover={{ y: -4, scale: 1.01 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6, delay, ease: [0.16, 1, 0.3, 1] }} // Custom smooth easing
             onClick={onClick}
         >
-            <div className="card-glass-layer" />
+            {/* Subtle top border highlight mimicking light reflection */}
+            <div className="card-top-light" />
 
             {badge && <span className="card-badge">{badge}</span>}
 
@@ -27,7 +30,7 @@ export default function AnimatedCard({ icon, title, description, badge, onClick,
 
             {onClick && (
                 <div className="card-footer">
-                    <span className="card-action">Get Started &rarr;</span>
+                    <span className="card-action">Launch Tool &rarr;</span>
                 </div>
             )}
         </motion.div>
