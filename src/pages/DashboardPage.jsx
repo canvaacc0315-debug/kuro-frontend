@@ -1,7 +1,7 @@
 // src/pages/DashboardPage.jsx
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import "../styles/kuro-dashboard.css";
+import "../styles/DashboardPage.css";
 import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import { useRef } from "react";
