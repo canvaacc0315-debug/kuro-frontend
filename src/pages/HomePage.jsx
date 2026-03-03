@@ -1,28 +1,27 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { useNavigate, Link } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import "../styles/homepage.css";
-import logoIcon from "../assets/logo.svg"; // Add your logo image
-
-// Import icons for features - you can use react-icons or your own SVG
-import { 
-  FaShieldAlt, FaDna, FaChartLine,
-  FaDatabase, FaWifi, FaVideo
-} from "react-icons/fa";
+import logoIcon from "../assets/logo.svg";
+import {
+  FileText, BarChart3, Wand2, Upload, Cpu, Download,
+  Star, ArrowRight, Github, Twitter, Zap, Shield, Layers
+} from "lucide-react";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const [scrolled, setScrolled] = useState(false);
-  const footerRef = useRef(null);
+  const headerRef = useRef(null);
 
+  // Scroll handler for header
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      headerRef.current?.classList.toggle("scrolled", window.scrollY > 50);
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // IntersectionObserver for scroll-reveal
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -33,82 +32,72 @@ export default function HomePage() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.08, rootMargin: "50px 0px -20px 0px" }
     );
-
-    if (footerRef.current) {
-      observer.observe(footerRef.current);
-    }
-
-    return () => {
-      if (footerRef.current) {
-        observer.unobserve(footerRef.current);
-      }
-    };
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".scroll-reveal").forEach((el) => observer.observe(el));
+    });
+    return () => observer.disconnect();
   }, []);
 
-  const features = [
+  const capabilities = [
     {
-      icon: <FaChartLine />,
-      title: "AI & Machine Learning",
-      description: "Advanced AI models understand your PDFs contextually, not just by keywords."
+      icon: <FileText size={22} />,
+      title: "Chat with PDFs",
+      desc: "Ask questions, get answers, and interact with your documents using natural language powered by advanced AI.",
+      accent: "#FF6B5A",
+      tag: "NLP · RAG",
     },
     {
-      icon: <FaWifi />,
-      title: "Real‑Time Document Intelligence",
-      description: "Analyze documents instantly as you upload them."
+      icon: <BarChart3 size={22} />,
+      title: "Analyze Data",
+      desc: "Extract tables, charts, and key insights automatically from any PDF with precision and speed.",
+      accent: "#FF9A3C",
+      tag: "OCR · Tables",
     },
     {
-      icon: <FaVideo />,
-      title: "Collaborative AI Workspace",
-      description: "Work with your documents like a live workspace."
+      icon: <Wand2 size={22} />,
+      title: "Create with AI",
+      desc: "Generate summaries, flashcards, reports, and entirely new PDFs from your existing documents.",
+      accent: "#FF6B5A",
+      tag: "GPT-4o · Gen",
     },
-    {
-      icon: <FaDatabase />,
-      title: "Big Data Interoperability",
-      description: "Handle multiple PDFs at once—reports, contracts, research, and more."
-    },
-    {
-      icon: <FaShieldAlt />,
-      title: "End-to-End Security",
-      description: "Encrypted processing ensures data never leaks or trains public models."
-    },
-    {
-      icon: <FaDna />,
-      title: "Deep PDF Insights",
-      description: "Integrating advanced data to provide hyper-personalized assessments and plans."
-    }
   ];
 
-  const howItWorks = [
+  const steps = [
+    { icon: <Upload size={24} />, title: "Upload", desc: "Drag & drop any PDF to get started instantly.", num: "01" },
+    { icon: <Cpu size={24} />, title: "AI Processes", desc: "Our AI analyzes text, tables, and visuals in seconds.", num: "02" },
+    { icon: <Download size={24} />, title: "Get Results", desc: "Download summaries, insights, and generated content.", num: "03" },
+  ];
+
+  const testimonials = [
     {
-      number: "1",
-      title: "Upload Documents",
-      description: "Upload PDFs of any size or type with drag & drop."
+      text: "RovexAI completely transformed how I handle research papers. The AI chat feature saves me hours every single day.",
+      name: "Sarah Parker",
+      role: "PhD Researcher",
+      initials: "SP",
     },
     {
-      number: "2",
-      title: "AI-Powered Analysis",
-      description: "Process text, tables, and visuals with advanced AI."
+      text: "I use RovexAI to analyze contracts and legal PDFs. The accuracy is remarkable — it catches details I might miss.",
+      name: "Tom Miller",
+      role: "Legal Analyst",
+      initials: "TM",
     },
     {
-      number: "3",
-      title: "Interact & Query",
-      description: "Chat with documents using natural language."
+      text: "The PDF creation tools are incredible. I generate professional reports in minutes instead of spending hours formatting.",
+      name: "Priya Kapoor",
+      role: "Business Consultant",
+      initials: "PK",
     },
-    {
-      number: "4",
-      title: "Generate Outputs",
-      description: "Get summaries, data, and insights instantly."
-    }
   ];
 
   return (
     <div className="home-root">
-      {/* HEADER */}
-      <header className={`home-header ${scrolled ? "scrolled" : ""}`}>
+
+      {/* ── HEADER ── */}
+      <header ref={headerRef} className="home-header">
         <div className="logo-container" onClick={() => navigate("/")}>
-          <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
+          <img src={logoIcon} alt="RovexAI" className="logo-icon" />
           <span className="logo-text">
             <span className="logo-red">Rovex</span>
             <span className="logo-ai">AI</span>
@@ -116,212 +105,272 @@ export default function HomePage() {
         </div>
 
         <nav className="nav">
-          <a href="#features" className="nav-link">Features</a>
+          <a href="#capabilities" className="nav-link">Features</a>
           <a href="#how-it-works" className="nav-link">How it Works</a>
           <a href="https://rovexai.com/contact" className="nav-link">Contact</a>
 
           <SignedOut>
-            <button onClick={() => navigate("/login")} className="btn-outline">
-              Login
-            </button>
-            <button onClick={() => navigate("/sign-up")} className="btn-primary btn-glow">
-              Sign Up
-            </button>
+            <button onClick={() => navigate("/login")} className="btn-outline">Login</button>
+            <button onClick={() => navigate("/sign-up")} className="btn-primary">Get Started</button>
           </SignedOut>
-
           <SignedIn>
-            <button
-              onClick={() => navigate("/dashboard")}
-              className="btn-primary btn-glow"
-            >
+            <button onClick={() => navigate("/dashboard")} className="btn-primary">
               Go to Dashboard
             </button>
           </SignedIn>
         </nav>
       </header>
 
-      {/* HERO */}
+      {/* ── HERO ── */}
       <section className="hero">
+        <div className="hero-bg-grid" />
+        <div className="hero-mesh">
+          <div className="blob blob-1" />
+          <div className="blob blob-2" />
+          <div className="blob blob-3" />
+        </div>
+
+        <div className="hero-floating-icons">
+          <div className="floating-icon floating-icon-1"><Zap size={16} /></div>
+          <div className="floating-icon floating-icon-2"><Shield size={16} /></div>
+          <div className="floating-icon floating-icon-3"><Layers size={16} /></div>
+          <div className="floating-icon floating-icon-4"><FileText size={16} /></div>
+        </div>
+
         <div className="hero-content">
-          <div className="hero-text animate-fade-up">
+          <div className="hero-text scroll-reveal">
+            <div className="hero-badge">
+              <span className="hero-badge-dot" />
+              <span>AI-Powered PDF Platform</span>
+              <span className="hero-badge-tag">GPT-4o</span>
+            </div>
+
             <h1 className="hero-title">
-              <span className="hero-gradient">RovexAI</span>
-              <br />
-              Chat, Analyze & Create PDFs with AI
+              Master Your{" "}
+              <span className="hero-gradient">Documents</span>
+              <br />with RovexAI
             </h1>
+
             <p className="hero-subtitle">
-              Your all‑in‑one AI‑powered PDF workspace. Upload, analyze, extract, and
-              generate PDFs in seconds.
+              Upload, analyze, and generate PDFs in seconds — your all-in-one
+              AI-powered document workspace built for speed and clarity.
             </p>
 
             <div className="hero-actions">
-              <button
-                className="btn-primary btn-glow btn-scale"
-                onClick={() => navigate("/sign-up")}
-              >
-                Get Started 
+              <button className="btn-primary btn-hero" onClick={() => navigate("/sign-up")}>
+                Get Started Free
+                <ArrowRight size={16} />
+              </button>
+              <div className="hero-trust">
+                <div className="hero-trust-avatars">
+                  {["A", "B", "C"].map((l, i) => (
+                    <div key={i} className="trust-avatar">{l}</div>
+                  ))}
+                </div>
+                <span>Join 1,000+ users</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="hero-image-container scroll-reveal" data-delay="2">
+            <div className="hero-image-frame">
+              <div className="hero-image-badge">
+                <span className="badge-dot-green" />
+                Analysis Complete · 98% Accuracy
+              </div>
+              <img
+                src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/52610479-8cff-42ba-a59b-41559658dfb7.png"
+                alt="RovexAI Dashboard"
+                className="hero-image"
+              />
+              <div className="hero-image-glow" />
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="hero-scroll-hint">
+          <div className="scroll-mouse">
+            <div className="scroll-wheel" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── TRUSTED BY STRIP ── */}
+      <div className="trust-strip">
+        <span className="trust-strip-label">Trusted by innovative teams</span>
+        <div className="trust-strip-logos">
+          {["TECHCORP", "STACKHQ", "CRYPTONODE", "FLOWBASE", "AXISLAB", "TECHCORP", "STACKHQ", "CRYPTONODE", "FLOWBASE", "AXISLAB"].map((name, i) => (
+            <span key={i} className="trust-logo">{name}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* ── CORE CAPABILITIES ── */}
+      <section className="capabilities" id="capabilities">
+        <div className="section-header scroll-reveal">
+          <div className="section-eyebrow">Core Capabilities</div>
+          <h2>Powerful tools for every document</h2>
+          <p>Our platform is built from the ground up to deliver intelligent, reliable, and instant results.</p>
+        </div>
+
+        <div className="capabilities-grid">
+          {capabilities.map((cap, i) => (
+            <div className="capability-card scroll-reveal" data-delay={i + 1} key={i}>
+              <div className="capability-card-top">
+                <div className="capability-icon">{cap.icon}</div>
+                <span className="capability-tag">{cap.tag}</span>
+              </div>
+              <h3>{cap.title}</h3>
+              <p>{cap.desc}</p>
+              <a href="#" className="capability-link">
+                Learn More <ArrowRight size={13} />
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ── */}
+      <section className="how-it-works" id="how-it-works">
+        <div className="how-it-works-inner">
+          <div className="section-header scroll-reveal">
+            <div className="section-eyebrow">Simple Process</div>
+            <h2>Three steps to clarity</h2>
+            <p>Get started in minutes — no learning curve required.</p>
+          </div>
+
+          <div className="steps-grid">
+            {steps.map((step, i) => (
+              <div className="step-card scroll-reveal" data-delay={i + 1} key={i}>
+                <div className="step-num">{step.num}</div>
+                <div className="step-icon-wrap">{step.icon}</div>
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
+                {i < steps.length - 1 && <div className="step-arrow"><ArrowRight size={18} /></div>}
+              </div>
+            ))}
+          </div>
+
+          <div className="how-it-works-cta scroll-reveal" data-delay="3">
+            <a href="#capabilities">
+              Explore all features <ArrowRight size={14} />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── STATS BAR ── */}
+      <section className="stats-bar">
+        <div className="stats-bar-inner scroll-reveal">
+          <div className="stat-item">
+            <span className="stat-number">10+</span>
+            <span className="stat-label">Active Users</span>
+          </div>
+          <div className="stat-divider" />
+          <div className="stat-item">
+            <span className="stat-number">99.9%</span>
+            <span className="stat-label">Uptime Guaranteed</span>
+          </div>
+          <div className="stat-divider" />
+          <div className="stat-item">
+            <span className="stat-number">1K+</span>
+            <span className="stat-label">Documents Processed</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="testimonials" id="testimonials">
+        <div className="section-header scroll-reveal">
+          <div className="section-eyebrow">Reviews</div>
+          <h2>Loved by researchers &amp; analysts</h2>
+          <p>See what our users have to say about RovexAI.</p>
+        </div>
+
+        <div className="testimonials-grid">
+          {testimonials.map((t, i) => (
+            <div className="testimonial-card scroll-reveal" data-delay={i + 1} key={i}>
+              <div className="testimonial-stars">
+                {[...Array(5)].map((_, si) => <Star key={si} size={14} fill="#FF6B5A" color="#FF6B5A" />)}
+              </div>
+              <p className="testimonial-text">"{t.text}"</p>
+              <div className="testimonial-author">
+                <div className="author-avatar">{t.initials}</div>
+                <div className="author-info">
+                  <strong>{t.name}</strong>
+                  <span>{t.role}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="cta-section">
+        <div className="cta-card scroll-reveal">
+          <div className="cta-orb cta-orb-1" />
+          <div className="cta-orb cta-orb-2" />
+          <div className="cta-content">
+            <div className="cta-eyebrow">Start Today</div>
+            <h2>Ready to work smarter?</h2>
+            <p>Transform how you handle documents with the power of AI. Start for free today.</p>
+            <div className="cta-buttons">
+              <button className="cta-btn-white" onClick={() => navigate("/sign-up")}>
+                Start for Free
+              </button>
+              <button className="cta-btn-outline" onClick={() => navigate("/contact")}>
+                Book a Demo
               </button>
             </div>
-
-            <div className="hero-stats">
-              <div className="stat-item">
-                <span className="stat-number">10+</span>
-                <span className="stat-label">Users</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">99.9%</span>
-                <span className="stat-label">Uptime</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-number">1k+</span>
-                <span className="stat-label">Documents Uploaded</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="hero-image-container animate-fade-in">
-            <img 
-              src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/52610479-8cff-42ba-a59b-41559658dfb7.png"
-              alt="AI PDF Analysis Interface" 
-              className="hero-image"
-            />
-            <div className="floating-element floating-1"></div>
-            <div className="floating-element floating-2"></div>
-            <div className="floating-element floating-3"></div>
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section className="how-it-works" id="how-it-works">
-        <div className="section-header animate-fade-up">
-          <h2>How RovexAI Works</h2>
-          <p className="subtitle">
-            RovexAI combines advanced AI with intuitive design to make document processing effortless.
-          </p>
-        </div>
-        
-        <div className="steps-grid">
-          {howItWorks.map((step, index) => (
-            <Step key={index} {...step} delay={`${index * 0.1}s`} />
-          ))}
-        </div>
-      </section>
-
-      {/* FEATURES - Red Cards from your screenshot */}
-      <section className="features" id="features">
-        <div className="section-header animate-fade-up">
-          <h2>Powerful Features</h2>
-          <p>Everything you need to work with PDFs intelligently</p>
-        </div>
-
-        <div className="features-grid">
-          {features.map((feature, index) => (
-            <FeatureCard 
-              key={index}
-              icon={feature.icon}
-              title={feature.title}
-              description={feature.description}
-              delay={`${index * 0.1}s`}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* CTA SECTION */}
-      <section className="cta-section">
-        <div className="cta-content animate-fade-up">
-          <h2>Ready to Transform Your PDF Workflow?</h2>
-          <p>Join to save hours every week with RovexAI</p>
-          <button
-            className="btn-primary btn-glow btn-scale"
-            onClick={() => navigate("/sign-up")}
-          >
-            Get Started Now
-          </button>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer ref={footerRef} className="footer">
+      {/* ── FOOTER ── */}
+      <footer className="footer">
         <div className="footer-content">
-          {/* LEFT: Brand */}
           <div className="footer-section">
             <div className="logo-container" onClick={() => navigate("/")}>
-              <img src={logoIcon} alt="RovexAI Logo" className="logo-icon" />
+              <img src={logoIcon} alt="RovexAI" className="logo-icon" />
               <span className="logo-text">
                 <span className="logo-red">Rovex</span>
                 <span className="footer-ai">AI</span>
               </span>
             </div>
             <p className="footer-tagline">
-              Transforming how you work with documents through AI
+              Transforming how you work with documents through the power of artificial intelligence.
             </p>
+            <div className="footer-social">
+              <a href="#" className="footer-social-link" aria-label="GitHub"><Github size={15} /></a>
+              <a href="#" className="footer-social-link" aria-label="Twitter"><Twitter size={15} /></a>
+            </div>
           </div>
 
-          {/* PRODUCT */}
           <div className="footer-section">
             <h4>Product</h4>
-            <a href="#features" className="footer-link">Features</a>
-            <a href="#how-it-works" className="footer-link">Working</a>
+            <a href="#capabilities" className="footer-link">Features</a>
+            <a href="#how-it-works" className="footer-link">How it Works</a>
+            <a href="#testimonials" className="footer-link">Reviews</a>
           </div>
 
-          {/* COMPANY */}
           <div className="footer-section">
             <h4>Company</h4>
-            <button onClick={() => navigate("/about")} className="footer-link">
-              About
-            </button>
-            <button onClick={() => navigate("/contact")} className="footer-link">
-              Contact
-            </button>
+            <button onClick={() => navigate("/about")} className="footer-link">About</button>
+            <button onClick={() => navigate("/contact")} className="footer-link">Contact</button>
           </div>
 
-          {/* LEGAL */}
           <div className="footer-section">
             <h4>Legal</h4>
-            <button
-              onClick={() => navigate("/privacy-policy")}
-              className="footer-link"
-            >
-              Privacy Policy
-            </button>
+            <button onClick={() => navigate("/privacy-policy")} className="footer-link">Privacy Policy</button>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>© {new Date().getFullYear()} RovexAI. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} RovexAI. All rights reserved.</p>
         </div>
       </footer>
-    </div>
-  );
-}
-
-// Feature Card Component (Red cards from your screenshot)
-function FeatureCard({ icon, title, description, delay }) {
-  return (
-    <div 
-      className="feature-card animate-fade-up"
-      style={{ animationDelay: delay }}
-    >
-      <div className="feature-icon-red">
-        {icon}
-      </div>
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </div>
-  );
-}
-
-function Step({ number, title, description, delay }) {
-  return (
-    <div 
-      className="step-card animate-fade-up"
-      style={{ animationDelay: delay }}
-    >
-      <div className="step-number-red">{number}</div>
-      <h3>{title}</h3>
-      <p>{description}</p>
     </div>
   );
 }

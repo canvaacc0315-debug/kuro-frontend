@@ -16,7 +16,8 @@ html {
    BASE PAGE - Refined Auth Theme
 =========================== */
 
-html, body {
+html,
+body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
   background: linear-gradient(180deg, #ffffff 0%, #fff5f5 100%);
   color: #000;
@@ -39,8 +40,10 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
     sans-serif;
   padding: 0 16px;
-  position: relative; /* For overlays */
-  animation: pageEntry 0.8s ease-out; /* Smooth page load */
+  position: relative;
+  /* For overlays */
+  animation: pageEntry 0.8s ease-out;
+  /* Smooth page load */
 }
 
 @keyframes pageEntry {
@@ -48,6 +51,7 @@ html, body {
     opacity: 0;
     transform: scale(0.98);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -63,13 +67,16 @@ html, body {
   min-height: 90vh;
   margin: 32px auto;
   box-shadow: 0 20px 60px rgba(220, 38, 38, 0.15);
-  border-radius: 24px; /* Softer global radius */
+  border-radius: 24px;
+  /* Softer global radius */
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .login-container:hover {
-  box-shadow: 0 30px 80px rgba(220, 38, 38, 0.2); /* Glow on hover */
-  transform: translateY(-4px); /* Subtle lift */
+  box-shadow: 0 30px 80px rgba(220, 38, 38, 0.2);
+  /* Glow on hover */
+  transform: translateY(-4px);
+  /* Subtle lift */
 }
 
 /* ===========================
@@ -92,22 +99,24 @@ html, body {
   right: -50%;
   width: 800px;
   height: 800px;
-  background: radial-gradient(
-    circle,
-    rgba(220, 38, 38, 0.12) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(220, 38, 38, 0.12) 0%,
+      transparent 70%);
   animation: login-float 20s ease-in-out infinite;
   z-index: 1;
 }
 
 @keyframes login-float {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translate(0, 0) rotate(0deg);
   }
+
   33% {
     transform: translate(30px, -30px) rotate(120deg);
   }
+
   66% {
     transform: translate(-20px, 20px) rotate(240deg);
   }
@@ -116,7 +125,8 @@ html, body {
 .login-hero-content {
   position: relative;
   z-index: 2;
-  max-width: 480px; /* Constrain content */
+  max-width: 480px;
+  /* Constrain content */
 }
 
 .login-hero-logo {
@@ -124,7 +134,8 @@ html, body {
   align-items: center;
   gap: 12px;
   margin-bottom: 40px;
-  transition: transform 0.3s ease; /* Logo hover */
+  transition: transform 0.3s ease;
+  /* Logo hover */
 }
 
 .login-hero-logo:hover {
@@ -145,14 +156,18 @@ html, body {
   box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
   transition: all 0.3s ease;
   position: relative;
-  animation: logoPulse 2s ease-in-out infinite; /* Added pulsing animation */
+  animation: logoPulse 2s ease-in-out infinite;
+  /* Added pulsing animation */
 }
 
 @keyframes logoPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
   }
+
   50% {
     transform: scale(1.05);
     box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
@@ -180,7 +195,8 @@ html, body {
 .login-logo-icon:hover {
   transform: scale(1.1) rotate(360deg);
   box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
-  animation: none; /* Pause pulse on hover */
+  animation: none;
+  /* Pause pulse on hover */
 }
 
 .login-logo-text {
@@ -201,7 +217,8 @@ html, body {
   line-height: 1.2;
   position: relative;
   z-index: 2;
-  animation: titleFadeIn 1s ease-out; /* Staggered entry */
+  animation: titleFadeIn 1s ease-out;
+  /* Staggered entry */
 }
 
 @keyframes titleFadeIn {
@@ -209,6 +226,7 @@ html, body {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -220,13 +238,15 @@ html, body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: accentGlow 2s ease-in-out infinite alternate; /* Added glow animation */
+  animation: accentGlow 2s ease-in-out infinite alternate;
+  /* Added glow animation */
 }
 
 @keyframes accentGlow {
   from {
     text-shadow: 0 0 5px rgba(220, 38, 38, 0.3);
   }
+
   to {
     text-shadow: 0 0 15px rgba(220, 38, 38, 0.6);
   }
@@ -239,7 +259,8 @@ html, body {
   line-height: 1.7;
   max-width: 480px;
   opacity: 0;
-  animation: descFadeIn 1.2s ease-out forwards; /* Delayed entry */
+  animation: descFadeIn 1.2s ease-out forwards;
+  /* Delayed entry */
 }
 
 @keyframes descFadeIn {
@@ -247,6 +268,7 @@ html, body {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -258,7 +280,8 @@ html, body {
   flex-direction: column;
   gap: 14px;
   opacity: 0;
-  animation: featuresSlideIn 1.4s ease-out forwards; /* Latest entry */
+  animation: featuresSlideIn 1.4s ease-out forwards;
+  /* Latest entry */
 }
 
 @keyframes featuresSlideIn {
@@ -266,6 +289,7 @@ html, body {
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -276,17 +300,21 @@ html, body {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  transition: transform 0.3s ease; /* Item hover */
-  animation: featureBounce 0.5s ease-out; /* Added bounce on load */
+  transition: transform 0.3s ease;
+  /* Item hover */
+  animation: featureBounce 0.5s ease-out;
+  /* Added bounce on load */
 }
 
 @keyframes featureBounce {
   0% {
     transform: translateY(10px);
   }
+
   50% {
     transform: translateY(-5px);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -309,13 +337,15 @@ html, body {
   flex-shrink: 0;
   margin-top: 2px;
   transition: all 0.3s ease;
-  animation: iconSpin 1s ease-in-out infinite alternate; /* Added spin animation */
+  animation: iconSpin 1s ease-in-out infinite alternate;
+  /* Added spin animation */
 }
 
 @keyframes iconSpin {
   from {
     transform: rotate(-5deg);
   }
+
   to {
     transform: rotate(5deg);
   }
@@ -324,7 +354,8 @@ html, body {
 .login-feature-item:hover .login-feature-icon {
   background: rgba(220, 38, 38, 0.4);
   transform: scale(1.1);
-  animation: none; /* Pause on hover */
+  animation: none;
+  /* Pause on hover */
 }
 
 .login-feature-text {
@@ -358,14 +389,18 @@ html, body {
   background: radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.06) 0%, transparent 50%);
   opacity: 0.5;
   z-index: 0;
-  animation: radialPulse 5s ease-in-out infinite; /* Added pulsing radial gradient */
+  animation: radialPulse 5s ease-in-out infinite;
+  /* Added pulsing radial gradient */
 }
 
 @keyframes radialPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.5;
   }
+
   50% {
     transform: scale(1.1);
     opacity: 0.8;
@@ -390,6 +425,7 @@ html, body {
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -406,7 +442,8 @@ html, body {
 
 .login-auth-title-accent {
   color: #dc2626;
-  animation: accentGlow 2s ease-in-out infinite alternate; /* Added glow */
+  animation: accentGlow 2s ease-in-out infinite alternate;
+  /* Added glow */
 }
 
 .login-auth-subtitle {
@@ -426,14 +463,17 @@ html, body {
   width: 100%;
   padding: 24px 24px 20px;
   background: #ffffff;
-  border-radius: 20px; /* Match container */
-  box-shadow: 
+  border-radius: 20px;
+  /* Match container */
+  box-shadow:
     0 18px 40px rgba(220, 38, 38, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05); /* Inner highlight */
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  /* Inner highlight */
   margin: 0 auto;
   box-sizing: border-box;
   transition: all 0.3s ease;
-  backdrop-filter: blur(20px); /* Stronger blur */
+  backdrop-filter: blur(20px);
+  /* Stronger blur */
   position: relative;
 }
 
@@ -448,14 +488,14 @@ html, body {
 }
 
 .login-signin-wrapper:hover {
-  box-shadow: 
+  box-shadow:
     0 25px 50px rgba(220, 38, 38, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transform: translateY(-2px);
 }
 
 /* Let Clerk fill the wrapper */
-.login-signin-wrapper > div {
+.login-signin-wrapper>div {
   width: 100%;
 }
 
@@ -471,13 +511,15 @@ html, body {
   gap: 6px;
   letter-spacing: 0.5px;
   opacity: 0;
-  animation: badgeFadeIn 1s ease-out 0.5s forwards; /* Delayed entry */
+  animation: badgeFadeIn 1s ease-out 0.5s forwards;
+  /* Delayed entry */
 }
 
 @keyframes badgeFadeIn {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -486,16 +528,21 @@ html, body {
 .login-security-icon {
   font-size: 12px;
   color: #dc2626;
-  animation: lockShake 2s ease-in-out infinite; /* Added shake animation */
+  animation: lockShake 2s ease-in-out infinite;
+  /* Added shake animation */
 }
 
 @keyframes lockShake {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: rotate(0deg);
   }
+
   25% {
     transform: rotate(-5deg);
   }
+
   75% {
     transform: rotate(5deg);
   }
@@ -520,13 +567,17 @@ html, body {
   color: #dc2626;
   font-size: 10px;
   font-weight: 600;
-  animation: devPulse 2s ease-in-out infinite; /* Subtle dev indicator */
+  animation: devPulse 2s ease-in-out infinite;
+  /* Subtle dev indicator */
 }
 
 @keyframes devPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.7;
   }
+
   50% {
     opacity: 1;
   }
@@ -538,9 +589,11 @@ html, body {
 
 @media (max-width: 1024px) {
   .login-container {
-    grid-template-columns: 1fr; /* Stack on tablet */
+    grid-template-columns: 1fr;
+    /* Stack on tablet */
     margin: 16px auto;
-    border-radius: 16px; /* Smaller radius */
+    border-radius: 16px;
+    /* Smaller radius */
   }
 
   .login-hero-section {
@@ -584,12 +637,14 @@ html, body {
     border-radius: 0;
     min-height: 100vh;
     margin: 0;
-    box-shadow: none; /* Remove shadow on mobile */
+    box-shadow: none;
+    /* Remove shadow on mobile */
   }
 
   .login-hero-section {
     padding: 30px 20px;
-    display: none; /* Hide hero on small mobile for focus on auth */
+    display: none;
+    /* Hide hero on small mobile for focus on auth */
   }
 
   .login-hero-title {
@@ -601,7 +656,8 @@ html, body {
   }
 
   .login-hero-features {
-    display: none; /* Hide features on mobile */
+    display: none;
+    /* Hide features on mobile */
   }
 
   .login-auth-section {
@@ -665,26 +721,32 @@ html, body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-bottom: 60px; /* Reserve space for footer */
+  padding-bottom: 60px;
+  /* Reserve space for footer */
 }
 
-.login-page > footer {
-  position: fixed; /* Fixed for always-visible */
+.login-page>footer {
+  position: fixed;
+  /* Fixed for always-visible */
   bottom: 0;
   left: 0;
   right: 0;
-  background: #000; /* Darker for better contrast */
-  backdrop-filter: blur(20px); /* Stronger blur */
-  border-top: 1px solid rgba(220, 38, 38, 0.2); /* Accent border */
+  background: #000;
+  /* Darker for better contrast */
+  backdrop-filter: blur(20px);
+  /* Stronger blur */
+  border-top: 1px solid rgba(220, 38, 38, 0.2);
+  /* Accent border */
   z-index: 20;
-  padding: 12px 20px; /* Compact padding */
+  padding: 12px 20px;
+  /* Compact padding */
   text-align: center;
   font-size: 12px;
   color: #fff;
   transition: background 0.3s ease;
 }
 
-.login-page > footer:hover {
+.login-page>footer:hover {
   background: #000;
 }
 
@@ -704,6 +766,7 @@ footer {
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -715,6 +778,7 @@ footer {
 
 /* High contrast */
 @media (prefers-contrast: high) {
+
   .login-signin-wrapper,
   .login-hero-section {
     border-width: 2px;
