@@ -185,7 +185,7 @@ body {
 =========================== */
 
 .hero-banner {
-  background: #111111;
+  background: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   padding: 80px 60px;
@@ -348,7 +348,7 @@ body {
 }
 
 .workspace-card {
-  background: #111111;
+  background: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   padding: 40px;
@@ -440,7 +440,7 @@ body {
 }
 
 .feature-card {
-  background: #111111;
+  background: var(--bg-card);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   padding: 40px;
@@ -500,7 +500,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .feature-desc {
@@ -511,8 +511,8 @@ body {
 /* FOOTER */
 .footer {
   width: 100%;
-  background: #000;
-  color: #fff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   padding: 4rem 2rem 2rem 2rem;
   margin-top: 4rem;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
@@ -535,7 +535,7 @@ body {
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #fff;
+  color: var(--text-primary);
 }
 
 .footer-tagline {

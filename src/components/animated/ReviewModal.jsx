@@ -45,7 +45,7 @@ export default function ReviewModal({ isOpen, onClose }) {
                                     <Star
                                         size={40}
                                         fill={(hoverRating || rating) >= star ? "#eab308" : "transparent"}
-                                        color={(hoverRating || rating) >= star ? "#eab308" : "var(--text-tertiary)"}
+                                        color={(hoverRating || rating) >= star ? "#eab308" : "currentColor"}
                                         strokeWidth={1.5}
                                     />
                                 </button>
