@@ -7,6 +7,9 @@ import KuroLogo from "../components/layout/KuroLogo.jsx";
 import { useRef } from "react";
 import GlassCard from "../components/animated/GlassCard.jsx";
 import AnimatedSection from "../components/animated/AnimatedSection.jsx";
+import TextRotator from "../components/animated/TextRotator.jsx";
+import { Star, ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
 import logoIcon from "../assets/logo.svg"; // Add your logo image
 import {
   MessageSquare,
@@ -64,25 +67,71 @@ export default function DashboardPage() {
       {/* ===== MAIN CONTENT ===== */}
       <main className="main-container">
         {/* HERO */}
-        <AnimatedSection className="hero-banner" direction="down">
+        <section className="hp-hero" style={{ minHeight: "80vh", padding: "80px 20px", marginTop: "0", position: "relative" }}>
+        <div className="hp-hero-glow hp-hero-glow-1" />
+        <div className="hp-hero-glow hp-hero-glow-2" />
 
-          <h1 className="hero-title">
-            Welcome to <span className="hero-title-accent">RovexAI</span>
-          </h1>
-          <p className="hero-subtitle">
-            Transform your PDF workflows with intelligent document processing
-            and creation
-          </p>
-          <button className="hero-cta" onClick={() => navigate("/app?tab=upload")}>
-            Get Started
-          </button>
-          <div className="floating-cards">
-            <div className="floating-card card1">AI-Powered Analysis</div>
-            <div className="floating-card card2">Seamless Editing</div>
-            <div className="floating-card card3">Smart OCR</div>
-          </div>
-        
-</AnimatedSection>
+        <div className="hp-hero-inner">
+          <AnimatedSection delay={0}>
+            <div className="hp-hero-badge">
+              <Sparkles size={14} />
+              <span>AI-POWERED PDF INTELLIGENCE</span>
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.08}>
+            <h1 className="hp-hero-title">
+              Transform Your PDFs into<br />
+              <span className="hp-hero-highlight">Interactive Intelligence</span>
+              <br />
+              for{" "}
+              <TextRotator words={["Students", "Researchers", "Professionals", "Businesses", "Everyone"]} />
+            </h1>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.16}>
+            <p className="hp-hero-sub">
+              Chat with any document, extract critical data instantly, and build
+              beautiful PDFs 10x faster. Your all-in-one smart document workspace.
+            </p>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.3}>
+            <div className="hp-hero-trust">
+              <div className="hp-trust-avatars">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="hp-trust-avatar" style={{ zIndex: 4 - i, marginLeft: i ? -10 : 0 }}>
+                    <Star size={14} />
+                  </div>
+                ))}
+              </div>
+              <div className="hp-trust-text">
+                <span className="hp-trust-stars">★★★★★</span>
+                <span>Trusted by 50+ users worldwide</span>
+              </div>
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.4}>
+            <div className="hp-hero-formats">
+              <p>Supported Document Formats</p>
+              <div className="hp-format-icons">
+                <span className="hp-format-badge">.PDF</span>
+                <span className="hp-format-badge">.DOCX</span>
+                <span className="hp-format-badge">.TXT</span>
+                <span className="hp-format-badge">.CSV</span>
+                <span className="hp-format-badge">IMAGE</span>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+
+        <div className="hp-hero-scroll-hint">
+          <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+            <ChevronDown size={20} />
+          </motion.div>
+        </div>
+      </section>
 
         {/* WORKSPACE SECTION */}
         <AnimatedSection className="section-header">
