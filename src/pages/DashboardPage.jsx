@@ -295,7 +295,7 @@ export default function DashboardPage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.5} style={{ height: "100%" }}>
-              <motion.div className="hp-bento-card" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
+              <motion.div className="hp-bento-card hp-bento-accent" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
                 <div className="hp-bento-icon"><Bot size={24} /></div>
                 <h3>AI Powered</h3>
                 <p>Advanced machine learning algorithms understand context and provide intelligent solutions.</p>
@@ -313,7 +313,7 @@ export default function DashboardPage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.7} style={{ height: "100%" }}>
-              <motion.div className="hp-bento-card hp-bento-accent" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
+              <motion.div className="hp-bento-card" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
                 <div className="hp-bento-icon"><Link size={24} /></div>
                 <h3>API Integration</h3>
                 <p>Integrate RovexAI into your workflows with our REST API and webhooks.</p>
