@@ -76,7 +76,7 @@
 .close-btn {
   background: none;
   border: none;
-  color: #6b7280;
+  color: var(--text-secondary);
   /* Gray for subtlety */
   font-size: 1.5rem;
   cursor: pointer;
@@ -158,10 +158,10 @@
   gap: 12px;
   margin-bottom: 16px;
   padding: 16px;
-  background: #f9fafb;
+  background: var(--bg-secondary);
   /* Light card bg */
   border-radius: 12px;
-  border: 1px solid #f3f4f6;
+  border: 1px solid var(--border-color);
   border-left: 3px solid #ef4444;
   /* Clean Red bar */
   color: var(--text-primary);
@@ -244,7 +244,7 @@
 }
 
 .features-list span:last-of-type {
-  color: #374151;
+  color: var(--text-secondary);
   /* Slate text for body */
   flex: 1;
 }
@@ -256,9 +256,9 @@
 
 /* Highlight: More prominent pink/red with extra flair */
 .features-list .highlight {
-  background: #fff1f2;
+  background: var(--accent-subtle);
   /* Light red fill */
-  border: 1px solid #fecdd3;
+  border: 1px solid var(--border-hover);
   border-left: 4px solid #ef4444;
   margin: 12px 0;
   font-weight: 500;
@@ -267,8 +267,8 @@
 }
 
 .features-list .highlight:hover {
-  background: #ffe4e6;
-  border-color: #fda4af;
+  background: var(--accent-glow);
+  border-color: var(--accent-lighter);
   border-left-color: #dc2626;
 }
 
@@ -278,8 +278,8 @@
 }
 
 .features-list .highlight strong {
-  color: #991b1b;
-  /* Consistent red for highlight title */
+  color: var(--text-primary);
+  /* Consistent text for highlight title */
 }
 
 /* Actions: Refined pink/red button with better focus and press */

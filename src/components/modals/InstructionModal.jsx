@@ -1,6 +1,14 @@
 import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "./InstructionModal.css";
+import {
+  Smartphone,
+  FileUp,
+  MessageSquare,
+  BarChart2,
+  PenTool,
+  ScanSearch
+} from "lucide-react";
 
 const STORAGE_KEY = "rovex_instructions_shown_session"; // Per-session (clears on tab close)
 
@@ -75,30 +83,30 @@ export default function InstructionModal() {
           <p className="intro-text">
             Follow these steps to get started with RovexAI and unlock the power of your PDFs.
           </p>
-          
+
           <ol className="features-list">
             <li className="highlight">
-              <span className="icon">📱</span>
+              <span className="icon"><Smartphone size={20} /></span>
               <strong>Enable Desktop Mode:</strong> If on mobile, switch to desktop view in your browser for the full experience.
             </li>
             <li>
-              <span className="icon">📤</span>
+              <span className="icon"><FileUp size={20} /></span>
               <strong>Upload a PDF:</strong> Click the upload button and select your document to begin.
             </li>
             <li>
-              <span className="icon">💬</span>
+              <span className="icon"><MessageSquare size={20} /></span>
               <strong>Chat Naturally:</strong> Ask questions in plain English—extract info, summarize, or query content instantly.
             </li>
             <li>
-              <span className="icon">📊</span>
+              <span className="icon"><BarChart2 size={20} /></span>
               <strong>Analyze Deeply:</strong> Use tools to extract data, generate charts, or uncover insights from your PDF.
             </li>
             <li>
-              <span className="icon">✏️</span>
+              <span className="icon"><PenTool size={20} /></span>
               <strong>Edit & Create:</strong> Drag-and-drop elements, apply templates, or redesign with easy Canva-style tools.
             </li>
             <li>
-              <span className="icon">🔍</span>
+              <span className="icon"><ScanSearch size={20} /></span>
               <strong>Handle Scans:</strong> Apply OCR to convert pdfs to editable content and pull out structured data.
             </li>
           </ol>
