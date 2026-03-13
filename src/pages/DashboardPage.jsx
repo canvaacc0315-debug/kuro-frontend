@@ -8,7 +8,7 @@ import { useRef } from "react";
 import GlassCard from "../components/animated/GlassCard.jsx";
 import AnimatedSection from "../components/animated/AnimatedSection.jsx";
 import TextRotator from "../components/animated/TextRotator.jsx";
-import { Star, ChevronDown } from "lucide-react";
+import { Star, ChevronDown, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import logoIcon from "../assets/logo.svg"; // Add your logo image
 import {
@@ -68,70 +68,70 @@ export default function DashboardPage() {
       <main className="main-container">
         {/* HERO */}
         <section className="hp-hero" style={{ minHeight: "80vh", padding: "80px 20px", marginTop: "0", position: "relative" }}>
-        <div className="hp-hero-glow hp-hero-glow-1" />
-        <div className="hp-hero-glow hp-hero-glow-2" />
+          <div className="hp-hero-glow hp-hero-glow-1" />
+          <div className="hp-hero-glow hp-hero-glow-2" />
 
-        <div className="hp-hero-inner">
-          <AnimatedSection delay={0}>
-            <div className="hp-hero-badge">
-              <Sparkles size={14} />
-              <span>AI-POWERED PDF INTELLIGENCE</span>
-            </div>
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.08}>
-            <h1 className="hp-hero-title">
-              Transform Your PDFs into<br />
-              <span className="hp-hero-highlight">Interactive Intelligence</span>
-              <br />
-              for{" "}
-              <TextRotator words={["Students", "Researchers", "Professionals", "Businesses", "Everyone"]} />
-            </h1>
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.16}>
-            <p className="hp-hero-sub">
-              Chat with any document, extract critical data instantly, and build
-              beautiful PDFs 10x faster. Your all-in-one smart document workspace.
-            </p>
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.3}>
-            <div className="hp-hero-trust">
-              <div className="hp-trust-avatars">
-                {[...Array(4)].map((_, i) => (
-                  <div key={i} className="hp-trust-avatar" style={{ zIndex: 4 - i, marginLeft: i ? -10 : 0 }}>
-                    <Star size={14} />
-                  </div>
-                ))}
+          <div className="hp-hero-inner">
+            <AnimatedSection delay={0}>
+              <div className="hp-hero-badge">
+                <Sparkles size={14} />
+                <span>AI-POWERED PDF INTELLIGENCE</span>
               </div>
-              <div className="hp-trust-text">
-                <span className="hp-trust-stars">★★★★★</span>
-                <span>Trusted by 50+ users worldwide</span>
-              </div>
-            </div>
-          </AnimatedSection>
+            </AnimatedSection>
 
-          <AnimatedSection delay={0.4}>
-            <div className="hp-hero-formats">
-              <p>Supported Document Formats</p>
-              <div className="hp-format-icons">
-                <span className="hp-format-badge">.PDF</span>
-                <span className="hp-format-badge">.DOCX</span>
-                <span className="hp-format-badge">.TXT</span>
-                <span className="hp-format-badge">.CSV</span>
-                <span className="hp-format-badge">IMAGE</span>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
+            <AnimatedSection delay={0.08}>
+              <h1 className="hp-hero-title">
+                Transform Your PDFs into<br />
+                <span className="hp-hero-highlight">Interactive Intelligence</span>
+                <br />
+                for{" "}
+                <TextRotator words={["Students", "Researchers", "Professionals", "Businesses", "Everyone"]} />
+              </h1>
+            </AnimatedSection>
 
-        <div className="hp-hero-scroll-hint">
-          <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-            <ChevronDown size={20} />
-          </motion.div>
-        </div>
-      </section>
+            <AnimatedSection delay={0.16}>
+              <p className="hp-hero-sub">
+                Chat with any document, extract critical data instantly, and build
+                beautiful PDFs 10x faster. Your all-in-one smart document workspace.
+              </p>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.3}>
+              <div className="hp-hero-trust">
+                <div className="hp-trust-avatars">
+                  {[...Array(4)].map((_, i) => (
+                    <div key={i} className="hp-trust-avatar" style={{ zIndex: 4 - i, marginLeft: i ? -10 : 0 }}>
+                      <Star size={14} />
+                    </div>
+                  ))}
+                </div>
+                <div className="hp-trust-text">
+                  <span className="hp-trust-stars">★★★★★</span>
+                  <span>Trusted by 50+ users worldwide</span>
+                </div>
+              </div>
+            </AnimatedSection>
+
+            <AnimatedSection delay={0.4}>
+              <div className="hp-hero-formats">
+                <p>Supported Document Formats</p>
+                <div className="hp-format-icons">
+                  <span className="hp-format-badge">.PDF</span>
+                  <span className="hp-format-badge">.DOCX</span>
+                  <span className="hp-format-badge">.TXT</span>
+                  <span className="hp-format-badge">.CSV</span>
+                  <span className="hp-format-badge">IMAGE</span>
+                </div>
+              </div>
+            </AnimatedSection>
+          </div>
+
+          <div className="hp-hero-scroll-hint">
+            <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+              <ChevronDown size={20} />
+            </motion.div>
+          </div>
+        </section>
 
         {/* WORKSPACE SECTION */}
         <AnimatedSection className="section-header">
@@ -142,16 +142,17 @@ export default function DashboardPage() {
           <p className="section-subtitle">
             Select a workspace to get started with your PDF tasks
           </p>
-        
-</AnimatedSection>
+
+        </AnimatedSection>
 
         <AnimatedSection delay={0.2} className="workspace-grid">
 
           {/* PDF Chat */}
-          <GlassCard 
-            icon={<MessageSquare size={32} />} 
-            title="PDF Chat" 
-            description="Interact with your PDFs using natural language. Ask questions, extract information, and get instant answers." 
+          <GlassCard
+            icon={<MessageSquare size={32} />}
+            title="PDF Chat"
+            description="Interact with your PDFs using natural language. Ask questions,
+ extract information, and get instant answers."
             className="workspace-card"
             delay={0.1}
           >
@@ -169,10 +170,11 @@ export default function DashboardPage() {
           </GlassCard>
 
           {/* Analysis */}
-          <GlassCard 
-            icon={<BarChart2 size={32} />} 
-            title="Analysis" 
-            description="Deep dive into your PDF content. Extract data, generate insights, and visualize information beautifully." 
+          <GlassCard
+            icon={<BarChart2 size={32} />}
+            title="Analysis"
+            description="Deep dive into your PDF content. Extract data, generate insights,
+ and visualize information beautifully."
             className="workspace-card"
             delay={0.1}
           >
@@ -190,10 +192,10 @@ export default function DashboardPage() {
           </GlassCard>
 
           {/* Study Mode */}
-          <GlassCard 
-            icon={<GraduationCap size={32} />} 
-            title="Study Mode" 
-            description="Turn your PDFs into interactive learning materials. Generate flashcards and quizzes to master any subject." 
+          <GlassCard
+            icon={<GraduationCap size={32} />}
+            title="Study Mode"
+            description="Turn your PDFs into interactive learning materials. Generate flashcards and quizzes to master any subject."
             className="workspace-card"
             delay={0.1}
           >
@@ -211,10 +213,11 @@ export default function DashboardPage() {
           </GlassCard>
 
           {/* Create & Edit */}
-          <GlassCard 
-            icon={<PenTool size={32} />} 
-            title="Create &amp; Edit" 
-            description="Design and edit PDFs with Canva-like simplicity. Professional templates and easy tools." 
+          <GlassCard
+            icon={<PenTool size={32} />}
+            title="Create &amp; Edit"
+            description="Design and edit PDFs with Canva-like simplicity. Professional
+ templates and easy tools."
             className="workspace-card"
             delay={0.1}
           >
@@ -232,10 +235,10 @@ export default function DashboardPage() {
           </GlassCard>
 
           {/* OCR */}
-          <GlassCard 
-            icon={<ScanSearch size={32} />} 
-            title="OCR &amp; Recognition" 
-            description="Convert scanned documents to editable text and extract data from complex layouts." 
+          <GlassCard
+            icon={<ScanSearch size={32} />}
+            title="OCR &amp; Recognition"
+            description="Convert scanned documents to editable text and extract data from complex layouts."
             className="workspace-card"
             delay={0.1}
           >
@@ -253,10 +256,10 @@ export default function DashboardPage() {
           </GlassCard>
 
           {/* Settings (optional placeholder) */}
-          <GlassCard 
-            icon={<Wrench size={32} />} 
-            title="PDF Tools" 
-            description="Manage and transform your PDF documents with ease. Merge, split, convert, and extract text from PDFs using our powerful tools." 
+          <GlassCard
+            icon={<Wrench size={32} />}
+            title="PDF Tools"
+            description="Manage and transform your PDF documents with ease. Merge, split, convert, and extract text from PDFs using our powerful tools."
             className="workspace-card"
             delay={0.1}
           >
@@ -273,8 +276,8 @@ export default function DashboardPage() {
               Go to Workspace
             </button>
           </GlassCard>
-        
-</AnimatedSection>
+
+        </AnimatedSection>
 
         {/* ===== FEATURES SECTION ===== */}
         <AnimatedSection delay={0.4} className="features-section">
@@ -286,50 +289,56 @@ export default function DashboardPage() {
           </div>
 
           <div className="features-grid">
-            <GlassCard 
+            <GlassCard
               title={<> <ShieldCheck size={20} className="inline-icon" /> Military-Grade Security </>}
-              description="Your documents are encrypted and protected with industry‑leading security standards."
+              description="Your documents are encrypted and protected with industry‑leading
+ security standards."
               className="feature-card"
               delay={0.3}
             />
 
-            <GlassCard 
+            <GlassCard
               title={<> <Zap size={20} className="inline-icon" /> Lightning Fast </>}
-              description="Process and analyze documents in milliseconds with our optimized infrastructure."
+              description="Process and analyze documents in milliseconds with our optimized
+ infrastructure."
               className="feature-card"
               delay={0.4}
             />
 
-            <GlassCard 
+            <GlassCard
               title={<> <Bot size={20} className="inline-icon" /> AI Powered </>}
-              description="Advanced machine learning algorithms understand context and provide intelligent solutions."
+              description="Advanced machine learning algorithms understand context and
+ provide intelligent solutions."
               className="feature-card"
               delay={0.5}
             />
 
-            <GlassCard 
+            <GlassCard
               title={<> <Smartphone size={20} className="inline-icon" /> Fully Responsive </>}
-              description="Access RovexAI from any device. Work seamlessly on desktop, tablet, or mobile."
+              description="Access RovexAI from any device. Work seamlessly on desktop,
+ tablet, or mobile."
               className="feature-card"
               delay={0.6}
             />
 
-            <GlassCard 
+            <GlassCard
               title={<> <Link size={20} className="inline-icon" /> API Integration </>}
-              description="Integrate RovexAI into your workflows with our REST API and webhooks."
+              description="Integrate RovexAI into your workflows with our REST API and
+ webhooks."
               className="feature-card"
               delay={0.7}
             />
 
-            <GlassCard 
+            <GlassCard
               title={<> <Target size={20} className="inline-icon" /> Precision Accuracy </>}
-              description="Industry‑leading accuracy for text recognition, data extraction, and analysis."
+              description="Industry‑leading accuracy for text recognition, data extraction,
+ and analysis."
               className="feature-card"
               delay={0.8}
             />
           </div>
-        
-</AnimatedSection>
+
+        </AnimatedSection>
       </main>
       {/* FOOTER */}
       <footer ref={footerRef} className="footer">
