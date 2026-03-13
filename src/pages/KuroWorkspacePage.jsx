@@ -45,7 +45,9 @@ export default function KuroWorkspacePage() {
       tabFromUrl === "analysis" ||
       tabFromUrl === "ocr" ||
       tabFromUrl === "create" ||
-      tabFromUrl === "pdftools"
+      tabFromUrl === "pdftools" ||
+      tabFromUrl === "upload" ||
+      tabFromUrl === "studymode"
     ) {
       return tabFromUrl;
     }
