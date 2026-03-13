@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { MessageCircle, X } from "lucide-react";
 import "./floating-help.css";
 
 export default function FloatingHelp() {
@@ -20,17 +21,17 @@ export default function FloatingHelp() {
     <>
       {/* Floating button with improved accessibility and animation trigger */}
       <button
-        className="floating-help-btn"
+        className={`floating-help-btn ${open ? 'open' : ''}`}
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? "Close Help" : "Open Help"}
         aria-expanded={open}
         aria-controls="help-panel"
       >
-        {open ? "✕" : "💭"}
+        {open ? <X size={24} /> : <MessageCircle size={26} />}
       </button>
 
       {/* Floating panel with enhanced entrance/exit animations */}
-      <div 
+      <div
         id="help-panel"
         className={`floating-help-panel ${open ? 'panel-open' : 'panel-closed'}`}
         role="dialog"
@@ -44,7 +45,7 @@ export default function FloatingHelp() {
 
         {/* Main Section 1: Using the PDF Chatbot */}
         <div className="help-section">
-          <button 
+          <button
             className={`section-header ${expandedSections.using ? 'expanded' : ''}`}
             onClick={() => toggleSection('using')}
             aria-expanded={expandedSections.using}
@@ -53,7 +54,7 @@ export default function FloatingHelp() {
             <strong>Using the PDF Chatbot</strong>
             <span className="toggle-icon">{expandedSections.using ? "−" : "+"}</span>
           </button>
-          <div 
+          <div
             id="using-section"
             className={`section-content ${expandedSections.using ? 'expanded' : ''}`}
             aria-hidden={!expandedSections.using}
@@ -75,7 +76,7 @@ export default function FloatingHelp() {
 
         {/* Main Section 2: Analysis Features */}
         <div className="help-section">
-          <button 
+          <button
             className={`section-header ${expandedSections.analysis ? 'expanded' : ''}`}
             onClick={() => toggleSection('analysis')}
             aria-expanded={expandedSections.analysis}
@@ -84,7 +85,7 @@ export default function FloatingHelp() {
             <strong>Analysis & OCR</strong>
             <span className="toggle-icon">{expandedSections.analysis ? "−" : "+"}</span>
           </button>
-          <div 
+          <div
             id="analysis-section"
             className={`section-content ${expandedSections.analysis ? 'expanded' : ''}`}
             aria-hidden={!expandedSections.analysis}
@@ -106,7 +107,7 @@ export default function FloatingHelp() {
 
         {/* Main Section 3: Privacy & Support */}
         <div className="help-section">
-          <button 
+          <button
             className={`section-header ${expandedSections.privacy ? 'expanded' : ''}`}
             onClick={() => toggleSection('privacy')}
             aria-expanded={expandedSections.privacy}
@@ -115,7 +116,7 @@ export default function FloatingHelp() {
             <strong>Privacy</strong>
             <span className="toggle-icon">{expandedSections.privacy ? "−" : "+"}</span>
           </button>
-          <div 
+          <div
             id="privacy-section"
             className={`section-content ${expandedSections.privacy ? 'expanded' : ''}`}
             aria-hidden={!expandedSections.privacy}
