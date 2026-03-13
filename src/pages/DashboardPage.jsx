@@ -35,7 +35,9 @@ import {
   MoreVertical,
   Upload,
   Search,
-  Hexagon
+  Hexagon,
+  Database,
+  Cpu
 } from "lucide-react";
 
 export default function DashboardPage() {
