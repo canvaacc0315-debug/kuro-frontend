@@ -4,6 +4,7 @@ export default function GlassCard({
     icon,
     title,
     description,
+    children,
     delay = 0,
     className = "",
 }) {
@@ -64,6 +65,7 @@ export default function GlassCard({
             >
                 {description}
             </p>
+            {children}
         </motion.div>
     );
 }
