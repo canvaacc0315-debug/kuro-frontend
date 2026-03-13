@@ -33,7 +33,8 @@ import {
   Crown,
   Clock,
   MoreVertical,
-  Upload
+  Upload,
+  Search
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -75,10 +76,47 @@ export default function DashboardPage() {
             </AnimatedSection>
 
             <AnimatedSection delay={0.3}>
-              <div className="hp-hero-cta" style={{ justifyContent: 'center' }}>
-                <button className="hp-btn-primary hp-btn-lg" onClick={() => navigate("/app?tab=upload")} style={{ gap: "8px" }}>
-                  Get Started <ArrowRight size={17} />
-                </button>
+              <div style={{ maxWidth: '650px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  background: 'var(--bg-card)',
+                  border: '1px solid var(--border-card)',
+                  borderRadius: '100px',
+                  padding: '8px 8px 8px 24px',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
+                  backdropFilter: 'blur(10px)'
+                }}>
+                  <Search size={22} style={{ color: 'var(--text-secondary)' }} />
+                  <input
+                    type="text"
+                    placeholder="Search documents, past chats, or tools..."
+                    style={{
+                      flex: 1,
+                      background: 'transparent',
+                      border: 'none',
+                      padding: '14px 16px',
+                      color: 'var(--text-primary)',
+                      fontSize: '1.05rem',
+                      outline: 'none'
+                    }}
+                  />
+                  <button className="hp-btn-primary" style={{ padding: '14px 28px', borderRadius: '100px', border: 'none' }}>
+                    Search
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'center', gap: '0.8rem', flexWrap: 'wrap', marginTop: '0.5rem' }}>
+                  <motion.span whileHover={{ y: -2 }} onClick={() => navigate("/app?tab=upload")} style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', padding: '8px 16px', borderRadius: '100px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                    <Upload size={14} /> Upload PDF
+                  </motion.span>
+                  <motion.span whileHover={{ y: -2 }} onClick={() => navigate("/app?tab=chat")} style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', padding: '8px 16px', borderRadius: '100px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                    <MessageSquare size={14} /> New Chat
+                  </motion.span>
+                  <motion.span whileHover={{ y: -2 }} onClick={() => navigate("/app?tab=ocr")} style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '6px', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)', padding: '8px 16px', borderRadius: '100px', cursor: 'pointer', transition: 'all 0.2s' }}>
+                    <ScanSearch size={14} /> Extract Text
+                  </motion.span>
+                </div>
               </div>
             </AnimatedSection>
           </div>
