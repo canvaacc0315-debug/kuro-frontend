@@ -17,6 +17,15 @@ import FixedChatInput from "../components/FixedChatInput";
 import PDFWorkspace from "../components/PDFTools/PDFWorkspace.jsx";
 // ✅ NEW: Import Study Mode
 import StudyWorkspace from "../components/StudyMode/StudyWorkspace.jsx";
+import {
+  FileUp,
+  MessageSquare,
+  BarChart2,
+  ScanSearch,
+  PenTool,
+  Wrench,
+  GraduationCap
+} from "lucide-react";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -581,35 +590,35 @@ export default function KuroWorkspacePage() {
               className={`sidebar-item ${activeTab === "upload" ? "active" : ""}`}
               onClick={() => handleTabClick("upload")}
             >
-              <span className="sidebar-icon">📄</span>
+              <span className="sidebar-icon"><FileUp size={20} /></span>
               <span className="sidebar-label">Upload PDF!</span>
             </button>
             <button
               className={`sidebar-item ${activeTab === "chat" ? "active" : ""}`}
               onClick={() => handleTabClick("chat")}
             >
-              <span className="sidebar-icon">💬</span>
+              <span className="sidebar-icon"><MessageSquare size={20} /></span>
               <span className="sidebar-label">Chat</span>
             </button>
             <button
               className={`sidebar-item ${activeTab === "analysis" ? "active" : ""}`}
               onClick={() => handleTabClick("analysis")}
             >
-              <span className="sidebar-icon">📊</span>
+              <span className="sidebar-icon"><BarChart2 size={20} /></span>
               <span className="sidebar-label">Analysis</span>
             </button>
             <button
               className={`sidebar-item ${activeTab === "ocr" ? "active" : ""}`}
               onClick={() => handleTabClick("ocr")}
             >
-              <span className="sidebar-icon">🔍</span>
+              <span className="sidebar-icon"><ScanSearch size={20} /></span>
               <span className="sidebar-label">OCR</span>
             </button>
             <button
               className={`sidebar-item ${activeTab === "create" ? "active" : ""}`}
               onClick={() => handleTabClick("create")}
             >
-              <span className="sidebar-icon">✏️</span>
+              <span className="sidebar-icon"><PenTool size={20} /></span>
               <span className="sidebar-label">PDF Creator</span>
             </button>
             {/* ✅ NEW: PDF Tools Button */}
@@ -617,7 +626,7 @@ export default function KuroWorkspacePage() {
               className={`sidebar-item ${activeTab === "pdftools" ? "active" : ""}`}
               onClick={() => handleTabClick("pdftools")}
             >
-              <span className="sidebar-icon">🛠️</span>
+              <span className="sidebar-icon"><Wrench size={20} /></span>
               <span className="sidebar-label">PDF Tools</span>
             </button>
             {/* ✅ NEW: Study Mode Button */}
@@ -625,7 +634,7 @@ export default function KuroWorkspacePage() {
               className={`sidebar-item ${activeTab === "study" ? "active" : ""}`}
               onClick={() => handleTabClick("study")}
             >
-              <span className="sidebar-icon">📚</span>
+              <span className="sidebar-icon"><GraduationCap size={20} /></span>
               <span className="sidebar-label">Study Mode</span>
             </button>
           </nav>

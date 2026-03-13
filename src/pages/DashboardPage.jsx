@@ -6,6 +6,20 @@ import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import { useRef } from "react";
 import logoIcon from "../assets/logo.svg"; // Add your logo image
+import {
+  MessageSquare,
+  BarChart2,
+  GraduationCap,
+  PenTool,
+  ScanSearch,
+  Wrench,
+  ShieldCheck,
+  Zap,
+  Bot,
+  Smartphone,
+  Link,
+  Target
+} from "lucide-react";
 
 export default function DashboardPage() {
   const { user } = useUser();
@@ -79,7 +93,7 @@ export default function DashboardPage() {
         <section className="workspace-grid">
           {/* PDF Chat */}
           <div className="workspace-card">
-            <div className="workspace-icon">💬</div>
+            <div className="workspace-icon"><MessageSquare size={32} /></div>
             <h3 className="workspace-name">PDF Chat</h3>
             <p className="workspace-description">
               Interact with your PDFs using natural language. Ask questions,
@@ -100,7 +114,7 @@ export default function DashboardPage() {
 
           {/* Analysis */}
           <div className="workspace-card">
-            <div className="workspace-icon">📊</div>
+            <div className="workspace-icon"><BarChart2 size={32} /></div>
             <h3 className="workspace-name">Analysis</h3>
             <p className="workspace-description">
               Deep dive into your PDF content. Extract data, generate insights,
@@ -121,7 +135,7 @@ export default function DashboardPage() {
 
           {/* Study Mode */}
           <div className="workspace-card">
-            <div className="workspace-icon">🎓</div>
+            <div className="workspace-icon"><GraduationCap size={32} /></div>
             <h3 className="workspace-name">Study Mode</h3>
             <p className="workspace-description">
               Turn your PDFs into interactive learning materials. Generate flashcards and quizzes to master any subject.
@@ -141,7 +155,7 @@ export default function DashboardPage() {
 
           {/* Create & Edit */}
           <div className="workspace-card">
-            <div className="workspace-icon">✏️</div>
+            <div className="workspace-icon"><PenTool size={32} /></div>
             <h3 className="workspace-name">Create &amp; Edit</h3>
             <p className="workspace-description">
               Design and edit PDFs with Canva-like simplicity. Professional
@@ -162,7 +176,7 @@ export default function DashboardPage() {
 
           {/* OCR */}
           <div className="workspace-card">
-            <div className="workspace-icon">🔍</div>
+            <div className="workspace-icon"><ScanSearch size={32} /></div>
             <h3 className="workspace-name">OCR &amp; Recognition</h3>
             <p className="workspace-description">
               Convert scanned documents to editable text and extract data from complex layouts.
@@ -182,7 +196,7 @@ export default function DashboardPage() {
 
           {/* Settings (optional placeholder) */}
           <div className="workspace-card">
-            <div className="workspace-icon">🛠️</div>
+            <div className="workspace-icon"><Wrench size={32} /></div>
             <h3 className="workspace-name">PDF Tools</h3>
             <p className="workspace-description">
               Manage and transform your PDF documents with ease. Merge, split, convert, and extract text from PDFs using our powerful tools.
@@ -212,7 +226,7 @@ export default function DashboardPage() {
 
           <div className="features-grid">
             <div className="feature-card">
-              <h3 className="feature-title">🛡️ Military-Grade Security</h3>
+              <h3 className="feature-title"><ShieldCheck size={20} className="inline-icon" /> Military-Grade Security</h3>
               <p className="feature-desc">
                 Your documents are encrypted and protected with industry‑leading
                 security standards.
@@ -220,7 +234,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="feature-card">
-              <h3 className="feature-title">⚡ Lightning Fast</h3>
+              <h3 className="feature-title"><Zap size={20} className="inline-icon" /> Lightning Fast</h3>
               <p className="feature-desc">
                 Process and analyze documents in milliseconds with our optimized
                 infrastructure.
@@ -228,7 +242,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="feature-card">
-              <h3 className="feature-title">🤖 AI Powered</h3>
+              <h3 className="feature-title"><Bot size={20} className="inline-icon" /> AI Powered</h3>
               <p className="feature-desc">
                 Advanced machine learning algorithms understand context and
                 provide intelligent solutions.
@@ -236,7 +250,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="feature-card">
-              <h3 className="feature-title">📱 Fully Responsive</h3>
+              <h3 className="feature-title"><Smartphone size={20} className="inline-icon" /> Fully Responsive</h3>
               <p className="feature-desc">
                 Access RovexAI from any device. Work seamlessly on desktop,
                 tablet, or mobile.
@@ -244,7 +258,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="feature-card">
-              <h3 className="feature-title">🔗 API Integration</h3>
+              <h3 className="feature-title"><Link size={20} className="inline-icon" /> API Integration</h3>
               <p className="feature-desc">
                 Integrate RovexAI into your workflows with our REST API and
                 webhooks.
@@ -252,7 +266,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="feature-card">
-              <h3 className="feature-title">🎯 Precision Accuracy</h3>
+              <h3 className="feature-title"><Target size={20} className="inline-icon" /> Precision Accuracy</h3>
               <p className="feature-desc">
                 Industry‑leading accuracy for text recognition, data extraction,
                 and analysis.
