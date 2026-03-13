@@ -11,7 +11,6 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
-  /* Account for sticky header */
 }
 
 /* ===========================
@@ -28,10 +27,9 @@ body {
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-  background: #ffffff;
-  color: #000000;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   line-height: 1.6;
-  /* Improved readability */
 }
 
 /* ===========================
@@ -44,10 +42,9 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  /* For potential overlays */
+  background: var(--bg-primary);
 }
 
-/* Scoped main container: improved spacing and centering */
 .kuro-dashboard-page .main-container {
   width: 100%;
   max-width: 1600px;
@@ -74,18 +71,19 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 2rem;
-  background: #000000;
-  backdrop-filter: blur(10px);
+  background: var(--bg-header);
+  backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   transition: all 0.3s ease;
 }
 
 .header.scrolled {
   padding: 0.8rem 2rem;
-  box-shadow: 0 4px 20px rgb(0, 0, 0);
-  background: #000000cc;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+  background: var(--bg-header);
 }
 
 .header-brand {
@@ -104,7 +102,7 @@ body {
 
 .header-brand-text {
   font-weight: 800;
-  background: linear-gradient(135deg, #000, #000);
+  background: linear-gradient(135deg, #fff, #a1a1aa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -131,13 +129,13 @@ body {
 }
 
 .logo-red {
-  color: #dc2626;
-  -webkit-text-fill-color: #dc2626;
+  color: var(--text-primary);
+  -webkit-text-fill-color: var(--text-primary);
 }
 
 .logo-ai {
-  color: #ffffff;
-  -webkit-text-fill-color: #ffffff;
+  color: var(--text-primary);
+  -webkit-text-fill-color: var(--text-primary);
 }
 
 .header-links {
@@ -147,7 +145,7 @@ body {
 }
 
 .nav-link {
-  color: #ffffff;
+  color: #d4d4d8;
   text-decoration: none;
   font-weight: 500;
   position: relative;
@@ -156,11 +154,11 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: inherit;
+  font-size: 0.95rem;
 }
 
 .nav-link:hover {
-  color: #dc2626;
+  color: var(--text-primary);
 }
 
 .nav-link::after {
@@ -170,7 +168,7 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, #dc2626, #ef4444);
+  background: linear-gradient(90deg, #ef4444, #f87171);
   transition: width 0.3s ease;
 }
 
@@ -183,18 +181,19 @@ body {
 }
 
 /* ===========================
-   HERO SECTION - White bg, animations, floating cards
+   HERO SECTION - Dark premium
 =========================== */
 
 .hero-banner {
-  background: #ffffff;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 24px;
   padding: 80px 60px;
   margin-bottom: 80px;
   text-align: center;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   animation: heroEntrance 1.2s ease-out forwards;
 }
 
@@ -213,16 +212,17 @@ body {
 .hero-title {
   font-size: 56px;
   font-weight: 800;
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
 
 .hero-title-accent {
-  color: #ff0000;
+  color: var(--text-primary);
 }
 
 .hero-subtitle {
   font-size: 20px;
-  color: #666666;
+  color: #a1a1aa;
   margin-bottom: 40px;
   max-width: 700px;
   margin-left: auto;
@@ -231,8 +231,8 @@ body {
 
 .hero-cta {
   padding: 16px 32px;
-  background: #ff0000;
-  color: #ffffff;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: var(--text-primary);
   border: none;
   border-radius: 8px;
   font-size: 16px;
@@ -245,18 +245,17 @@ body {
 
 .hero-cta:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
 }
 
 .hero-cta::before {
   content: '';
   position: absolute;
-  /*ftw*/
   top: 50%;
   left: 50%;
   width: 0;
   height: 0;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: width 0.6s ease, height 0.6s ease;
@@ -280,11 +279,13 @@ body {
 .floating-card {
   position: absolute;
   padding: 16px 24px;
-  background: rgba(255, 0, 0, 0.05);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  backdrop-filter: blur(8px);
   border-radius: 12px;
   font-size: 14px;
-  color: #ff0000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: var(--text-primary);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   animation: float 6s ease-in-out infinite;
 }
 
@@ -319,8 +320,25 @@ body {
 }
 
 /* ===========================
-   WORKSPACE GRID - Glassmorphism cards, animations
+   WORKSPACE GRID - Dark Glassmorphism
 =========================== */
+
+.section-title {
+  font-size: 36px;
+  color: var(--text-primary);
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.section-title-accent {
+  color: var(--text-primary);
+}
+
+.section-subtitle {
+  color: #a1a1aa;
+  font-size: 18px;
+  margin-bottom: 40px;
+}
 
 .workspace-grid {
   display: grid;
@@ -330,18 +348,18 @@ body {
 }
 
 .workspace-card {
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   padding: 40px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .workspace-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.1), 0 0 40px rgba(0, 0, 0, 0.5);
+  border-color: rgba(239, 68, 68, 0.3);
 }
 
 .workspace-icon {
@@ -352,19 +370,19 @@ body {
 }
 
 .workspace-card:hover .workspace-icon {
-  transform: scale(1.2) rotate(5deg);
+  transform: scale(1.15) rotate(5deg);
 }
 
 .workspace-name {
   font-size: 24px;
-  color: #ff0000;
+  color: var(--text-primary);
   font-weight: 700;
   margin-bottom: 16px;
 }
 
 .workspace-description {
-  font-size: 16px;
-  color: #666666;
+  font-size: 15px;
+  color: #a1a1aa;
   margin-bottom: 24px;
 }
 
@@ -375,7 +393,7 @@ body {
 
 .workspace-features li {
   font-size: 14px;
-  color: #444444;
+  color: #d4d4d8;
   margin-bottom: 12px;
   position: relative;
   padding-left: 24px;
@@ -385,50 +403,30 @@ body {
   content: "✓";
   position: absolute;
   left: 0;
-  color: #ff0000;
+  color: var(--text-primary);
+  font-weight: bolder;
 }
 
 .workspace-btn {
   width: 100%;
-  padding: 16px;
-  background: #ff0000;
-  color: #ffffff;
-  border: none;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
 }
 
-.workspace-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.3);
-}
-
-.workspace-btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
-  pointer-events: none;
-}
-
-.workspace-btn:active::before {
-  width: 300px;
-  height: 300px;
+.workspace-card:hover .workspace-btn {
+  background: #ef4444;
+  border-color: var(--text-primary);
 }
 
 /* ===========================
-   FEATURES SECTION - Minimal cards, icon animations
+   FEATURES SECTION
 =========================== */
 
 .features-section {
@@ -442,14 +440,20 @@ body {
 }
 
 .feature-card {
-  background: #f9f9f9;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   padding: 40px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, border-color 0.3s ease;
   animation: featureFadeIn 1s ease-out forwards;
   opacity: 0;
+}
+
+.feature-card:hover {
+  border-color: rgba(239, 68, 68, 0.3);
+  transform: translateY(-4px);
 }
 
 .feature-card:nth-child(1) {
@@ -496,42 +500,30 @@ body {
   align-items: center;
   justify-content: center;
   gap: 12px;
-}
-
-.feature-title::before {
-  content: attr(data-icon);
-  /* Use emoji from title */
-  transition: transform 0.3s ease;
-}
-
-.feature-card:hover .feature-title::before {
-  transform: rotate(360deg);
+  color: #fff;
 }
 
 .feature-desc {
-  font-size: 16px;
-  color: #666666;
+  font-size: 15px;
+  color: #a1a1aa;
 }
 
-/* FOOTER - Added styles assuming missing from original; ensure normal flow */
+/* FOOTER */
 .footer {
-  position: relative;
-  /* Ensure not fixed or absolute */
   width: 100%;
   background: #000;
-  /* From screenshot */
   color: #fff;
-  padding: 2rem;
-  margin-top: auto;
-  /* If using flex on root, pushes to bottom */
+  padding: 4rem 2rem 2rem 2rem;
   margin-top: 4rem;
-  /* Add space between CTA and footer */
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
 }
 
 .footer-section {
@@ -547,14 +539,15 @@ body {
 }
 
 .footer-tagline {
-  color: #ccc;
+  color: #a1a1aa;
   font-size: 0.9rem;
+  margin-top: 1rem;
 }
 
 .footer-link {
-  color: #fff;
+  color: #a1a1aa;
   text-decoration: none;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
   background: none;
   border: none;
   padding: 0;
@@ -565,19 +558,21 @@ body {
 }
 
 .footer-link:hover {
-  color: #dc2626;
+  color: var(--text-primary);
 }
 
 .footer-ai {
-  color: #ffffff;
-  -webkit-text-fill-color: #ffffff;
+  color: var(--text-primary);
+  -webkit-text-fill-color: var(--text-primary);
 }
 
 .footer-bottom {
   text-align: center;
-  margin-top: 1rem;
-  color: #ccc;
-  font-size: 0.8rem;
+  margin-top: 4rem;
+  color: #52525b;
+  font-size: 0.85rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 2rem;
 }
 
 /* ===========================

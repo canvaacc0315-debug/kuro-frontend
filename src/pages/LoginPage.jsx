@@ -2,84 +2,93 @@
 import { useEffect } from "react";
 import { useUser, SignIn } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
-import KuroLogo from "../components/layout/KuroLogo.jsx";
-import "../styles/login-landing.css";
-import "../styles/no-scrollbar-override.css";
+import { motion } from "framer-motion";
+import { Shield, Zap, Check } from "lucide-react";
+import AnimatedSection from "../components/animated/AnimatedSection";
+import FloatingCard from "../components/animated/FloatingCard";
+import logoIcon from "../assets/logo.svg";
+import "../styles/auth-page.css";
+
 export default function LoginPage() {
   const { isSignedIn } = useUser();
   const navigate = useNavigate();
+
   useEffect(() => {
-    if (isSignedIn) {
-      navigate("/dashboard", { replace: true });
-    }
+    if (isSignedIn) navigate("/dashboard", { replace: true });
   }, [isSignedIn, navigate]);
+
+  const features = [
+    "Instant Q&A from any PDF",
+    "AI‑powered summarization",
+    "Smart data extraction",
+    "Chart & image understanding",
+    "Question paper generation",
+    "Screenshot OCR support",
+  ];
+
   return (
-    <div
-      className="login-page"
-      style={{
-        background: "transparent",
-        minHeight: "100dvh",
-      }}
-    >
-      <div
-        className="login-container"
-        style={{
-          background: "transparent",
-        }}
-      >
+    <div className="auth-page">
+      <div className="auth-container">
         {/* LEFT – Hero */}
-        <section className="login-hero-section">
-          <div className="login-hero-content">
-            <div
-              className="login-hero-logo"
-              style={{ display: "flex", alignItems: "center", gap: "8px" }}
-            >
-              <KuroLogo size={60} />
-              <div className="login-logo-text">RovexAI</div>
-            </div>
-            <h1 className="login-hero-title">
-              Chat with your PDFs{" "}
-              <span className="login-hero-title-accent">
-                like never before
+        <section className="auth-hero">
+          <AnimatedSection>
+            <div className="auth-logo" onClick={() => navigate("/")}>
+              <img src={logoIcon} alt="RovexAI" style={{ width: 44, height: 44 }} />
+              <span className="auth-logo-text">
+                <span style={{ color: "var(--accent)" }}>Rovex</span>AI
               </span>
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.1}>
+            <h1 className="auth-title">
+              Chat with your PDFs{" "}
+              <span className="auth-title-accent">like never before</span>
             </h1>
-            <p className="login-hero-description">
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.15}>
+            <p className="auth-description">
               RovexAI is your intelligent PDF companion. Upload documents, ask
               questions, generate summaries, extract data, and unlock insights
               in seconds.
             </p>
-            <div className="login-hero-features">
-              {[
-                "Instant Q&A from any PDF",
-                "AI‑powered summarization",
-                "Smart data extraction",
-                "Chart & image understanding",
-                "Question paper generation",
-                "Screenshot OCR support",
-              ].map((text) => (
-                <div key={text} className="login-feature-item">
-                  <div className="login-feature-icon">✓</div>
-                  <div className="login-feature-text">{text}</div>
+          </AnimatedSection>
+
+          <AnimatedSection delay={0.2}>
+            <div className="auth-features">
+              {features.map((text) => (
+                <div key={text} className="auth-feature-item">
+                  <Check size={15} style={{ color: "var(--accent)", flexShrink: 0 }} />
+                  <span>{text}</span>
                 </div>
               ))}
             </div>
+          </AnimatedSection>
+
+          {/* Floating cards */}
+          <div className="auth-floats">
+            <FloatingCard icon={<Shield size={16} />} label="Secure" delay={0.5} />
+            <FloatingCard icon={<Zap size={16} />} label="Fast" delay={0.7} />
           </div>
         </section>
+
         {/* RIGHT – Clerk SignIn */}
-        <section className="login-auth-section">
-          <div className="login-auth-container">
-            <div className="login-auth-header">
-              <h2 className="login-auth-title">
+        <section className="auth-form-section">
+          <motion.div
+            className="auth-form-card"
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <div className="auth-form-header">
+              <h2>
                 Sign In to{" "}
-                <span className="login-auth-title-accent">RovexAI</span>
+                <span style={{ color: "var(--accent)" }}>RovexAI</span>
               </h2>
-              <p className="login-auth-subtitle">
-                Welcome back! Please sign in to continue
-              </p>
-              <div className="login-last-used">
-                Secure authentication by Clerk
-              </div>
+              <p>Welcome back! Please sign in to continue</p>
             </div>
+
             <SignIn
               routing="path"
               path="/login"
@@ -91,18 +100,24 @@ export default function LoginPage() {
                   rootBox: { background: "transparent" },
                   card: {
                     borderRadius: "14px",
-                    boxShadow: "0 30px 80px rgba(0,0,0,0.7)",
+                    boxShadow: "none",
+                    background: "transparent",
                   },
                 },
               }}
             />
-            <div className="login-security-badge">
-              <span className="login-security-icon">🔒</span>
-              <span>Accounts protected with Clerk &amp; OAuth</span>
+
+            <div className="auth-security-badge">
+              <span>🔒</span>
+              <span>Accounts protected with Clerk & OAuth</span>
             </div>
-          </div>
+          </motion.div>
         </section>
       </div>
+
+      {/* Background orbs */}
+      <div className="auth-orb auth-orb-1" />
+      <div className="auth-orb auth-orb-2" />
     </div>
   );
 }

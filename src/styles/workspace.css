@@ -1,4 +1,4 @@
-/* UI CHANGE: Reset to white bg, modern font. Removed dark gradients for clean SaaS style. */
+/* UI CHANGE: Reset to dark bg, modern font. Premium SaaS style. */
 * {
   margin: 0;
   padding: 0;
@@ -7,16 +7,16 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-  background: #ffffff;
-  color: #000000;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* UI CHANGE: Root now flex for sidebar + main + footer layout. */
 .workspace-root {
   display: flex;
   min-height: 100vh;
+  background: var(--bg-primary);
 }
 
 /* HEADER */
@@ -25,20 +25,21 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 1.2rem 2rem;
-  background: #000000;
-  backdrop-filter: blur(10px);
+  background: var(--bg-header);
+  backdrop-filter: blur(12px);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
   transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .home-header.scrolled {
   padding: 0.8rem 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  background: #000000;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
+  background: var(--bg-header);
 }
 
 .logo-container {
@@ -63,20 +64,20 @@ body {
 
 .logo-text {
   font-weight: 800;
-  background: linear-gradient(135deg, #ef4444, #ef4444);
+  background: linear-gradient(135deg, #fff, #a1a1aa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .logo-red {
-  color: #ef4444;
-  -webkit-text-fill-color: #ef4444;
+  color: var(--text-primary);
+  -webkit-text-fill-color: var(--text-primary);
 }
 
 .logo-ai {
-  color: #ffffff;
-  -webkit-text-fill-color: #ffffff;
+  color: var(--text-primary);
+  -webkit-text-fill-color: var(--text-primary);
 }
 
 .header-links {
@@ -86,7 +87,7 @@ body {
 }
 
 .nav-link {
-  color: #ffffff;
+  color: #d4d4d8;
   text-decoration: none;
   font-weight: 500;
   position: relative;
@@ -95,11 +96,11 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  font-size: inherit;
+  font-size: 0.95rem;
 }
 
 .nav-link:hover {
-  color: #ef4444;
+  color: var(--text-primary);
 }
 
 .nav-link::after {
@@ -109,7 +110,7 @@ body {
   left: 0;
   width: 0;
   height: 2px;
-  background: #ef4444;
+  background: linear-gradient(90deg, #ef4444, #f87171);
   transition: width 0.3s ease;
 }
 
@@ -121,58 +122,53 @@ body {
   padding: 0.5rem 0;
 }
 
-/* UI CHANGE: Fixed sidebar, white bg, vertical nav. Added hover (scale + opacity), active (red bg). Subtle transitions. Added margin-top for top header. */
+/* SIDEBAR */
 .sidebar {
   position: fixed;
   top: 80px;
-  /* Below header height */
   left: 0;
   width: 250px;
   height: calc(100vh - 80px);
-  background: #ffffff;
+  background: var(--bg-primary);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
   display: flex;
   flex-direction: column;
   padding: 40px 20px;
-  /* Increased padding for airy feel */
   z-index: 100;
-  transition: box-shadow 0.3s ease;
-}
-
-.sidebar:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  /* Increased gap for spaciousness */
+  gap: 12px;
 }
 
 .sidebar-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 20px;
+  padding: 14px 20px;
   background: transparent;
-  border: none;
-  color: #000000;
+  border: 1px solid transparent;
+  color: #a1a1aa;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   border-radius: 8px;
-  transition: background 0.3s ease, transform 0.2s ease, opacity 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .sidebar-item:hover {
-  background: #f9f9f9;
-  transform: scale(1.02);
-  opacity: 0.9;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  transform: translateX(4px);
 }
 
 .sidebar-item.active {
-  background: #ef4444;
-  color: #ffffff;
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--text-primary);
+  border-color: rgba(239, 68, 68, 0.2);
 }
 
 .sidebar-icon {
@@ -183,41 +179,35 @@ body {
   font-weight: 600;
 }
 
-/* UI CHANGE: Main shifted right for sidebar space, added padding/spacing for clean look. Added margin-top for top header. */
+/* MAIN CONTENT */
 .main-container {
   flex: 1;
   margin-left: 250px;
   margin-top: 80px;
-  /* Below header */
-  padding: 20px 40px;
-  /* Reduced top padding to move welcome upwards */
+  padding: 40px 60px;
   display: flex;
   flex-direction: column;
 }
 
-/* UI CHANGE: Simplified header, removed animations for subtlety. */
 .workspace-header {
-  margin-bottom: 20px;
-  /* Reduced margin to move welcome upwards */
+  margin-bottom: 40px;
 }
 
 .workspace-title {
   font-size: 32px;
-  font-weight: 700;
-  color: #000000;
+  font-weight: 800;
+  color: var(--text-primary);
 }
 
 .workspace-title-accent {
-  color: #ef4444;
+  color: var(--text-primary);
 }
 
-/* UI CHANGE: Content wrapper with fade/flex for card sections, no clutter. */
 .content-wrapper {
   flex: 1;
   width: 100%;
 }
 
-/* UI CHANGE: Tab content with smooth fade-in transition on active. Removed borders/gradients, use shadows and spacing. */
 .tab-content {
   display: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -231,66 +221,62 @@ body {
   transform: translateY(0);
 }
 
-/* Removed .card class to avoid boxed frames to avoid clutter */
-
-/* UI CHANGE: Upload to grid, cleaner spacing, red accents on buttons/hover. Subtle hover scale. */
+/* UPLOAD PANEL */
 .upload-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
-  /* Increased gap */
 }
 
 .upload-area {
-  border: 2px dashed #e5e5e5;
-  border-radius: 12px;
+  border: 2px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
   padding: 60px;
-  /* Increased padding for airy */
   text-align: center;
-  transition: border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .upload-area:hover {
-  border-color: #ef4444;
-  transform: scale(1.01);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: rgba(239, 68, 68, 0.5);
+  background: rgba(239, 68, 68, 0.05);
+  transform: translateY(-2px);
 }
 
 .upload-icon {
   font-size: 64px;
-  /* Larger icon for premium feel */
   margin-bottom: 24px;
 }
 
 .upload-title {
   font-size: 20px;
   font-weight: 600;
+  color: #fff;
 }
 
 .upload-desc {
-  font-size: 16px;
-  color: #4b5563;
+  font-size: 15px;
+  color: #a1a1aa;
   margin-bottom: 24px;
 }
 
 .upload-btn {
   padding: 12px 24px;
-  background: #ef4444;
-  color: #ffffff;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: var(--text-primary);
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .upload-btn:hover {
-  transform: scale(1.05);
-  background-color: #dc2626;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
 }
 
-/* UI CHANGE: Uploaded files as clean list, card-like items with hover. */
+/* UPLOADED FILES LIST */
 .uploaded-files {
   display: flex;
   flex-direction: column;
@@ -300,6 +286,7 @@ body {
 .uploaded-files-title {
   font-size: 18px;
   font-weight: 600;
+  color: #fff;
   margin-bottom: 16px;
 }
 
@@ -308,14 +295,17 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  border-radius: 8px;
-  transition: box-shadow 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .file-item:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
   transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .file-info {
@@ -330,11 +320,12 @@ body {
 
 .file-name {
   font-weight: 600;
+  color: var(--text-primary);
 }
 
 .file-size {
-  font-size: 12px;
-  color: #4b5563;
+  font-size: 13px;
+  color: #71717a;
 }
 
 .file-actions {
@@ -344,30 +335,36 @@ body {
 
 .file-action-btn {
   padding: 8px 16px;
-  background: #f9f9f9;
-  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .file-action-btn:hover {
   background: #ef4444;
-  color: #ffffff;
-  transform: scale(1.05);
+  color: var(--text-primary);
+  border-color: var(--text-primary);
 }
 
-/* UI CHANGE: PDF preview cleaner, with shadow. No borders. */
+/* PDF PREVIEW */
 .pdf-preview-panel {
-  border-radius: 12px;
+  background: #111111;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .pdf-preview-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 24px;
+  color: #fff;
 }
 
 .pdf-preview-preview-title {
@@ -376,118 +373,105 @@ body {
 
 .pdf-preview-back-btn {
   padding: 8px 16px;
-  background: #f9f9f9;
-  border: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .pdf-preview-back-btn:hover {
   background: #ef4444;
-  color: #ffffff;
-  transform: scale(1.05);
+  color: var(--text-primary);
+  border-color: var(--text-primary);
 }
 
 .pdf-preview-frame {
   width: 100%;
-  height: 70vh;
+  height: 75vh;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1a1a1a;
 }
 
-/* UI CHANGE: Empty state simplified, centered. Larger spacing. */
+/* EMPTY STATE */
 .empty-state {
   text-align: center;
-  padding: 60px 0;
-  color: #4b5563;
+  padding: 80px 0;
+  color: #71717a;
 }
 
 .empty-icon {
   font-size: 64px;
   margin-bottom: 24px;
+  opacity: 0.5;
 }
 
 .empty-title {
   font-size: 24px;
   font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
 }
 
 .empty-desc {
-  font-size: 16px;
+  font-size: 15px;
 }
 
-/* UI CHANGE: Chat subtabs horizontal, red active, hover transition. */
+/* CHAT TABS */
 .chat-subtabs-nav {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 32px;
-  border-bottom: 1px solid #e5e5e5;
+  display: flex !important;
+  gap: 24px !important;
+  margin-bottom: 24px;
   position: relative;
-  padding-bottom: 8px;
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 .chat-subtab-btn {
-  padding: 0 0 8px 0;
-  background: transparent;
-  border: none;
-  color: #000000;
+  background: transparent !important;
+  color: #a1a1aa !important;
+  border: none !important;
+  font-weight: 500 !important;
+  font-size: 15px !important;
+  transition: all 0.2s ease !important;
+  border-bottom: 2px solid transparent !important;
+  padding-bottom: 12px !important;
   cursor: pointer;
-  font-weight: 500;
-  font-size: 16px;
-  transition: color 0.3s ease, transform 0.2s ease;
-  border-bottom: 2px solid transparent;
 }
 
 .chat-subtab-btn:hover {
-  color: #ef4444;
-  transform: translateY(-2px);
+  color: #e4e4e7 !important;
 }
 
 .chat-subtab-btn.active {
-  color: #ef4444;
-  border-bottom: 2px solid #ef4444;
+  color: #ef4444 !important;
+  border-bottom-color: #ef4444 !important;
 }
 
-.chat-subtab-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
-}
-
-.chat-subtab-content {
-  padding: 10px !important;
-  /* Reduced padding for more chat space */
-}
-
-/* UI CHANGE: Chat layout flex, clean spacing. Added subtle message hover lift. No borders on container. */
+/* CHAT LAYOUT */
 .chat-layout {
-  display: flex;
-  gap: 32px;
-  /* Increased gap */
+  display: flex !important;
+  gap: 32px !important;
+  background: transparent !important;
 }
 
 .chat-main {
-  flex: 5;
-  /* Increased flex to make chat panel wider */
+  flex: 5 !important;
+  display: flex !important;
+  flex-direction: column !important;
 }
-
-/* Removed unused .chat-container (not in JSX; height calc moved to .chat-wrapper below) */
 
 .chat-messages {
   flex: 1;
   min-height: 0;
-  /* Let it shrink beyond its content size for scrolling */
   overflow-y: auto;
-  padding: 10px;
-  /* Reduced padding for more space */
+  padding: 20px 10px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  /* Increased gap */
   scroll-behavior: smooth;
-  /* Added for reliable JS smooth scrolling */
-  -webkit-overflow-scrolling: touch;
-  /* Added for better mobile scrolling */
 }
 
 .message {
@@ -510,23 +494,24 @@ body {
 }
 
 .message-bubble {
-  padding: 12px 16px;
-  border-radius: 4px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  background: #ffffff;
-  color: #000000;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  max-width: 80%;
-  line-height: 1.5;
+  padding: 14px 18px;
+  border-radius: 12px;
+  line-height: 1.6;
+  font-size: 15px;
+  max-width: 85%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
 }
 
 .message-bubble:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
 }
 
 .message.bot .message-bubble {
-  background: #ffffff;
+  background: #18181b;
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom-left-radius: 4px;
 }
 
 .message.user {
@@ -534,53 +519,61 @@ body {
 }
 
 .message.user .message-bubble {
-  background: #f3f4f6;
-  color: #000000;
+  background: #27272a;
+  color: var(--text-primary);
+  border-bottom-right-radius: 4px;
 }
 
+/* CHAT INPUT AREA */
 .chat-input-area {
   display: flex;
-  padding: 16px;
-  border-top: 1px solid #e5e5e5;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
   align-items: center;
+  gap: 16px;
+  background: var(--bg-primary);
 }
 
 .chat-input {
   flex: 1;
-  border: 1px solid #e5e5e5;
-  border-radius: 4px;
-  padding: 12px 16px;
-  color: #000000;
-  background-color: #ffffff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  transition: border-color 200ms ease, box-shadow 200ms ease;
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 14px 18px;
+  color: var(--text-primary);
+  transition: all 0.2s ease;
+  font-size: 15px;
 }
 
 .chat-input:focus {
-  border-color: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.1);
+  border-color: var(--text-primary);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.chat-input::placeholder {
+  color: #52525b;
 }
 
 .send-btn {
-  background-color: #ef4444;
-  color: #ffffff;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: var(--text-primary);
   border: none;
-  padding: 12px 24px;
-  border-radius: 4px;
-  margin-left: 16px;
+  padding: 14px 28px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 200ms ease, box-shadow 200ms ease;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
 }
 
 .send-btn:hover {
-  background-color: #dc2626;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
 }
 
-/* UI CHANGE: Scope bar flex, pills with red active, hover scale. No borders on inactive. */
+/* CHAT SCOPE BAR */
 .chat-scope-bar {
   display: flex;
   align-items: center;
@@ -589,91 +582,72 @@ body {
 }
 
 .scope-pill {
-  background-color: #ffffff;
-  color: #000000;
-  border: 1px solid #e5e5e5;
-  padding: 8px 16px;
-  border-radius: 9999px;
-  transition: all 200ms ease;
+  background: #18181b !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 8px 16px !important;
+  border-radius: 9999px !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer;
+  font-size: 13px !important;
+  font-weight: 500;
 }
 
 .scope-pill:hover {
-  background-color: #f9f9f9;
+  background: #27272a !important;
+  color: #e4e4e7 !important;
 }
 
 .scope-pill.active {
-  background-color: #ef4444;
-  color: #ffffff;
-  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
 }
 
-/* UI CHANGE: Form selects with red focus. */
-.form-select {
-  border: 1px solid #e5e5e5;
-  color: #000000;
-  background-color: #ffffff;
+/* FORMS */
+.form-select,
+input[type="number"] {
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
   padding: 8px 12px;
-  border-radius: 4px;
-}
-
-
-/* UI CHANGE: Footer black, full-width, minimal. */
-.footer {
-  background: #000000;
-  color: #ffffff;
-  padding: 20px;
-  text-align: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  z-index: 50;
-}
-
-.footer-content {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
+  border-radius: 6px;
   font-size: 14px;
 }
 
-.footer-content a {
-  color: #ffffff;
-  text-decoration: none;
-  transition: color 0.3s ease;
+.form-select:focus,
+input[type="number"]:focus {
+  outline: none;
+  border-color: var(--text-primary);
 }
 
-.footer-content a:hover {
-  color: #ef4444;
-}
-
-/* UI CHANGE: User info and avatar styles for compact Clerk profile. */
 .navbar-right {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-/* FIX: Add missing styles for .chat-wrapper to constrain height and enable flex for scrolling */
+.user-name {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* MISC FIXES */
 .chat-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
-  /* Ensures it fills the parent (.chat-main) */
   overflow: hidden;
-  /* Prevents overflow from wrapper itself */
 }
 
-/* FIX: Add missing scrollbar hiding for .no-scrollbar across browsers (WebKit/Chrome/Safari) */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
-/* Changes for buttons position */
 .chat-top-row {
   position: relative;
-  margin-bottom: 12px;
-  /* Reduced for more chat space */
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
 }
@@ -682,24 +656,27 @@ body {
   position: absolute;
   right: 0;
   top: 0;
-  /* Aligned to the top of the row for same line */
-  padding: 0 !important;
   display: flex;
-  gap: 16px;
+  gap: 12px;
 }
 
-/* Make selects inline with labels */
 .chat-pdf-select,
 .chat-answer-style {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  color: #a1a1aa;
+  font-size: 14px;
 }
 
-/* Remove max-height for larger chat area */
-.chat-messages {
-  max-height: none;
+.tab-content {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.chat-subtab-content {
+  background: transparent !important;
+  padding: 0 !important;
 }
 
 /* =========================================================================

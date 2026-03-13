@@ -20,9 +20,9 @@
 
 /* Modal: Dark theme with refined red glows and better shadows */
 .instruction-modal {
-  background: #ffffff;
+  background: var(--bg-card);
   /* Bright white background */
-  color: #111827;
+  color: var(--text-primary);
   /* Dark gray text */
   padding: 0;
   /* Handled in children */
@@ -63,7 +63,7 @@
   margin: 0;
   font-size: 1.75rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--text-primary);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -120,7 +120,7 @@
 }
 
 .instruction-body::-webkit-scrollbar-track {
-  background: #f3f4f6;
+  background: transparent;
   border-radius: 3px;
 }
 
@@ -137,7 +137,7 @@
   margin: 0 0 20px 0;
   font-size: 1rem;
   line-height: 1.5;
-  color: #4b5563;
+  color: var(--text-secondary);
   /* Dark gray for secondary */
   text-align: center;
   font-style: italic;
@@ -164,7 +164,7 @@
   border: 1px solid #f3f4f6;
   border-left: 3px solid #ef4444;
   /* Clean Red bar */
-  color: #111827;
+  color: var(--text-primary);
   transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   /* Smoother transitions */
   line-height: 1.4;
@@ -204,8 +204,8 @@
 /* Extra for 6th step */
 
 .features-list li:hover {
-  background: #ffffff;
-  border-color: #e5e7eb;
+  background: var(--bg-card);
+  border-color: var(--border-color);
   border-left-color: #dc2626;
   /* Brighter red */
   transform: translateX(4px) scale(1.02);
@@ -250,7 +250,7 @@
 }
 
 .features-list strong {
-  color: #111827;
+  color: var(--text-primary);
   /* Darker for titles */
 }
 

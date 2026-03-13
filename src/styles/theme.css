@@ -1,0 +1,102 @@
+/* ============================================
+   THEME SYSTEM – Red / White / Black
+   ============================================ */
+
+:root,
+[data-theme="dark"] {
+    /* Backgrounds */
+    --bg-primary: #050509;
+    --bg-secondary: #0c0c14;
+    --bg-tertiary: #111119;
+    --bg-card: rgba(255, 255, 255, 0.04);
+    --bg-card-hover: rgba(255, 255, 255, 0.08);
+    --bg-glass: rgba(10, 10, 20, 0.7);
+    --bg-header: rgba(5, 5, 9, 0.85);
+    --bg-footer: #050509;
+    --bg-input: rgba(255, 255, 255, 0.06);
+
+    /* Text */
+    --text-primary: #f9fafb;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --text-inverse: #000000;
+
+    /* Accent – Red */
+    --accent: #dc2626;
+    --accent-light: #ef4444;
+    --accent-lighter: #f87171;
+    --accent-dark: #b91c1c;
+    --accent-glow: rgba(220, 38, 38, 0.35);
+    --accent-subtle: rgba(220, 38, 38, 0.1);
+    --accent-gradient: linear-gradient(135deg, #dc2626, #ef4444);
+
+    /* Borders */
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(220, 38, 38, 0.3);
+    --border-card: rgba(255, 255, 255, 0.06);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 30px rgba(220, 38, 38, 0.2);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --shadow-card-hover: 0 12px 40px rgba(220, 38, 38, 0.15);
+
+    /* Misc */
+    --backdrop-blur: blur(16px);
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+    --radius-full: 999px;
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+[data-theme="light"] {
+    /* Backgrounds */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f8fa;
+    --bg-tertiary: #f0f0f4;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-hover: rgba(255, 255, 255, 1);
+    --bg-glass: rgba(255, 255, 255, 0.75);
+    --bg-header: rgba(255, 255, 255, 0.88);
+    --bg-footer: #0a0a0f;
+    --bg-input: rgba(0, 0, 0, 0.04);
+
+    /* Text */
+    --text-primary: #111111;
+    --text-secondary: #52525b;
+    --text-muted: #a1a1aa;
+    --text-inverse: #ffffff;
+
+    /* Accent – same Red */
+    --accent: #dc2626;
+    --accent-light: #ef4444;
+    --accent-lighter: #f87171;
+    --accent-dark: #b91c1c;
+    --accent-glow: rgba(220, 38, 38, 0.2);
+    --accent-subtle: rgba(220, 38, 38, 0.06);
+    --accent-gradient: linear-gradient(135deg, #dc2626, #ef4444);
+
+    /* Borders */
+    --border-color: rgba(0, 0, 0, 0.08);
+    --border-hover: rgba(220, 38, 38, 0.25);
+    --border-card: rgba(0, 0, 0, 0.06);
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
+    --shadow-glow: 0 0 30px rgba(220, 38, 38, 0.1);
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 12px 40px rgba(220, 38, 38, 0.1);
+}
+
+/* Smooth theme transition */
+html {
+    transition: background-color 0.4s ease, color 0.4s ease;
+}

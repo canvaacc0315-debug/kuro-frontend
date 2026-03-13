@@ -660,13 +660,13 @@ export default function KuroWorkspacePage() {
               className={`tab-content ${activeTab === "chat" ? "active" : ""}`}
             >
               {/* ... chat content remains the same ... */}
-              <div className="chat-subtabs-nav" style={{ backgroundColor: "#ffffff", borderBottom: "1px solid #e5e5e5", display: "flex", justifyContent: "flex-start", gap: "24px", padding: "0 24px 0 24px", height: "60px", alignItems: "center" }}>
+              <div className="chat-subtabs-nav" style={{ backgroundColor: "transparent", borderBottom: "1px solid var(--border-color)", display: "flex", justifyContent: "flex-start", gap: "24px", padding: "0 24px 0 24px", height: "60px", alignItems: "center" }}>
                 <button
                   className={`chat-subtab-btn ${activeChatSubTab === "current" ? "active" : ""}`}
                   onClick={() => handleChatSubTabClick("current")}
                   style={{
-                    color: activeChatSubTab === "current" ? "#ef4444" : "#000000",
-                    borderBottom: activeChatSubTab === "current" ? "2px solid #ef4444" : "none",
+                    color: activeChatSubTab === "current" ? "var(--accent)" : "var(--text-secondary)",
+                    borderBottom: activeChatSubTab === "current" ? "2px solid var(--accent)" : "none",
                     transition: "all 300ms ease",
                     fontWeight: "500",
                     fontSize: "16px",
@@ -684,8 +684,8 @@ export default function KuroWorkspacePage() {
                   className={`chat-subtab-btn ${activeChatSubTab === "history" ? "active" : ""}`}
                   onClick={() => handleChatSubTabClick("history")}
                   style={{
-                    color: activeChatSubTab === "history" ? "#ef4444" : "#000000",
-                    borderBottom: activeChatSubTab === "history" ? "2px solid #ef4444" : "none",
+                    color: activeChatSubTab === "history" ? "var(--accent)" : "var(--text-secondary)",
+                    borderBottom: activeChatSubTab === "history" ? "2px solid var(--accent)" : "none",
                     transition: "all 300ms ease",
                     fontWeight: "500",
                     fontSize: "16px",
@@ -703,8 +703,8 @@ export default function KuroWorkspacePage() {
                   className={`chat-subtab-btn ${activeChatSubTab === "export" ? "active" : ""}`}
                   onClick={() => handleChatSubTabClick("export")}
                   style={{
-                    color: activeChatSubTab === "export" ? "#ef4444" : "#000000",
-                    borderBottom: activeChatSubTab === "export" ? "2px solid #ef4444" : "none",
+                    color: activeChatSubTab === "export" ? "var(--accent)" : "var(--text-secondary)",
+                    borderBottom: activeChatSubTab === "export" ? "2px solid var(--accent)" : "none",
                     transition: "all 300ms ease",
                     fontWeight: "500",
                     fontSize: "16px",
@@ -734,11 +734,11 @@ export default function KuroWorkspacePage() {
                   boxSizing: "border-box"
                 }}
               >
-                <div className="chat-layout" style={{ backgroundColor: "#ffffff", display: "flex", flexDirection: "column", flex: 1, width: "100%", gap: "24px" }}>
+                <div className="chat-layout" style={{ backgroundColor: "transparent", display: "flex", flexDirection: "column", flex: 1, width: "100%", gap: "24px" }}>
                   <div className="chat-main" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
                     <div className="chat-top-row" style={{ display: "flex", gap: "24px", flexWrap: "wrap", marginBottom: "24px" }}>
                       <div className="chat-scope-bar" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                        <span className="scope-label" style={{ color: "#000000", fontWeight: "500" }}>Scope:</span>
+                        <span className="scope-label" style={{ color: "var(--text-primary)", fontWeight: "500" }}>Scope:</span>
                         <div className="scope-options" style={{ display: "flex", gap: "8px" }}>
                           <button
                             className={`scope-pill ${chatScope.type === "all" ? "active" : ""}`}
@@ -746,8 +746,8 @@ export default function KuroWorkspacePage() {
                               setChatScope({ type: "all", page: "", from: "", to: "" })
                             }
                             style={{
-                              backgroundColor: chatScope.type === "all" ? "#ef4444" : "transparent",
-                              color: chatScope.type === "all" ? "#ffffff" : "#000000",
+                              backgroundColor: chatScope.type === "all" ? "var(--accent)" : "var(--bg-card)",
+                              color: chatScope.type === "all" ? "var(--bg-primary)" : "var(--text-secondary)",
                               border: "none",
                               padding: "8px 16px",
                               borderRadius: "9999px",
@@ -765,7 +765,7 @@ export default function KuroWorkspacePage() {
                             }
                             style={{
                               backgroundColor: chatScope.type === "page" ? "#ef4444" : "transparent",
-                              color: chatScope.type === "page" ? "#ffffff" : "#000000",
+                              color: chatScope.type === "page" ? "var(--bg-primary)" : "var(--text-secondary)",
                               border: "none",
                               padding: "8px 16px",
                               borderRadius: "9999px",
@@ -783,7 +783,7 @@ export default function KuroWorkspacePage() {
                             }
                             style={{
                               backgroundColor: chatScope.type === "range" ? "#ef4444" : "transparent",
-                              color: chatScope.type === "range" ? "#ffffff" : "#000000",
+                              color: chatScope.type === "range" ? "var(--bg-primary)" : "var(--text-secondary)",
                               border: "none",
                               padding: "8px 16px",
                               borderRadius: "9999px",
@@ -819,9 +819,9 @@ export default function KuroWorkspacePage() {
                                 setChatScope((prev) => ({ ...prev, from: e.target.value }))
                               }
                               min="1"
-                              style={{ border: "1px solid #e5e5e5", color: "#000000", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
+                              style={{ border: "1px solid var(--border-color)", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
                             />
-                            <span className="scope-separator" style={{ color: "#000000" }}>–</span>
+                            <span className="scope-separator" style={{ color: "var(--text-secondary)" }}>–</span>
                             <input
                               type="number"
                               className="scope-input"
@@ -831,19 +831,19 @@ export default function KuroWorkspacePage() {
                                 setChatScope((prev) => ({ ...prev, to: e.target.value }))
                               }
                               min="1"
-                              style={{ border: "1px solid #e5e5e5", color: "#000000", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
+                              style={{ border: "1px solid var(--border-color)", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
                             />
                           </div>
                         )}
                       </div>
                       <div className="chat-pdf-select" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                        <label className="form-label" style={{ color: "#000000", fontWeight: "500", fontSize: "14px" }}>PDF to chat with:</label>
+                        <label className="form-label" style={{ color: "var(--text-primary)", fontWeight: "500", fontSize: "14px" }}>PDF to chat with:</label>
                         <select
                           className="form-select"
                           value={selectedPdfId}
                           onChange={(e) => setSelectedPdfId(e.target.value)}
                           disabled={uploadedFiles.length === 0}
-                          style={{ border: "1px solid #e5e5e5", color: "#000000", backgroundColor: "#ffffff", padding: "8px 12px", borderRadius: "4px", fontSize: "14px", minWidth: "200px" }}
+                          style={{ border: "1px solid var(--border-color)", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", padding: "8px 12px", borderRadius: "4px", fontSize: "14px", minWidth: "200px" }}
                         >
                           {uploadedFiles.length === 0 ? (
                             <option>No PDFs uploaded yet</option>
@@ -860,12 +860,12 @@ export default function KuroWorkspacePage() {
                         </select>
                       </div>
                       <div className="chat-answer-style" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                        <label className="form-label" style={{ color: "#000000", fontWeight: "500", fontSize: "14px" }}>Answer style:</label>
+                        <label className="form-label" style={{ color: "var(--text-primary)", fontWeight: "500", fontSize: "14px" }}>Answer style:</label>
                         <select
                           className="form-select"
                           value={answerStyle}
                           onChange={(e) => setAnswerStyle(e.target.value)}
-                          style={{ border: "1px solid #e5e5e5", color: "#000000", backgroundColor: "#ffffff", padding: "8px 12px", borderRadius: "4px", fontSize: "14px", minWidth: "200px" }}
+                          style={{ border: "1px solid var(--border-color)", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", padding: "8px 12px", borderRadius: "4px", fontSize: "14px", minWidth: "200px" }}
                         >
                           <option value="default">Helpful explanation</option>
                           <option value="summary">Concise summary</option>
@@ -889,8 +889,8 @@ export default function KuroWorkspacePage() {
                         className="save-conversation-btn"
                         onClick={handleSaveConversation}
                         style={{
-                          backgroundColor: "#ef4444",
-                          color: "#ffffff",
+                          backgroundColor: "var(--accent)",
+                          color: "var(--bg-primary)",
                           border: "none",
                           padding: "10px 20px",
                           borderRadius: "4px",
@@ -910,8 +910,8 @@ export default function KuroWorkspacePage() {
                         className="clear-conversation-btn"
                         onClick={handleClearConversation}
                         style={{
-                          backgroundColor: "#ef4444",
-                          color: "#ffffff",
+                          backgroundColor: "var(--accent)",
+                          color: "var(--bg-primary)",
                           border: "none",
                           padding: "10px 20px",
                           borderRadius: "4px",
@@ -938,7 +938,7 @@ export default function KuroWorkspacePage() {
                           padding: "24px",
                           overflowY: "auto",
                           flex: 1,
-                          backgroundColor: "#ffffff",
+                          backgroundColor: "transparent",
                           maxHeight: "calc(100vh - 300px)"
                         }}
                       >
@@ -961,7 +961,7 @@ export default function KuroWorkspacePage() {
                                 style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
                               />
                             )}
-                            <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "#f3f4f6" : "#ffffff", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.05)", border: "1px solid #e5e7eb", color: "#000000", maxWidth: "80%", lineHeight: "1.5" }}>
+                            <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "var(--bg-secondary)" : "var(--bg-card)", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-primary)", maxWidth: "80%", lineHeight: "1.5" }}>
                               {m.content}
                             </div>
                             {m.role === "user" && (
@@ -994,16 +994,16 @@ export default function KuroWorkspacePage() {
                   boxSizing: "border-box"
                 }}
               >
-                <div className="history-container" style={{ backgroundColor: "#ffffff" }}>
+                <div className="history-container" style={{ backgroundColor: "transparent" }}>
                   <div className="history-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-                    <h3 className="history-title" style={{ color: "#000000", fontSize: "24px", fontWeight: "600" }}>Chat History</h3>
+                    <h3 className="history-title" style={{ color: "var(--text-primary)", fontSize: "24px", fontWeight: "600" }}>Chat History</h3>
                     <button
                       type="button"
                       className="clear-history-btn"
                       onClick={handleClearHistory}
                       style={{
-                        backgroundColor: "#ef4444",
-                        color: "#ffffff",
+                        backgroundColor: "var(--accent)",
+                        color: "var(--bg-primary)",
                         border: "none",
                         padding: "10px 20px",
                         borderRadius: "4px",
@@ -1025,14 +1025,14 @@ export default function KuroWorkspacePage() {
                       placeholder="Search chat history..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      style={{ width: "100%", border: "1px solid #e5e5e5", padding: "12px 16px", borderRadius: "4px", color: "#000000", backgroundColor: "#ffffff", fontSize: "14px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
+                      style={{ width: "100%", border: "1px solid var(--border-color)", padding: "12px 16px", borderRadius: "4px", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", fontSize: "14px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
                     />
                   </div>
                   {paginatedHistory.length === 0 ? (
-                    <div className="empty-state" style={{ textAlign: "center", color: "#000000", padding: "48px 0" }}>
+                    <div className="empty-state" style={{ textAlign: "center", color: "var(--text-secondary)", padding: "48px 0" }}>
                       <div className="empty-icon" style={{ fontSize: "48px", marginBottom: "16px" }}>📭</div>
                       <div className="empty-title" style={{ fontSize: "20px", fontWeight: "600", marginBottom: "8px" }}>No Chat History Yet</div>
-                      <div className="empty-desc" style={{ fontSize: "14px", color: "#4b5563" }}>
+                      <div className="empty-desc" style={{ fontSize: "14px", color: "var(--text-tertiary)" }}>
                         Your saved conversations will appear here. Save a
                         conversation from the Current Chat tab to get started.
                       </div>
@@ -1044,7 +1044,7 @@ export default function KuroWorkspacePage() {
                           key={h.id}
                           className="history-item"
                           style={{
-                            backgroundColor: "#ffffff",
+                            backgroundColor: "var(--bg-card)",
                             borderRadius: "4px",
                             padding: "20px",
                             display: "flex",
@@ -1060,10 +1060,10 @@ export default function KuroWorkspacePage() {
                             e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
                           }}
                         >
-                          <div style={{ color: "#000000", display: "flex", flexDirection: "column", gap: "4px", flex: 1 }}>
+                          <div style={{ color: "var(--text-primary)", display: "flex", flexDirection: "column", gap: "4px", flex: 1 }}>
                             <div className="history-item-title" style={{ fontWeight: "600", fontSize: "16px" }}>{h.title}</div>
-                            <div className="history-item-info" style={{ fontSize: "14px", color: "#4b5563" }}>{h.meta}</div>
-                            <div className="history-item-pdf" style={{ fontSize: "14px", color: "#4b5563" }}>PDF: {h.pdfName}</div>
+                            <div className="history-item-info" style={{ fontSize: "14px", color: "var(--text-secondary)" }}>{h.meta}</div>
+                            <div className="history-item-pdf" style={{ fontSize: "14px", color: "var(--text-secondary)" }}>PDF: {h.pdfName}</div>
                           </div>
                           <div className="history-item-actions" style={{ display: "flex", gap: "12px" }}>
                             <button
@@ -1071,8 +1071,8 @@ export default function KuroWorkspacePage() {
                               type="button"
                               onClick={() => handleLoadHistoryItem(h.id)}
                               style={{
-                                backgroundColor: "#ef4444",
-                                color: "#ffffff",
+                                backgroundColor: "var(--accent)",
+                                color: "var(--bg-primary)",
                                 border: "none",
                                 padding: "8px 16px",
                                 borderRadius: "4px",
@@ -1083,7 +1083,7 @@ export default function KuroWorkspacePage() {
                                 boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                               }}
                               onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                              onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
+                              onMouseLeave={(e) => { e.target.style.backgroundColor = "var(--accent)"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                             >
                               Load
                             </button>
@@ -1092,8 +1092,8 @@ export default function KuroWorkspacePage() {
                               type="button"
                               onClick={() => handleDeleteHistoryItem(h.id)}
                               style={{
-                                backgroundColor: "#ef4444",
-                                color: "#ffffff",
+                                backgroundColor: "var(--accent)",
+                                color: "var(--bg-primary)",
                                 border: "none",
                                 padding: "8px 16px",
                                 borderRadius: "4px",
@@ -1119,8 +1119,8 @@ export default function KuroWorkspacePage() {
                         disabled={currentPage === 1}
                         onClick={() => setCurrentPage((p) => p - 1)}
                         style={{
-                          backgroundColor: currentPage === 1 ? "#e5e5e5" : "#ef4444",
-                          color: "#ffffff",
+                          backgroundColor: currentPage === 1 ? "var(--bg-secondary)" : "var(--accent)",
+                          color: currentPage === 1 ? "var(--text-secondary)" : "var(--bg-primary)",
                           border: "none",
                           padding: "8px 16px",
                           borderRadius: "4px",
@@ -1130,7 +1130,7 @@ export default function KuroWorkspacePage() {
                           boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
                         }}
                         onMouseEnter={(e) => { if (currentPage !== 1) e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                        onMouseLeave={(e) => { if (currentPage !== 1) e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
+                        onMouseLeave={(e) => { if (currentPage !== 1) e.target.style.backgroundColor = "var(--accent)"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                       >
                         &lt;
                       </button>
@@ -1140,9 +1140,9 @@ export default function KuroWorkspacePage() {
                           className={page === currentPage ? "active" : ""}
                           onClick={() => setCurrentPage(page)}
                           style={{
-                            backgroundColor: page === currentPage ? "#ef4444" : "#ffffff",
-                            color: page === currentPage ? "#ffffff" : "#000000",
-                            border: "1px solid #e5e5e5",
+                            backgroundColor: page === currentPage ? "var(--accent)" : "var(--bg-card)",
+                            color: page === currentPage ? "var(--bg-primary)" : "var(--text-primary)",
+                            border: "1px solid var(--border-color)",
                             padding: "8px 16px",
                             borderRadius: "4px",
                             cursor: "pointer",
@@ -1194,10 +1194,10 @@ export default function KuroWorkspacePage() {
                   boxSizing: "border-box"
                 }}
               >
-                <div className="export-container" style={{ backgroundColor: "#ffffff" }}>
+                <div className="export-container" style={{ backgroundColor: "transparent" }}>
                   <div className="export-header" style={{ marginBottom: "32px" }}>
-                    <h3 className="export-title" style={{ color: "#000000", fontSize: "24px", fontWeight: "600" }}>Export Conversation</h3>
-                    <p className="export-desc" style={{ color: "#4b5563", fontSize: "16px", marginTop: "8px" }}>
+                    <h3 className="export-title" style={{ color: "var(--text-primary)", fontSize: "24px", fontWeight: "600" }}>Export Conversation</h3>
+                    <p className="export-desc" style={{ color: "var(--text-secondary)", fontSize: "16px", marginTop: "8px" }}>
                       Choose a format to export your current conversation.
                     </p>
                   </div>
@@ -1216,34 +1216,35 @@ export default function KuroWorkspacePage() {
                         key={idx}
                         className="export-card"
                         style={{
-                          backgroundColor: "#ffffff",
+                          backgroundColor: "var(--bg-card)",
                           borderRadius: "4px",
                           padding: "24px",
                           textAlign: "center",
                           transition: "all 200ms ease",
-                          boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                          border: "1px solid var(--border-color)",
                           display: "flex",
                           flexDirection: "column",
                           alignItems: "center",
                           gap: "16px"
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
+                          e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.3)";
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
+                          e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
                         }}
                       >
                         <span className="export-icon" style={{ fontSize: "32px" }}>{item.icon}</span>
-                        <h4 className="export-card-title" style={{ color: "#000000", fontSize: "18px", fontWeight: "600" }}>{item.title}</h4>
-                        <p className="export-card-desc" style={{ color: "#4b5563", fontSize: "14px" }}>{item.desc}</p>
+                        <h4 className="export-card-title" style={{ color: "var(--text-primary)", fontSize: "18px", fontWeight: "600" }}>{item.title}</h4>
+                        <p className="export-card-desc" style={{ color: "var(--text-secondary)", fontSize: "14px" }}>{item.desc}</p>
                         <button
                           className="export-btn"
                           type="button"
                           onClick={item.handler}
                           style={{
-                            backgroundColor: "#ef4444",
-                            color: "#ffffff",
+                            backgroundColor: "var(--accent)",
+                            color: "var(--bg-primary)",
                             border: "none",
                             padding: "10px 20px",
                             borderRadius: "4px",
@@ -1255,7 +1256,7 @@ export default function KuroWorkspacePage() {
                             width: "100%"
                           }}
                           onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                          onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
+                          onMouseLeave={(e) => { e.target.style.backgroundColor = "var(--accent)"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
                         >
                           {item.title.includes("Copy") ? "Copy" : item.title.includes("Link") ? "Generate" : "Export"}
                         </button>
@@ -1263,7 +1264,7 @@ export default function KuroWorkspacePage() {
                     ))}
                   </div>
                   {exportStatus && (
-                    <div className="export-status" style={{ marginTop: "32px", textAlign: "center", color: exportStatus.type === "error" ? "#ef4444" : "#000000", fontSize: "14px" }}>
+                    <div className="export-status" style={{ marginTop: "32px", textAlign: "center", color: exportStatus.type === "error" ? "var(--accent)" : "var(--text-primary)", fontSize: "14px" }}>
                       <div className="status-icon" style={{ fontSize: "24px", marginBottom: "8px" }}>
                         {exportStatus.type === "error" ? "⚠️" : "✅"}
                       </div>
