@@ -2,6 +2,7 @@
 import { useUser, UserButton } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import "../styles/kuro-dashboard.css";
+import "../styles/homepage.css";
 import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import { useRef } from "react";
@@ -29,7 +30,9 @@ import {
   FileText,
   Activity,
   HardDrive,
-  Crown
+  Crown,
+  Clock,
+  MoreVertical
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -79,45 +82,41 @@ export default function DashboardPage() {
             </AnimatedSection>
           </div>
 
-          <div className="hp-hero-scroll-hint">
-            <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity }}>
-              <ChevronDown size={20} />
-            </motion.div>
-          </div>
         </section>
 
-        {/* USAGE STATS BAR (NEW COMPONENT) */}
-        <AnimatedSection delay={0.2} className="hp-stats" style={{ marginTop: "-20px", marginBottom: "40px", padding: '0 20px' }}>
-          <div className="hp-stats-inner" style={{ background: "var(--bg-card)", border: "1px solid var(--border-card)", boxShadow: "0 10px 30px rgba(0,0,0,0.05)" }}>
-            <div className="hp-stat">
-              <span className="hp-stat-num">
-                12
-              </span>
-              <span className="hp-stat-label">
-                <FileText size={14} style={{ marginRight: 6, verticalAlign: 'middle', color: "var(--text-secondary)" }} />
-                Documents Analyzed
-              </span>
-            </div>
-            <div className="hp-stat-divider" />
-            <div className="hp-stat">
-              <span className="hp-stat-num">
-                45K
-              </span>
-              <span className="hp-stat-label">
-                <Activity size={14} style={{ marginRight: 6, verticalAlign: 'middle', color: "var(--text-secondary)" }} />
-                Words Processed
-              </span>
-            </div>
-            <div className="hp-stat-divider" />
-            <div className="hp-stat">
-              <span className="hp-stat-num">
-                15<span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>MB / 2GB</span>
-              </span>
-              <span className="hp-stat-label">
-                <HardDrive size={14} style={{ marginRight: 6, verticalAlign: 'middle', color: "var(--text-secondary)" }} />
-                Storage Used
-              </span>
-            </div>
+        {/* RECENT FILES SECTION (NEW COMPONENT) */}
+        <AnimatedSection className="section-header" style={{ marginBottom: "1rem" }}>
+          <h2 className="section-title" style={{ fontSize: "1.8rem" }}>
+            Recent <span className="section-title-accent">Files</span>
+          </h2>
+        </AnimatedSection>
+
+        <AnimatedSection delay={0.2} style={{ padding: "0 20px", marginBottom: "3rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.5rem" }}>
+            {[
+              { name: "Project_Proposal_Q3.pdf", time: "2 hours ago", size: "2.4 MB" },
+              { name: "Financial_Report_2023.pdf", time: "Yesterday", size: "4.1 MB" },
+              { name: "Meeting_Notes_Team.pdf", time: "2 days ago", size: "1.2 MB" }
+            ].map((file, i) => (
+              <GlassCard key={i} delay={0.1 + (i * 0.1)} style={{ padding: "1.2rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexDirection: "row", height: "auto" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", overflow: "hidden" }}>
+                  <div style={{ background: "rgba(255,50,50,0.1)", padding: "10px", borderRadius: "8px", color: "#ef4444" }}>
+                    <FileText size={20} />
+                  </div>
+                  <div style={{ overflow: "hidden" }}>
+                    <h4 style={{ margin: 0, fontSize: "0.95rem", color: "var(--text-primary)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{file.name}</h4>
+                    <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--text-secondary)", display: "flex", alignItems: "center", gap: "8px", marginTop: "4px" }}>
+                      <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><Clock size={12} /> {file.time}</span>
+                      <span>•</span>
+                      <span>{file.size}</span>
+                    </p>
+                  </div>
+                </div>
+                <button style={{ background: "transparent", border: "none", color: "var(--text-secondary)", cursor: "pointer", padding: "4px" }}>
+                  <MoreVertical size={18} />
+                </button>
+              </GlassCard>
+            ))}
           </div>
         </AnimatedSection>
 
@@ -267,45 +266,6 @@ export default function DashboardPage() {
 
         </AnimatedSection>
 
-        {/* PRO UPGRADE BANNER (NEW COMPONENT) */}
-        <AnimatedSection delay={0.3} style={{ padding: "0 20px", marginBottom: "40px" }}>
-          <div style={{
-            background: "var(--accent-gradient)",
-            borderRadius: "var(--radius-xl)",
-            padding: "2.5rem 2rem",
-            color: "#fff",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-            position: "relative",
-            overflow: "hidden"
-          }}>
-            <div style={{ position: "absolute", top: "-20%", right: "-5%", opacity: 0.1, transform: "rotate(15deg)" }}>
-              <Crown size={200} />
-            </div>
-
-            <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <div style={{ background: "rgba(255,255,255,0.2)", padding: "8px 16px", borderRadius: "100px", display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "1rem", fontSize: "0.85rem", fontWeight: "bold" }}>
-                <Crown size={14} /> UPGRADE TO PRO
-              </div>
-              <h2 style={{ fontSize: "1.8rem", fontWeight: 800, marginBottom: "0.8rem", color: "#fff" }}>
-                Unlock Unlimited AI Intelligence
-              </h2>
-              <p style={{ opacity: 0.9, lineHeight: 1.6, maxWidth: 500, marginBottom: "1.5rem" }}>
-                Get unrestricted access to Deep Analysis, unlimited PDF chats, priority OCR processing, and advanced exports.
-              </p>
-              <button
-                className="hp-btn-primary"
-                style={{ background: "#fff", color: "var(--accent)", border: "none", boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}
-                onClick={() => navigate("/pricing")}
-              >
-                View Plans & Upgrade
-              </button>
-            </div>
-          </div>
-        </AnimatedSection>
-
         {/* ===== FEATURES SECTION ===== */}
         <AnimatedSection delay={0.4} className="features-section">
 
@@ -315,54 +275,60 @@ export default function DashboardPage() {
             </h2>
           </div>
 
-          <div className="features-grid">
-            <GlassCard
-              title={<> <ShieldCheck size={20} className="inline-icon" /> Military-Grade Security </>}
-              description="Your documents are encrypted and protected with industry‑leading
- security standards."
-              className="feature-card"
-              delay={0.3}
-            />
+          <div className="hp-bento">
+            <AnimatedSection delay={0.3} style={{ height: "100%" }}>
+              <motion.div className="hp-bento-card hp-bento-accent" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
+                <div className="hp-bento-icon"><ShieldCheck size={24} /></div>
+                <h3>Military-Grade Security</h3>
+                <p>Your documents are encrypted and protected with industry‑leading security standards.</p>
+                <div className="hp-bento-shine" />
+              </motion.div>
+            </AnimatedSection>
 
-            <GlassCard
-              title={<> <Zap size={20} className="inline-icon" /> Lightning Fast </>}
-              description="Process and analyze documents in milliseconds with our optimized
- infrastructure."
-              className="feature-card"
-              delay={0.4}
-            />
+            <AnimatedSection delay={0.4} style={{ height: "100%" }}>
+              <motion.div className="hp-bento-card" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
+                <div className="hp-bento-icon"><Zap size={24} /></div>
+                <h3>Lightning Fast</h3>
+                <p>Process and analyze documents in milliseconds with our optimized infrastructure.</p>
+                <div className="hp-bento-shine" />
+              </motion.div>
+            </AnimatedSection>
 
-            <GlassCard
-              title={<> <Bot size={20} className="inline-icon" /> AI Powered </>}
-              description="Advanced machine learning algorithms understand context and
- provide intelligent solutions."
-              className="feature-card"
-              delay={0.5}
-            />
+            <AnimatedSection delay={0.5} style={{ height: "100%" }}>
+              <motion.div className="hp-bento-card" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
+                <div className="hp-bento-icon"><Bot size={24} /></div>
+                <h3>AI Powered</h3>
+                <p>Advanced machine learning algorithms understand context and provide intelligent solutions.</p>
+                <div className="hp-bento-shine" />
+              </motion.div>
+            </AnimatedSection>
 
-            <GlassCard
-              title={<> <Smartphone size={20} className="inline-icon" /> Fully Responsive </>}
-              description="Access RovexAI from any device. Work seamlessly on desktop,
- tablet, or mobile."
-              className="feature-card"
-              delay={0.6}
-            />
+            <AnimatedSection delay={0.6} style={{ height: "100%" }}>
+              <motion.div className="hp-bento-card" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
+                <div className="hp-bento-icon"><Smartphone size={24} /></div>
+                <h3>Fully Responsive</h3>
+                <p>Access RovexAI from any device. Work seamlessly on desktop, tablet, or mobile.</p>
+                <div className="hp-bento-shine" />
+              </motion.div>
+            </AnimatedSection>
 
-            <GlassCard
-              title={<> <Link size={20} className="inline-icon" /> API Integration </>}
-              description="Integrate RovexAI into your workflows with our REST API and
- webhooks."
-              className="feature-card"
-              delay={0.7}
-            />
+            <AnimatedSection delay={0.7} style={{ height: "100%" }}>
+              <motion.div className="hp-bento-card hp-bento-accent" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
+                <div className="hp-bento-icon"><Link size={24} /></div>
+                <h3>API Integration</h3>
+                <p>Integrate RovexAI into your workflows with our REST API and webhooks.</p>
+                <div className="hp-bento-shine" />
+              </motion.div>
+            </AnimatedSection>
 
-            <GlassCard
-              title={<> <Target size={20} className="inline-icon" /> Precision Accuracy </>}
-              description="Industry‑leading accuracy for text recognition, data extraction,
- and analysis."
-              className="feature-card"
-              delay={0.8}
-            />
+            <AnimatedSection delay={0.8} style={{ height: "100%" }}>
+              <motion.div className="hp-bento-card" whileHover={{ y: -6, transition: { duration: 0.2 } }}>
+                <div className="hp-bento-icon"><Target size={24} /></div>
+                <h3>Precision Accuracy</h3>
+                <p>Industry‑leading accuracy for text recognition, data extraction, and analysis.</p>
+                <div className="hp-bento-shine" />
+              </motion.div>
+            </AnimatedSection>
           </div>
 
         </AnimatedSection>

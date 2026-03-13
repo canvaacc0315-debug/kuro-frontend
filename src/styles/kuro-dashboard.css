@@ -410,6 +410,7 @@ body {
 .workspace-btn {
   width: 100%;
   padding: 14px;
+  margin-top: auto;
   background: var(--bg-secondary);
   color: var(--text-primary);
   border: 1px solid var(--border-color);

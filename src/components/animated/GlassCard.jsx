@@ -23,6 +23,9 @@ export default function GlassCard({
                 border: "1px solid var(--border-card)",
                 padding: "2rem",
                 cursor: "pointer",
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
                 transition:
                     "box-shadow var(--transition-base), border-color var(--transition-base), background var(--transition-base)",
             }}
