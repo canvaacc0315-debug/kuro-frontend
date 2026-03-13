@@ -84,38 +84,46 @@ export default function DashboardPage() {
 
         </section>
 
-        {/* RECENT FILES SECTION (NEW COMPONENT) */}
+        {/* QUICK ACTIONS SECTION (NEW COMPONENT) */}
         <AnimatedSection className="section-header" style={{ marginBottom: "1rem" }}>
           <h2 className="section-title" style={{ fontSize: "1.8rem" }}>
-            Recent <span className="section-title-accent">Files</span>
+            Quick <span className="section-title-accent">Actions</span>
           </h2>
         </AnimatedSection>
 
         <AnimatedSection delay={0.2} style={{ padding: "0 20px", marginBottom: "3rem" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1.5rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "1rem" }}>
             {[
-              { name: "Project_Proposal_Q3.pdf", time: "2 hours ago", size: "2.4 MB" },
-              { name: "Financial_Report_2023.pdf", time: "Yesterday", size: "4.1 MB" },
-              { name: "Meeting_Notes_Team.pdf", time: "2 days ago", size: "1.2 MB" }
-            ].map((file, i) => (
-              <GlassCard key={i} delay={0.1 + (i * 0.1)} style={{ padding: "1.2rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexDirection: "row", height: "auto" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", overflow: "hidden" }}>
-                  <div style={{ background: "rgba(255,50,50,0.1)", padding: "10px", borderRadius: "8px", color: "#ef4444" }}>
-                    <FileText size={20} />
-                  </div>
-                  <div style={{ overflow: "hidden" }}>
-                    <h4 style={{ margin: 0, fontSize: "0.95rem", color: "var(--text-primary)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{file.name}</h4>
-                    <p style={{ margin: 0, fontSize: "0.8rem", color: "var(--text-secondary)", display: "flex", alignItems: "center", gap: "8px", marginTop: "4px" }}>
-                      <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><Clock size={12} /> {file.time}</span>
-                      <span>•</span>
-                      <span>{file.size}</span>
-                    </p>
-                  </div>
+              { icon: <Upload size={22} />, title: "Upload New PDF", desc: "Start a new analysis", tab: "upload", color: "var(--accent)" },
+              { icon: <MessageSquare size={22} />, title: "Chat with PDF", desc: "Ask questions instantly", tab: "chat", color: "#3b82f6" },
+              { icon: <ScanSearch size={22} />, title: "Extract Text", desc: "Run OCR on image/pdf", tab: "ocr", color: "#10b981" },
+              { icon: <PenTool size={22} />, title: "Create Template", desc: "Design a new document", tab: "create", color: "#f59e0b" }
+            ].map((action, i) => (
+              <motion.div
+                key={i}
+                onClick={() => navigate(`/app?tab=${action.tab}`)}
+                whileHover={{ y: -4, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                style={{
+                  background: "var(--bg-card)",
+                  border: "1px solid var(--border-card)",
+                  padding: "1.2rem",
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "1rem",
+                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)"
+                }}
+              >
+                <div style={{ background: `${action.color}15`, color: action.color, padding: "12px", borderRadius: "10px", display: "flex" }}>
+                  {action.icon}
                 </div>
-                <button style={{ background: "transparent", border: "none", color: "var(--text-secondary)", cursor: "pointer", padding: "4px" }}>
-                  <MoreVertical size={18} />
-                </button>
-              </GlassCard>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: "1rem", fontWeight: 600, color: "var(--text-primary)" }}>{action.title}</h4>
+                  <p style={{ margin: "4px 0 0 0", fontSize: "0.8rem", color: "var(--text-secondary)" }}>{action.desc}</p>
+                </div>
+              </motion.div>
             ))}
           </div>
         </AnimatedSection>
