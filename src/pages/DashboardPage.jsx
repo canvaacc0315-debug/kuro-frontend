@@ -61,7 +61,7 @@ export default function DashboardPage() {
       {/* ===== MAIN CONTENT ===== */}
       <main className="main-container">
         {/* HERO */}
-        <section className="hp-hero" style={{ minHeight: "80vh", padding: "80px 20px", marginTop: "0", position: "relative", overflow: "hidden" }}>
+        <section className="hp-hero" style={{ minHeight: "45vh", padding: "60px 20px 40px", marginTop: "0", position: "relative", overflow: "hidden" }}>
 
           {/* Floating Background Icons */}
           <div className="hero-floating-elements" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 0 }}>
