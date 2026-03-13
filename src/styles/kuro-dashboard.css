@@ -393,7 +393,7 @@ body {
 
 .workspace-features li {
   font-size: 14px;
-  color: #d4d4d8;
+  color: var(--text-secondary);
   margin-bottom: 12px;
   position: relative;
   padding-left: 24px;
@@ -410,9 +410,9 @@ body {
 .workspace-btn {
   width: 100%;
   padding: 14px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-secondary);
   color: var(--text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   font-size: 15px;
   font-weight: 600;
