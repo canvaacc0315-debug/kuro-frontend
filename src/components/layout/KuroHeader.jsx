@@ -1,5 +1,5 @@
 import { SignedIn, SignedOut } from "@clerk/clerk-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, Menu, X, ArrowRight } from "lucide-react";
@@ -8,9 +8,13 @@ import logoIcon from "../../assets/logo.svg";
 
 export default function KuroHeader() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { isDark, toggleTheme } = useTheme();
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
+
+    const isDashboard = location.pathname.startsWith("/dashboard");
+    const isApp = location.pathname.startsWith("/app");
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 30);
@@ -59,9 +63,19 @@ export default function KuroHeader() {
                         </button>
                     </SignedOut>
                     <SignedIn>
-                        <button onClick={() => navigate("/dashboard")} className="hp-btn-primary">
-                            Dashboard <ArrowRight size={15} />
-                        </button>
+                        {isDashboard ? (
+                            <button onClick={() => navigate("/app?tab=chat")} className="hp-btn-primary">
+                                Go to Workspace <ArrowRight size={15} />
+                            </button>
+                        ) : isApp ? (
+                            <button onClick={() => navigate("/dashboard")} className="hp-btn-primary">
+                                Back to Dashboard <ArrowRight size={15} />
+                            </button>
+                        ) : (
+                            <button onClick={() => navigate("/dashboard")} className="hp-btn-primary">
+                                Dashboard <ArrowRight size={15} />
+                            </button>
+                        )}
                     </SignedIn>
                 </div>
 
