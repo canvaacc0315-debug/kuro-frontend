@@ -36,7 +36,6 @@ const categories = [
 
 export default function FloatingHelp() {
   const [open, setOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("faq");
   const [activeCategoryId, setActiveCategoryId] = useState(null);
   const [expandedIndex, setExpandedIndex] = useState(null);
 
@@ -62,7 +61,6 @@ export default function FloatingHelp() {
         // Reset state when closing panel
         setTimeout(() => {
           setActiveCategoryId(null);
-          setActiveTab("faq");
           setExpandedIndex(null);
         }, 300);
       }
@@ -92,31 +90,11 @@ export default function FloatingHelp() {
         aria-hidden={!open}
       >
         <div className="help-header-top">
-          <h4>RovexAI Support</h4>
-          <div className="help-tabs">
-            <button
-              className={`help-tab ${activeTab === 'faq' ? 'active' : ''}`}
-              onClick={() => { setActiveTab('faq'); setActiveCategoryId(null); }}
-            >
-              FAQ
-            </button>
-            <button
-              className={`help-tab ${activeTab === 'live' ? 'active' : ''}`}
-              onClick={() => setActiveTab('live')}
-            >
-              Live Chat
-            </button>
-          </div>
+          <h4>RovexAI Help Center</h4>
         </div>
 
         <div className="help-body">
-          {activeTab === 'live' ? (
-            <div className="help-live-chat">
-              <MessageSquare size={40} className="live-icon" />
-              <h5>Live support coming soon</h5>
-              <p>Our team is currently building the live chat integration. For urgent requests, please check the Contact page.</p>
-            </div>
-          ) : activeCategoryId === null ? (
+          {activeCategoryId === null ? (
             <div className="category-list">
               {categories.map((cat) => (
                 <button
@@ -131,17 +109,6 @@ export default function FloatingHelp() {
                   <ChevronRight size={18} className="category-arrow" />
                 </button>
               ))}
-
-              <button
-                className="category-card contact-card"
-                onClick={() => setActiveTab('live')}
-              >
-                <div className="category-card-info">
-                  <strong>Still need help?</strong>
-                  <span>Ask our AI Assistant specifically about RovexAI.</span>
-                </div>
-                <MessageCircle size={18} className="category-arrow" style={{ opacity: 0.6 }} />
-              </button>
             </div>
           ) : (
             <div className="faq-list">
