@@ -32,7 +32,8 @@ import {
   HardDrive,
   Crown,
   Clock,
-  MoreVertical
+  MoreVertical,
+  Upload
 } from "lucide-react";
 
 export default function DashboardPage() {
