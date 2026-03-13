@@ -34,7 +34,8 @@ import {
   Clock,
   MoreVertical,
   Upload,
-  Search
+  Search,
+  Hexagon
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -58,9 +59,45 @@ export default function DashboardPage() {
       {/* ===== MAIN CONTENT ===== */}
       <main className="main-container">
         {/* HERO */}
-        <section className="hp-hero" style={{ minHeight: "80vh", padding: "80px 20px", marginTop: "0", position: "relative" }}>
-          <div className="hp-hero-glow hp-hero-glow-1" />
-          <div className="hp-hero-glow hp-hero-glow-2" />
+        <section className="hp-hero" style={{ minHeight: "80vh", padding: "80px 20px", marginTop: "0", position: "relative", overflow: "hidden" }}>
+
+          {/* Floating Background Icons */}
+          <div className="hero-floating-elements" style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none", zIndex: 0 }}>
+            <motion.div
+              style={{ position: "absolute", top: "20%", left: "15%", color: "rgba(255, 50, 50, 0.15)" }}
+              animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            >
+              <Hexagon size={64} />
+            </motion.div>
+
+            <motion.div
+              style={{ position: "absolute", top: "60%", left: "10%", color: "rgba(255, 255, 255, 0.05)" }}
+              animate={{ y: [0, 30, 0], rotate: [0, -10, 0] }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            >
+              <Database size={48} />
+            </motion.div>
+
+            <motion.div
+              style={{ position: "absolute", top: "30%", right: "15%", color: "rgba(255, 255, 255, 0.05)" }}
+              animate={{ y: [0, -25, 0], rotate: [0, 10, 0] }}
+              transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+            >
+              <Cpu size={56} />
+            </motion.div>
+
+            <motion.div
+              style={{ position: "absolute", bottom: "25%", right: "20%", color: "rgba(255, 50, 50, 0.1)" }}
+              animate={{ y: [0, 20, 0], rotate: [0, -5, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            >
+              <Sparkles size={40} />
+            </motion.div>
+          </div>
+
+          <div className="hp-hero-glow hp-hero-glow-1" style={{ zIndex: 1 }} />
+          <div className="hp-hero-glow hp-hero-glow-2" style={{ zIndex: 1 }} />
 
           <div className="hp-hero-inner" style={{ paddingTop: "60px", paddingBottom: "20px" }}>
             <AnimatedSection delay={0.08}>
