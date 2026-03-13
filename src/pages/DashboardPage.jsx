@@ -25,7 +25,11 @@ import {
   Bot,
   Smartphone,
   Link,
-  Target
+  Target,
+  FileText,
+  Activity,
+  HardDrive,
+  Crown
 } from "lucide-react";
 
 export default function DashboardPage() {
@@ -81,6 +85,41 @@ export default function DashboardPage() {
             </motion.div>
           </div>
         </section>
+
+        {/* USAGE STATS BAR (NEW COMPONENT) */}
+        <AnimatedSection delay={0.2} className="hp-stats" style={{ marginTop: "-20px", marginBottom: "40px", padding: '0 20px' }}>
+          <div className="hp-stats-inner" style={{ background: "var(--bg-card)", border: "1px solid var(--border-card)", boxShadow: "0 10px 30px rgba(0,0,0,0.05)" }}>
+            <div className="hp-stat">
+              <span className="hp-stat-num">
+                12
+              </span>
+              <span className="hp-stat-label">
+                <FileText size={14} style={{ marginRight: 6, verticalAlign: 'middle', color: "var(--text-secondary)" }} />
+                Documents Analyzed
+              </span>
+            </div>
+            <div className="hp-stat-divider" />
+            <div className="hp-stat">
+              <span className="hp-stat-num">
+                45K
+              </span>
+              <span className="hp-stat-label">
+                <Activity size={14} style={{ marginRight: 6, verticalAlign: 'middle', color: "var(--text-secondary)" }} />
+                Words Processed
+              </span>
+            </div>
+            <div className="hp-stat-divider" />
+            <div className="hp-stat">
+              <span className="hp-stat-num">
+                15<span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>MB / 2GB</span>
+              </span>
+              <span className="hp-stat-label">
+                <HardDrive size={14} style={{ marginRight: 6, verticalAlign: 'middle', color: "var(--text-secondary)" }} />
+                Storage Used
+              </span>
+            </div>
+          </div>
+        </AnimatedSection>
 
         {/* WORKSPACE SECTION */}
         <AnimatedSection className="section-header">
@@ -226,6 +265,45 @@ export default function DashboardPage() {
             </button>
           </GlassCard>
 
+        </AnimatedSection>
+
+        {/* PRO UPGRADE BANNER (NEW COMPONENT) */}
+        <AnimatedSection delay={0.3} style={{ padding: "0 20px", marginBottom: "40px" }}>
+          <div style={{
+            background: "var(--accent-gradient)",
+            borderRadius: "var(--radius-xl)",
+            padding: "2.5rem 2rem",
+            color: "#fff",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+            position: "relative",
+            overflow: "hidden"
+          }}>
+            <div style={{ position: "absolute", top: "-20%", right: "-5%", opacity: 0.1, transform: "rotate(15deg)" }}>
+              <Crown size={200} />
+            </div>
+
+            <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <div style={{ background: "rgba(255,255,255,0.2)", padding: "8px 16px", borderRadius: "100px", display: "inline-flex", alignItems: "center", gap: "8px", marginBottom: "1rem", fontSize: "0.85rem", fontWeight: "bold" }}>
+                <Crown size={14} /> UPGRADE TO PRO
+              </div>
+              <h2 style={{ fontSize: "1.8rem", fontWeight: 800, marginBottom: "0.8rem", color: "#fff" }}>
+                Unlock Unlimited AI Intelligence
+              </h2>
+              <p style={{ opacity: 0.9, lineHeight: 1.6, maxWidth: 500, marginBottom: "1.5rem" }}>
+                Get unrestricted access to Deep Analysis, unlimited PDF chats, priority OCR processing, and advanced exports.
+              </p>
+              <button
+                className="hp-btn-primary"
+                style={{ background: "#fff", color: "var(--accent)", border: "none", boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}
+                onClick={() => navigate("/pricing")}
+              >
+                View Plans & Upgrade
+              </button>
+            </div>
+          </div>
         </AnimatedSection>
 
         {/* ===== FEATURES SECTION ===== */}
