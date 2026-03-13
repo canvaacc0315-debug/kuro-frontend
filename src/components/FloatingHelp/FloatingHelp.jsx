@@ -1,28 +1,81 @@
 import { useState } from "react";
-import { MessageCircle, X } from "lucide-react";
+import { MessageCircle, X, ChevronRight, ChevronDown, ChevronLeft, MessageSquare } from "lucide-react";
 import "./floating-help.css";
+
+const categories = [
+  {
+    id: "using",
+    title: "Using the RovexAI Chatbot",
+    subtitle: "Basics & Privacy",
+    questions: [
+      { q: "Is this a formal medical diagnosis?", a: "No. RovexAI provides intelligent analysis of your texts and PDFs based on AI, but it is not intended for medical, legal, or formal professional advice." },
+      { q: "How does RovexAI work?", a: "RovexAI parses your documents instantly and uses an advanced language model to let you chat naturally about the contents, extract data, or build study materials." },
+      { q: "Is my data private?", a: "Yes! PDFs are processed securely and not stored without consent. Learn more at rovexai.com/privacy." }
+    ]
+  },
+  {
+    id: "analysis",
+    title: "Analysis Types",
+    subtitle: "Simple vs Advanced Check",
+    questions: [
+      { q: "How does Analysis work?", a: "Basic mode uses straightforward extraction; Advanced dives deeper with AI patterns for insights, charts, and table extraction." },
+      { q: "What is OCR and when to use it?", a: "OCR extracts text from scanned or image-based PDFs. Enable it for non-digital documents to unlock full chatbot functionality." },
+      { q: "Can I export analysis results?", a: "Absolutely! Download summaries, extracted data, or charts as PDF, CSV, or images directly from the results panel." }
+    ]
+  },
+  {
+    id: "safety",
+    title: "Safety & Emergencies",
+    subtitle: "When to seek urgent care",
+    questions: [
+      { q: "What if there is an emergency?", a: "Always call your local emergency services immediately. RovexAI is a document tool, not an emergency response system." },
+      { q: "Can it handle sensitive documents?", a: "We employ Military-Grade security, but advise against uploading highly classified or top-secret national security files." }
+    ]
+  }
+];
 
 export default function FloatingHelp() {
   const [open, setOpen] = useState(false);
-  const [expandedSections, setExpandedSections] = useState({
-    using: false,
-    analysis: false,
-    privacy: false,
-  });
+  const [activeTab, setActiveTab] = useState("faq");
+  const [activeCategoryId, setActiveCategoryId] = useState(null);
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
-  const toggleSection = (section) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
+  const activeCategory = categories.find((c) => c.id === activeCategoryId);
+
+  const handleCategoryClick = (id) => {
+    setActiveCategoryId(id);
+    setExpandedIndex(null);
+  };
+
+  const handleBack = () => {
+    setActiveCategoryId(null);
+    setExpandedIndex(null);
+  };
+
+  const toggleQuestion = (index) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
+
+  const toggleOpen = () => {
+    setOpen((v) => {
+      if (v) {
+        // Reset state when closing panel
+        setTimeout(() => {
+          setActiveCategoryId(null);
+          setActiveTab("faq");
+          setExpandedIndex(null);
+        }, 300);
+      }
+      return !v;
+    });
   };
 
   return (
     <>
-      {/* Floating button with improved accessibility and animation trigger */}
+      {/* Floating button */}
       <button
         className={`floating-help-btn ${open ? 'open' : ''}`}
-        onClick={() => setOpen((v) => !v)}
+        onClick={toggleOpen}
         aria-label={open ? "Close Help" : "Open Help"}
         aria-expanded={open}
         aria-controls="help-panel"
@@ -30,7 +83,7 @@ export default function FloatingHelp() {
         {open ? <X size={24} /> : <MessageCircle size={26} />}
       </button>
 
-      {/* Floating panel with enhanced entrance/exit animations */}
+      {/* Floating panel */}
       <div
         id="help-panel"
         className={`floating-help-panel ${open ? 'panel-open' : 'panel-closed'}`}
@@ -38,98 +91,84 @@ export default function FloatingHelp() {
         aria-modal="true"
         aria-hidden={!open}
       >
-        <div className="help-header">
-          <h4>👋 Welcome to RovexAI Help</h4>
-          <p>Quick answers for PDF Chatbot & more</p>
-        </div>
-
-        {/* Main Section 1: Using the PDF Chatbot */}
-        <div className="help-section">
-          <button
-            className={`section-header ${expandedSections.using ? 'expanded' : ''}`}
-            onClick={() => toggleSection('using')}
-            aria-expanded={expandedSections.using}
-            aria-controls="using-section"
-          >
-            <strong>Using the PDF Chatbot</strong>
-            <span className="toggle-icon">{expandedSections.using ? "−" : "+"}</span>
-          </button>
-          <div
-            id="using-section"
-            className={`section-content ${expandedSections.using ? 'expanded' : ''}`}
-            aria-hidden={!expandedSections.using}
-          >
-            <div className="help-item">
-              <strong>How do I upload a PDF?</strong>
-              <span>Click the upload icon in the dashboard, select your file, and start chatting instantly.</span>
-            </div>
-            <div className="help-item">
-              <strong>What can I ask the chatbot?</strong>
-              <span>Ask anything: "Summarize this page," "Extract tables," or "Explain this section" – it uses AI for natural responses.</span>
-            </div>
-            <div className="help-item">
-              <strong>Can I chat with multiple PDFs at once?</strong>
-              <span>Yes! Upload several files to the workspace, and the chatbot can reference all of them in a single conversation for cross-document insights.</span>
-            </div>
+        <div className="help-header-top">
+          <h4>RovexAI Support</h4>
+          <div className="help-tabs">
+            <button
+              className={`help-tab ${activeTab === 'faq' ? 'active' : ''}`}
+              onClick={() => { setActiveTab('faq'); setActiveCategoryId(null); }}
+            >
+              FAQ
+            </button>
+            <button
+              className={`help-tab ${activeTab === 'live' ? 'active' : ''}`}
+              onClick={() => setActiveTab('live')}
+            >
+              Live Chat
+            </button>
           </div>
         </div>
 
-        {/* Main Section 2: Analysis Features */}
-        <div className="help-section">
-          <button
-            className={`section-header ${expandedSections.analysis ? 'expanded' : ''}`}
-            onClick={() => toggleSection('analysis')}
-            aria-expanded={expandedSections.analysis}
-            aria-controls="analysis-section"
-          >
-            <strong>Analysis & OCR</strong>
-            <span className="toggle-icon">{expandedSections.analysis ? "−" : "+"}</span>
-          </button>
-          <div
-            id="analysis-section"
-            className={`section-content ${expandedSections.analysis ? 'expanded' : ''}`}
-            aria-hidden={!expandedSections.analysis}
-          >
-            <div className="help-item">
-              <strong>How does Analysis work?</strong>
-              <span>Basic mode uses simple matching; Advanced dives deeper with AI patterns for insights, charts, and data extraction.</span>
+        <div className="help-body">
+          {activeTab === 'live' ? (
+            <div className="help-live-chat">
+              <MessageSquare size={40} className="live-icon" />
+              <h5>Live support coming soon</h5>
+              <p>Our team is currently building the live chat integration. For urgent requests, please check the Contact page.</p>
             </div>
-            <div className="help-item">
-              <strong>What is OCR and when to use it?</strong>
-              <span>OCR extracts text from scanned or image-based PDFs. Enable it for non-digital documents to unlock full chatbot functionality.</span>
-            </div>
-            <div className="help-item">
-              <strong>Can I export analysis results?</strong>
-              <span>Absolutely! Download summaries, extracted data, or charts as PDF, CSV, or images directly from the results panel.</span>
-            </div>
-          </div>
-        </div>
+          ) : activeCategoryId === null ? (
+            <div className="category-list">
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  className="category-card"
+                  onClick={() => handleCategoryClick(cat.id)}
+                >
+                  <div className="category-card-info">
+                    <strong>{cat.title}</strong>
+                    <span>{cat.subtitle}</span>
+                  </div>
+                  <ChevronRight size={18} className="category-arrow" />
+                </button>
+              ))}
 
-        {/* Main Section 3: Privacy & Support */}
-        <div className="help-section">
-          <button
-            className={`section-header ${expandedSections.privacy ? 'expanded' : ''}`}
-            onClick={() => toggleSection('privacy')}
-            aria-expanded={expandedSections.privacy}
-            aria-controls="privacy-section"
-          >
-            <strong>Privacy</strong>
-            <span className="toggle-icon">{expandedSections.privacy ? "−" : "+"}</span>
-          </button>
-          <div
-            id="privacy-section"
-            className={`section-content ${expandedSections.privacy ? 'expanded' : ''}`}
-            aria-hidden={!expandedSections.privacy}
-          >
-            <div className="help-item">
-              <strong>Is my data private?</strong>
-              <span>Yes! PDFs are processed securely and not stored without consent. Learn more at <a href="https://www.rovexai.com/privacy-policy" target="_blank" rel="noopener noreferrer">rovexai.com/privacy</a>.</span>
+              <button
+                className="category-card contact-card"
+                onClick={() => setActiveTab('live')}
+              >
+                <div className="category-card-info">
+                  <strong>Still need help?</strong>
+                  <span>Ask our AI Assistant specifically about RovexAI.</span>
+                </div>
+                <MessageCircle size={18} className="category-arrow" style={{ opacity: 0.6 }} />
+              </button>
             </div>
-            <div className="help-item warning">
-              <strong>📱 Mobile Tip</strong>
-              <span>Enable <b>Desktop Mode</b> in your browser for full features like editing and OCR.</span>
+          ) : (
+            <div className="faq-list">
+              <div className="faq-list-header">
+                <button className="faq-back-btn" onClick={handleBack}>
+                  <ChevronLeft size={16} /> Back
+                </button>
+                <span className="faq-list-title">{activeCategory.title}</span>
+              </div>
+
+              <div className="faq-accordion">
+                {activeCategory.questions.map((q, idx) => (
+                  <div key={idx} className={`faq-item ${expandedIndex === idx ? 'expanded' : ''}`}>
+                    <button className="faq-item-header" onClick={() => toggleQuestion(idx)}>
+                      <strong>{q.q}</strong>
+                      <ChevronDown size={16} className="faq-chevron" />
+                    </button>
+                    <div className="faq-item-body">
+                      <div className="faq-item-content">
+                        {q.a}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>
