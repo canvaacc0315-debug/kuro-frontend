@@ -6,9 +6,11 @@ import { useClerk } from "@clerk/clerk-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
 import { useRef } from "react";
 import GlassCard from "../components/animated/GlassCard.jsx";
+import KuroHeader from "../components/layout/KuroHeader.jsx";
+import KuroFooter from "../components/layout/KuroFooter.jsx";
 import AnimatedSection from "../components/animated/AnimatedSection.jsx";
 import TextRotator from "../components/animated/TextRotator.jsx";
-import { Star, ChevronDown, Sparkles } from "lucide-react";
+import { Star, ChevronDown, Sparkles, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import logoIcon from "../assets/logo.svg"; // Add your logo image
 import {
@@ -42,27 +44,7 @@ export default function DashboardPage() {
   return (
     <div className="kuro-dashboard-page">
       {/* ===== header ===== */}
-      <header className="header">
-        <div className="header-brand">
-          <KuroLogo size={46} />
-          <div className="logo-container" onClick={() => navigate("/")}>
-            <span className="logo-text">
-              <span className="logo-red">Rovex</span>
-              <span className="logo-ai">AI</span>
-            </span>
-          </div>
-        </div>
-        <nav className="header-links">
-          <a href="/homepage" className="nav-link">Home</a>
-          <a href="/app?tab=upload" className="nav-link">Workspace</a>
-          <a href="https://rovexai.com/contact" className="nav-link">Help</a>
-          <button onClick={openUserProfile} className="nav-link settings-link">
-            Settings
-          </button>
-        </nav>
-        {/* RIGHT: user info */}
-        <UserButton showName afterSignOutUrl="/login" />
-      </header>
+      <KuroHeader />
 
       {/* ===== MAIN CONTENT ===== */}
       <main className="main-container">
@@ -71,57 +53,24 @@ export default function DashboardPage() {
           <div className="hp-hero-glow hp-hero-glow-1" />
           <div className="hp-hero-glow hp-hero-glow-2" />
 
-          <div className="hp-hero-inner">
-            <AnimatedSection delay={0}>
-              <div className="hp-hero-badge">
-                <Sparkles size={14} />
-                <span>AI-POWERED PDF INTELLIGENCE</span>
-              </div>
-            </AnimatedSection>
-
+          <div className="hp-hero-inner" style={{ paddingTop: "60px", paddingBottom: "20px" }}>
             <AnimatedSection delay={0.08}>
-              <h1 className="hp-hero-title">
-                Transform Your PDFs into<br />
-                <span className="hp-hero-highlight">Interactive Intelligence</span>
-                <br />
-                for{" "}
-                <TextRotator words={["Students", "Researchers", "Professionals", "Businesses", "Everyone"]} />
+              <h1 className="hp-hero-title" style={{ fontSize: "clamp(3rem, 6vw, 4.5rem)" }}>
+                Welcome to <span className="hp-hero-highlight">RovexAI</span>
               </h1>
             </AnimatedSection>
 
             <AnimatedSection delay={0.16}>
-              <p className="hp-hero-sub">
-                Chat with any document, extract critical data instantly, and build
-                beautiful PDFs 10x faster. Your all-in-one smart document workspace.
+              <p className="hp-hero-sub" style={{ maxWidth: '600px', margin: '0 auto 2rem auto' }}>
+                Transform your PDF workflows with intelligent document processing and creation
               </p>
             </AnimatedSection>
 
             <AnimatedSection delay={0.3}>
-              <div className="hp-hero-trust">
-                <div className="hp-trust-avatars">
-                  {[...Array(4)].map((_, i) => (
-                    <div key={i} className="hp-trust-avatar" style={{ zIndex: 4 - i, marginLeft: i ? -10 : 0 }}>
-                      <Star size={14} />
-                    </div>
-                  ))}
-                </div>
-                <div className="hp-trust-text">
-                  <span className="hp-trust-stars">★★★★★</span>
-                  <span>Trusted by 50+ users worldwide</span>
-                </div>
-              </div>
-            </AnimatedSection>
-
-            <AnimatedSection delay={0.4}>
-              <div className="hp-hero-formats">
-                <p>Supported Document Formats</p>
-                <div className="hp-format-icons">
-                  <span className="hp-format-badge">.PDF</span>
-                  <span className="hp-format-badge">.DOCX</span>
-                  <span className="hp-format-badge">.TXT</span>
-                  <span className="hp-format-badge">.CSV</span>
-                  <span className="hp-format-badge">IMAGE</span>
-                </div>
+              <div className="hp-hero-cta" style={{ justifyContent: 'center' }}>
+                <button className="hp-btn-primary hp-btn-lg" onClick={() => navigate("/app?tab=upload")} style={{ gap: "8px" }}>
+                  Get Started <ArrowRight size={17} />
+                </button>
               </div>
             </AnimatedSection>
           </div>

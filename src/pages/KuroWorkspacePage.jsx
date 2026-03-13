@@ -11,6 +11,7 @@ import { jsPDF } from "jspdf";
 import OcrPanel from "../components/OcrPanel";
 import InstructionModal from "../components/modals/InstructionModal";
 import { useClerk } from "@clerk/clerk-react";
+import KuroHeader from "../components/layout/KuroHeader.jsx";
 import UploadPanel from "../components/UploadPanel";
 import FixedChatInput from "../components/FixedChatInput";
 // ✅ NEW: Import PDF Tools
@@ -548,41 +549,9 @@ export default function KuroWorkspacePage() {
     <RovexProvider>
       <InstructionModal />
       <div className="workspace-root">
-        <header className={`home-header ${scrolled ? "scrolled" : ""}`} style={{ display: isFullScreen ? "none" : "flex" }}>
-          <div className="logo-container" onClick={() => navigate("https://www.rovexai.com/  ")}>
-            <img src="/kuro-logo.png" alt="RovexAI Logo" className="logo-icon" />
-            <span className="logo-text">
-              <span className="logo-red">Rovex</span>
-              <span className="logo-ai">AI</span>
-            </span>
-          </div>
-          <div className="header-links">
-            <a href="/homepage" className="nav-link">Home</a>
-            <a href="https://rovexai.com/contact  " className="nav-link">Help</a>
-            <button onClick={openUserProfile} className="nav-link settings-link">
-              Settings
-            </button>
-          </div>
-          <div className="navbar-right">
-            <div className="user-info">
-              <div className="user-name">
-                {isLoaded && user
-                  ? user.fullName ||
-                  user.primaryEmailAddress?.emailAddress ||
-                  "User"
-                  : "Loading..."}
-              </div>
-            </div>
-            <UserButton
-              afterSignOutUrl="/"
-              appearance={{
-                elements: {
-                  avatarBox: "navbar-profile-photo",
-                },
-              }}
-            />
-          </div>
-        </header>
+        <div style={{ display: isFullScreen ? "none" : "block" }}>
+          <KuroHeader />
+        </div>
 
         <aside className="sidebar" style={{ display: isFullScreen ? "none" : "block" }}>
           <nav className="sidebar-nav">
