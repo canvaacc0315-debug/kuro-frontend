@@ -14,6 +14,9 @@ import logoIcon from "../assets/logo.svg";
 import { useClerk } from "@clerk/clerk-react";
 import KuroHeader from "../components/layout/KuroHeader.jsx";
 import UploadPanel from "../components/UploadPanel";
+import FixedChatInput from "../components/FixedChatInput";
+// ✅ NEW: Import PDF Tools
+import PDFWorkspace from "../components/PDFTools/PDFWorkspace.jsx";
 // ✅ NEW: Import Study Mode
 import StudyWorkspace from "../components/StudyMode/StudyWorkspace.jsx";
 import ChatHistory from "../components/ChatHistory.jsx";
