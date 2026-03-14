@@ -14,11 +14,10 @@ import logoIcon from "../assets/logo.svg";
 import { useClerk } from "@clerk/clerk-react";
 import KuroHeader from "../components/layout/KuroHeader.jsx";
 import UploadPanel from "../components/UploadPanel";
-import FixedChatInput from "../components/FixedChatInput";
-// ✅ NEW: Import PDF Tools
-import PDFWorkspace from "../components/PDFTools/PDFWorkspace.jsx";
 // ✅ NEW: Import Study Mode
 import StudyWorkspace from "../components/StudyMode/StudyWorkspace.jsx";
+import ChatHistory from "../components/ChatHistory.jsx";
+import ChatExport from "../components/ChatExport.jsx";
 import {
   FileUp,
   MessageSquare,
@@ -1066,197 +1065,22 @@ export default function KuroWorkspacePage() {
                   display: activeChatSubTab === "history" ? "flex" : "none",
                   flexDirection: "column",
                   flex: 1,
-                  transition: "opacity 300ms ease",
-                  opacity: activeChatSubTab === "history" ? 1 : 0,
                   padding: "24px",
                   width: "100%",
                   boxSizing: "border-box"
                 }}
               >
-                <div className="history-container" style={{ backgroundColor: "transparent" }}>
-                  <div className="history-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-                    <h3 className="history-title" style={{ color: "var(--text-primary)", fontSize: "24px", fontWeight: "600" }}>Chat History</h3>
-                    <button
-                      type="button"
-                      className="clear-history-btn"
-                      onClick={handleClearHistory}
-                      style={{
-                        backgroundColor: "var(--accent)",
-                        color: "var(--bg-primary)",
-                        border: "none",
-                        padding: "10px 20px",
-                        borderRadius: "4px",
-                        cursor: "pointer",
-                        transition: "background-color 200ms ease, box-shadow 200ms ease",
-                        fontSize: "14px",
-                        fontWeight: "500",
-                        boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                      }}
-                      onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                      onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                    >
-                      Clear All
-                    </button>
-                  </div>
-                  <div className="history-search" style={{ marginBottom: "24px" }}>
-                    <input
-                      type="text"
-                      placeholder="Search chat history..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      style={{ width: "100%", border: "1px solid var(--border-color)", padding: "12px 16px", borderRadius: "4px", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", fontSize: "14px", boxShadow: "0 1px 2px rgba(0,0,0,0.05)" }}
-                    />
-                  </div>
-                  {paginatedHistory.length === 0 ? (
-                    <div className="empty-state" style={{ textAlign: "center", color: "var(--text-secondary)", padding: "48px 0" }}>
-                      <div className="empty-icon" style={{ fontSize: "48px", marginBottom: "16px" }}>📭</div>
-                      <div className="empty-title" style={{ fontSize: "20px", fontWeight: "600", marginBottom: "8px" }}>No Chat History Yet</div>
-                      <div className="empty-desc" style={{ fontSize: "14px", color: "var(--text-tertiary)" }}>
-                        Your saved conversations will appear here. Save a
-                        conversation from the Current Chat tab to get started.
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="history-list" style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                      {paginatedHistory.map((h) => (
-                        <div
-                          key={h.id}
-                          className="history-item"
-                          style={{
-                            backgroundColor: "var(--bg-card)",
-                            borderRadius: "4px",
-                            padding: "20px",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            transition: "all 200ms ease",
-                            boxShadow: "0 2px 4px rgba(0,0,0,0.05)"
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.1)";
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.05)";
-                          }}
-                        >
-                          <div style={{ color: "var(--text-primary)", display: "flex", flexDirection: "column", gap: "4px", flex: 1 }}>
-                            <div className="history-item-title" style={{ fontWeight: "600", fontSize: "16px" }}>{h.title}</div>
-                            <div className="history-item-info" style={{ fontSize: "14px", color: "var(--text-secondary)" }}>{h.meta}</div>
-                            <div className="history-item-pdf" style={{ fontSize: "14px", color: "var(--text-secondary)" }}>PDF: {h.pdfName}</div>
-                          </div>
-                          <div className="history-item-actions" style={{ display: "flex", gap: "12px" }}>
-                            <button
-                              className="history-item-btn"
-                              type="button"
-                              onClick={() => handleLoadHistoryItem(h.id)}
-                              style={{
-                                backgroundColor: "var(--accent)",
-                                color: "var(--bg-primary)",
-                                border: "none",
-                                padding: "8px 16px",
-                                borderRadius: "4px",
-                                cursor: "pointer",
-                                transition: "background-color 200ms ease, box-shadow 200ms ease",
-                                fontSize: "14px",
-                                fontWeight: "500",
-                                boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                              }}
-                              onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                              onMouseLeave={(e) => { e.target.style.backgroundColor = "var(--accent)"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                            >
-                              Load
-                            </button>
-                            <button
-                              className="history-item-btn"
-                              type="button"
-                              onClick={() => handleDeleteHistoryItem(h.id)}
-                              style={{
-                                backgroundColor: "var(--accent)",
-                                color: "var(--bg-primary)",
-                                border: "none",
-                                padding: "8px 16px",
-                                borderRadius: "4px",
-                                cursor: "pointer",
-                                transition: "background-color 200ms ease, box-shadow 200ms ease",
-                                fontSize: "14px",
-                                fontWeight: "500",
-                                boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                              }}
-                              onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                              onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {totalPages > 1 && (
-                    <div className="pagination" style={{ display: "flex", justifyContent: "center", gap: "12px", marginTop: "32px" }}>
-                      <button
-                        disabled={currentPage === 1}
-                        onClick={() => setCurrentPage((p) => p - 1)}
-                        style={{
-                          backgroundColor: currentPage === 1 ? "var(--bg-secondary)" : "var(--accent)",
-                          color: currentPage === 1 ? "var(--text-secondary)" : "var(--bg-primary)",
-                          border: "none",
-                          padding: "8px 16px",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          transition: "background-color 200ms ease, box-shadow 200ms ease",
-                          fontSize: "14px",
-                          boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                        }}
-                        onMouseEnter={(e) => { if (currentPage !== 1) e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                        onMouseLeave={(e) => { if (currentPage !== 1) e.target.style.backgroundColor = "var(--accent)"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                      >
-                        &lt;
-                      </button>
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                        <button
-                          key={page}
-                          className={page === currentPage ? "active" : ""}
-                          onClick={() => setCurrentPage(page)}
-                          style={{
-                            backgroundColor: page === currentPage ? "var(--accent)" : "var(--bg-card)",
-                            color: page === currentPage ? "var(--bg-primary)" : "var(--text-primary)",
-                            border: "1px solid var(--border-color)",
-                            padding: "8px 16px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            transition: "all 200ms ease",
-                            fontSize: "14px",
-                            boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                          }}
-                          onMouseEnter={(e) => { e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                          onMouseLeave={(e) => { e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                        >
-                          {page}
-                        </button>
-                      ))}
-                      <button
-                        disabled={currentPage === totalPages}
-                        onClick={() => setCurrentPage((p) => p + 1)}
-                        style={{
-                          backgroundColor: currentPage === totalPages ? "#e5e5e5" : "#ef4444",
-                          color: "#ffffff",
-                          border: "none",
-                          padding: "8px 16px",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          transition: "background-color 200ms ease, box-shadow 200ms ease",
-                          fontSize: "14px",
-                          boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                        }}
-                        onMouseEnter={(e) => { if (currentPage !== totalPages) e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                        onMouseLeave={(e) => { if (currentPage !== totalPages) e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                      >
-                        &gt;
-                      </button>
-                    </div>
-                  )}
-                </div>
+                <ChatHistory 
+                  paginatedHistory={paginatedHistory}
+                  searchQuery={searchQuery}
+                  setSearchQuery={setSearchQuery}
+                  onLoad={handleLoadHistoryItem}
+                  onDelete={handleDeleteHistoryItem}
+                  onClear={handleClearHistory}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  totalPages={totalPages}
+                />
               </div>
 
               {/* EXPORT CONVERSATION */}
@@ -1266,95 +1090,24 @@ export default function KuroWorkspacePage() {
                   display: activeChatSubTab === "export" ? "flex" : "none",
                   flexDirection: "column",
                   flex: 1,
-                  transition: "opacity 300ms ease",
-                  opacity: activeChatSubTab === "export" ? 1 : 0,
                   padding: "24px",
                   width: "100%",
                   boxSizing: "border-box"
                 }}
               >
-                <div className="export-container" style={{ backgroundColor: "transparent" }}>
-                  <div className="export-header" style={{ marginBottom: "32px" }}>
-                    <h3 className="export-title" style={{ color: "var(--text-primary)", fontSize: "24px", fontWeight: "600" }}>Export Conversation</h3>
-                    <p className="export-desc" style={{ color: "var(--text-secondary)", fontSize: "16px", marginTop: "8px" }}>
-                      Choose a format to export your current conversation.
-                    </p>
-                  </div>
-                  <div className="export-options-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", width: "100%" }}>
-                    {[
-                      { icon: "📄", title: "Export as PDF", desc: "Download as a formatted PDF document.", handler: handleExportPDF },
-                      { icon: "📝", title: "Export as DOCX", desc: "Download as a Word document.", handler: handleExportDOCX },
-                      { icon: "📊", title: "Export as CSV", desc: "Download as a spreadsheet-compatible CSV.", handler: handleExportCSV },
-                      { icon: "📄", title: "Export as TXT", desc: "Download as plain text.", handler: handleExportTXT },
-                      { icon: "📋", title: "Copy to Clipboard", desc: "Copy the conversation text.", handler: handleCopyText },
-                      { icon: "🌐", title: "Export as HTML", desc: "Download as an HTML file.", handler: handleExportHTML },
-                      { icon: "📝", title: "Export as Markdown", desc: "Download as a Markdown file.", handler: handleExportMarkdown },
-                      { icon: "🔗", title: "Generate Shareable Link", desc: "Copy a link to share the conversation.", handler: handleGenerateShareableLink },
-                    ].map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="export-card"
-                        style={{
-                          backgroundColor: "var(--bg-card)",
-                          borderRadius: "4px",
-                          padding: "24px",
-                          textAlign: "center",
-                          transition: "all 200ms ease",
-                          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-                          border: "1px solid var(--border-color)",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          gap: "16px"
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = "0 4px 8px rgba(0,0,0,0.3)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
-                        }}
-                      >
-                        <span className="export-icon" style={{ fontSize: "32px" }}>{item.icon}</span>
-                        <h4 className="export-card-title" style={{ color: "var(--text-primary)", fontSize: "18px", fontWeight: "600" }}>{item.title}</h4>
-                        <p className="export-card-desc" style={{ color: "var(--text-secondary)", fontSize: "14px" }}>{item.desc}</p>
-                        <button
-                          className="export-btn"
-                          type="button"
-                          onClick={item.handler}
-                          style={{
-                            backgroundColor: "var(--accent)",
-                            color: "var(--bg-primary)",
-                            border: "none",
-                            padding: "10px 20px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            transition: "background-color 200ms ease, box-shadow 200ms ease",
-                            fontSize: "14px",
-                            fontWeight: "500",
-                            boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
-                            width: "100%"
-                          }}
-                          onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                          onMouseLeave={(e) => { e.target.style.backgroundColor = "var(--accent)"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                        >
-                          {item.title.includes("Copy") ? "Copy" : item.title.includes("Link") ? "Generate" : "Export"}
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                  {exportStatus && (
-                    <div className="export-status" style={{ marginTop: "32px", textAlign: "center", color: exportStatus.type === "error" ? "var(--accent)" : "var(--text-primary)", fontSize: "14px" }}>
-                      <div className="status-icon" style={{ fontSize: "24px", marginBottom: "8px" }}>
-                        {exportStatus.type === "error" ? "⚠️" : "✅"}
-                      </div>
-                      <div className="status-message">
-                        {exportStatus.message.split("\n").map((l, i) => (
-                          <div key={i}>{l}</div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                <ChatExport 
+                  exports={{
+                    handleExportPDF,
+                    handleExportDOCX,
+                    handleExportCSV,
+                    handleExportTXT,
+                    handleCopyText,
+                    handleExportHTML,
+                    handleExportMarkdown,
+                    handleGenerateShareableLink
+                  }}
+                  status={exportStatus}
+                />
               </div>
             </section>
 
