@@ -7,51 +7,49 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 2rem;
     position: relative;
     overflow: hidden;
     background: var(--bg-primary);
-    padding: 2rem;
 }
 
 .auth-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1100px;
     width: 100%;
-    max-width: 440px;
+    margin: 0 auto;
+    align-items: center;
     position: relative;
     z-index: 1;
 }
 
-/* ── Hero / Header area ── */
+/* ── LEFT: Hero ── */
 .auth-hero {
-    text-align: center;
-    width: 100%;
-    margin-bottom: 2rem;
+    max-width: 520px;
 }
 
 .auth-logo {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 10px;
     cursor: pointer;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 }
 
 .auth-logo-text {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 800;
     color: var(--text-primary);
     letter-spacing: -0.5px;
 }
 
 .auth-title {
-    font-size: 1.8rem;
+    font-size: 2.4rem;
     font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 0.6rem;
+    line-height: 1.15;
+    margin-bottom: 1.2rem;
     color: var(--text-primary);
     letter-spacing: -0.5px;
 }
@@ -65,20 +63,38 @@
 
 .auth-description {
     color: var(--text-secondary);
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
 }
 
-/* ── Form Section ── */
+.auth-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    margin-bottom: 2rem;
+}
+
+.auth-feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.auth-floats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* ── RIGHT: Form ── */
 .auth-form-section {
-    width: 100%;
     display: flex;
     justify-content: center;
 }
 
-.auth-form-section > * {
-    width: 100%;
-}
 
 /* Background orbs */
 .auth-orb {
@@ -106,16 +122,36 @@
 }
 
 /* ── Responsive ── */
+@media (max-width: 900px) {
+    .auth-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .auth-hero {
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .auth-features {
+        align-items: center;
+    }
+
+    .auth-floats {
+        justify-content: center;
+    }
+
+    .auth-title {
+        font-size: 1.8rem;
+    }
+}
+
 @media (max-width: 500px) {
     .auth-page {
         padding: 1rem;
     }
-    
-    .auth-container {
-        max-width: 100%;
-    }
 
-    .auth-title {
-        font-size: 1.6rem;
+    .auth-form-card {
+        padding: 1.5rem 1rem;
     }
 }
