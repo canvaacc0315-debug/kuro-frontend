@@ -7,6 +7,8 @@ export default function PrivacyPolicy() {
     {
       icon: <Database size={20} />,
       title: "Information We Collect",
+      color: "#3b82f6",
+      bg: "rgba(59, 130, 246, 0.1)",
       content: [
         "RovexAI does not collect personal information unless it is required to provide our services. Authentication and account management are handled securely by trusted third‑party providers.",
         "Uploaded documents are processed only to deliver AI‑powered features and are never shared with third parties.",
@@ -15,6 +17,8 @@ export default function PrivacyPolicy() {
     {
       icon: <Cookie size={20} />,
       title: "Advertising & Cookies",
+      color: "#f59e0b",
+      bg: "rgba(245, 158, 11, 0.1)",
       content: [
         "RovexAI uses Google AdSense to display advertisements. Google may use cookies or similar technologies to personalize ads based on your visits to this and other websites.",
         "You can opt out of personalized advertising through Google's Ads Settings.",
@@ -23,6 +27,8 @@ export default function PrivacyPolicy() {
     {
       icon: <Shield size={20} />,
       title: "How We Use Your Information",
+      color: "#10b981",
+      bg: "rgba(16, 185, 129, 0.1)",
       content: [
         "Information collected is used solely to operate, maintain, and improve our services. We do not sell, rent, or trade user data to third parties.",
       ],
@@ -30,6 +36,8 @@ export default function PrivacyPolicy() {
     {
       icon: <Lock size={20} />,
       title: "Security",
+      color: "#ef4444",
+      bg: "rgba(239, 68, 68, 0.1)",
       content: [
         "We use industry‑standard security measures to protect user data. All communications are encrypted wherever possible.",
       ],
@@ -37,6 +45,8 @@ export default function PrivacyPolicy() {
     {
       icon: <ExternalLink size={20} />,
       title: "Third‑Party Services",
+      color: "#a855f7",
+      bg: "rgba(168, 85, 247, 0.1)",
       content: [
         "RovexAI may contain links to third‑party websites or services. We are not responsible for their privacy practices or content.",
       ],
@@ -83,8 +93,8 @@ export default function PrivacyPolicy() {
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "0.8rem" }}>
               <div style={{
                 width: 36, height: 36, borderRadius: "var(--radius-sm)",
-                background: "var(--accent-subtle)", display: "flex",
-                alignItems: "center", justifyContent: "center", color: "var(--accent)",
+                background: s.bg || "var(--accent-subtle)", display: "flex",
+                alignItems: "center", justifyContent: "center", color: s.color || "var(--accent)",
               }}>
                 {s.icon}
               </div>

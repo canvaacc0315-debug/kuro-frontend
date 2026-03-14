@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSignIn, useAuth } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
+import { MessageSquare, BarChart3, Zap, Search } from "lucide-react";
 import KuroLogo from "../components/layout/KuroLogo.jsx";
-import "../styles/kuro.css";
+import "../styles/login-landing.css";
 import "../styles/no-scrollbar-override.css";
 
 
@@ -139,7 +140,9 @@ export default function KuroLandingPage() {
 
           <div className="features-grid">
             <div className="feature-card">
-              <div className="feature-icon">💬</div>
+              <div className="feature-icon" style={{ background: "rgba(59, 130, 246, 0.1)", color: "#3b82f6", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
+                <MessageSquare size={24} />
+              </div>
               <div className="feature-title">Smart Q&amp;A</div>
               <div className="feature-desc">
                 Ask questions about your PDF content and get instant answers.
@@ -147,7 +150,9 @@ export default function KuroLandingPage() {
             </div>
 
             <div className="feature-card">
-              <div className="feature-icon">📊</div>
+              <div className="feature-icon" style={{ background: "rgba(245, 158, 11, 0.1)", color: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
+                <BarChart3 size={24} />
+              </div>
               <div className="feature-title">Data Extraction</div>
               <div className="feature-desc">
                 Extract tables, charts, and structured data automatically.
@@ -155,7 +160,9 @@ export default function KuroLandingPage() {
             </div>
 
             <div className="feature-card">
-              <div className="feature-icon">⚡</div>
+              <div className="feature-icon" style={{ background: "rgba(168, 85, 247, 0.1)", color: "#a855f7", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
+                <Zap size={24} />
+              </div>
               <div className="feature-title">Summarization</div>
               <div className="feature-desc">
                 Get concise summaries of lengthy documents in seconds.
@@ -163,13 +170,15 @@ export default function KuroLandingPage() {
             </div>
 
             <div className="feature-card">
-              <div className="feature-icon">🔍</div>
+              <div className="feature-icon" style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10b981", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
+                <Search size={24} />
+              </div>
               <div className="feature-title">OCR &amp; Vision</div>
               <div className="feature-desc">
                 Understand scanned documents and complex layouts.
               </div>
             </div>
-            </div>
+          </div>
         {/* RIGHT: auth form */}
         <div className="auth-section">
           <div className="auth-header">

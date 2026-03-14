@@ -5,10 +5,10 @@ import { Mail, Globe, Clock, Target } from "lucide-react";
 
 export default function Contact() {
   const contactInfo = [
-    { icon: <Mail size={20} />, title: "Email", description: <span style={{ wordBreak: "break-all" }}>RovexAi.HelpDesk2025@gmail.com</span> },
-    { icon: <Globe size={20} />, title: "Website", description: "https://rovexai.com" },
-    { icon: <Clock size={20} />, title: "Support Hours", description: "24/7 Availability" },
-    { icon: <Target size={20} />, title: "Response Time", description: "Most inquiries answered within 24 hours" },
+    { icon: <Mail size={20} />, title: "Email", description: <span style={{ wordBreak: "break-all" }}>RovexAi.HelpDesk2025@gmail.com</span>, color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
+    { icon: <Globe size={20} />, title: "Website", description: "https://rovexai.com", color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
+    { icon: <Clock size={20} />, title: "Support Hours", description: "24/7 Availability", color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" },
+    { icon: <Target size={20} />, title: "Response Time", description: "Most inquiries answered within 24 hours", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.1)" },
   ];
 
   return (
@@ -53,7 +53,15 @@ export default function Contact() {
         marginBottom: "3rem",
       }}>
         {contactInfo.map((c, i) => (
-          <GlassCard key={i} icon={c.icon} title={c.title} description={c.description} delay={i * 0.1} />
+          <GlassCard 
+            key={i} 
+            icon={c.icon} 
+            title={c.title} 
+            description={c.description} 
+            delay={i * 0.1} 
+            iconColor={c.color}
+            iconBg={c.bg}
+          />
         ))}
       </div>
 

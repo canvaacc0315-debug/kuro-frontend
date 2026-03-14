@@ -27,15 +27,7 @@ import {
   Wrench,
   GraduationCap,
   PanelLeftClose,
-  PanelLeftOpen,
-  Sparkles,
-  Search,
-  Trash2,
-  Save,
-  Download,
-  Share2,
-  History,
-  MessageCircle
+  PanelLeftOpen
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -750,93 +742,70 @@ export default function KuroWorkspacePage() {
 
             <section
               id="chatTab"
-              className={`tab-content chat-tab-container ${activeTab === "chat" ? "active" : ""}`}
-              style={{ display: activeTab === "chat" ? "flex" : "none", flexDirection: "column", height: "100%" }}
+              className={`tab-content ${activeTab === "chat" ? "active" : ""}`}
             >
-              <div className="chat-header-modern" style={{ padding: "10px 24px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "20px", borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(0,0,0,0.2)" }}>
-                <div className="chat-subtab-selector" style={{ display: "flex", gap: "24px" }}>
-                  {[
-                    { id: "current", label: "Current Chat", icon: <MessageCircle size={16} /> },
-                    { id: "history", label: "History", icon: <History size={16} /> },
-                    { id: "export", label: "Export", icon: <Download size={16} /> }
-                  ].map((sub) => (
-                    <button
-                      key={sub.id}
-                      className={`subtab-btn ${activeChatSubTab === sub.id ? "active" : ""}`}
-                      onClick={() => setActiveChatSubTab(sub.id)}
-                      style={{
-                        backgroundColor: "transparent",
-                        border: "none",
-                        color: activeChatSubTab === sub.id ? "var(--accent)" : "rgba(255,255,255,0.5)",
-                        fontSize: "14px",
-                        fontWeight: activeChatSubTab === sub.id ? "600" : "400",
-                        cursor: "pointer",
-                        padding: "12px 0",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        position: "relative",
-                        transition: "all 0.3s ease"
-                      }}
-                    >
-                      {sub.icon}
-                      {sub.label}
-                      {activeChatSubTab === sub.id && (
-                        <motion.div
-                          layoutId="activeSubTab"
-                          style={{ position: "absolute", bottom: "-1px", left: 0, right: 0, height: "2px", backgroundColor: "var(--accent)" }}
-                        />
-                      )}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="chat-action-btns" style={{ display: "flex", gap: "10px" }}>
-                  <button
-                    onClick={handleSaveConversation}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      background: "rgba(239, 68, 68, 0.1)",
-                      border: "1px solid rgba(239, 68, 68, 0.2)",
-                      color: "#ef4444",
-                      padding: "6px 14px",
-                      borderRadius: "8px",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      cursor: "pointer",
-                      transition: "all 0.2s ease"
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.2)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)"; }}
-                  >
-                    <Save size={14} /> Save
-                  </button>
-                  <button
-                    onClick={handleClearConversation}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      background: "rgba(255, 255, 255, 0.03)",
-                      border: "1px solid rgba(255, 255, 255, 0.08)",
-                      color: "rgba(255, 255, 255, 0.7)",
-                      padding: "6px 14px",
-                      borderRadius: "8px",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      cursor: "pointer",
-                      transition: "all 0.2s ease"
-                    }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255, 255, 255, 0.03)"; }}
-                  >
-                    <Trash2 size={14} /> Clear
-                  </button>
-                </div>
+              {/* ... chat content remains the same ... */}
+              <div className="chat-subtabs-nav" style={{ backgroundColor: "transparent", borderBottom: "1px solid var(--border-color)", display: "flex", justifyContent: "flex-start", gap: "24px", padding: "0 24px 0 24px", height: "60px", alignItems: "center" }}>
+                <button
+                  className={`chat-subtab-btn ${activeChatSubTab === "current" ? "active" : ""}`}
+                  onClick={() => handleChatSubTabClick("current")}
+                  style={{
+                    color: activeChatSubTab === "current" ? "var(--accent)" : "var(--text-secondary)",
+                    borderBottom: activeChatSubTab === "current" ? "2px solid var(--accent)" : "none",
+                    transition: "all 300ms ease",
+                    fontWeight: "500",
+                    fontSize: "16px",
+                    padding: "0 0 8px 0",
+                    background: "none",
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    cursor: "pointer"
+                  }}
+                >
+                  Current Chat
+                </button>
+                <button
+                  className={`chat-subtab-btn ${activeChatSubTab === "history" ? "active" : ""}`}
+                  onClick={() => handleChatSubTabClick("history")}
+                  style={{
+                    color: activeChatSubTab === "history" ? "var(--accent)" : "var(--text-secondary)",
+                    borderBottom: activeChatSubTab === "history" ? "2px solid var(--accent)" : "none",
+                    transition: "all 300ms ease",
+                    fontWeight: "500",
+                    fontSize: "16px",
+                    padding: "0 0 8px 0",
+                    background: "none",
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    cursor: "pointer"
+                  }}
+                >
+                  Chat History
+                </button>
+                <button
+                  className={`chat-subtab-btn ${activeChatSubTab === "export" ? "active" : ""}`}
+                  onClick={() => handleChatSubTabClick("export")}
+                  style={{
+                    color: activeChatSubTab === "export" ? "var(--accent)" : "var(--text-secondary)",
+                    borderBottom: activeChatSubTab === "export" ? "2px solid var(--accent)" : "none",
+                    transition: "all 300ms ease",
+                    fontWeight: "500",
+                    fontSize: "16px",
+                    padding: "0 0 8px 0",
+                    background: "none",
+                    borderTop: "none",
+                    borderLeft: "none",
+                    borderRight: "none",
+                    cursor: "pointer"
+                  }}
+                >
+                  Export Conversation
+                </button>
               </div>
 
+              {/* CURRENT CHAT */}
               <div
                 className="chat-subtab-content"
                 style={{
@@ -844,59 +813,12 @@ export default function KuroWorkspacePage() {
                   flexDirection: "column",
                   flex: 1,
                   transition: "opacity 300ms ease",
-                  opacity: activeChatSubTab === "current" ? 1 : 0
+                  opacity: activeChatSubTab === "current" ? 1 : 0,
+                  padding: "24px",
+                  width: "100%",
+                  boxSizing: "border-box"
                 }}
               >
-                <div className="chat-controls-premium" style={{ display: "flex", flexWrap: "wrap", gap: "16px", padding: "16px 24px", background: "rgba(0,0,0,0.1)", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
-                  <div className="control-group" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", fontWeight: "600" }}>Scope:</span>
-                    <div className="scope-pills" style={{ display: "flex", padding: "3px", background: "rgba(255,255,255,0.03)", borderRadius: "100px", border: "1px solid rgba(255,255,255,0.05)" }}>
-                      {["all", "page", "range"].map((s) => (
-                        <button
-                          key={s}
-                          onClick={() => setChatScope({ ...chatScope, type: s })}
-                          style={{
-                            padding: "4px 12px",
-                            borderRadius: "100px",
-                            border: "none",
-                            fontSize: "12px",
-                            fontWeight: chatScope.type === s ? "600" : "500",
-                            background: chatScope.type === s ? "var(--accent)" : "transparent",
-                            color: chatScope.type === s ? "white" : "rgba(255,255,255,0.5)",
-                            cursor: "pointer",
-                            transition: "all 0.2s ease"
-                          }}
-                        >
-                          {s === "all" ? "Entire PDF" : s === "page" ? "Page" : "Range"}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="control-group" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", fontWeight: "600" }}>Style:</span>
-                    <select
-                      className="premium-select"
-                      value={answerStyle}
-                      onChange={(e) => setAnswerStyle(e.target.value)}
-                      style={{ 
-                        background: "rgba(255,255,255,0.05)", 
-                        border: "1px solid rgba(255,255,255,0.1)", 
-                        color: "white", 
-                        padding: "5px 12px", 
-                        borderRadius: "8px", 
-                        fontSize: "13px",
-                        outline: "none"
-                      }}
-                    >
-                      <option value="default">Default</option>
-                      <option value="summary">Concise</option>
-                      <option value="exam">Exam Mode</option>
-                      <option value="bullet">Bullet Points</option>
-                    </select>
-                  </div>
-                </div>
-
                 <div className="chat-layout" style={{ backgroundColor: "transparent", display: "flex", flexDirection: "column", flex: 1, width: "100%", gap: "24px" }}>
                   <div className="chat-main" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
                     <div className="chat-top-row" style={{ display: "flex", gap: "24px", flexWrap: "wrap", marginBottom: "24px" }}>
@@ -1091,125 +1013,52 @@ export default function KuroWorkspacePage() {
                       </button>
                     </div>
 
-                    <div className="chat-wrapper" style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
+                    <div className="chat-wrapper">
                       <div
                         ref={chatMessagesRef}
                         className="chat-messages no-scrollbar"
                         style={{
                           msOverflowStyle: 'none',
                           scrollbarWidth: 'none',
-                          padding: "24px 24px 100px",
+                          padding: "24px",
                           overflowY: "auto",
                           flex: 1,
                           backgroundColor: "transparent",
-                          scrollBehavior: "smooth"
+                          maxHeight: "calc(100vh - 300px)"
                         }}
                       >
-                        <AnimatePresence initial={false}>
-                          {conversation.map((m, index) => (
-                            <motion.div
-                              key={m.id}
-                              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              transition={{ duration: 0.3, delay: index === conversation.length - 1 ? 0.1 : 0 }}
-                              className={`message-row ${m.role === "user" ? "user-row" : "bot-row"}`}
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: m.role === "user" ? "flex-end" : "flex-start",
-                                marginBottom: "20px",
-                                width: "100%"
-                              }}
-                            >
-                              <div style={{ 
-                                display: "flex", 
-                                alignItems: "flex-end", 
-                                gap: "10px",
-                                maxWidth: "85%",
-                                flexDirection: m.role === "user" ? "row-reverse" : "row"
-                              }}>
-                                {/* Avatar */}
-                                <div className="avatar-wrapper" style={{ flexShrink: 0, marginBottom: "4px" }}>
-                                  {m.role === "bot" ? (
-                                    <div style={{ 
-                                      width: "32px", 
-                                      height: "32px", 
-                                      borderRadius: "10px", 
-                                      background: "linear-gradient(135deg, #ef4444, #991b1b)",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                      boxShadow: "0 4px 10px rgba(239, 68, 68, 0.3)"
-                                    }}>
-                                      <Sparkles size={16} color="white" />
-                                    </div>
-                                  ) : (
-                                    <img
-                                      src={user?.imageUrl}
-                                      alt="User"
-                                      className="user-avatar"
-                                      style={{ 
-                                        width: "32px", 
-                                        height: "32px", 
-                                        borderRadius: "10px", 
-                                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                                        objectFit: "cover"
-                                      }}
-                                    />
-                                  )}
-                                </div>
-
-                                {/* Bubble */}
-                                <div 
-                                  className={`message-bubble ${m.role === "user" ? "user-bubble" : "bot-bubble"}`}
-                                  style={{ 
-                                    padding: "12px 18px", 
-                                    borderRadius: m.role === "user" ? "20px 20px 4px 20px" : "20px 20px 20px 4px", 
-                                    boxShadow: "0 4px 15px rgba(0,0,0,0.1)", 
-                                    border: "1px solid rgba(255, 255, 255, 0.05)",
-                                    background: m.role === "user" 
-                                      ? "linear-gradient(135deg, #ef4444, #b91c1c)" 
-                                      : "rgba(255, 255, 255, 0.03)",
-                                    backdropFilter: m.role === "bot" ? "blur(10px)" : "none",
-                                    color: "white", 
-                                    fontSize: "0.95rem",
-                                    lineHeight: "1.6",
-                                    position: "relative",
-                                    wordBreak: "break-word"
-                                  }}
-                                >
-                                  {m.content}
-                                  <div style={{ 
-                                    fontSize: "0.7rem", 
-                                    opacity: 0.5, 
-                                    marginTop: "6px", 
-                                    textAlign: m.role === "user" ? "right" : "left" 
-                                  }}>
-                                    {m.timestamp}
-                                  </div>
-                                </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                          
-                          {isSending && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              className="typing-indicator"
-                              style={{ paddingLeft: "42px", display: "flex", gap: "4px" }}
-                            >
-                              {[0, 1, 2].map((i) => (
-                                <motion.div
-                                  key={i}
-                                  animate={{ y: [0, -5, 0] }}
-                                  transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1 }}
-                                  style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent)", opacity: 0.6 }}
-                                />
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        {conversation.map((m) => (
+                          <div
+                            key={m.id}
+                            className={`message ${m.role === "user" ? "user" : "bot"}`}
+                            style={{
+                              display: "flex",
+                              alignItems: "flex-start",
+                              marginBottom: "24px",
+                              animation: "fadeIn 300ms ease",
+                            }}
+                          >
+                            {m.role === "bot" && (
+                              <img
+                                src="/kuro-logo.png"
+                                alt="kuro-logo"
+                                className="message-avatar"
+                                style={{ width: "40px", height: "40px", borderRadius: "50%", marginRight: "16px" }}
+                              />
+                            )}
+                            <div className="message-bubble" style={{ backgroundColor: m.role === "user" ? "var(--bg-secondary)" : "var(--bg-card)", padding: "12px 16px", borderRadius: "4px", boxShadow: "0 2px 4px rgba(0,0,0,0.2)", border: "1px solid var(--border-color)", color: "var(--text-primary)", maxWidth: "80%", lineHeight: "1.5" }}>
+                              {m.content}
+                            </div>
+                            {m.role === "user" && (
+                              <img
+                                src={user?.imageUrl}
+                                alt="User"
+                                className="message-avatar"
+                                style={{ width: "40px", height: "40px", borderRadius: "50%", marginLeft: "16px" }}
+                              />
+                            )}
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>

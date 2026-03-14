@@ -84,19 +84,19 @@ export default function HomePage() {
   }, []);
 
   const features = [
-    { icon: <Cpu size={24} />, title: "AI & Machine Learning", desc: "Advanced AI models understand your PDFs contextually, not just by keywords.", accent: true },
-    { icon: <Wifi size={24} />, title: "Real‑Time Intelligence", desc: "Analyze documents instantly as you upload them with live processing." },
-    { icon: <MessageSquare size={24} />, title: "Collaborative Workspace", desc: "Work with your documents like a live interactive workspace." },
-    { icon: <Database size={24} />, title: "Multi‑Document Support", desc: "Handle multiple PDFs at once — reports, contracts, research, and more." },
-    { icon: <Shield size={24} />, title: "End-to-End Security", desc: "Encrypted processing ensures data never leaks or trains public models.", accent: true },
-    { icon: <Sparkles size={24} />, title: "Deep PDF Insights", desc: "Hyper-personalized assessments, summaries, and actionable data extraction." },
+    { icon: <Cpu size={24} />, title: "AI & Machine Learning", desc: "Advanced AI models understand your PDFs contextually, not just by keywords.", accent: true, color: "#3b82f6", bg: "rgba(59, 130, 246, 0.15)" },
+    { icon: <Wifi size={24} />, title: "Real‑Time Intelligence", desc: "Analyze documents instantly as you upload them with live processing.", color: "#10b981", bg: "rgba(16, 185, 129, 0.15)" },
+    { icon: <MessageSquare size={24} />, title: "Collaborative Workspace", desc: "Work with your documents like a live interactive workspace.", color: "#a855f7", bg: "rgba(168, 85, 247, 0.15)" },
+    { icon: <Database size={24} />, title: "Multi‑Document Support", desc: "Handle multiple PDFs at once — reports, contracts, research, and more.", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.15)" },
+    { icon: <Shield size={24} />, title: "End-to-End Security", desc: "Encrypted processing ensures data never leaks or trains public models.", accent: true, color: "#10b981", bg: "rgba(16, 185, 129, 0.15)" },
+    { icon: <Sparkles size={24} />, title: "Deep PDF Insights", desc: "Hyper-personalized assessments, summaries, and actionable data extraction.", color: "#ec4899", bg: "rgba(236, 72, 153, 0.15)" },
   ];
 
   const steps = [
-    { icon: <Upload size={28} />, title: "Upload", desc: "Drag & drop PDFs of any size" },
-    { icon: <Cpu size={28} />, title: "Analyze", desc: "AI processes text, tables & visuals" },
-    { icon: <MessageSquare size={28} />, title: "Query", desc: "Chat with your documents naturally" },
-    { icon: <Zap size={28} />, title: "Generate", desc: "Get summaries & insights instantly" },
+    { icon: <Upload size={28} />, title: "Upload", desc: "Drag & drop PDFs of any size", color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
+    { icon: <Cpu size={28} />, title: "Analyze", desc: "AI processes text, tables & visuals", color: "#a855f7", bg: "rgba(168, 85, 247, 0.1)" },
+    { icon: <MessageSquare size={28} />, title: "Query", desc: "Chat with your documents naturally", color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" },
+    { icon: <Zap size={28} />, title: "Generate", desc: "Get summaries & insights instantly", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.1)" },
   ];
 
   return (
@@ -240,7 +240,7 @@ export default function HomePage() {
                 whileHover={{ y: -8, transition: { duration: 0.25 } }}
               >
                 <div className="hp-how-num">{String(i + 1).padStart(2, "0")}</div>
-                <div className="hp-how-icon">{s.icon}</div>
+                <div className="hp-how-icon" style={{ background: s.bg, color: s.color }}>{s.icon}</div>
                 <h3>{s.title}</h3>
                 <p>{s.desc}</p>
                 {i < steps.length - 1 && <div className="hp-how-connector" />}
@@ -267,7 +267,7 @@ export default function HomePage() {
                 className={`hp-bento-card ${f.accent ? "hp-bento-accent" : ""}`}
                 whileHover={{ y: -6, transition: { duration: 0.2 } }}
               >
-                <div className="hp-bento-icon">{f.icon}</div>
+                <div className="hp-bento-icon" style={!f.accent ? { background: f.bg, color: f.color } : {}}>{f.icon}</div>
                 <h3>{f.title}</h3>
                 <p>{f.desc}</p>
                 <div className="hp-bento-shine" />

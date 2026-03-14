@@ -9,12 +9,12 @@ export default function About() {
   const navigate = useNavigate();
 
   const features = [
-    { icon: <FileText size={20} />, title: "Upload & Analyze", description: "Upload PDFs of any size and extract insights instantly." },
-    { icon: <MessageSquare size={20} />, title: "Ask Questions", description: "Ask natural‑language questions and get accurate answers." },
-    { icon: <Sparkles size={20} />, title: "Smart Summaries", description: "Generate concise summaries from long documents." },
-    { icon: <BarChart3 size={20} />, title: "Data Extraction", description: "Extract tables, structured data, and key points." },
-    { icon: <Search size={20} />, title: "OCR & Charts", description: "Understand charts, images, and scanned PDFs." },
-    { icon: <PenTool size={20} />, title: "Create Notes", description: "Create notes, question papers, and insights." },
+    { icon: <FileText size={20} />, title: "Upload & Analyze", description: "Upload PDFs of any size and extract insights instantly.", color: "#3b82f6", bg: "rgba(59, 130, 246, 0.1)" },
+    { icon: <MessageSquare size={20} />, title: "Ask Questions", description: "Ask natural‑language questions and get accurate answers.", color: "#a855f7", bg: "rgba(168, 85, 247, 0.1)" },
+    { icon: <Sparkles size={20} />, title: "Smart Summaries", description: "Generate concise summaries from long documents.", color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" },
+    { icon: <BarChart3 size={20} />, title: "Data Extraction", description: "Extract tables, structured data, and key points.", color: "#f59e0b", bg: "rgba(245, 158, 11, 0.1)" },
+    { icon: <Search size={20} />, title: "OCR & Charts", description: "Understand charts, images, and scanned PDFs.", color: "#ec4899", bg: "rgba(236, 72, 153, 0.1)" },
+    { icon: <PenTool size={20} />, title: "Create Notes", description: "Create notes, question papers, and insights.", color: "#06b6d4", bg: "rgba(6, 182, 212, 0.1)" },
   ];
 
   return (
@@ -66,7 +66,15 @@ export default function About() {
         marginBottom: "3rem",
       }}>
         {features.map((f, i) => (
-          <GlassCard key={i} icon={f.icon} title={f.title} description={f.description} delay={i * 0.08} />
+          <GlassCard 
+            key={i} 
+            icon={f.icon} 
+            title={f.title} 
+            description={f.description} 
+            delay={i * 0.08} 
+            iconColor={f.color}
+            iconBg={f.bg}
+          />
         ))}
       </div>
 
