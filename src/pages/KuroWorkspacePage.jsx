@@ -9,6 +9,7 @@ import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
 import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import OcrPanel from "../components/OcrPanel";
+import logoIcon from "../assets/logo.svg";
 
 import { useClerk } from "@clerk/clerk-react";
 import KuroHeader from "../components/layout/KuroHeader.jsx";
