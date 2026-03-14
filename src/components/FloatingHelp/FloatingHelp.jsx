@@ -8,9 +8,11 @@ const categories = [
     title: "Using the RovexAI Chatbot",
     subtitle: "Basics & Privacy",
     questions: [
-      { q: "Is this a formal medical diagnosis?", a: "No. RovexAI provides intelligent analysis of your texts and PDFs based on AI, but it is not intended for medical, legal, or formal professional advice." },
-      { q: "How does RovexAI work?", a: "RovexAI parses your documents instantly and uses an advanced language model to let you chat naturally about the contents, extract data, or build study materials." },
-      { q: "Is my data private?", a: "Yes! PDFs are processed securely and not stored without consent. Learn more at rovexai.com/privacy." }
+      { q: "What types of PDFs can I upload?", a: "You can upload almost any standard PDF document (textbooks, financial reports, research papers). Both text-based and scanned PDFs are supported depending on your plan tier." },
+      { q: "How does the AI answer questions?", a: "RovexAI parses your documents instantly. When you ask a question, it searches the document's content to generate highly accurate answers directly citing your text." },
+      { q: "Is my uploaded data private?", a: "Absolutely! We employ industry-standard encryption. Your PDFs are processed securely and never used to train global AI models without your explicit consent." },
+      { q: "Can the chatbot read charts and tables?", a: "Yes. Advanced Analysis mode is capable of understanding structured data inside tables and interpreting simple charts within your PDF." },
+      { q: "Is there a file size limit?", a: "The free tier supports up to 10MB per PDF. Premium users can upload documents up to 50MB and hundreds of pages at once." }
     ]
   },
   {
@@ -18,18 +20,20 @@ const categories = [
     title: "Analysis Types",
     subtitle: "Simple vs Advanced Check",
     questions: [
-      { q: "How does Analysis work?", a: "Basic mode uses straightforward extraction; Advanced dives deeper with AI patterns for insights, charts, and table extraction." },
-      { q: "What is OCR and when to use it?", a: "OCR extracts text from scanned or image-based PDFs. Enable it for non-digital documents to unlock full chatbot functionality." },
-      { q: "Can I export analysis results?", a: "Absolutely! Download summaries, extracted data, or charts as PDF, CSV, or images directly from the results panel." }
+      { q: "How does Basic Analysis work?", a: "Basic mode uses straightforward text extraction, making it ultra-fast and perfect for simple text-based PDFs and quick summaries." },
+      { q: "What is Advanced Analysis?", a: "Advanced Analysis uses deep AI patterns to extract insights, understand complex document layouts, and generate detailed, structured multi-page reports." },
+      { q: "When should I turn on OCR?", a: "OCR (Optical Character Recognition) should be enabled when you upload scanned documents or image-based PDFs where the text isn't normally selectable." },
+      { q: "Can I export the analysis results?", a: "Yes! You can instantly download your summaries, extracted data, or chat histories as PDF, Markdown, or CSV files from the results panel." }
     ]
   },
   {
-    id: "safety",
-    title: "Safety & Emergencies",
-    subtitle: "When to seek urgent care",
+    id: "tools",
+    title: "PDF Tools & Study Mode",
+    subtitle: "Editing and Flashcards",
     questions: [
-      { q: "What if there is an emergency?", a: "Always call your local emergency services immediately. RovexAI is a document tool, not an emergency response system." },
-      { q: "Can it handle sensitive documents?", a: "We employ Military-Grade security, but advise against uploading highly classified or top-secret national security files." }
+      { q: "Can I generate flashcards?", a: "Yes! Study Mode can automatically generate interactive flashcards and practice quizzes based on the textbook or notes you upload." },
+      { q: "Does RovexAI support merging PDFs?", a: "The PDF Tools section allows you to merge multiple documents into a single file before beginning your chat session." },
+      { q: "Can I highlight and add notes?", a: "The native PDF viewer within the workspace allows you to highlight text, draw, and drop pins which you can then reference in your AI chat." }
     ]
   }
 ];

@@ -34,13 +34,14 @@
 }
 
 .hp-header-inner {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
   height: 72px;
+  position: relative;
 }
 
 .hp-logo {
@@ -78,6 +79,9 @@
 
 /* Nav */
 .hp-nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   gap: 2rem;
   align-items: center;

@@ -3,35 +3,22 @@ import { useEffect } from "react";
 import { useUser, SignIn } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Shield, Zap, Check } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
 import AnimatedSection from "../components/animated/AnimatedSection";
-import FloatingCard from "../components/animated/FloatingCard";
 import logoIcon from "../assets/logo.svg";
 import "../styles/auth-page.css";
 
 export default function LoginPage() {
   const { isSignedIn } = useUser();
   const navigate = useNavigate();
-  const { theme } = useTheme();
 
   useEffect(() => {
     if (isSignedIn) navigate("/dashboard", { replace: true });
   }, [isSignedIn, navigate]);
 
-  const features = [
-    "Instant Q&A from any PDF",
-    "AI‑powered summarization",
-    "Smart data extraction",
-    "Chart & image understanding",
-    "Question paper generation",
-    "Screenshot OCR support",
-  ];
-
   return (
     <div className="auth-page">
       <div className="auth-container">
-        {/* LEFT – Hero */}
+        {/* TOP – Hero/Logo */}
         <section className="auth-hero">
           <AnimatedSection>
             <div className="auth-logo" onClick={() => navigate("/")}>
@@ -41,47 +28,23 @@ export default function LoginPage() {
               </span>
             </div>
           </AnimatedSection>
-
+          
           <AnimatedSection delay={0.1}>
             <h1 className="auth-title">
-              Chat with your PDFs{" "}
-              <span className="auth-title-accent">like never before</span>
+              Welcome Back
             </h1>
-          </AnimatedSection>
-
-          <AnimatedSection delay={0.15}>
             <p className="auth-description">
-              RovexAI is your intelligent PDF companion. Upload documents, ask
-              questions, generate summaries, extract data, and unlock insights
-              in seconds.
+              Sign in to continue to RovexAI
             </p>
           </AnimatedSection>
-
-          <AnimatedSection delay={0.2}>
-            <div className="auth-features">
-              {features.map((text) => (
-                <div key={text} className="auth-feature-item">
-                  <Check size={15} style={{ color: "var(--accent)", flexShrink: 0 }} />
-                  <span>{text}</span>
-                </div>
-              ))}
-            </div>
-          </AnimatedSection>
-
-          {/* Floating cards */}
-          <div className="auth-floats">
-            <FloatingCard icon={<Shield size={16} />} label="Secure" delay={0.5} />
-            <FloatingCard icon={<Zap size={16} />} label="Fast" delay={0.7} />
-          </div>
         </section>
 
-        {/* RIGHT – Clerk SignIn */}
+        {/* BOTTOM – Clerk SignIn */}
         <section className="auth-form-section">
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            style={{ zIndex: 2 }}
           >
             <SignIn
               routing="path"
@@ -91,10 +54,16 @@ export default function LoginPage() {
               afterSignUpUrl="/dashboard"
               appearance={{
                 variables: {
-                  colorPrimary: '#dc2626',
+                  colorPrimary: '#e11d48',
                 },
                 elements: {
-                  formButtonPrimary: { background: 'linear-gradient(135deg, #dc2626, #ef4444)' },
+                  formButtonPrimary: { background: 'var(--accent)' },
+                  card: {
+                    width: '100%',
+                    maxWidth: '100%',
+                    boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
+                    borderRadius: '16px',
+                  }
                 },
               }}
             />

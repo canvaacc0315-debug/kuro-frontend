@@ -5,47 +5,53 @@
 .auth-page {
     min-height: 100vh;
     display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     overflow: hidden;
     background: var(--bg-primary);
+    padding: 2rem;
 }
 
 .auth-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    max-width: 1200px;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 440px;
     position: relative;
     z-index: 1;
 }
 
-/* ── LEFT: Hero ── */
+/* ── Hero / Header area ── */
 .auth-hero {
-    max-width: 520px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 2rem;
 }
 
 .auth-logo {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     cursor: pointer;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
 .auth-logo-text {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     font-weight: 800;
     color: var(--text-primary);
     letter-spacing: -0.5px;
 }
 
 .auth-title {
-    font-size: 2.4rem;
+    font-size: 1.8rem;
     font-weight: 800;
-    line-height: 1.15;
-    margin-bottom: 1.2rem;
+    line-height: 1.2;
+    margin-bottom: 0.6rem;
     color: var(--text-primary);
     letter-spacing: -0.5px;
 }
@@ -59,129 +65,20 @@
 
 .auth-description {
     color: var(--text-secondary);
-    font-size: 1rem;
-    line-height: 1.7;
-    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
 }
 
-.auth-features {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    margin-bottom: 2rem;
-}
-
-.auth-feature-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-}
-
-.auth-floats {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-/* ── RIGHT: Form ── */
+/* ── Form Section ── */
 .auth-form-section {
-    display: flex;
-    justify-content: center;
-}
-
-.auth-form-card {
-    background: var(--bg-card);
-    backdrop-filter: var(--backdrop-blur);
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--border-card);
-    padding: 2.5rem 2rem;
-    max-width: 420px;
     width: 100%;
-    box-shadow: var(--shadow-lg);
-}
-
-.auth-form-header {
-    margin-bottom: 1.5rem;
-}
-
-.auth-form-header h2 {
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 0.4rem;
-}
-
-.auth-form-header p {
-    color: var(--text-muted);
-    font-size: 0.88rem;
-}
-
-.auth-security-badge {
     display: flex;
-    align-items: center;
-    gap: 8px;
     justify-content: center;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border-color);
-    color: var(--text-muted);
-    font-size: 0.78rem;
 }
 
-/* ── CLERK OVERRIDES ── */
-.auth-form-card .cl-card {
-    background: transparent !important;
-    box-shadow: none !important;
+.auth-form-section > * {
+    width: 100%;
 }
-
-.auth-form-card .cl-headerTitle,
-.auth-form-card .cl-headerSubtitle {
-    display: none; /* We use our own custom header */
-}
-
-.auth-form-card .cl-socialButtonsBlockButton {
-    background: var(--bg-input) !important;
-    border: 1px solid var(--border-color) !important;
-    color: var(--text-primary) !important;
-}
-
-.auth-form-card .cl-socialButtonsBlockButton:hover {
-    background: var(--bg-card-hover) !important;
-}
-
-.auth-form-card .cl-dividerLine {
-    background: var(--border-color) !important;
-}
-
-.auth-form-card .cl-dividerText {
-    color: var(--text-muted) !important;
-}
-
-.auth-form-card .cl-formFieldInput {
-    background: var(--bg-input) !important;
-    border: 1px solid var(--border-color) !important;
-    color: var(--text-primary) !important;
-}
-
-.auth-form-card .cl-formFieldLabel {
-    color: var(--text-primary) !important;
-}
-
-.auth-form-card .cl-footerActionText,
-.auth-form-card .cl-footerActionLink {
-    color: var(--text-secondary) !important;
-}
-
-.auth-form-card .cl-footerActionLink {
-    color: var(--accent) !important;
-}
-
-.auth-form-card .cl-internal-phfxlr {
-    background: transparent !important;
-}
-
 
 /* Background orbs */
 .auth-orb {
@@ -209,36 +106,16 @@
 }
 
 /* ── Responsive ── */
-@media (max-width: 900px) {
-    .auth-container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-
-    .auth-hero {
-        text-align: center;
-        max-width: 100%;
-    }
-
-    .auth-features {
-        align-items: center;
-    }
-
-    .auth-floats {
-        justify-content: center;
-    }
-
-    .auth-title {
-        font-size: 1.8rem;
-    }
-}
-
 @media (max-width: 500px) {
     .auth-page {
         padding: 1rem;
     }
+    
+    .auth-container {
+        max-width: 100%;
+    }
 
-    .auth-form-card {
-        padding: 1.5rem 1rem;
+    .auth-title {
+        font-size: 1.6rem;
     }
 }

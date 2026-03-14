@@ -28,7 +28,7 @@ export default function KuroFooter() {
                     </div>
                     <div className="hp-footer-col">
                         <h4>Legal</h4>
-                        <button onClick={() => navigate("/privacy")} style={{ background: "none", border: "none", color: "inherit", padding: 0, font: "inherit", cursor: "pointer", textAlign: "left" }}>Privacy Policy</button>
+                        <button onClick={() => navigate("/privacy-policy")} style={{ background: "none", border: "none", color: "inherit", padding: 0, font: "inherit", cursor: "pointer", textAlign: "left" }}>Privacy Policy</button>
                     </div>
                 </div>
             </div>
