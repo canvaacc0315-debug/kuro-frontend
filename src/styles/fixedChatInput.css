@@ -191,10 +191,11 @@
 /* MOBILE RESPONSIVENESS */
 @media (max-width: 768px) {
   .fixed-input-area {
-    padding: 10px 12px 60px; /* Space for the bottom nav */
+    padding: 10px 12px 70px; /* Space for the bottom nav icons */
     margin-left: 0 !important;
     bottom: 0px; 
-    background: linear-gradient(to top, var(--bg-primary) 80%, transparent);
+    background: transparent !important;
+    z-index: 900;
   }
 
   .input-content-container {

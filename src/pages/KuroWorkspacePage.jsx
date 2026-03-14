@@ -1001,19 +1001,20 @@ export default function KuroWorkspacePage() {
                                   <div 
                                     className={`message-bubble ${m.role === "user" ? "user-bubble" : "bot-bubble"}`}
                                     style={{ 
-                                      padding: "12px 18px", 
-                                      borderRadius: m.role === "user" ? "20px 20px 4px 20px" : "20px 20px 20px 4px", 
-                                      boxShadow: "var(--shadow-md)", 
-                                      border: "1px solid var(--border-color)",
+                                      padding: m.role === "bot" ? "0" : "12px 18px", 
+                                      borderRadius: m.role === "bot" ? "0" : (m.role === "user" ? "20px 20px 4px 20px" : "20px 20px 20px 4px"), 
+                                      boxShadow: m.role === "bot" ? "none" : "var(--shadow-md)", 
+                                      border: m.role === "bot" ? "none" : "1px solid var(--border-color)",
                                       background: m.role === "user" 
                                         ? "linear-gradient(135deg, var(--accent), var(--accent-dark))" 
-                                        : "var(--bg-card)",
-                                      backdropFilter: m.role === "bot" ? "blur(10px)" : "none",
+                                        : (m.role === "bot" ? "transparent" : "var(--bg-card)"),
+                                      backdropFilter: m.role === "bot" ? "none" : (m.role === "bot" ? "blur(10px)" : "none"),
                                       color: m.role === "user" ? "white" : "var(--text-primary)", 
-                                      fontSize: "0.85rem",
+                                      fontSize: "1rem",
                                       lineHeight: "1.6",
                                       position: "relative",
-                                      wordBreak: "break-word"
+                                      wordBreak: "break-word",
+                                      margin: "0"
                                     }}
                                   >
                                     {m.content}
@@ -1046,7 +1047,7 @@ export default function KuroWorkspacePage() {
                                     <img src={logoIcon} alt="Rovex" style={{ width: "20px", height: "20px", objectFit: "contain" }} />
                                   </div>
                                 </div>
-                                <div className="bot-bubble" style={{ padding: "12px 18px", borderRadius: "20px 20px 20px 4px", background: "var(--bg-card)", border: "1px solid var(--border-color)", display: "flex", gap: "4px", width: "fit-content", boxShadow: "var(--shadow-md)" }}>
+                                <div className="bot-bubble" style={{ padding: "0", borderRadius: "0", background: "transparent", border: "none", display: "flex", gap: "4px", width: "fit-content", boxShadow: "none", margin: "0" }}>
                                   {[0, 1, 2].map((i) => (
                                     <motion.div
                                       key={i}
