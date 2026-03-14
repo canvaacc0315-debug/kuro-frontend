@@ -754,7 +754,7 @@ export default function KuroWorkspacePage() {
               className={`tab-content chat-tab-container ${activeTab === "chat" ? "active" : ""}`}
               style={{ display: activeTab === "chat" ? "flex" : "none", flexDirection: "column", height: "100%", background: "var(--bg-primary)" }}
             >
-              <div className="chat-header-modern" style={{ padding: "10px 24px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "20px", borderBottom: "1px solid var(--border-color)", background: "var(--bg-secondary)" }}>
+              <div className="chat-header-modern" style={{ padding: "10px 24px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "20px", borderBottom: "1px solid var(--border-color)", background: "var(--bg-secondary)", position: "sticky", top: 0, zIndex: 50 }}>
                 <div className="chat-subtab-selector" style={{ display: "flex", gap: "24px" }}>
                   {[
                     { id: "current", label: "Current Chat", icon: <MessageCircle size={16} /> },
@@ -940,7 +940,7 @@ export default function KuroWorkspacePage() {
                           scrollBehavior: "smooth"
                         }}
                       >
-                        <div className="messages-centered-container" style={{ width: "100%" }}>
+                        <div className="messages-centered-container" style={{ maxWidth: "900px", margin: "0 auto", width: "100%" }}>
                           <AnimatePresence initial={false}>
                             {conversation.map((m, index) => (
                               <motion.div
