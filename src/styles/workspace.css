@@ -239,7 +239,7 @@ body {
 
 .sidebar-toggle-btn {
   background: transparent;
-  color: #a1a1aa;
+  color: var(--text-secondary);
   border: none !important;
   outline: none !important;
   border-radius: 8px;
@@ -255,7 +255,7 @@ body {
 
 .sidebar-toggle-btn:hover {
   color: var(--text-primary);
-  background: transparent !important;
+  background: var(--bg-secondary) !important;
 }
 
 .sidebar-toggle-btn:focus {
@@ -511,12 +511,12 @@ body {
   margin-bottom: 24px;
   position: relative;
   background: transparent !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-bottom: 1px solid var(--border-color) !important;
 }
 
 .chat-subtab-btn {
   background: transparent !important;
-  color: #a1a1aa !important;
+  color: var(--text-secondary) !important;
   border: none !important;
   font-weight: 500 !important;
   font-size: 15px !important;
@@ -527,12 +527,12 @@ body {
 }
 
 .chat-subtab-btn:hover {
-  color: #e4e4e7 !important;
+  color: var(--text-primary) !important;
 }
 
 .chat-subtab-btn.active {
-  color: #ef4444 !important;
-  border-bottom-color: #ef4444 !important;
+  color: var(--accent) !important;
+  border-bottom-color: var(--accent) !important;
 }
 
 /* CHAT LAYOUT */
@@ -540,6 +540,7 @@ body {
   display: flex !important;
   gap: 32px !important;
   background: transparent !important;
+  justify-content: center; /* Ensure centering */
 }
 
 .chat-main {
@@ -821,14 +822,15 @@ input[type="number"]:focus {
   .chat-header-modern {
     padding: 10px 16px !important;
     flex-direction: column;
-    align-items: flex-start !important;
+    align-items: center !important; /* Centering fix */
     gap: 12px !important;
+    text-align: center;
   }
 
   .chat-controls-premium {
     padding: 12px 16px !important;
     flex-direction: column;
-    align-items: flex-start !important;
+    align-items: center !important; /* Centering fix */
     gap: 12px !important;
   }
 

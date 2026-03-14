@@ -754,7 +754,7 @@ export default function KuroWorkspacePage() {
               className={`tab-content chat-tab-container ${activeTab === "chat" ? "active" : ""}`}
               style={{ display: activeTab === "chat" ? "flex" : "none", flexDirection: "column", height: "100%" }}
             >
-              <div className="chat-header-modern" style={{ padding: "10px 24px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "20px", borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(0,0,0,0.2)" }}>
+              <div className="chat-header-modern" style={{ padding: "10px 24px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "20px", borderBottom: "1px solid var(--border-color)", background: "var(--bg-secondary)" }}>
                 <div className="chat-subtab-selector" style={{ display: "flex", gap: "24px" }}>
                   {[
                     { id: "current", label: "Current Chat", icon: <MessageCircle size={16} /> },
@@ -768,7 +768,7 @@ export default function KuroWorkspacePage() {
                       style={{
                         backgroundColor: "transparent",
                         border: "none",
-                        color: activeChatSubTab === sub.id ? "var(--accent)" : "rgba(255,255,255,0.5)",
+                        color: activeChatSubTab === sub.id ? "var(--accent)" : "var(--text-secondary)",
                         fontSize: "14px",
                         fontWeight: activeChatSubTab === sub.id ? "600" : "400",
                         cursor: "pointer",
@@ -799,9 +799,9 @@ export default function KuroWorkspacePage() {
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
-                      background: "rgba(239, 68, 68, 0.1)",
-                      border: "1px solid rgba(239, 68, 68, 0.2)",
-                      color: "#ef4444",
+                      background: "var(--accent-subtle)",
+                      border: "1px solid var(--accent-glow)",
+                      color: "var(--accent)",
                       padding: "6px 14px",
                       borderRadius: "8px",
                       fontSize: "13px",
@@ -809,8 +809,6 @@ export default function KuroWorkspacePage() {
                       cursor: "pointer",
                       transition: "all 0.2s ease"
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.2)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(239, 68, 68, 0.1)"; }}
                   >
                     <Save size={14} /> Save
                   </button>
@@ -820,9 +818,9 @@ export default function KuroWorkspacePage() {
                       display: "flex",
                       alignItems: "center",
                       gap: "8px",
-                      background: "rgba(255, 255, 255, 0.03)",
-                      border: "1px solid rgba(255, 255, 255, 0.08)",
-                      color: "rgba(255, 255, 255, 0.7)",
+                      background: "var(--bg-tertiary)",
+                      border: "1px solid var(--border-color)",
+                      color: "var(--text-secondary)",
                       padding: "6px 14px",
                       borderRadius: "8px",
                       fontSize: "13px",
@@ -830,8 +828,6 @@ export default function KuroWorkspacePage() {
                       cursor: "pointer",
                       transition: "all 0.2s ease"
                     }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255, 255, 255, 0.03)"; }}
                   >
                     <Trash2 size={14} /> Clear
                   </button>
@@ -848,10 +844,10 @@ export default function KuroWorkspacePage() {
                   opacity: activeChatSubTab === "current" ? 1 : 0
                 }}
               >
-                <div className="chat-controls-premium" style={{ display: "flex", flexWrap: "wrap", gap: "16px", padding: "16px 24px", background: "rgba(0,0,0,0.1)", borderBottom: "1px solid rgba(255,255,255,0.03)" }}>
+                <div className="chat-controls-premium" style={{ display: "flex", flexWrap: "wrap", gap: "16px", padding: "16px 24px", background: "var(--bg-secondary)", borderBottom: "1px solid var(--border-color)" }}>
                   <div className="control-group" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", fontWeight: "600" }}>Scope:</span>
-                    <div className="scope-pills" style={{ display: "flex", padding: "3px", background: "rgba(255,255,255,0.03)", borderRadius: "100px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                    <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "600" }}>Scope:</span>
+                    <div className="scope-pills" style={{ display: "flex", padding: "3px", background: "var(--bg-input)", borderRadius: "100px", border: "1px solid var(--border-color)" }}>
                       {["all", "page", "range"].map((s) => (
                         <button
                           key={s}
@@ -863,7 +859,7 @@ export default function KuroWorkspacePage() {
                             fontSize: "12px",
                             fontWeight: chatScope.type === s ? "600" : "500",
                             background: chatScope.type === s ? "var(--accent)" : "transparent",
-                            color: chatScope.type === s ? "white" : "rgba(255,255,255,0.5)",
+                            color: chatScope.type === s ? "white" : "var(--text-secondary)",
                             cursor: "pointer",
                             transition: "all 0.2s ease"
                           }}
@@ -879,7 +875,7 @@ export default function KuroWorkspacePage() {
                         placeholder="#"
                         value={chatScope.page}
                         onChange={(e) => setChatScope({ ...chatScope, page: e.target.value })}
-                        style={{ width: "45px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", padding: "4px 8px", borderRadius: "6px", fontSize: "12px" }}
+                        style={{ width: "45px", background: "var(--bg-input)", border: "1px solid var(--border-color)", color: "var(--text-primary)", padding: "4px 8px", borderRadius: "6px", fontSize: "12px" }}
                       />
                     )}
                     {chatScope.type === "range" && (
@@ -889,40 +885,40 @@ export default function KuroWorkspacePage() {
                           placeholder="F"
                           value={chatScope.from}
                           onChange={(e) => setChatScope({ ...chatScope, from: e.target.value })}
-                          style={{ width: "40px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", padding: "4px 8px", borderRadius: "6px", fontSize: "12px" }}
+                          style={{ width: "40px", background: "var(--bg-input)", border: "1px solid var(--border-color)", color: "var(--text-primary)", padding: "4px 8px", borderRadius: "6px", fontSize: "12px" }}
                         />
-                        <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "10px" }}>-</span>
+                        <span style={{ color: "var(--text-muted)", fontSize: "10px" }}>-</span>
                         <input
                           type="number"
                           placeholder="T"
                           value={chatScope.to}
                           onChange={(e) => setChatScope({ ...chatScope, to: e.target.value })}
-                          style={{ width: "40px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", padding: "4px 8px", borderRadius: "6px", fontSize: "12px" }}
+                          style={{ width: "40px", background: "var(--bg-input)", border: "1px solid var(--border-color)", color: "var(--text-primary)", padding: "4px 8px", borderRadius: "6px", fontSize: "12px" }}
                         />
                       </div>
                     )}
                   </div>
                   
                   <div className="control-group" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", fontWeight: "600" }}>Style:</span>
+                    <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "600" }}>Style:</span>
                     <select
                       className="premium-select"
                       value={answerStyle}
                       onChange={(e) => setAnswerStyle(e.target.value)}
                       style={{ 
-                        background: "rgba(255,255,255,0.05)", 
-                        border: "1px solid rgba(255,255,255,0.1)", 
-                        color: "white", 
+                        background: "var(--bg-input)", 
+                        border: "1px solid var(--border-color)", 
+                        color: "var(--text-primary)", 
                         padding: "5px 12px", 
                         borderRadius: "8px", 
                         fontSize: "13px",
                         outline: "none"
                       }}
                     >
-                      <option value="default">Default</option>
-                      <option value="summary">Concise</option>
-                      <option value="exam">Exam Mode</option>
-                      <option value="bullet">Bullet Points</option>
+                      <option value="default" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>Default</option>
+                      <option value="summary" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>Concise</option>
+                      <option value="exam" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>Exam Mode</option>
+                      <option value="bullet" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>Bullet Points</option>
                     </select>
                   </div>
                 </div>
@@ -975,11 +971,12 @@ export default function KuroWorkspacePage() {
                                         width: "32px", 
                                         height: "32px", 
                                         borderRadius: "10px", 
-                                        background: "rgba(255, 255, 255, 0.05)",
+                                        background: "var(--bg-tertiary)",
                                         display: "flex",
                                         alignItems: "center",
                                         justifyContent: "center",
-                                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                                        boxShadow: "var(--shadow-sm)",
+                                        border: "1px solid var(--border-color)",
                                         overflow: "hidden"
                                       }}>
                                         <img src={logoIcon} alt="Rovex" style={{ width: "20px", height: "20px", objectFit: "contain" }} />
@@ -993,7 +990,7 @@ export default function KuroWorkspacePage() {
                                           width: "32px", 
                                           height: "32px", 
                                           borderRadius: "10px", 
-                                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                                          border: "1px solid var(--border-color)",
                                           objectFit: "cover"
                                         }}
                                       />
@@ -1006,13 +1003,13 @@ export default function KuroWorkspacePage() {
                                     style={{ 
                                       padding: "12px 18px", 
                                       borderRadius: m.role === "user" ? "20px 20px 4px 20px" : "20px 20px 20px 4px", 
-                                      boxShadow: "0 4px 15px rgba(0,0,0,0.1)", 
-                                      border: "1px solid rgba(255, 255, 255, 0.05)",
+                                      boxShadow: "var(--shadow-md)", 
+                                      border: "1px solid var(--border-color)",
                                       background: m.role === "user" 
-                                        ? "linear-gradient(135deg, #ef4444, #b91c1c)" 
-                                        : "rgba(255, 255, 255, 0.03)",
+                                        ? "linear-gradient(135deg, var(--accent), var(--accent-dark))" 
+                                        : "var(--bg-card)",
                                       backdropFilter: m.role === "bot" ? "blur(10px)" : "none",
-                                      color: "white", 
+                                      color: m.role === "user" ? "white" : "var(--text-primary)", 
                                       fontSize: "0.95rem",
                                       lineHeight: "1.6",
                                       position: "relative",
@@ -1022,9 +1019,10 @@ export default function KuroWorkspacePage() {
                                     {m.content}
                                     <div style={{ 
                                       fontSize: "0.7rem", 
-                                      opacity: 0.5, 
+                                      opacity: 0.6, 
                                       marginTop: "6px", 
-                                      textAlign: m.role === "user" ? "right" : "left" 
+                                      textAlign: m.role === "user" ? "right" : "left",
+                                      color: m.role === "user" ? "rgba(255,255,255,0.8)" : "var(--text-secondary)"
                                     }}>
                                       {m.timestamp}
                                     </div>
@@ -1048,13 +1046,13 @@ export default function KuroWorkspacePage() {
                                     <img src={logoIcon} alt="Rovex" style={{ width: "20px", height: "20px", objectFit: "contain" }} />
                                   </div>
                                 </div>
-                                <div className="bot-bubble" style={{ padding: "12px 18px", borderRadius: "20px 20px 20px 4px", background: "rgba(255, 255, 255, 0.03)", display: "flex", gap: "4px", width: "fit-content" }}>
+                                <div className="bot-bubble" style={{ padding: "12px 18px", borderRadius: "20px 20px 20px 4px", background: "var(--bg-card)", border: "1px solid var(--border-color)", display: "flex", gap: "4px", width: "fit-content", boxShadow: "var(--shadow-md)" }}>
                                   {[0, 1, 2].map((i) => (
                                     <motion.div
                                       key={i}
-                                      animate={{ opacity: [0.3, 1, 0.3] }}
+                                      animate={{ opacity: [0.3, 1, 0.3], scale: [1, 1.2, 1] }}
                                       transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
-                                      style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent)" }}
+                                      style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--accent)" }}
                                     />
                                   ))}
                                 </div>
