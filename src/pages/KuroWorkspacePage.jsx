@@ -871,6 +871,35 @@ export default function KuroWorkspacePage() {
                         </button>
                       ))}
                     </div>
+
+                    {chatScope.type === "page" && (
+                      <input
+                        type="number"
+                        placeholder="#"
+                        value={chatScope.page}
+                        onChange={(e) => setChatScope({ ...chatScope, page: e.target.value })}
+                        style={{ width: "45px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", padding: "4px 8px", borderRadius: "6px", fontSize: "12px" }}
+                      />
+                    )}
+                    {chatScope.type === "range" && (
+                      <div style={{ display: "flex", gap: "4px", alignItems: "center" }}>
+                        <input
+                          type="number"
+                          placeholder="F"
+                          value={chatScope.from}
+                          onChange={(e) => setChatScope({ ...chatScope, from: e.target.value })}
+                          style={{ width: "40px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", padding: "4px 8px", borderRadius: "6px", fontSize: "12px" }}
+                        />
+                        <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "10px" }}>-</span>
+                        <input
+                          type="number"
+                          placeholder="T"
+                          value={chatScope.to}
+                          onChange={(e) => setChatScope({ ...chatScope, to: e.target.value })}
+                          style={{ width: "40px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "white", padding: "4px 8px", borderRadius: "6px", fontSize: "12px" }}
+                        />
+                      </div>
+                    )}
                   </div>
                   
                   <div className="control-group" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -899,198 +928,7 @@ export default function KuroWorkspacePage() {
 
                 <div className="chat-layout" style={{ backgroundColor: "transparent", display: "flex", flexDirection: "column", flex: 1, width: "100%", gap: "24px" }}>
                   <div className="chat-main" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
-                    <div className="chat-top-row" style={{ display: "flex", gap: "24px", flexWrap: "wrap", marginBottom: "24px" }}>
-                      <div className="chat-scope-bar" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                        <span className="scope-label" style={{ color: "var(--text-primary)", fontWeight: "500" }}>Scope:</span>
-                        <div className="scope-options" style={{ display: "flex", gap: "8px" }}>
-                          <button
-                            className={`scope-pill ${chatScope.type === "all" ? "active" : ""}`}
-                            onClick={() =>
-                              setChatScope({ type: "all", page: "", from: "", to: "" })
-                            }
-                            style={{
-                              backgroundColor: chatScope.type === "all" ? "var(--accent)" : "var(--bg-card)",
-                              color: chatScope.type === "all" ? "var(--bg-primary)" : "var(--text-secondary)",
-                              border: "none",
-                              padding: "8px 16px",
-                              borderRadius: "9999px",
-                              transition: "all 200ms ease",
-                              cursor: "pointer",
-                              fontSize: "14px"
-                            }}
-                          >
-                            Entire PDF
-                          </button>
-                          <button
-                            className={`scope-pill ${chatScope.type === "page" ? "active" : ""}`}
-                            onClick={() =>
-                              setChatScope({ type: "page", page: "", from: "", to: "" })
-                            }
-                            style={{
-                              backgroundColor: chatScope.type === "page" ? "#ef4444" : "transparent",
-                              color: chatScope.type === "page" ? "var(--bg-primary)" : "var(--text-secondary)",
-                              border: "none",
-                              padding: "8px 16px",
-                              borderRadius: "9999px",
-                              transition: "all 200ms ease",
-                              cursor: "pointer",
-                              fontSize: "14px"
-                            }}
-                          >
-                            Page
-                          </button>
-                          <button
-                            className={`scope-pill ${chatScope.type === "range" ? "active" : ""}`}
-                            onClick={() =>
-                              setChatScope({ type: "range", page: "", from: "", to: "" })
-                            }
-                            style={{
-                              backgroundColor: chatScope.type === "range" ? "#ef4444" : "transparent",
-                              color: chatScope.type === "range" ? "var(--bg-primary)" : "var(--text-secondary)",
-                              border: "none",
-                              padding: "8px 16px",
-                              borderRadius: "9999px",
-                              transition: "all 200ms ease",
-                              cursor: "pointer",
-                              fontSize: "14px"
-                            }}
-                          >
-                            Range
-                          </button>
-                        </div>
-                        {chatScope.type === "page" && (
-                          <input
-                            type="number"
-                            className="scope-input"
-                            placeholder="Page #"
-                            value={chatScope.page}
-                            onChange={(e) =>
-                              setChatScope((prev) => ({ ...prev, page: e.target.value }))
-                            }
-                            min="1"
-                            style={{ border: "1px solid #e5e5e5", color: "#000000", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
-                          />
-                        )}
-                        {chatScope.type === "range" && (
-                          <div className="scope-range-inputs" style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                            <input
-                              type="number"
-                              className="scope-input"
-                              placeholder="From"
-                              value={chatScope.from}
-                              onChange={(e) =>
-                                setChatScope((prev) => ({ ...prev, from: e.target.value }))
-                              }
-                              min="1"
-                              style={{ border: "1px solid var(--border-color)", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
-                            />
-                            <span className="scope-separator" style={{ color: "var(--text-secondary)" }}>–</span>
-                            <input
-                              type="number"
-                              className="scope-input"
-                              placeholder="To"
-                              value={chatScope.to}
-                              onChange={(e) =>
-                                setChatScope((prev) => ({ ...prev, to: e.target.value }))
-                              }
-                              min="1"
-                              style={{ border: "1px solid var(--border-color)", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", padding: "8px 12px", borderRadius: "4px", width: "80px" }}
-                            />
-                          </div>
-                        )}
-                      </div>
-                      <div className="chat-pdf-select" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                        <label className="form-label" style={{ color: "var(--text-primary)", fontWeight: "500", fontSize: "14px" }}>PDF to chat with:</label>
-                        <select
-                          className="form-select"
-                          value={selectedPdfId}
-                          onChange={(e) => setSelectedPdfId(e.target.value)}
-                          disabled={uploadedFiles.length === 0}
-                          style={{ border: "1px solid var(--border-color)", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", padding: "8px 12px", borderRadius: "4px", fontSize: "14px", minWidth: "200px" }}
-                        >
-                          {uploadedFiles.length === 0 ? (
-                            <option>No PDFs uploaded yet</option>
-                          ) : (
-                            <>
-                              <option value="">All PDFs / general chat</option>
-                              {uploadedFiles.map((f) => (
-                                <option key={f.uid} value={f.backendId}>
-                                  {f.name}
-                                </option>
-                              ))}
-                            </>
-                          )}
-                        </select>
-                      </div>
-                      <div className="chat-answer-style" style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-                        <label className="form-label" style={{ color: "var(--text-primary)", fontWeight: "500", fontSize: "14px" }}>Answer style:</label>
-                        <select
-                          className="form-select"
-                          value={answerStyle}
-                          onChange={(e) => setAnswerStyle(e.target.value)}
-                          style={{ border: "1px solid var(--border-color)", color: "var(--text-primary)", backgroundColor: "var(--bg-card)", padding: "8px 12px", borderRadius: "4px", fontSize: "14px", minWidth: "200px" }}
-                        >
-                          <option value="default">Helpful explanation</option>
-                          <option value="summary">Concise summary</option>
-                          <option value="exam">Exam / questions</option>
-                          <option value="bullet">Bullet points</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div
-                      className="chat-actions-row"
-                      style={{
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        padding: "0 0 24px 0",
-                        gap: "16px"
-                      }}
-                    >
-                      <button
-                        type="button"
-                        className="save-conversation-btn"
-                        onClick={handleSaveConversation}
-                        style={{
-                          backgroundColor: "var(--accent)",
-                          color: "var(--bg-primary)",
-                          border: "none",
-                          padding: "10px 20px",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          transition: "background-color 200ms ease, box-shadow 200ms ease",
-                          fontSize: "14px",
-                          fontWeight: "500",
-                          boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                        }}
-                        onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                        onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                      >
-                        Save Conversation
-                      </button>
-                      <button
-                        type="button"
-                        className="clear-conversation-btn"
-                        onClick={handleClearConversation}
-                        style={{
-                          backgroundColor: "var(--accent)",
-                          color: "var(--bg-primary)",
-                          border: "none",
-                          padding: "10px 20px",
-                          borderRadius: "4px",
-                          cursor: "pointer",
-                          transition: "background-color 200ms ease, box-shadow 200ms ease",
-                          fontSize: "14px",
-                          fontWeight: "500",
-                          boxShadow: "0 1px 2px rgba(0,0,0,0.05)"
-                        }}
-                        onMouseEnter={(e) => { e.target.style.backgroundColor = "#dc2626"; e.target.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)"; }}
-                        onMouseLeave={(e) => { e.target.style.backgroundColor = "#ef4444"; e.target.style.boxShadow = "0 1px 2px rgba(0,0,0,0.05)"; }}
-                      >
-                        Clear Conversation
-                      </button>
-                    </div>
-
+                    
                     <div className="chat-wrapper" style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
                       <div
                         ref={chatMessagesRef}
@@ -1105,111 +943,124 @@ export default function KuroWorkspacePage() {
                           scrollBehavior: "smooth"
                         }}
                       >
-                        <AnimatePresence initial={false}>
-                          {conversation.map((m, index) => (
-                            <motion.div
-                              key={m.id}
-                              initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                              animate={{ opacity: 1, y: 0, scale: 1 }}
-                              transition={{ duration: 0.3, delay: index === conversation.length - 1 ? 0.1 : 0 }}
-                              className={`message-row ${m.role === "user" ? "user-row" : "bot-row"}`}
-                              style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: m.role === "user" ? "flex-end" : "flex-start",
-                                marginBottom: "20px",
-                                width: "100%"
-                              }}
-                            >
-                              <div style={{ 
-                                display: "flex", 
-                                alignItems: "flex-end", 
-                                gap: "10px",
-                                maxWidth: "85%",
-                                flexDirection: m.role === "user" ? "row-reverse" : "row"
-                              }}>
-                                {/* Avatar */}
-                                <div className="avatar-wrapper" style={{ flexShrink: 0, marginBottom: "4px" }}>
-                                  {m.role === "bot" ? (
-                                    <div style={{ 
-                                      width: "32px", 
-                                      height: "32px", 
-                                      borderRadius: "10px", 
-                                      background: "linear-gradient(135deg, #ef4444, #991b1b)",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                      boxShadow: "0 4px 10px rgba(239, 68, 68, 0.3)"
-                                    }}>
-                                      <Sparkles size={16} color="white" />
-                                    </div>
-                                  ) : (
-                                    <img
-                                      src={user?.imageUrl}
-                                      alt="User"
-                                      className="user-avatar"
-                                      style={{ 
+                        <div className="messages-centered-container" style={{ maxWidth: "900px", margin: "0 auto", width: "100%" }}>
+                          <AnimatePresence initial={false}>
+                            {conversation.map((m, index) => (
+                              <motion.div
+                                key={m.id}
+                                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                transition={{ duration: 0.3, delay: index === conversation.length - 1 ? 0.1 : 0 }}
+                                className={`message-row ${m.role === "user" ? "user-row" : "bot-row"}`}
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  alignItems: m.role === "user" ? "flex-end" : "flex-start",
+                                  marginBottom: "20px",
+                                  width: "100%"
+                                }}
+                              >
+                                <div style={{ 
+                                  display: "flex", 
+                                  alignItems: "flex-end", 
+                                  gap: "10px",
+                                  maxWidth: "85%",
+                                  flexDirection: m.role === "user" ? "row-reverse" : "row"
+                                }}>
+                                  {/* Avatar */}
+                                  <div className="avatar-wrapper" style={{ flexShrink: 0, marginBottom: "4px" }}>
+                                    {m.role === "bot" ? (
+                                      <div style={{ 
                                         width: "32px", 
                                         height: "32px", 
                                         borderRadius: "10px", 
-                                        border: "1px solid rgba(255, 255, 255, 0.1)",
-                                        objectFit: "cover"
-                                      }}
-                                    />
-                                  )}
-                                </div>
-
-                                {/* Bubble */}
-                                <div 
-                                  className={`message-bubble ${m.role === "user" ? "user-bubble" : "bot-bubble"}`}
-                                  style={{ 
-                                    padding: "12px 18px", 
-                                    borderRadius: m.role === "user" ? "20px 20px 4px 20px" : "20px 20px 20px 4px", 
-                                    boxShadow: "0 4px 15px rgba(0,0,0,0.1)", 
-                                    border: "1px solid rgba(255, 255, 255, 0.05)",
-                                    background: m.role === "user" 
-                                      ? "linear-gradient(135deg, #ef4444, #b91c1c)" 
-                                      : "rgba(255, 255, 255, 0.03)",
-                                    backdropFilter: m.role === "bot" ? "blur(10px)" : "none",
-                                    color: "white", 
-                                    fontSize: "0.95rem",
-                                    lineHeight: "1.6",
-                                    position: "relative",
-                                    wordBreak: "break-word"
-                                  }}
-                                >
-                                  {m.content}
-                                  <div style={{ 
-                                    fontSize: "0.7rem", 
-                                    opacity: 0.5, 
-                                    marginTop: "6px", 
-                                    textAlign: m.role === "user" ? "right" : "left" 
-                                  }}>
-                                    {m.timestamp}
+                                        background: "rgba(255, 255, 255, 0.05)",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+                                        overflow: "hidden"
+                                      }}>
+                                        <img src={logoIcon} alt="Rovex" style={{ width: "20px", height: "20px", objectFit: "contain" }} />
+                                      </div>
+                                    ) : (
+                                      <img
+                                        src={user?.imageUrl}
+                                        alt="User"
+                                        className="user-avatar"
+                                        style={{ 
+                                          width: "32px", 
+                                          height: "32px", 
+                                          borderRadius: "10px", 
+                                          border: "1px solid rgba(255, 255, 255, 0.1)",
+                                          objectFit: "cover"
+                                        }}
+                                      />
+                                    )}
+                                  </div>
+  
+                                  {/* Bubble */}
+                                  <div 
+                                    className={`message-bubble ${m.role === "user" ? "user-bubble" : "bot-bubble"}`}
+                                    style={{ 
+                                      padding: "12px 18px", 
+                                      borderRadius: m.role === "user" ? "20px 20px 4px 20px" : "20px 20px 20px 4px", 
+                                      boxShadow: "0 4px 15px rgba(0,0,0,0.1)", 
+                                      border: "1px solid rgba(255, 255, 255, 0.05)",
+                                      background: m.role === "user" 
+                                        ? "linear-gradient(135deg, #ef4444, #b91c1c)" 
+                                        : "rgba(255, 255, 255, 0.03)",
+                                      backdropFilter: m.role === "bot" ? "blur(10px)" : "none",
+                                      color: "white", 
+                                      fontSize: "0.95rem",
+                                      lineHeight: "1.6",
+                                      position: "relative",
+                                      wordBreak: "break-word"
+                                    }}
+                                  >
+                                    {m.content}
+                                    <div style={{ 
+                                      fontSize: "0.7rem", 
+                                      opacity: 0.5, 
+                                      marginTop: "6px", 
+                                      textAlign: m.role === "user" ? "right" : "left" 
+                                    }}>
+                                      {m.timestamp}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </motion.div>
-                          ))}
-                          
-                          {isSending && (
-                            <motion.div
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              className="typing-indicator"
-                              style={{ paddingLeft: "42px", display: "flex", gap: "4px" }}
-                            >
-                              {[0, 1, 2].map((i) => (
-                                <motion.div
-                                  key={i}
-                                  animate={{ y: [0, -5, 0] }}
-                                  transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.1 }}
-                                  style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent)", opacity: 0.6 }}
-                                />
-                              ))}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                              </motion.div>
+                            ))}
+                            
+                            {isSending && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="message-row bot-row"
+                                style={{ display: "flex", alignItems: "flex-end", gap: "10px", marginBottom: "20px" }}
+                              >
+                                <div className="avatar-wrapper" style={{ flexShrink: 0, marginBottom: "4px" }}>
+                                  <div style={{ 
+                                    width: "32px", height: "32px", borderRadius: "10px", background: "rgba(255, 255, 255, 0.05)",
+                                    display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden"
+                                  }}>
+                                    <img src={logoIcon} alt="Rovex" style={{ width: "20px", height: "20px", objectFit: "contain" }} />
+                                  </div>
+                                </div>
+                                <div className="bot-bubble" style={{ padding: "12px 18px", borderRadius: "20px 20px 20px 4px", background: "rgba(255, 255, 255, 0.03)", display: "flex", gap: "4px", width: "fit-content" }}>
+                                  {[0, 1, 2].map((i) => (
+                                    <motion.div
+                                      key={i}
+                                      animate={{ opacity: [0.3, 1, 0.3] }}
+                                      transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                                      style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--accent)" }}
+                                    />
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
                       </div>
                     </div>
                   </div>
