@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut } from "@clerk/clerk-react";
+import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -55,6 +55,10 @@ export default function KuroHeader() {
                             </motion.div>
                         </AnimatePresence>
                     </button>
+
+                    <SignedIn>
+                        <UserButton afterSignOutUrl="/" />
+                    </SignedIn>
 
                     <SignedOut>
                         <button onClick={() => navigate("/login")} className="hp-btn-ghost">Log in</button>

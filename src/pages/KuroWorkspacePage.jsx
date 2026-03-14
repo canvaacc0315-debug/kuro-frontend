@@ -25,8 +25,11 @@ import {
   ScanSearch,
   PenTool,
   Wrench,
-  GraduationCap
+  GraduationCap,
+  PanelLeftClose,
+  PanelLeftOpen
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
@@ -56,6 +59,7 @@ export default function KuroWorkspacePage() {
 
   const [activeTab, setActiveTab] = useState(getInitialTab);
   const [activeChatSubTab, setActiveChatSubTab] = useState("current");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [selectedPdfId, setSelectedPdfId] = useState("");
   const [message, setMessage] = useState("");
@@ -555,63 +559,164 @@ export default function KuroWorkspacePage() {
           <KuroHeader />
         </div>
 
-        <aside className="sidebar" style={{ display: isFullScreen ? "none" : "block" }}>
+        <motion.aside 
+          className="sidebar"
+          initial={false}
+          animate={{ width: isSidebarOpen ? 260 : 80 }}
+          style={{ display: isFullScreen ? "none" : "flex", "--sidebar-width": isSidebarOpen ? "260px" : "80px" }}
+        >
+          <button 
+            className="sidebar-toggle-btn" 
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            aria-label="Toggle Sidebar"
+          >
+            {isSidebarOpen ? <PanelLeftClose size={20} /> : <PanelLeftOpen size={20} />}
+          </button>
+
           <nav className="sidebar-nav">
             <button
-              className={`sidebar-item ${activeTab === "upload" ? "active" : ""}`}
+              className={`sidebar-item sidebar-item-upload ${activeTab === "upload" ? "active" : ""}`}
               onClick={() => handleTabClick("upload")}
             >
               <span className="sidebar-icon"><FileUp size={20} /></span>
-              <span className="sidebar-label">Upload PDF!</span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Upload PDF!
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
             <button
-              className={`sidebar-item ${activeTab === "chat" ? "active" : ""}`}
+              className={`sidebar-item sidebar-item-chat ${activeTab === "chat" ? "active" : ""}`}
               onClick={() => handleTabClick("chat")}
             >
               <span className="sidebar-icon"><MessageSquare size={20} /></span>
-              <span className="sidebar-label">Chat</span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Chat
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
             <button
-              className={`sidebar-item ${activeTab === "analysis" ? "active" : ""}`}
+              className={`sidebar-item sidebar-item-analysis ${activeTab === "analysis" ? "active" : ""}`}
               onClick={() => handleTabClick("analysis")}
             >
               <span className="sidebar-icon"><BarChart2 size={20} /></span>
-              <span className="sidebar-label">Analysis</span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Analysis
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
             <button
-              className={`sidebar-item ${activeTab === "ocr" ? "active" : ""}`}
+              className={`sidebar-item sidebar-item-ocr ${activeTab === "ocr" ? "active" : ""}`}
               onClick={() => handleTabClick("ocr")}
             >
               <span className="sidebar-icon"><ScanSearch size={20} /></span>
-              <span className="sidebar-label">OCR</span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    OCR
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
             <button
-              className={`sidebar-item ${activeTab === "create" ? "active" : ""}`}
+              className={`sidebar-item sidebar-item-create ${activeTab === "create" ? "active" : ""}`}
               onClick={() => handleTabClick("create")}
             >
               <span className="sidebar-icon"><PenTool size={20} /></span>
-              <span className="sidebar-label">PDF Creator</span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    PDF Creator
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
-            {/* ✅ NEW: PDF Tools Button */}
             <button
-              className={`sidebar-item ${activeTab === "pdftools" ? "active" : ""}`}
+              className={`sidebar-item sidebar-item-pdftools ${activeTab === "pdftools" ? "active" : ""}`}
               onClick={() => handleTabClick("pdftools")}
             >
               <span className="sidebar-icon"><Wrench size={20} /></span>
-              <span className="sidebar-label">PDF Tools</span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    PDF Tools
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
-            {/* ✅ NEW: Study Mode Button */}
             <button
-              className={`sidebar-item ${activeTab === "study" ? "active" : ""}`}
+              className={`sidebar-item sidebar-item-study ${activeTab === "study" ? "active" : ""}`}
               onClick={() => handleTabClick("study")}
             >
               <span className="sidebar-icon"><GraduationCap size={20} /></span>
-              <span className="sidebar-label">Study Mode</span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Study Mode
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
           </nav>
-        </aside>
+        </motion.aside>
 
-        <main className="main-container" style={{ display: isFullScreen ? "none" : "flex" }}>
+        <main 
+          className="main-container" 
+          style={{ 
+            display: isFullScreen ? "none" : "flex", 
+            "--sidebar-width": isSidebarOpen ? "260px" : "80px" 
+          }}
+        >
           <header className="workspace-header">
             <div>
               <h1 className="workspace-title">

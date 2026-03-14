@@ -3,7 +3,6 @@ import { SignUp } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, Sparkles, Check } from "lucide-react";
-import { dark } from '@clerk/themes';
 import { useTheme } from "../context/ThemeContext";
 import AnimatedSection from "../components/animated/AnimatedSection";
 import FloatingCard from "../components/animated/FloatingCard";
@@ -71,19 +70,11 @@ export default function SignUpPage() {
         {/* RIGHT – Clerk SignUp */}
         <section className="auth-form-section">
           <motion.div
-            className="auth-form-card"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
+            style={{ zIndex: 2 }}
           >
-            <div className="auth-form-header">
-              <h2>
-                Create{" "}
-                <span style={{ color: "var(--accent)" }}>Account</span>
-              </h2>
-              <p>Join users leveraging AI for PDF intelligence</p>
-            </div>
-
             <SignUp
               routing="path"
               path="/sign-up"
@@ -91,32 +82,14 @@ export default function SignUpPage() {
               afterSignUpUrl="/dashboard"
               afterSignInUrl="/dashboard"
               appearance={{
-                baseTheme: theme === 'dark' ? dark : undefined,
                 variables: {
                   colorPrimary: '#dc2626',
-                  colorBackground: 'transparent',
-                  colorInputBackground: theme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)',
-                  colorInputText: theme === 'dark' ? '#fff' : '#000',
-                  colorText: theme === 'dark' ? '#f9fafb' : '#111111',
                 },
                 elements: {
-                  rootBox: { background: "transparent" },
-                  card: {
-                    borderRadius: "14px",
-                    boxShadow: "none",
-                    background: "transparent",
-                  },
-                  footerActionText: { color: theme === 'dark' ? '#a1a1aa' : '#52525b' },
-                  footerActionLink: { color: '#dc2626' },
                   formButtonPrimary: { background: 'linear-gradient(135deg, #dc2626, #ef4444)' },
                 },
               }}
             />
-
-            <div className="auth-security-badge">
-              <span>🔒</span>
-              <span>256-bit encryption · Accounts protected with Clerk</span>
-            </div>
           </motion.div>
         </section>
       </div>
