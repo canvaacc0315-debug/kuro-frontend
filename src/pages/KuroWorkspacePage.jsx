@@ -940,7 +940,7 @@ export default function KuroWorkspacePage() {
                           scrollBehavior: "smooth"
                         }}
                       >
-                        <div className="messages-centered-container" style={{ maxWidth: "900px", margin: "0 auto", width: "100%" }}>
+                        <div className="messages-centered-container" style={{ width: "100%" }}>
                           <AnimatePresence initial={false}>
                             {conversation.map((m, index) => (
                               <motion.div
@@ -1010,7 +1010,7 @@ export default function KuroWorkspacePage() {
                                         : "var(--bg-card)",
                                       backdropFilter: m.role === "bot" ? "blur(10px)" : "none",
                                       color: m.role === "user" ? "white" : "var(--text-primary)", 
-                                      fontSize: "0.95rem",
+                                      fontSize: "0.85rem",
                                       lineHeight: "1.6",
                                       position: "relative",
                                       wordBreak: "break-word"

@@ -9,7 +9,7 @@
   flex-direction: column;
   align-items: center;
   padding: 10px 20px 40px;
-  background: linear-gradient(to top, var(--bg-primary) 70%, transparent);
+  background: linear-gradient(to top, var(--bg-primary) 70%, var(--bg-primary-transparent));
   pointer-events: none;
 }
 
@@ -133,7 +133,7 @@
   padding: 8px 8px 8px 24px;
   border-radius: 100px;
   border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-lg);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -184,7 +184,7 @@
 
 /* Sidebar Adjustment for Workspace Layout */
 .workspace-root .fixed-input-area {
-  margin-left: var(--sidebar-width, 260px);
+  margin-left: 0;
   transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
