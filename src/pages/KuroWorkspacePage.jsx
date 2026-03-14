@@ -726,14 +726,6 @@ export default function KuroWorkspacePage() {
             "--sidebar-width": isSidebarOpen ? "260px" : "80px" 
           }}
         >
-          <header className="workspace-header">
-            <div>
-              <h1 className="workspace-title">
-                Welcome to{" "}
-                <span className="workspace-title-accent">RovexAI</span>
-              </h1>
-            </div>
-          </header>
 
           <div className="content-wrapper">
             <section
@@ -940,7 +932,7 @@ export default function KuroWorkspacePage() {
                           scrollBehavior: "smooth"
                         }}
                       >
-                        <div className="messages-centered-container" style={{ width: "100%" }}>
+                        <div className="messages-centered-container" style={{ maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
                           <AnimatePresence initial={false}>
                             {conversation.map((m, index) => (
                               <motion.div

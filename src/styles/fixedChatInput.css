@@ -19,10 +19,17 @@
 
 .input-content-container {
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  transform: translateX(20px);
+}
+@media (max-width: 768px) {
+  .input-content-container {
+    max-width: 100%;
+    transform: none;
+  }
 }
 
 /* Title & Header */
@@ -89,13 +96,13 @@
 
 .group-header, .question-chip {
   white-space: nowrap;
-  padding: 8px 18px;
-  border-radius: 12px;
-  font-size: 0.85rem;
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .group-header {
