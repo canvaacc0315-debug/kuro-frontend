@@ -9,7 +9,7 @@ import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
 import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import OcrPanel from "../components/OcrPanel";
-import InstructionModal from "../components/modals/InstructionModal";
+
 import { useClerk } from "@clerk/clerk-react";
 import KuroHeader from "../components/layout/KuroHeader.jsx";
 import UploadPanel from "../components/UploadPanel";
@@ -553,7 +553,7 @@ export default function KuroWorkspacePage() {
 
   return (
     <RovexProvider>
-      <InstructionModal />
+      
       <div className="workspace-root">
         <div style={{ display: isFullScreen ? "none" : "block" }}>
           <KuroHeader />

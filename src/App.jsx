@@ -15,7 +15,7 @@ import HomePage from "./pages/HomePage";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import InstructionModal from "./components/modals/InstructionModal";
+
 
 // ❌ REMOVED: PDF Tools import (using workspace tab instead)
 
@@ -49,7 +49,7 @@ export default function App() {
 
   return (
     <>
-      <InstructionModal />
+      
       <ScrollToTop />
 
       <Routes>
