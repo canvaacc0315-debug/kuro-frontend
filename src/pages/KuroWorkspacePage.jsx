@@ -932,7 +932,7 @@ export default function KuroWorkspacePage() {
                           scrollBehavior: "smooth"
                         }}
                       >
-                        <div className="messages-centered-container" style={{ maxWidth: "1200px", margin: "0 auto", width: "100%" }}>
+                        <div className="messages-centered-container">
                           <AnimatePresence initial={false}>
                             {conversation.map((m, index) => (
                               <motion.div
