@@ -7,6 +7,8 @@ export default function GlassCard({
     children,
     delay = 0,
     className = "",
+    iconColor = "var(--accent)",
+    iconBg = "var(--accent-subtle)",
 }) {
     return (
         <motion.div
@@ -36,12 +38,12 @@ export default function GlassCard({
                         width: 52,
                         height: 52,
                         borderRadius: "var(--radius-md)",
-                        background: "var(--accent-subtle)",
+                        background: iconBg,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                         marginBottom: "1.2rem",
-                        color: "var(--accent)",
+                        color: iconColor,
                         fontSize: "1.4rem",
                     }}
                 >

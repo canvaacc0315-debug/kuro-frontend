@@ -187,6 +187,8 @@ export default function DashboardPage() {
           {/* PDF Chat */}
           <GlassCard
             icon={<MessageSquare size={32} />}
+            iconColor="#3b82f6"
+            iconBg="rgba(59, 130, 246, 0.15)"
             title="PDF Chat"
             description="Interact with your PDFs using natural language. Ask questions,
  extract information, and get instant answers."
@@ -209,6 +211,8 @@ export default function DashboardPage() {
           {/* Analysis */}
           <GlassCard
             icon={<BarChart2 size={32} />}
+            iconColor="#a855f7"
+            iconBg="rgba(168, 85, 247, 0.15)"
             title="Analysis"
             description="Deep dive into your PDF content. Extract data, generate insights,
  and visualize information beautifully."
@@ -231,6 +235,8 @@ export default function DashboardPage() {
           {/* Study Mode */}
           <GlassCard
             icon={<GraduationCap size={32} />}
+            iconColor="#ec4899"
+            iconBg="rgba(236, 72, 153, 0.15)"
             title="Study Mode"
             description="Turn your PDFs into interactive learning materials. Generate flashcards and quizzes to master any subject."
             className="workspace-card"
@@ -252,6 +258,8 @@ export default function DashboardPage() {
           {/* Create & Edit */}
           <GlassCard
             icon={<PenTool size={32} />}
+            iconColor="#f59e0b"
+            iconBg="rgba(245, 158, 11, 0.15)"
             title="Create &amp; Edit"
             description="Design and edit PDFs with Canva-like simplicity. Professional
  templates and easy tools."
@@ -274,6 +282,8 @@ export default function DashboardPage() {
           {/* OCR */}
           <GlassCard
             icon={<ScanSearch size={32} />}
+            iconColor="#10b981"
+            iconBg="rgba(16, 185, 129, 0.15)"
             title="OCR &amp; Recognition"
             description="Convert scanned documents to editable text and extract data from complex layouts."
             className="workspace-card"
@@ -292,9 +302,11 @@ export default function DashboardPage() {
             </button>
           </GlassCard>
 
-          {/* Settings (optional placeholder) */}
+          {/* PDF Tools */}
           <GlassCard
             icon={<Wrench size={32} />}
+            iconColor="#06b6d4"
+            iconBg="rgba(6, 182, 212, 0.15)"
             title="PDF Tools"
             description="Manage and transform your PDF documents with ease. Merge, split, convert, and extract text from PDFs using our powerful tools."
             className="workspace-card"
