@@ -1,11 +1,26 @@
 // frontend/src/components/UploadPanel.jsx
 import { useState, useEffect } from "react";
-import { useUser } from "@clerk/clerk-react"; // Removed useAuth, using prop instead
+import { useUser } from "@clerk/clerk-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { UploadCloud, FileText, CheckCircle, Clock, AlertCircle, Eye, Trash2, X } from "lucide-react";
 import "/src/styles/uploadpdf.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
-// ✅ Accept getToken as prop instead of using useAuth internally
+// Animation Variants
+const containerVariant = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 }
+  }
+};
+
+const itemVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
+};
+
 export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId, getToken }) {
   const { user } = useUser();
   const userId = user?.id;
@@ -29,15 +44,12 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     };
   }, [viewedPdfUrl]);
 
-  // 🔥 FIXED: Load existing PDFs WITH session_id in URL
+  // Load existing PDFs
   useEffect(() => {
     async function loadExistingPdfs() {
-      // ❌ CRITICAL: Must have sessionId to list PDFs
       if (!userId || !sessionId) return;
-
       try {
         const token = await getToken();
-        // 🔥 FIX #1: Added sessionId to URL path
         const res = await fetch(`${API_BASE}/api/pdf/list/${sessionId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -72,7 +84,6 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
   // Polling for status updates
   useEffect(() => {
     const pollInterval = 5000;
-
     const pollStatuses = async () => {
       const processingPdfs = pdfs.filter(
         (p) => p.status === "Processing" && p.backendId && p.ownerId === userId
@@ -81,9 +92,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
 
       try {
         const token = await getToken();
-
         for (const pdf of processingPdfs) {
-          // 🔥 FIX #2: Added sessionId to status URL
           const res = await fetch(
             `${API_BASE}/api/pdf/status/${sessionId}/${pdf.backendId}`,
             { headers: { Authorization: `Bearer ${token}` } }
@@ -122,7 +131,10 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     const pdfsToUpload = Array.from(files).filter(
       (f) => f.type === "application/pdf"
     );
-    if (!pdfsToUpload.length) return;
+    if (!pdfsToUpload.length) {
+      setError("Only PDF files are supported");
+      return;
+    }
 
     const optimisticPdfs = pdfsToUpload.map((file) => ({
       uid: crypto.randomUUID(),
@@ -140,7 +152,6 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     try {
       setError("");
       setUploadProgress(0);
-
       const token = await getToken();
       const formData = new FormData();
 
@@ -199,11 +210,10 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
               onSelectPdf(backendPdfs[0].pdf_id);
             }
           } catch (err) {
-            console.error(err);
-            setError("Failed to parse server response");
-            onPdfsChange((prev) =>
-              prev.filter((p) => !uploadedUids.includes(p.uid))
-            );
+             setError("Failed to parse server response");
+             onPdfsChange((prev) =>
+               prev.filter((p) => !uploadedUids.includes(p.uid))
+             );
           }
         } else {
           let msg = `Upload failed (${xhr.status})`;
@@ -220,7 +230,7 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
 
       xhr.onerror = () => {
         setUploadProgress(0);
-        setError("Upload failed");
+        setError("Upload failed due to a network error");
         onPdfsChange((prev) =>
           prev.filter((p) => !uploadedUids.includes(p.uid))
         );
@@ -228,7 +238,6 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
 
       xhr.send(formData);
     } catch (err) {
-      console.error(err);
       setError(err.message || "Upload failed");
       setUploadProgress(0);
       onPdfsChange((prev) =>
@@ -237,19 +246,15 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     }
   }
 
-  // 🔥 FIX #3: View PDF with session_id in URL
   async function handleView(pdf) {
     setError("");
     setIsViewingLoading(true);
-
     try {
       if (viewedPdfUrl) URL.revokeObjectURL(viewedPdfUrl);
-
       let url;
 
       if (pdf.backendId) {
         const token = await getToken();
-        // 🔥 CRITICAL FIX: Added sessionId to URL path
         const res = await fetch(
           `${API_BASE}/api/pdf/view/${sessionId}/${pdf.backendId}`,
           { headers: { Authorization: `Bearer ${token}` } }
@@ -286,12 +291,10 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     }
   }
 
-  // 🔥 FIX #4: Delete PDF with session_id in URL
   async function handleRemove(pdf) {
     if (pdf.backendId) {
       try {
         const token = await getToken();
-        // 🔥 CRITICAL FIX: Added sessionId to URL path
         const res = await fetch(
           `${API_BASE}/api/pdf/${sessionId}/${pdf.backendId}`,
           {
@@ -314,7 +317,6 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     }
 
     if (pdf?.url) URL.revokeObjectURL(pdf.url);
-
     onPdfsChange((prev) => prev.filter((p) => p.uid !== pdf.uid));
 
     if (pdf.uid === viewedPdfId) {
@@ -334,32 +336,49 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
     handleFiles(Array.from(e.dataTransfer.files || []));
   }
 
-  return (
-    <div className="upload-panel-container">
-      <h1 className="welcome-title">"Your PDF's now have a brain."</h1>
+  const userPdfs = pdfs.filter((pdf) => pdf.ownerId === userId);
 
-      <div
+  return (
+    <motion.div 
+      className="upload-panel-container"
+      variants={containerVariant}
+      initial="hidden"
+      animate="visible"
+    >
+      <motion.div variants={itemVariant} className="upload-header-text">
+        <h1 className="welcome-title">Your PDFs now have a <span className="text-gradient">brain</span>.</h1>
+        <p className="welcome-subtitle">Drop a PDF to instantly chat, summarize, and extract data.</p>
+      </motion.div>
+
+      <motion.div 
+        variants={itemVariant}
         className={`upload-section ${dragOver ? "drag-over" : ""}`}
-        onDragOver={(e) => {
-          e.preventDefault();
-          setDragOver(true);
-        }}
+        onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
         onDragLeave={() => setDragOver(false)}
         onDrop={handleDrop}
       >
+        {/* Decorative background glow orb inside drop area */}
+        <div className="upload-glow-orb" />
+
         <div className="drag-drop-card">
-          <div className="cloud-icon">☁️↑</div>
-          <p className="drag-text">Drag & drop your PDFs</p>
-          <p className="or-text">— or —</p>
+          <motion.div 
+            className="cloud-container"
+            animate={{ y: [0, -8, 0] }}
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          >
+            <UploadCloud size={60} className="cloud-icon stroke-accent" />
+          </motion.div>
+          <h2 className="drag-text">Drag & drop your PDFs here</h2>
+          <p className="or-text">or</p>
 
           <button
-            className="browse-button"
+            className="browse-button glass-btn"
             onClick={() => document.getElementById("pdfUploadInput")?.click()}
           >
             Browse Files
           </button>
 
-          <p className="subtext">PDF only · Multiple files supported</p>
+          <p className="subtext">Supports PDF format up to 50MB. Multiple files allowed.</p>
         </div>
 
         <input
@@ -372,86 +391,138 @@ export default function UploadPanel({ pdfs, onPdfsChange, onSelectPdf, sessionId
         />
 
         {uploadProgress > 0 && (
-          <div className="upload-progress">
-            <progress value={uploadProgress} max="100" />
-            <span>{uploadProgress}%</span>
+          <div className="upload-progress-wrapper">
+            <div className="upload-progress-info">
+              <span>Uploading...</span>
+              <span>{uploadProgress}%</span>
+            </div>
+            <div className="upload-progress-bar">
+               <motion.div 
+                 className="progress-fill" 
+                 initial={{ width: 0 }} 
+                 animate={{ width: `${uploadProgress}%` }} 
+               />
+            </div>
           </div>
         )}
 
-        {error && <p className="error-message">{error}</p>}
-      </div>
+        {error && (
+          <motion.p initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} className="error-message">
+            <AlertCircle size={14} className="error-icon" /> {error}
+          </motion.p>
+        )}
+      </motion.div>
 
-      <div className="files-section">
-        <h3 className="files-title">Uploaded Files</h3>
-        <ul className="files-list">
-          {pdfs
-            .filter((pdf) => pdf.ownerId === userId)
-            .map((pdf) => (
-              <li key={pdf.uid} className="file-row">
-                <div className="pdf-icon">📄</div>
-
-                <div className="file-info">
-                  <span className="file-name">{pdf.name}</span>
-                  <span className="file-size">
-                    {pdf.sizeMB && `${pdf.sizeMB} MB`}
-                  </span>
-                </div>
-
-                <div
-                  className={`status-badge ${pdf.status?.toLowerCase() || ""}`}
-                >
-                  {pdf.status === "Ready" && "✅ Ready"}
-                  {pdf.status === "Processing" && "⏳ Processing"}
-                  {pdf.status === "Error" && "❌ Error"}
-                  {pdf.status === "Uploading" && "⏳ Uploading"}
-                </div>
-
-                <button
-                  className="view-button"
-                  onClick={() => handleView(pdf)}
-                  disabled={!pdf.backendId && !pdf.url}
-                >
-                  View
-                </button>
-
-                <button
-                  className="remove-button"
-                  onClick={() => handleRemove(pdf)}
-                >
-                  Remove
-                </button>
-              </li>
-            ))}
-        </ul>
-      </div>
-
-      {viewedPdfUrl && (
-        <div className="pdf-viewer-section">
-          <div className="viewer-header">
-            <h3 className="viewer-title">Viewing PDF</h3>
-            <button
-              className="close-viewer-button"
-              onClick={() => {
-                if (viewedPdfUrl) URL.revokeObjectURL(viewedPdfUrl);
-                setViewedPdfUrl(null);
-                setViewedPdfId(null);
-              }}
-            >
-              Close Viewer
-            </button>
+      {userPdfs.length > 0 && (
+        <motion.div variants={itemVariant} className="files-section">
+          <div className="files-header">
+            <h3 className="files-title">Your Documents</h3>
+            <span className="file-count">{userPdfs.length} file{userPdfs.length !== 1 && 's'}</span>
           </div>
+          
+          <ul className="files-list">
+            <AnimatePresence>
+              {userPdfs.map((pdf) => (
+                <motion.li 
+                  key={pdf.uid} 
+                  className="file-row"
+                  initial={{ opacity: 0, x: -20, scale: 0.95 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+                  layout
+                >
+                  <div className="pdf-icon-wrapper">
+                    <FileText size={24} className="pdf-icon" />
+                  </div>
 
-          {isViewingLoading ? (
-            <div className="loading-spinner">Loading PDF...</div>
-          ) : (
-            <iframe
-              src={viewedPdfUrl}
-              className="pdf-iframe"
-              title="PDF Viewer"
-            />
-          )}
-        </div>
+                  <div className="file-info">
+                    <span className="file-name" title={pdf.name}>{pdf.name}</span>
+                    <span className="file-size">{pdf.sizeMB ? `${pdf.sizeMB} MB` : "Unknown Size"}</span>
+                  </div>
+
+                  <div className={`status-badge ${pdf.status?.toLowerCase() || ""}`}>
+                    {pdf.status === "Ready" && <><CheckCircle size={14} /> Ready</>}
+                    {pdf.status === "Processing" && <><Clock size={14} className="spin-icon" /> Processing</>}
+                    {pdf.status === "Uploading" && <><UploadCloud size={14} className="pulse-icon" /> Uploading</>}
+                    {pdf.status === "Error" && <><X size={14} /> Error</>}
+                  </div>
+
+                  <div className="file-actions">
+                    <button
+                      className="action-btn view-btn"
+                      onClick={() => handleView(pdf)}
+                      disabled={!pdf.backendId && !pdf.url}
+                      title="View Document"
+                    >
+                      <Eye size={16} />
+                    </button>
+
+                    <button
+                      className="action-btn remove-btn"
+                      onClick={() => handleRemove(pdf)}
+                      title="Remove Document"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
+                </motion.li>
+              ))}
+            </AnimatePresence>
+          </ul>
+        </motion.div>
       )}
-    </div>
+
+      {/* PDF Viewer Portal/Modal */}
+      <AnimatePresence>
+        {viewedPdfUrl && (
+          <motion.div 
+            className="pdf-viewer-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className="pdf-viewer-modal"
+              initial={{ y: 50, scale: 0.95, opacity: 0 }}
+              animate={{ y: 0, scale: 1, opacity: 1 }}
+              exit={{ y: 20, scale: 0.95, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            >
+              <div className="viewer-header-glass">
+                <h3 className="viewer-title">
+                  <FileText size={18} />
+                  {pdfs.find(p => p.uid === viewedPdfId)?.name || "Document Preview"}
+                </h3>
+                <button
+                  className="close-viewer-btn"
+                  onClick={() => {
+                    if (viewedPdfUrl) URL.revokeObjectURL(viewedPdfUrl);
+                    setViewedPdfUrl(null);
+                    setViewedPdfId(null);
+                  }}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="viewer-content">
+                {isViewingLoading ? (
+                  <div className="loading-spinner-container">
+                    <div className="loader-ring"></div>
+                    <p>Loading document securely...</p>
+                  </div>
+                ) : (
+                  <iframe
+                    src={viewedPdfUrl}
+                    className="pdf-iframe"
+                    title="PDF Viewer"
+                  />
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
