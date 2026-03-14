@@ -133,6 +133,59 @@
     font-size: 0.78rem;
 }
 
+/* ── CLERK OVERRIDES ── */
+.auth-form-card .cl-card {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.auth-form-card .cl-headerTitle,
+.auth-form-card .cl-headerSubtitle {
+    display: none; /* We use our own custom header */
+}
+
+.auth-form-card .cl-socialButtonsBlockButton {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.auth-form-card .cl-socialButtonsBlockButton:hover {
+    background: var(--bg-card-hover) !important;
+}
+
+.auth-form-card .cl-dividerLine {
+    background: var(--border-color) !important;
+}
+
+.auth-form-card .cl-dividerText {
+    color: var(--text-muted) !important;
+}
+
+.auth-form-card .cl-formFieldInput {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.auth-form-card .cl-formFieldLabel {
+    color: var(--text-primary) !important;
+}
+
+.auth-form-card .cl-footerActionText,
+.auth-form-card .cl-footerActionLink {
+    color: var(--text-secondary) !important;
+}
+
+.auth-form-card .cl-footerActionLink {
+    color: var(--accent) !important;
+}
+
+.auth-form-card .cl-internal-phfxlr {
+    background: transparent !important;
+}
+
+
 /* Background orbs */
 .auth-orb {
     position: absolute;

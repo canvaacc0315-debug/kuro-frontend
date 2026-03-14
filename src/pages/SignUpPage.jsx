@@ -3,6 +3,8 @@ import { SignUp } from "@clerk/clerk-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, Sparkles, Check } from "lucide-react";
+import { dark } from '@clerk/themes';
+import { useTheme } from "../context/ThemeContext";
 import AnimatedSection from "../components/animated/AnimatedSection";
 import FloatingCard from "../components/animated/FloatingCard";
 import logoIcon from "../assets/logo.svg";
@@ -10,6 +12,7 @@ import "../styles/auth-page.css";
 
 export default function SignUpPage() {
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const features = [
     "Unlimited PDF uploads",
@@ -88,6 +91,14 @@ export default function SignUpPage() {
               afterSignUpUrl="/dashboard"
               afterSignInUrl="/dashboard"
               appearance={{
+                baseTheme: theme === 'dark' ? dark : undefined,
+                variables: {
+                  colorPrimary: '#dc2626',
+                  colorBackground: 'transparent',
+                  colorInputBackground: theme === 'dark' ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)',
+                  colorInputText: theme === 'dark' ? '#fff' : '#000',
+                  colorText: theme === 'dark' ? '#f9fafb' : '#111111',
+                },
                 elements: {
                   rootBox: { background: "transparent" },
                   card: {
@@ -95,6 +106,9 @@ export default function SignUpPage() {
                     boxShadow: "none",
                     background: "transparent",
                   },
+                  footerActionText: { color: theme === 'dark' ? '#a1a1aa' : '#52525b' },
+                  footerActionLink: { color: '#dc2626' },
+                  formButtonPrimary: { background: 'linear-gradient(135deg, #dc2626, #ef4444)' },
                 },
               }}
             />
