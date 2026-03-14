@@ -14,14 +14,14 @@ import "../styles/chatExport.css";
 
 const ChatExport = ({ exports, status }) => {
   const options = [
-    { id: 'pdf', icon: <FileText size={24} />, title: "PDF Document", desc: "Download as a formatted PDF page.", handler: exports.handleExportPDF },
-    { id: 'docx', icon: <FileType size={24} />, title: "Word File", desc: "Download as an editable Word document.", handler: exports.handleExportDOCX },
-    { id: 'csv', icon: <Table size={24} />, title: "CSV Data", desc: "Download as a spreadsheet-friendly CSV.", handler: exports.handleExportCSV },
-    { id: 'txt', icon: <FileText size={24} />, title: "Plain Text", desc: "Simple .txt file with full transcript.", handler: exports.handleExportTXT },
-    { id: 'copy', icon: <Clipboard size={24} />, title: "Clipboard", desc: "Copy the entire conversation quickly.", handler: exports.handleCopyText },
-    { id: 'html', icon: <Globe size={24} />, title: "HTML Page", desc: "Download as a standalone web page.", handler: exports.handleExportHTML },
-    { id: 'md', icon: <FileCode size={24} />, title: "Markdown", desc: "Clean markdown formatting for logs.", handler: exports.handleExportMarkdown },
-    { id: 'link', icon: <Link2 size={24} />, title: "Shareable Link", desc: "Generate a public link to share.", handler: exports.handleGenerateShareableLink },
+    { id: 'pdf', icon: <FileText size={24} />, title: "PDF Document", desc: "Download as a formatted PDF page.", handler: exports.handleExportPDF, color: "#ff4d4f" },
+    { id: 'docx', icon: <FileType size={24} />, title: "Word File", desc: "Download as an editable Word document.", handler: exports.handleExportDOCX, color: "#1890ff" },
+    { id: 'csv', icon: <Table size={24} />, title: "CSV Data", desc: "Download as a spreadsheet-friendly CSV.", handler: exports.handleExportCSV, color: "#52c41a" },
+    { id: 'txt', icon: <FileText size={24} />, title: "Plain Text", desc: "Simple .txt file with full transcript.", handler: exports.handleExportTXT, color: "#722ed1" },
+    { id: 'copy', icon: <Clipboard size={24} />, title: "Clipboard", desc: "Copy the entire conversation quickly.", handler: exports.handleCopyText, color: "#faad14" },
+    { id: 'html', icon: <Globe size={24} />, title: "HTML Page", desc: "Download as a standalone web page.", handler: exports.handleExportHTML, color: "#13c2c2" },
+    { id: 'md', icon: <FileCode size={24} />, title: "Markdown", desc: "Clean markdown formatting for logs.", handler: exports.handleExportMarkdown, color: "#0050b3" },
+    { id: 'link', icon: <Link2 size={24} />, title: "Shareable Link", desc: "Generate a public link to share.", handler: exports.handleGenerateShareableLink, color: "#eb2f96" },
   ];
 
   return (
@@ -47,7 +47,14 @@ const ChatExport = ({ exports, status }) => {
             whileTap={{ scale: 0.98 }}
             onClick={option.handler}
           >
-            <div className="card-icon-container">
+            <div 
+              className="card-icon-container" 
+              style={{ 
+                color: option.color, 
+                backgroundColor: `${option.color}15`,
+                boxShadow: `inset 0 0 12px ${option.color}10` 
+              }}
+            >
               {option.icon}
             </div>
             <div className="card-text">

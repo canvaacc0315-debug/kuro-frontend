@@ -40,13 +40,10 @@
 .card-icon-container {
   width: 56px;
   height: 56px;
-  background: var(--accent-subtle);
-  color: var(--accent);
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: inset 0 0 12px rgba(220, 38, 38, 0.1);
 }
 
 .card-text h3 {
