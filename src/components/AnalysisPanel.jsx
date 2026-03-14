@@ -1,31 +1,48 @@
-// src/components/AnalysisPanel.jsx
 import { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useApiClient } from "../api/client";
+import { 
+  FileText, 
+  List, 
+  HelpCircle, 
+  BookOpen, 
+  Zap, 
+  Clock, 
+  AlignCenter, 
+  AlignLeft, 
+  MessageSquare,
+  Lightbulb,
+  Save,
+  Trash2,
+  ChevronDown,
+  Upload,
+  Sparkles,
+  Download
+} from "lucide-react";
 import "/src/styles/analysis.css";
 
 const TASK_OPTIONS = [
-  { id: "summary", label: "Summary" },
-  { id: "key_points", label: "Key points" },
-  { id: "definitions", label: "Definitions" },
-  { id: "flashcards", label: "Flashcards" },
-  { id: "mcq", label: "MCQs" },
-  { id: "study_guide", label: "Study guide" },
+  { id: "summary", label: "Summary", icon: <FileText size={18} /> },
+  { id: "key_points", label: "Key points", icon: <List size={18} /> },
+  { id: "definitions", label: "Definitions", icon: <BookOpen size={18} /> },
+  { id: "flashcards", label: "Flashcards", icon: <Zap size={18} /> },
+  { id: "mcq", label: "MCQs", icon: <HelpCircle size={18} /> },
+  { id: "study_guide", label: "Study guide", icon: <AlignLeft size={18} /> },
 ];
 
 const MODE_OPTIONS = [
-  { id: "short", label: "Short" },
-  { id: "detailed", label: "Detailed" },
-  { id: "bullets", label: "Bullets" },
-  { id: "examples", label: "Examples" },
-  { id: "kid-friendly", label: "Explain like I'm 10" },
+  { id: "short", label: "Short", desc: "Brief highlights" },
+  { id: "detailed", label: "Detailed", desc: "Deep analysis" },
+  { id: "bullets", label: "Bullets", desc: "Scan-ready points" },
+  { id: "examples", label: "Examples", desc: "Practical cases" },
+  { id: "kid-friendly", label: "Explain like I'm 10", desc: "Simpler concepts" },
 ];
 
 export default function AnalysisPanel({
   pdfs = [],
   selectedPdfId = "",
   onPdfChange,
-  sessionId = "", // 🔥 ADDED: sessionId prop
+  sessionId = "", 
 }) {
   const { analysePdf } = useApiClient();
   const fileInputRef = useRef(null);
@@ -39,7 +56,6 @@ export default function AnalysisPanel({
 
   const safePdfs = Array.isArray(pdfs) ? pdfs : [];
 
-  // 🔥 FIXED: Handle both backendId (from UploadPanel) and id/pdf_id
   const selected = safePdfs.find(
     (p) => (p.id ?? p.pdf_id ?? p.backendId) === selectedPdfId
   );
@@ -47,7 +63,6 @@ export default function AnalysisPanel({
   async function runAnalysis() {
     if (!selectedPdfId || loading) return;
 
-    // 🔥 CRITICAL: Must have sessionId
     if (!sessionId) {
       setError("No active session. Please refresh the page.");
       return;
@@ -59,7 +74,6 @@ export default function AnalysisPanel({
     setSaveStatus("");
 
     try {
-      // 🔥 FIXED: Pass sessionId as 4th argument
       const data = await analysePdf(selectedPdfId, task, mode, sessionId);
       setResult(data?.result || "");
     } catch (err) {
@@ -99,7 +113,7 @@ export default function AnalysisPanel({
           const parsed = JSON.parse(raw);
           if (Array.isArray(parsed)) history = parsed;
         } catch {
-          // ignore parse errors, start fresh
+          // ignore
         }
       }
 
@@ -135,176 +149,191 @@ export default function AnalysisPanel({
     setSaveStatus("");
   }
 
-  // TODO: Implement actual PDF upload logic here
-  async function handleUpload(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    console.log("Uploading PDF:", file.name);
-  }
-
   return (
-    <motion.div
-      className="page-canvas"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div className="analysis-container-modern">
       <motion.div
-        className="analysis-card"
-        initial={{ opacity: 0, scale: 0.98 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
+        className="analysis-header-premium"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
       >
-        <div className="analysis-title">ANALYSIS</div>
-        <div className="analysis-subtitle">
-          Select a PDF from chat or upload tab
-        </div>
-
-        <label className="form-label">PDF</label>
-        <div className="pdf-input-group">
-          <select
-            className="pdf-select"
-            value={selectedPdfId}
-            onChange={(e) => onPdfChange && onPdfChange(e.target.value)}
-            disabled={safePdfs.length === 0}
-          >
-            {safePdfs.length === 0 ? (
-              <option>No PDFs uploaded yet</option>
-            ) : (
-              <>
-                <option value="">Select PDF…</option>
-                {safePdfs.map((pdf) => (
-                  <option
-                    key={pdf.id ?? pdf.pdf_id ?? pdf.backendId}
-                    value={pdf.id ?? pdf.pdf_id ?? pdf.backendId}
-                  >
-                    {pdf.name || pdf.filename}
-                  </option>
-                ))}
-              </>
-            )}
-          </select>
-          <input
-            type="file"
-            accept=".pdf"
-            ref={fileInputRef}
-            hidden
-            onChange={handleUpload}
-          />
-        </div>
-
-        <div className="task-group">
-          <label className="form-label">Task</label>
-          <div className="task-selects">
-            <select
-              className="select"
-              value={task}
-              onChange={(e) => setTask(e.target.value)}
-            >
-              {TASK_OPTIONS.map((opt) => (
-                <option key={opt.id} value={opt.id}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="answer-style-group">
-          <label className="form-label">Answer Style</label>
-          <select
-            className="select"
-            value={mode}
-            onChange={(e) => setMode(e.target.value)}
-          >
-            {MODE_OPTIONS.map((opt) => (
-              <option key={opt.id} value={opt.id}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="action-buttons">
-          <button
-            type="button"
-            className="button generate-btn"
-            onClick={runAnalysis}
-            disabled={!selectedPdfId || !sessionId || loading} // 🔥 Also disable if no sessionId
-          >
-            <span className="icon-lightbulb">💡</span>
-            {loading ? "Running…" : "Generate"}
-          </button>
-
-          <button
-            type="button"
-            className="button save-btn"
-            onClick={handleSaveAnalysis}
-            disabled={!result || loading}
-          >
-            <span className="icon-save">💾</span> Save Analysis
-          </button>
-
-          <button
-            type="button"
-            className="button clear-btn"
-            onClick={handleClearAnalysis}
-            disabled={(!result && !error) || loading}
-          >
-            <span className="icon-clear">🗑️</span> Clear
-          </button>
-        </div>
-
-        <div className="analysis-result-card">
-          <div className="analysis-result-inner">
-            {saveStatus && (
-              <div
-                className={`analysis-save-status ${saveStatus.startsWith("Analysis") ? "success" : ""}`}
-              >
-                {saveStatus}
-              </div>
-            )}
-
-            {error && <div className="analysis-error">{error}</div>}
-
-            {!error && !result && !loading && (
-              <div className="analysis-placeholder">
-                Choose a task (summary, flashcards, MCQs, etc.) and click Generate to see AI analysis here.
-              </div>
-            )}
-
-            <div className="analysis-result-scroll">
-              <AnimateTextBlock text={result} loading={loading} />
-            </div>
-          </div>
+        <div className="title-section">
+          <div className="accent-badge">AI Analysis</div>
+          <h1>Transform Your Documents</h1>
+          <p>Extract insights, generate flashcards, or simplify complex topics in seconds.</p>
         </div>
       </motion.div>
-    </motion.div>
-  );
-}
 
-function AnimateTextBlock({ text, loading }) {
-  if (loading) {
-    return (
-      <div className="analysis-skeleton">
-        <div />
-        <div />
-        <div />
-        <div />
+      <div className="analysis-layout-grid">
+        {/* Settings Panel */}
+        <motion.div 
+          className="settings-panel-glass"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <div className="panel-section">
+            <label className="section-label">Target Document</label>
+            <div className="custom-select-wrapper">
+              <select
+                className="modern-select"
+                value={selectedPdfId}
+                onChange={(e) => onPdfChange && onPdfChange(e.target.value)}
+                disabled={safePdfs.length === 0}
+              >
+                {safePdfs.length === 0 ? (
+                  <option>No PDFs uploaded yet</option>
+                ) : (
+                  <>
+                    <option value="">Select a PDF...</option>
+                    {safePdfs.map((pdf) => (
+                      <option
+                        key={pdf.id ?? pdf.pdf_id ?? pdf.backendId}
+                        value={pdf.id ?? pdf.pdf_id ?? pdf.backendId}
+                      >
+                        {pdf.name || pdf.filename}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </select>
+              <ChevronDown className="select-arrow" size={16} />
+            </div>
+          </div>
+
+          <div className="panel-section">
+            <label className="section-label">Analysis Task</label>
+            <div className="task-grid-input">
+              {TASK_OPTIONS.map((opt) => (
+                <button
+                  key={opt.id}
+                  className={`task-pill ${task === opt.id ? "active" : ""}`}
+                  onClick={() => setTask(opt.id)}
+                >
+                  {opt.icon}
+                  <span>{opt.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="panel-section">
+            <label className="section-label">Output Style</label>
+            <div className="mode-stack-input">
+              {MODE_OPTIONS.map((opt) => (
+                <button
+                  key={opt.id}
+                  className={`mode-item ${mode === opt.id ? "active" : ""}`}
+                  onClick={() => setMode(opt.id)}
+                >
+                  <div className="mode-info">
+                    <span className="mode-label">{opt.label}</span>
+                    <span className="mode-desc">{opt.desc}</span>
+                  </div>
+                  <div className="radio-dot" />
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="panel-actions-modern">
+            <button
+              className={`action-btn-primary ${loading ? 'loading' : ''}`}
+              onClick={runAnalysis}
+              disabled={!selectedPdfId || !sessionId || loading}
+            >
+              <Sparkles size={18} />
+              {loading ? "Analyzing..." : "Generate Analysis"}
+            </button>
+            <div className="secondary-actions">
+              <button
+                className="action-btn-outline"
+                onClick={handleSaveAnalysis}
+                disabled={!result || loading}
+                title="Save & Download"
+              >
+                <Save size={18} />
+              </button>
+              <button
+                className="action-btn-outline delete"
+                onClick={handleClearAnalysis}
+                disabled={(!result && !error) || loading}
+                title="Clear Result"
+              >
+                <Trash2 size={18} />
+              </button>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Result Area */}
+        <motion.div 
+          className="result-panel-glass"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <div className="result-header">
+            <h3>Investigation Report</h3>
+            {result && (
+              <button className="copy-btn-minimal" onClick={() => downloadTextFile(result, 'analysis.txt')}>
+                <Download size={14} />
+                TXT
+              </button>
+            )}
+          </div>
+
+          <div className="result-content-container">
+            <AnimatePresence mode="wait">
+              {loading ? (
+                <motion.div 
+                  key="loading"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="analysis-loading-state"
+                >
+                  <div className="skeleton-strip long" />
+                  <div className="skeleton-strip medium" />
+                  <div className="skeleton-strip short" />
+                  <div className="skeleton-strip long" />
+                  <div className="skeleton-pulse-block" />
+                </motion.div>
+              ) : error ? (
+                <motion.div 
+                  key="error"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="analysis-error-banner"
+                >
+                  <HelpCircle size={24} />
+                  <p>{error}</p>
+                </motion.div>
+              ) : result ? (
+                <motion.div 
+                  key="result"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="analysis-rich-text"
+                >
+                  {saveStatus && <div className="toast-subtle">{saveStatus}</div>}
+                  <pre>{result}</pre>
+                </motion.div>
+              ) : (
+                <motion.div 
+                  key="placeholder"
+                  className="analysis-empty-placeholder"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.6 }}
+                >
+                  <Lightbulb size={48} />
+                  <p>Configuration complete. Ready to analyze.</p>
+                  <span>Select document options to begin extraction.</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
       </div>
-    );
-  }
-
-  if (!text) return null;
-
-  return (
-    <motion.pre
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.18 }}
-      className="analysis-result-text"
-    >
-      {text}
-    </motion.pre>
+    </div>
   );
 }
