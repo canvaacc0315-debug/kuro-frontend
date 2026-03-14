@@ -265,31 +265,23 @@ body {
 /* MAIN CONTENT */
 .main-container {
   flex: 1;
-  padding-left: 0;
-  margin-left: 0;
+  margin-left: var(--sidebar-width, 260px);
   margin-top: 80px;
-  padding-right: 0;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding: 40px 60px;
   display: flex;
   flex-direction: column;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-height: calc(100vh - 80px);
-  width: 100%;
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: calc(100vh - 80px); /* Ensure it takes full height */
 }
 
 .workspace-header {
   margin-bottom: 40px;
-  text-align: center;
 }
 
 .workspace-title {
   font-size: 32px;
   font-weight: 800;
   color: var(--text-primary);
-  text-align: center;
-  margin: 0 auto;
-  max-width: 900px;
 }
 
 .workspace-title-accent {
@@ -312,18 +304,6 @@ body {
   display: block;
   opacity: 1;
   transform: translateY(0);
-}
-
-.tab-content:not(.chat-tab-container) {
-  padding-left: var(--sidebar-width, 260px);
-  padding-right: 40px;
-}
-
-@media (max-width: 768px) {
-  .tab-content:not(.chat-tab-container) {
-    padding-left: 0;
-    padding-right: 0;
-  }
 }
 
 /* UPLOAD PANEL */
@@ -895,13 +875,11 @@ input[type="number"]:focus {
 
   .sidebar-nav {
     flex-direction: row;
-    gap: 16px;
+    gap: 0;
     width: 100%;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: center;
     overflow-x: auto;
-    padding: 0 16px;
-    -webkit-overflow-scrolling: touch;
     /* hide scrollbar */
     -ms-overflow-style: none;
     scrollbar-width: none;
