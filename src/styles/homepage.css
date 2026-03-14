@@ -1341,9 +1341,28 @@
 }
 
 @media (max-width: 768px) {
+  .hp-header-inner {
+    height: 56px;
+    padding: 0 1rem;
+  }
+
+  .hp-logo-img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .hp-logo-text {
+    font-size: 1.1rem;
+  }
+
+  .hp-nav {
+    top: 56px;
+    /* ... (rest of the open nav logic) */
+  }
+
   .hp-nav {
     position: fixed;
-    top: 72px;
+    top: 56px;
     left: 0;
     right: 0;
     bottom: 0;
@@ -1367,6 +1386,8 @@
 
   .hp-hamburger {
     display: flex;
+    width: 36px;
+    height: 36px;
   }
 
   .hp-hero {

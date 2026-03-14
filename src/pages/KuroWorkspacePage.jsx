@@ -752,7 +752,7 @@ export default function KuroWorkspacePage() {
             <section
               id="chatTab"
               className={`tab-content chat-tab-container ${activeTab === "chat" ? "active" : ""}`}
-              style={{ display: activeTab === "chat" ? "flex" : "none", flexDirection: "column", height: "100%" }}
+              style={{ display: activeTab === "chat" ? "flex" : "none", flexDirection: "column", height: "100%", background: "var(--bg-primary)" }}
             >
               <div className="chat-header-modern" style={{ padding: "10px 24px", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "20px", borderBottom: "1px solid var(--border-color)", background: "var(--bg-secondary)" }}>
                 <div className="chat-subtab-selector" style={{ display: "flex", gap: "24px" }}>
