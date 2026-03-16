@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { studyApi } from '../../services/studyApi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Timer, BookOpen, Brain, Play, Pause, RotateCcw, Download, Save, 
-  ClipboardList, Clock, Flame, Volume2, VolumeX, Music, Wind, Coffee, CloudRain
+  ChevronRight, ChevronLeft, Sparkles, CheckCircle2, XCircle, Trophy,
+  ClipboardList, Clock, Flame, Volume2, VolumeX, Music, Wind, Coffee, CloudRain 
 } from 'lucide-react';
 import './StudyWorkspace.css';
 
