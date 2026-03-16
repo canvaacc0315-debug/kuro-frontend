@@ -128,7 +128,7 @@ const PomodoroPanel = () => {
                     </div>
                 </div>
 
-                <div className="timer-visual">
+                <div className={`timer-visual ${isRunning ? 'running' : ''}`}>
                     <svg className="progress-ring" viewBox="0 0 100 100">
                         <circle className="progress-ring-bg" cx="50" cy="50" r="45" />
                         <motion.circle 
