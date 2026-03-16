@@ -840,6 +840,38 @@ export default function KuroWorkspacePage() {
               >
                 <div className="chat-controls-premium" style={{ display: "flex", flexWrap: "wrap", gap: "16px", padding: "16px 24px", background: "var(--bg-secondary)", borderBottom: "1px solid var(--border-color)" }}>
                   <div className="control-group" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "600" }}>PDF:</span>
+                    <select
+                      className="premium-select"
+                      value={selectedPdfId}
+                      onChange={(e) => setSelectedPdfId(e.target.value)}
+                      style={{ 
+                        background: "var(--bg-input)", 
+                        border: "1px solid var(--border-color)", 
+                        color: "var(--text-primary)", 
+                        padding: "5px 12px", 
+                        borderRadius: "8px", 
+                        fontSize: "13px",
+                        outline: "none",
+                        maxWidth: "180px"
+                      }}
+                    >
+                      {uploadedFiles.length === 0 ? (
+                        <option value="">No PDFs yet</option>
+                      ) : (
+                        <>
+                          <option value="">Select PDF…</option>
+                          {uploadedFiles.map((f) => (
+                            <option key={f.backendId || f.name} value={f.backendId}>
+                              {f.name || f.filename}
+                            </option>
+                          ))}
+                        </>
+                      )}
+                    </select>
+                  </div>
+
+                  <div className="control-group" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "600" }}>Scope:</span>
                     <div className="scope-pills" style={{ display: "flex", padding: "3px", background: "var(--bg-input)", borderRadius: "100px", border: "1px solid var(--border-color)" }}>
                       {["all", "page", "range"].map((s) => (
