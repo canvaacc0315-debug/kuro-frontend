@@ -695,15 +695,23 @@ export default function CreatePdfPanel({ onExportPdf }) {
 
   return (
     <div className={`create-editor-root ${!showTools ? 'tools-hidden' : ''}`}>
-      {/* Mobile Toggle Button */}
-      <button 
-        className="mobile-tools-toggle"
-        onClick={() => setShowTools(!showTools)}
-        aria-label={showTools ? "Hide Tools" : "Show Tools"}
-      >
-        {showTools ? <ChevronUp size={20} /> : <Settings size={20} />}
-        <span>{showTools ? "Hide Tools" : "Show Tools"}</span>
-      </button>
+      {/* Mobile Toggle Button - Only show on mobile */}
+      {isMobile && (
+        <button 
+          className="mobile-tools-toggle"
+          onClick={() => setShowTools(!showTools)}
+          aria-label={showTools ? "Hide Tools" : "Show Tools"}
+          style={{ 
+            backgroundColor: "var(--accent)", 
+            color: "white",
+            border: "none",
+            boxShadow: "0 4px 15px rgba(239, 68, 68, 0.4)"
+          }}
+        >
+          {showTools ? <ChevronUp size={20} /> : <Settings size={20} />}
+          <span>{showTools ? "Hide Tools" : "Show Tools"}</span>
+        </button>
+      )}
 
       {/* SIDEBAR */}
       {(showTools || !isMobile) && (

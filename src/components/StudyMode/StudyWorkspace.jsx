@@ -27,10 +27,10 @@ const AmbientAudioStation = () => {
   const audioRef = useRef(null);
 
   const sounds = [
-    { id: 'lofi', icon: <Music size={16} />, label: 'Lofi Beats', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-    { id: 'rain', icon: <CloudRain size={16} />, label: 'Rainfall', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
-    { id: 'cafe', icon: <Coffee size={16} />, label: 'Quiet Cafe', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
-    { id: 'wind', icon: <Wind size={16} />, label: 'White Noise', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
+    { id: 'lofi-1', icon: <Music size={16} />, label: 'Deep Focus Lo-fi', url: 'https://live.lofirelax.com/8000/stream' },
+    { id: 'lofi-2', icon: <Wind size={16} />, label: 'Chill Study lofi', url: 'https://live.lofirelax.com/8002/stream' },
+    { id: 'rain', icon: <CloudRain size={16} />, label: 'Cozy Rain', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+    { id: 'cafe', icon: <Coffee size={16} />, label: 'Ambient Cafe', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
   ];
 
   const toggleSound = (sound) => {
@@ -471,6 +471,62 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
     );
 };
 
+// 4. Study Roadmap (Goal Tracker)
+const RoadmapPanel = () => {
+    const [goals, setGoals] = useState([
+        { id: 1, text: 'Read Chapter 4: Neural Networks', completed: true },
+        { id: 2, text: 'Generate 20 Flashcards from PDF', completed: false },
+        { id: 3, text: 'Score 80%+ on Practice Quiz', completed: false },
+    ]);
+    const [newGoal, setNewGoal] = useState('');
+
+    const toggleGoal = (id) => {
+        setGoals(goals.map(g => g.id === id ? { ...g, completed: !g.completed } : g));
+    };
+
+    const addGoal = (e) => {
+        e.preventDefault();
+        if (!newGoal.trim()) return;
+        setGoals([...goals, { id: Date.now(), text: newGoal, completed: false }]);
+        setNewGoal('');
+    };
+
+    return (
+        <div className="study-container roadmap-container">
+            <div className="setup-header">
+                <div className="setup-icon-box orange">
+                    <Flame size={32} />
+                </div>
+                <h2>Study Roadmap</h2>
+                <p>Track your learning milestones and crush your study goals.</p>
+            </div>
+
+            <div className="roadmap-card study-main-card">
+                <form className="roadmap-input-row" onSubmit={addGoal}>
+                    <input 
+                        type="text" 
+                        placeholder="What's your next study goal?" 
+                        value={newGoal}
+                        onChange={(e) => setNewGoal(e.target.value)}
+                    />
+                    <button type="submit" className="premium-btn primary-btn">Add Goal</button>
+                </form>
+
+                <div className="goals-list">
+                    {goals.map(goal => (
+                        <div key={goal.id} className={`goal-item ${goal.completed ? 'completed' : ''}`} onClick={() => toggleGoal(goal.id)}>
+                            <div className="goal-check">
+                                {goal.completed && <CheckCircle2 size={16} />}
+                            </div>
+                            <span>{goal.text}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 const LoaderAnimation = () => (
     <div className="premium-loader">
         <div className="loader-dot" />
@@ -487,6 +543,7 @@ const StudyWorkspace = ({ uploadedFiles = [] }) => {
         { id: 'pomodoro', icon: <Timer size={18} />, label: 'Deep Focus' },
         { id: 'flashcards', icon: <BookOpen size={18} />, label: 'Flashcards' },
         { id: 'quiz', icon: <Brain size={18} />, label: 'Master Quiz' },
+        { id: 'roadmap', icon: <Flame size={18} />, label: 'Roadmap' },
     ];
 
     return (
@@ -535,6 +592,7 @@ const StudyWorkspace = ({ uploadedFiles = [] }) => {
                         {activeTab === 'pomodoro' && <PomodoroPanel />}
                         {activeTab === 'flashcards' && <FlashcardPanel uploadedFiles={uploadedFiles} />}
                         {activeTab === 'quiz' && <QuizPanel uploadedFiles={uploadedFiles} />}
+                        {activeTab === 'roadmap' && <RoadmapPanel />}
                     </motion.div>
                 </AnimatePresence>
             </main>
