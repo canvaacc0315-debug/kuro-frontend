@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Timer, BookOpen, Brain, Play, Pause, RotateCcw, Download, Save, 
   ChevronRight, ChevronLeft, Sparkles, CheckCircle2, XCircle, Trophy,
-  ClipboardList, Clock, Flame, Volume2, VolumeX, Music, Wind, Coffee, CloudRain 
+  ClipboardList, Clock, Flame, Volume2, VolumeX, Music, Wind, Coffee, CloudRain, Trash2
 } from 'lucide-react';
 import './StudyWorkspace.css';
 
@@ -503,6 +503,11 @@ const RoadmapPanel = () => {
         setGoals(goals.map(g => g.id === id ? { ...g, completed: !g.completed } : g));
     };
 
+    const deleteGoal = (e, id) => {
+        e.stopPropagation();
+        setGoals(goals.filter(g => g.id !== id));
+    };
+
     const addGoal = (e) => {
         e.preventDefault();
         if (!newGoal.trim()) return;
@@ -538,6 +543,9 @@ const RoadmapPanel = () => {
                                 {goal.completed && <CheckCircle2 size={16} />}
                             </div>
                             <span>{goal.text}</span>
+                            <button className="goal-delete-btn" onClick={(e) => deleteGoal(e, goal.id)} title="Delete Goal">
+                                <Trash2 size={16} />
+                            </button>
                         </div>
                     ))}
                 </div>

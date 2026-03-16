@@ -369,6 +369,30 @@
 .goal-item.completed span { text-decoration: line-through; }
 .goal-item.completed .goal-check { border-color: var(--study-accent); background: rgba(59, 130, 246, 0.1); }
 
+.goal-delete-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--study-text-muted);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.goal-item:hover .goal-delete-btn {
+  opacity: 1;
+}
+
+.goal-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
 /* --- Content Area --- */
 .study-content-area {
   flex: 1;
