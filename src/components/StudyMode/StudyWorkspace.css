@@ -407,7 +407,8 @@
 }
 
 .roadmap-input-row input {
-  flex: 3;
+  flex: 1;
+  min-width: 0; /* Ensures input can shrink */
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--study-border);
   padding: 12px 20px;
@@ -418,16 +419,22 @@
 }
 
 .roadmap-input-row .roadmap-add-btn {
-  flex: 0 0 auto;
-  min-width: 120px;
+  flex-shrink: 0;
+  padding: 0 25px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   background: linear-gradient(135deg, #ef4444, #dc2626);
   border: none;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  white-space: nowrap;
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
 }
 
 .roadmap-add-btn:hover {
