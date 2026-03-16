@@ -420,7 +420,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                     <p>Accuracy: {Math.round((score/quiz.length)*100)}%</p>
                     <button className="premium-btn primary-btn" onClick={() => setQuiz(null)}>Try Another</button>
                 </motion.div>
-            ) : (
+            ) : quiz.length > 0 && quiz[activeIdx] ? (
                 <div className="quiz-active-container">
                     <div className="quiz-header">
                         <div className="quiz-progress-bar">
@@ -437,7 +437,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                     >
                         <h3>{quiz[activeIdx].question}</h3>
                         <div className="options-grid">
-                            {quiz[activeIdx].options.map((opt, i) => {
+                            {quiz[activeIdx].options?.map((opt, i) => {
                                 let state = '';
                                 if (selectedAns) {
                                     if (opt === quiz[activeIdx].correctAnswer) state = 'correct';
@@ -468,6 +468,24 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: 'auto', opacity: 1 }}
                             >
+                                <div className="explanation-content">
+                                    <strong>Insight:</strong> {quiz[activeIdx].explanation}
+                                </div>
+                                <button className="premium-btn primary-btn" onClick={handleNext}>
+                                    {activeIdx === quiz.length - 1 ? 'Finish Quiz' : 'Next Question'}
+                                </button>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            ) : (
+                <div className="no-questions-error" style={{ textAlign: 'center', padding: '40px' }}>
+                    <Brain size={48} style={{ opacity: 0.2, marginBottom: '20px' }} />
+                    <h3>No questions found</h3>
+                    <p>We couldn't generate a quiz for this document. Try another one!</p>
+                    <button className="premium-btn primary-btn" style={{ marginTop: '20px' }} onClick={() => setQuiz(null)}>Go Back</button>
+                </div>
+            )}
                                 <div className="explanation-content">
                                     <strong>Insight:</strong> {quiz[activeIdx].explanation}
                                 </div>
