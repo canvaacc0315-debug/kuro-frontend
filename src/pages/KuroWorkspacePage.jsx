@@ -32,13 +32,16 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Sparkles,
+  SlidersHorizontal,
   Search,
   Trash2,
   Save,
   Download,
   Share2,
   History,
-  MessageCircle
+  MessageCircle,
+  ChevronUp,
+  ChevronDown
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -93,6 +96,7 @@ export default function KuroWorkspacePage() {
   const [exportStatus, setExportStatus] = useState(null);
   const [isSending, setIsSending] = useState(false);
   const [history, setHistory] = useState([]);
+  const [showMobileControls, setShowMobileControls] = useState(false);
   const selectedFile = uploadedFiles.find((f) => f.backendId === selectedPdfId) || null;
 
   // SESSION STATE
@@ -838,7 +842,17 @@ export default function KuroWorkspacePage() {
                   opacity: activeChatSubTab === "current" ? 1 : 0
                 }}
               >
-                <div className="chat-controls-premium" style={{ display: "flex", flexWrap: "wrap", gap: "16px", padding: "16px 24px", background: "var(--bg-secondary)", borderBottom: "1px solid var(--border-color)" }}>
+                {/* Mobile toggle button */}
+                <button
+                  className="mobile-controls-toggle"
+                  onClick={() => setShowMobileControls(!showMobileControls)}
+                >
+                  <SlidersHorizontal size={14} />
+                  {showMobileControls ? "Hide Settings" : "Settings"}
+                  {showMobileControls ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                </button>
+
+                <div className={`chat-controls-premium ${showMobileControls ? 'mobile-visible' : 'mobile-hidden'}`} style={{ display: "flex", flexWrap: "wrap", gap: "16px", padding: "16px 24px", background: "var(--bg-secondary)", borderBottom: "1px solid var(--border-color)" }}>
                   <div className="control-group" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "600" }}>PDF:</span>
                     <select

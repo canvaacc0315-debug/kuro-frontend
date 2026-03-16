@@ -612,6 +612,44 @@ body {
   transform: translateY(-1px);
 }
 
+/* ========== MOBILE CONTROLS TOGGLE ========== */
+.mobile-controls-toggle {
+  display: none; /* Hidden on desktop */
+}
+
+@media (max-width: 768px) {
+  .mobile-controls-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    padding: 8px;
+    background: var(--bg-secondary);
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-controls-toggle:active {
+    background: var(--bg-tertiary);
+  }
+
+  .chat-controls-premium.mobile-hidden {
+    display: none !important;
+  }
+
+  .chat-controls-premium.mobile-visible {
+    display: flex !important;
+  }
+}
+
 /* ========== MOBILE CHAT COMPACT ========== */
 @media (max-width: 768px) {
   .messages-centered-container {
