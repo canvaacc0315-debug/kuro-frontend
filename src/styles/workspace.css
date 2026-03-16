@@ -696,6 +696,12 @@ body {
     max-width: 100% !important;
   }
 
+  .user-bubble {
+    padding: 8px 14px !important;
+    font-size: 13px !important;
+    border-radius: 16px 16px 4px 16px !important;
+  }
+
   /* Keep avatars but make them smaller */
   .avatar-wrapper img,
   .avatar-wrapper > div {
