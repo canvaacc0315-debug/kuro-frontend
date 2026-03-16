@@ -108,6 +108,19 @@ const PomodoroPanel = () => {
         setTimeout(() => setSaveStatus('All saved'), 1000);
     };
 
+    const handleDownload = () => {
+        if (!notes.trim()) return;
+        const blob = new Blob([notes], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `rovex-study-notes-${new Date().toLocaleDateString()}.txt`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
     const totalTime = mode === 'focus' ? 25 * 60 : mode === 'shortBreak' ? 5 * 60 : 15 * 60;
     const progress = ((totalTime - timeLeft) / totalTime) * 100;
 
@@ -173,7 +186,7 @@ const PomodoroPanel = () => {
                     </div>
                     <div className="header-right">
                         <span className="save-status">{saveStatus}</span>
-                        <button className="icon-btn" title="Download Notes">
+                        <button className="icon-btn" title="Download Notes" onClick={handleDownload}>
                             <Download size={16} />
                         </button>
                     </div>
