@@ -959,7 +959,6 @@ export default function KuroWorkspacePage() {
                         style={{
                           msOverflowStyle: 'none',
                           scrollbarWidth: 'none',
-                          padding: "24px 24px 100px",
                           overflowY: "auto",
                           flex: 1,
                           backgroundColor: "transparent",
