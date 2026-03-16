@@ -365,7 +365,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
             {!quiz ? (
                 <div className="setup-container">
                     <div className="setup-header">
-                        <div className="setup-icon-box purple">
+                        <div className="setup-icon-box">
                             <Brain size={32} />
                         </div>
                         <h2>The Quiz Master</h2>
@@ -388,7 +388,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                                 ))}
                             </select>
                         </div>
-                        <button className="premium-btn primary-btn purple" disabled={!selectedPdfId || loading} onClick={handleGenerate}>
+                        <button className="premium-btn primary-btn" disabled={!selectedPdfId || loading} onClick={handleGenerate}>
                             {loading ? <LoaderAnimation /> : 'Start Quiz'}
                         </button>
                     </div>
