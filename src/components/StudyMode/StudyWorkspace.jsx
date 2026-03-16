@@ -486,17 +486,6 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                     <button className="premium-btn primary-btn" style={{ marginTop: '20px' }} onClick={() => setQuiz(null)}>Go Back</button>
                 </div>
             )}
-                                <div className="explanation-content">
-                                    <strong>Insight:</strong> {quiz[activeIdx].explanation}
-                                </div>
-                                <button className="premium-btn primary-btn" onClick={handleNext}>
-                                    {activeIdx === quiz.length - 1 ? 'Finish Quiz' : 'Next Question'}
-                                </button>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-            )}
         </div>
     );
 };
