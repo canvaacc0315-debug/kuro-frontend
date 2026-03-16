@@ -621,44 +621,54 @@ body {
   }
 
   .chat-messages {
-    gap: 12px !important;
+    gap: 10px !important;
     padding: 12px 0 90px !important;
     mask-image: none !important;
   }
 
   .chat-controls-premium {
-    padding: 10px 12px !important;
-    gap: 8px !important;
-    flex-direction: column !important;
+    padding: 8px 10px !important;
+    gap: 10px !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
 
   .control-group {
-    width: 100%;
-    flex-wrap: wrap;
+    flex-shrink: 0;
     gap: 6px !important;
   }
 
   .premium-select {
-    max-width: 100% !important;
-    width: 100% !important;
+    font-size: 12px !important;
+    padding: 4px 8px !important;
   }
 
   .message-row {
-    margin-bottom: 8px !important;
+    margin-bottom: 6px !important;
   }
 
   .message-bubble {
-    max-width: 92% !important;
+    max-width: 88% !important;
     font-size: 14px !important;
     padding: 10px 14px !important;
   }
 
   .bot-bubble {
-    max-width: 95% !important;
+    max-width: 92% !important;
   }
 
-  .avatar-wrapper {
-    display: none !important;
+  /* Keep avatars but make them smaller */
+  .avatar-wrapper img,
+  .avatar-wrapper > div {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 8px !important;
+  }
+
+  .avatar-wrapper img[alt="Rovex"] {
+    width: 14px !important;
+    height: 14px !important;
   }
 
   .chat-header-modern {
