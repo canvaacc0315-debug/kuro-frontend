@@ -388,6 +388,18 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                                 ))}
                             </select>
                         </div>
+                        <div className="form-group">
+                            <div className="label-row">
+                                <label>Question Count</label>
+                                <span>{quizCount}</span>
+                            </div>
+                            <input 
+                                type="range" min="5" max="30" 
+                                value={quizCount} 
+                                onChange={(e) => setQuizCount(parseInt(e.target.value))}
+                                className="premium-range"
+                            />
+                        </div>
                         <button className="premium-btn primary-btn" disabled={!selectedPdfId || loading} onClick={handleGenerate}>
                             {loading ? <LoaderAnimation /> : 'Start Quiz'}
                         </button>

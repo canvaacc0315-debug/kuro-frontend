@@ -252,6 +252,19 @@
 .form-group { text-align: left; }
 .form-group label { display: block; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--study-text-muted); margin-bottom: 8px; }
 
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.label-row span {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--study-accent);
+}
+
 .premium-select-study {
   width: 100%;
   padding: 14px 18px;
@@ -283,8 +296,19 @@
   transition: all 0.3s ease;
 }
 
-.primary-btn { background: var(--study-accent); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
-.primary-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5); }
+.primary-btn { 
+  background: #ef4444; 
+  color: white; 
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35); 
+  width: 100%;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+.primary-btn:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.45); 
+  background: #f87171;
+}
 .primary-btn.purple { background: #8b5cf6; box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
 .primary-btn.purple:hover { box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5); }
 
