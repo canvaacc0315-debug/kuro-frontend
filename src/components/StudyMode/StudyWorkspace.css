@@ -994,3 +994,149 @@
 .text-btn:hover {
   background: rgba(239, 68, 68, 0.05);
 }
+
+/* --- Responsive Fixes --- */
+
+@media (max-width: 1024px) {
+  .study-workspace-root {
+    flex-direction: column !important;
+    height: auto !important;
+    overflow-y: visible !important;
+  }
+
+  .study-sidebar {
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 10px 20px !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--study-border) !important;
+    position: sticky !important;
+    top: 60px !important; /* Offset for main header */
+    background: rgba(var(--bg-card-rgb), 0.8) !important;
+    backdrop-filter: blur(20px) !important;
+    gap: 20px !important;
+    z-index: 900 !important;
+  }
+
+  .sidebar-brand, .study-stats-mini {
+    display: none !important;
+  }
+
+  .study-nav {
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    gap: 8px !important;
+    padding: 5px 0 !important;
+    -webkit-overflow-scrolling: touch !important;
+    flex: 1 !important;
+  }
+
+  .study-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item {
+    padding: 10px 16px !important;
+    font-size: 0.85rem !important;
+    white-space: nowrap !important;
+    border-radius: 12px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .ambient-station {
+    margin: 0 !important;
+    padding: 5px !important;
+    border: none !important;
+    background: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .station-header {
+    display: none !important;
+  }
+
+  .sound-grid {
+    display: flex !important;
+    gap: 6px !important;
+  }
+
+  .sound-btn {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .study-content-area {
+    padding: 20px 15px !important;
+    min-height: calc(100vh - 140px) !important;
+    overflow-y: visible !important;
+  }
+
+  .study-layout {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .pomodoro-card {
+    min-height: auto !important;
+    padding: 25px !important;
+  }
+
+  .timer-digits {
+    font-size: 3.5rem !important;
+  }
+
+  .timer-visual {
+    width: 220px !important;
+    height: 220px !important;
+    margin: 20px 0 !important;
+  }
+
+  .options-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .setup-container {
+    margin: 20px auto !important;
+    padding: 0 10px !important;
+  }
+
+  .setup-form {
+    padding: 25px !important;
+  }
+
+  .setup-header h2 {
+    font-size: 1.7rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .study-sidebar {
+    padding: 8px 12px !important;
+    gap: 10px !important;
+  }
+
+  .ambient-station {
+    display: none !important;
+  }
+
+  .nav-item {
+    padding: 8px 12px !important;
+  }
+
+  .setup-header h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .question-card-premium h3 {
+    font-size: 1.3rem !important;
+  }
+
+  .stat-item {
+    display: none;
+  }
+}
