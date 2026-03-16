@@ -9,6 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@capacitor/android": "^8.2.0",
+    "@capacitor/cli": "^8.2.0",
+    "@capacitor/core": "^8.2.0",
     "@clerk/clerk-react": "^5.57.0",
     "axios": "^1.13.2",
     "fabric": "^6.9.0",
