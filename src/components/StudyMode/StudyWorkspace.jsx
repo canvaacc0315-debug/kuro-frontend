@@ -303,14 +303,14 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                             disabled={activeCard === 0}
                             onClick={(e) => { e.stopPropagation(); setActiveCard(prev => prev - 1); setIsFlipped(false); }}
                         >
-                            <ChevronLeft /> Previous
+                            <ChevronLeft size={18} /> <span>Previous</span>
                         </button>
                         <button 
                             className="nav-btn primary"
                             disabled={activeCard === flashcards.length - 1}
                             onClick={(e) => { e.stopPropagation(); setActiveCard(prev => prev + 1); setIsFlipped(false); }}
                         >
-                            Next <ChevronRight />
+                            <span>Next</span> <ChevronRight size={18} />
                         </button>
                     </div>
                 </div>
