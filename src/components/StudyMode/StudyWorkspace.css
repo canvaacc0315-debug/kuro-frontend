@@ -768,6 +768,7 @@
   font-weight: 800;
   margin-bottom: 30px;
   line-height: 1.3;
+  color: var(--text-primary);
 }
 
 .options-grid {
@@ -789,6 +790,8 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .option-btn:hover:not(:disabled) {
