@@ -104,8 +104,8 @@ const PomodoroPanel = () => {
 
     const handleNotesChange = (e) => {
         setNotes(e.target.value);
-        setSaveStatus('Saving...');
-        setTimeout(() => setSaveStatus('All saved'), 1000);
+        setSaveStatus('Saving');
+        setTimeout(() => setSaveStatus('All saved'), 1200);
     };
 
     const handleDownload = () => {
@@ -181,13 +181,18 @@ const PomodoroPanel = () => {
             <div className="study-main-card scratchpad-card">
                 <div className="panel-header-mini">
                     <div className="header-left">
-                        <ClipboardList size={18} className="text-accent" />
-                        <h3>Quick Scratchpad</h3>
+                        <div className="title-row">
+                            <ClipboardList size={18} className="text-accent" />
+                            <h3>Quick Scratchpad</h3>
+                        </div>
+                        <div className={`save-status-pill ${saveStatus === 'Saving' ? 'saving' : ''}`}>
+                            <div className="status-dot" />
+                            <span>{saveStatus || 'Ready'}</span>
+                        </div>
                     </div>
                     <div className="header-right">
-                        <span className="save-status">{saveStatus}</span>
-                        <button className="icon-btn" title="Download Notes" onClick={handleDownload}>
-                            <Download size={16} />
+                        <button className="icon-btn download-notes-btn" title="Download Notes" onClick={handleDownload}>
+                            <Download size={18} />
                         </button>
                     </div>
                 </div>
