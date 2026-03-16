@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { studyApi } from '../../services/studyApi';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Timer, BookOpen, Brain, Play, Pause, RotateCcw, Download, Save, 
+  ChevronRight, ChevronLeft, Sparkles, CheckCircle2, XCircle, Trophy,
+  ClipboardList, Clock, Flame
+} from 'lucide-react';
 import './StudyWorkspace.css';
 
 // 1. Pomodoro Timer Panel Component
 const PomodoroPanel = () => {
-    const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes default
+    const [timeLeft, setTimeLeft] = useState(25 * 60);
     const [isRunning, setIsRunning] = useState(false);
-    const [mode, setMode] = useState('focus'); // 'focus' or 'break'
+    const [mode, setMode] = useState('focus'); // 'focus', 'shortBreak', 'longBreak'
     const [notes, setNotes] = useState('');
     const [saveStatus, setSaveStatus] = useState('');
 
-    // Timer logic
     useEffect(() => {
         let interval;
         if (isRunning && timeLeft > 0) {
-            interval = setInterval(() => {
-                setTimeLeft((prev) => prev - 1);
-            }, 1000);
+            interval = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
         } else if (timeLeft === 0) {
             setIsRunning(false);
-            // Play sound or pop notification here in future
         }
         return () => clearInterval(interval);
     }, [isRunning, timeLeft]);
 
-    // Format time display (MM:SS)
     const formatTime = (seconds) => {
         const m = Math.floor(seconds / 60);
         const s = seconds % 60;
@@ -39,75 +40,88 @@ const PomodoroPanel = () => {
         else if (newMode === 'longBreak') setTimeLeft(15 * 60);
     };
 
-    const toggleTimer = () => setIsRunning(!isRunning);
-
-    const resetTimer = () => {
-        setIsRunning(false);
-        handleModeChange(mode);
-    };
-
     const handleNotesChange = (e) => {
         setNotes(e.target.value);
         setSaveStatus('Saving...');
-        // Simple mock auto-save delay
-        setTimeout(() => setSaveStatus('All saved.'), 1000);
+        setTimeout(() => setSaveStatus('All saved'), 1000);
     };
 
-    const handleDownloadNotes = () => {
-        if (!notes.trim()) return;
-        const element = document.createElement("a");
-        const file = new Blob([notes], { type: 'text/plain' });
-        element.href = URL.createObjectURL(file);
-        element.download = `Study_Notes_${new Date().toISOString().split('T')[0]}.txt`;
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-    };
+    const totalTime = mode === 'focus' ? 25 * 60 : mode === 'shortBreak' ? 5 * 60 : 15 * 60;
+    const progress = ((totalTime - timeLeft) / totalTime) * 100;
 
     return (
-        <div className="study-panel">
-            <div className="panel-header">
-                <h2>⏱️ Focus Workstation</h2>
-                <p>Use the Pomodoro technique to study deeply and take structured breaks.</p>
+        <div className="study-layout">
+            <div className="study-main-card pomodoro-card">
+                <div className="pomodoro-header">
+                    <div className="mode-badges">
+                        {['focus', 'shortBreak', 'longBreak'].map((m) => (
+                            <button 
+                                key={m}
+                                className={`mode-badge ${mode === m ? 'active' : ''}`}
+                                onClick={() => handleModeChange(m)}
+                            >
+                                {m === 'focus' ? 'Focus' : m === 'shortBreak' ? 'Short Break' : 'Long Break'}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="timer-visual">
+                    <svg className="progress-ring" viewBox="0 0 100 100">
+                        <circle className="progress-ring-bg" cx="50" cy="50" r="45" />
+                        <motion.circle 
+                            className="progress-ring-bar" 
+                            cx="50" cy="50" r="45"
+                            style={{ 
+                                strokeDasharray: 283,
+                                strokeDashoffset: 283 - (283 * progress) / 100
+                            }}
+                        />
+                    </svg>
+                    <div className="timer-content">
+                        <span className="timer-digits">{formatTime(timeLeft)}</span>
+                        <span className="timer-sub">{mode === 'focus' ? 'STAY FOCUSED' : 'TAKE A BREATH'}</span>
+                    </div>
+                </div>
+
+                <div className="timer-controls">
+                    <motion.button 
+                        whileTap={{ scale: 0.9 }}
+                        className="timer-action reset" 
+                        onClick={() => handleModeChange(mode)}
+                    >
+                        <RotateCcw size={20} />
+                    </motion.button>
+                    <motion.button 
+                        whileTap={{ scale: 0.9 }}
+                        className={`timer-action toggle ${isRunning ? 'running' : ''}`}
+                        onClick={() => setIsRunning(!isRunning)}
+                    >
+                        {isRunning ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" style={{ marginLeft: '4px' }} />}
+                    </motion.button>
+                    <div className="timer-action empty" />
+                </div>
             </div>
 
-            <div className="pomodoro-container">
-                <div className="timer-section">
-                    <div className="timer-mode-toggles">
-                        <button className={`timer-mode-btn ${mode === 'focus' ? 'active' : ''}`} onClick={() => handleModeChange('focus')}>Focus (25m)</button>
-                        <button className={`timer-mode-btn ${mode === 'shortBreak' ? 'active' : ''}`} onClick={() => handleModeChange('shortBreak')}>Short Break (5m)</button>
-                        <button className={`timer-mode-btn ${mode === 'longBreak' ? 'active' : ''}`} onClick={() => handleModeChange('longBreak')}>Long Break (15m)</button>
-                    </div>
-
-                    <div className="time-display">{formatTime(timeLeft)}</div>
-
-                    <div className="timer-controls">
-                        <button className="timer-btn primary" onClick={toggleTimer}>
-                            {isRunning ? 'Pause' : 'Start'}
-                        </button>
-                        <button className="timer-btn secondary" onClick={resetTimer}>
-                            Reset
-                        </button>
-                    </div>
-                </div>
-
-                <div className="notepad-section">
-                    <div className="notepad-header">
+            <div className="study-main-card scratchpad-card">
+                <div className="panel-header-mini">
+                    <div className="header-left">
+                        <ClipboardList size={18} className="text-accent" />
                         <h3>Quick Scratchpad</h3>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                            <span className="save-status">{saveStatus}</span>
-                            <button className="download-notes-btn" onClick={handleDownloadNotes} title="Download to PC">
-                                ⬇️ Download
-                            </button>
-                        </div>
                     </div>
-                    <textarea
-                        className="study-textarea"
-                        placeholder="Type your notes, ideas, or to-do list here while you focus..."
-                        value={notes}
-                        onChange={handleNotesChange}
-                    />
+                    <div className="header-right">
+                        <span className="save-status">{saveStatus}</span>
+                        <button className="icon-btn" title="Download Notes">
+                            <Download size={16} />
+                        </button>
+                    </div>
                 </div>
+                <textarea 
+                    className="scratchpad-input"
+                    placeholder="Capture your thoughts here while you study..."
+                    value={notes}
+                    onChange={handleNotesChange}
+                />
             </div>
         </div>
     );
@@ -121,121 +135,121 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
     const [loading, setLoading] = useState(false);
     const [activeCard, setActiveCard] = useState(0);
     const [isFlipped, setIsFlipped] = useState(false);
-    const [error, setError] = useState('');
 
     const handleGenerate = async () => {
         if (!selectedPdfId) return;
         setLoading(true);
-        setError('');
         try {
             const data = await studyApi.generateFlashcards(selectedPdfId, flashcardCount);
-            if (data.flashcards && data.flashcards.length > 0) {
+            if (data.flashcards) {
                 setFlashcards(data.flashcards);
                 setActiveCard(0);
                 setIsFlipped(false);
-            } else {
-                setError('Could not generate flashcards for this document.');
             }
-        } catch (err) {
-            setError(err.message || 'Error generating flashcards.');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const nextCard = () => {
-        setIsFlipped(false);
-        setTimeout(() => setActiveCard((prev) => Math.min(prev + 1, flashcards.length - 1)), 150);
-    };
-
-    const prevCard = () => {
-        setIsFlipped(false);
-        setTimeout(() => setActiveCard((prev) => Math.max(prev - 1, 0)), 150);
+        } catch (err) { console.error(err); } finally { setLoading(false); }
     };
 
     return (
-        <div className="study-panel">
-            <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                    <h2>📇 AI Flashcard Generator</h2>
-                    <p>Instantly convert class materials or textbooks into interactive study flips.</p>
-                </div>
-                {flashcards && (
-                    <button className="timer-btn secondary" onClick={() => setFlashcards(null)} style={{ padding: '6px 12px', fontSize: '0.9rem' }}>
-                        Start Over
-                    </button>
-                )}
-            </div>
-
+        <div className="study-container">
             {!flashcards ? (
-                <div className="placeholder-state">
-                    <div className="placeholder-icon">📚</div>
-                    <h3>Select a PDF to Generate Flashcards</h3>
-                    <p>RovexAI will scan your document and extract the most important definitions and dates into interactive cards.</p>
+                <div className="setup-container">
+                    <div className="setup-header">
+                        <div className="setup-icon-box">
+                            <Sparkles className="text-accent" size={32} />
+                        </div>
+                        <h2>Flashcard Generator</h2>
+                        <p>Turn any PDF into a deck of interactive study cards in seconds.</p>
+                    </div>
 
-                    <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', width: '100%', maxWidth: '400px' }}>
-                        <select
-                            className="study-select"
-                            style={{ width: '100%', padding: '10px 15px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
-                            value={selectedPdfId}
-                            onChange={(e) => setSelectedPdfId(e.target.value)}
-                        >
-                            <option value="">-- Choose a PDF --</option>
-                            {uploadedFiles.filter(f => f.backendId).map(f => (
-                                <option key={f.backendId} value={f.backendId}>
-                                    {f.name || `PDF Document (${f.backendId.substring(0, 8)})`}
-                                </option>
-                            ))}
-                        </select>
-
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: '#f8fafc', padding: '10px 15px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                            <label style={{ fontSize: '0.95rem', fontWeight: '500', color: '#475569' }}>Number of cards:</label>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <input
-                                    type="range"
-                                    min="5"
-                                    max="25"
-                                    value={flashcardCount}
-                                    onChange={(e) => setFlashcardCount(parseInt(e.target.value))}
-                                    style={{ width: '100px', cursor: 'pointer' }}
-                                />
-                                <span style={{ fontWeight: 'bold', color: '#1e293b', width: '30px', textAlign: 'right' }}>{flashcardCount}</span>
-                            </div>
+                    <div className="setup-form">
+                        <div className="form-group">
+                            <label>Source Document</label>
+                            <select 
+                                className="premium-select-study"
+                                value={selectedPdfId}
+                                onChange={(e) => setSelectedPdfId(e.target.value)}
+                            >
+                                <option value="">Select a PDF...</option>
+                                {uploadedFiles.filter(f => f.backendId).map(f => (
+                                    <option key={f.backendId} value={f.backendId}>
+                                        {f.name || 'Untitled Document'}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
 
-                        <button
-                            className="study-upload-btn"
-                            onClick={handleGenerate}
+                        <div className="form-group">
+                            <div className="label-row">
+                                <label>Card Count</label>
+                                <span>{flashcardCount}</span>
+                            </div>
+                            <input 
+                                type="range" min="5" max="30" 
+                                value={flashcardCount} 
+                                onChange={(e) => setFlashcardCount(parseInt(e.target.value))}
+                                className="premium-range"
+                            />
+                        </div>
+
+                        <button 
+                            className="premium-btn primary-btn"
                             disabled={!selectedPdfId || loading}
-                            style={{ width: '100%', marginTop: '10px', opacity: (!selectedPdfId || loading) ? 0.6 : 1 }}
+                            onClick={handleGenerate}
                         >
-                            {loading ? 'Generating...' : 'Generate AI Cards'}
+                            {loading ? <LoaderAnimation /> : 'Generate Cards'}
                         </button>
                     </div>
-                    {error && <p style={{ color: '#ef4444', marginTop: '10px' }}>{error}</p>}
                 </div>
             ) : (
-                <div className="flashcards-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
-                    <div className="flashcard-progress" style={{ marginBottom: '15px', color: '#64748b', fontWeight: 'bold' }}>
-                        Card {activeCard + 1} of {flashcards.length}
-                    </div>
-
-                    <div className={`flashcard ${isFlipped ? 'flipped' : ''}`} onClick={() => setIsFlipped(!isFlipped)}>
-                        <div className="flashcard-inner">
-                            <div className="flashcard-front">
-                                <h3>{flashcards[activeCard]?.front}</h3>
-                                <div className="flip-hint">Click to flip</div>
-                            </div>
-                            <div className="flashcard-back">
-                                <h3>Answer:</h3>
-                                <p>{flashcards[activeCard]?.back}</p>
+                <div className="deck-container">
+                    <div className="deck-header">
+                        <div className="deck-progress">
+                            <span className="count">{activeCard + 1} / {flashcards.length}</span>
+                            <div className="progress-track">
+                                <motion.div 
+                                    className="progress-fill"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${((activeCard + 1) / flashcards.length) * 100}%` }}
+                                />
                             </div>
                         </div>
+                        <button className="text-btn" onClick={() => setFlashcards(null)}>New Deck</button>
                     </div>
 
-                    <div className="flashcard-controls" style={{ display: 'flex', gap: '15px', marginTop: '30px' }}>
-                        <button className="timer-btn secondary" onClick={prevCard} disabled={activeCard === 0}>← Previous</button>
-                        <button className="timer-btn primary" onClick={nextCard} disabled={activeCard === flashcards.length - 1}>Next →</button>
+                    <div className="flashcard-wrapper" onClick={() => setIsFlipped(!isFlipped)}>
+                        <motion.div 
+                            className={`flashcard-3d ${isFlipped ? 'flipped' : ''}`}
+                            animate={{ rotateY: isFlipped ? 180 : 0 }}
+                            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+                        >
+                            <div className="card-face card-front">
+                                <div className="card-tag">QUESTION</div>
+                                <h3>{flashcards[activeCard]?.front}</h3>
+                                <div className="card-hint">Tap to see answer</div>
+                            </div>
+                            <div className="card-face card-back">
+                                <div className="card-tag">ANSWER</div>
+                                <p>{flashcards[activeCard]?.back}</p>
+                                <div className="card-hint">Tap to see question</div>
+                            </div>
+                        </motion.div>
+                    </div>
+
+                    <div className="deck-controls">
+                        <button 
+                            className="nav-btn" 
+                            disabled={activeCard === 0}
+                            onClick={(e) => { e.stopPropagation(); setActiveCard(prev => prev - 1); setIsFlipped(false); }}
+                        >
+                            <ChevronLeft /> Previous
+                        </button>
+                        <button 
+                            className="nav-btn primary"
+                            disabled={activeCard === flashcards.length - 1}
+                            onClick={(e) => { e.stopPropagation(); setActiveCard(prev => prev + 1); setIsFlipped(false); }}
+                        >
+                            Next <ChevronRight />
+                        </button>
                     </div>
                 </div>
             )}
@@ -249,226 +263,214 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
     const [quizCount, setQuizCount] = useState(5);
     const [quiz, setQuiz] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [activeQuestion, setActiveQuestion] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState(null);
+    const [activeIdx, setActiveIdx] = useState(0);
+    const [selectedAns, setSelectedAns] = useState(null);
     const [score, setScore] = useState(0);
-    const [isFinished, setIsFinished] = useState(false);
-    const [error, setError] = useState('');
+    const [finished, setFinished] = useState(false);
 
     const handleGenerate = async () => {
         if (!selectedPdfId) return;
         setLoading(true);
-        setError('');
         try {
             const data = await studyApi.generateQuiz(selectedPdfId, quizCount);
-            if (data.quiz && data.quiz.length > 0) {
+            if (data.quiz) {
                 setQuiz(data.quiz);
-                setActiveQuestion(0);
-                setSelectedAnswer(null);
+                setActiveIdx(0);
+                setSelectedAns(null);
                 setScore(0);
-                setIsFinished(false);
-            } else {
-                setError('Could not generate a quiz for this document.');
+                setFinished(false);
             }
-        } catch (err) {
-            setError(err.message || 'Error generating quiz.');
-        } finally {
-            setLoading(false);
-        }
+        } catch (err) { console.error(err); } finally { setLoading(false); }
     };
 
-    const handleAnswerSelect = (option) => {
-        if (selectedAnswer) return; // Prevent changing answer
-        setSelectedAnswer(option);
-        if (option === quiz[activeQuestion].correctAnswer) {
-            setScore(prev => prev + 1);
-        }
+    const handleAnswer = (opt) => {
+        if (selectedAns) return;
+        setSelectedAns(opt);
+        if (opt === quiz[activeIdx].correctAnswer) setScore(s => s + 1);
     };
 
-    const nextQuestion = () => {
-        if (activeQuestion < quiz.length - 1) {
-            setActiveQuestion(prev => prev + 1);
-            setSelectedAnswer(null);
+    const handleNext = () => {
+        if (activeIdx < quiz.length - 1) {
+            setActiveIdx(prev => prev + 1);
+            setSelectedAns(null);
         } else {
-            setIsFinished(true);
+            setFinished(true);
         }
     };
 
     return (
-        <div className="study-panel">
-            <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                    <h2>📝 The Quiz Master</h2>
-                    <p>Test your knowledge before the exam with customized multiple-choice tests.</p>
-                </div>
-                {quiz && (
-                    <button className="timer-btn secondary" onClick={() => setQuiz(null)} style={{ padding: '6px 12px', fontSize: '0.9rem' }}>
-                        Start Over
-                    </button>
-                )}
-            </div>
-
+        <div className="study-container">
             {!quiz ? (
-                <div className="placeholder-state">
-                    <div className="placeholder-icon">🧠</div>
-                    <h3>Ready to test yourself?</h3>
-                    <p>Select any syllabus or study guide and RovexAI will generate a practice test fully graded with explanations for wrong answers.</p>
-
-                    <div style={{ marginTop: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', width: '100%', maxWidth: '400px' }}>
-                        <select
-                            className="study-select"
-                            style={{ width: '100%', padding: '10px 15px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '1rem', background: '#fff' }}
-                            value={selectedPdfId}
-                            onChange={(e) => setSelectedPdfId(e.target.value)}
-                        >
-                            <option value="">-- Choose a PDF --</option>
-                            {uploadedFiles.filter(f => f.backendId).map(f => (
-                                <option key={f.backendId} value={f.backendId}>
-                                    {f.name || `PDF Document (${f.backendId.substring(0, 8)})`}
-                                </option>
-                            ))}
-                        </select>
-
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', background: '#f8fafc', padding: '10px 15px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                            <label style={{ fontSize: '0.95rem', fontWeight: '500', color: '#475569' }}>Number of questions:</label>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                <input
-                                    type="range"
-                                    min="5"
-                                    max="25"
-                                    value={quizCount}
-                                    onChange={(e) => setQuizCount(parseInt(e.target.value))}
-                                    style={{ width: '100px', cursor: 'pointer' }}
-                                />
-                                <span style={{ fontWeight: 'bold', color: '#1e293b', width: '30px', textAlign: 'right' }}>{quizCount}</span>
-                            </div>
+                <div className="setup-container">
+                    <div className="setup-header">
+                        <div className="setup-icon-box purple">
+                            <Brain size={32} />
                         </div>
+                        <h2>The Quiz Master</h2>
+                        <p>Generate precise multiple-choice questions from your documents.</p>
+                    </div>
 
-                        <button
-                            className="study-upload-btn"
-                            onClick={handleGenerate}
-                            disabled={!selectedPdfId || loading}
-                            style={{ width: '100%', marginTop: '10px', opacity: (!selectedPdfId || loading) ? 0.6 : 1 }}
-                        >
-                            {loading ? 'Generating...' : 'Generate Practice Test'}
+                    <div className="setup-form">
+                        <div className="form-group">
+                            <label>Source Document</label>
+                            <select 
+                                className="premium-select-study"
+                                value={selectedPdfId}
+                                onChange={(e) => setSelectedPdfId(e.target.value)}
+                            >
+                                <option value="">Select a PDF...</option>
+                                {uploadedFiles.filter(f => f.backendId).map(f => (
+                                    <option key={f.backendId} value={f.backendId}>
+                                        {f.name || 'Untitled Document'}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <button className="premium-btn primary-btn purple" disabled={!selectedPdfId || loading} onClick={handleGenerate}>
+                            {loading ? <LoaderAnimation /> : 'Start Quiz'}
                         </button>
                     </div>
-                    {error && <p style={{ color: '#ef4444', marginTop: '10px' }}>{error}</p>}
                 </div>
-            ) : isFinished ? (
-                <div className="quiz-results" style={{ textAlign: 'center', padding: '40px' }}>
-                    <h2 style={{ fontSize: '3rem', marginBottom: '10px' }}>{Math.round((score / quiz.length) * 100)}%</h2>
-                    <p style={{ fontSize: '1.2rem', color: '#64748b' }}>You scored {score} out of {quiz.length} correctly.</p>
-                    <button className="timer-btn primary" onClick={() => { setQuiz(null); handleGenerate(); }} style={{ marginTop: '30px' }}>Take Another Test</button>
-                </div>
+            ) : finished ? (
+                <motion.div 
+                    className="quiz-results-premium"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                >
+                    <Trophy size={64} className="trophy-icon" />
+                    <h2>Knowledge Mastered!</h2>
+                    <div className="result-score">
+                        <span className="final">{score}</span>
+                        <span className="total">/ {quiz.length}</span>
+                    </div>
+                    <p>Accuracy: {Math.round((score/quiz.length)*100)}%</p>
+                    <button className="premium-btn primary-btn" onClick={() => setQuiz(null)}>Try Another</button>
+                </motion.div>
             ) : (
-                <div className="quiz-container" style={{ marginTop: '20px' }}>
-                    <div className="flashcard-progress" style={{ marginBottom: '15px', color: '#64748b', fontWeight: 'bold' }}>
-                        Question {activeQuestion + 1} of {quiz.length}
+                <div className="quiz-active-container">
+                    <div className="quiz-header">
+                        <div className="quiz-progress-bar">
+                            <div className="progress-label">Question {activeIdx + 1} of {quiz.length}</div>
+                            <div className="track"><div className="fill" style={{ width: `${((activeIdx+1)/quiz.length)*100}%` }} /></div>
+                        </div>
                     </div>
 
-                    <div className="study-card" style={{ padding: '30px', textAlign: 'left', background: 'white', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}>
-                        <h3 style={{ fontSize: '1.4rem', marginBottom: '20px', color: '#1e293b' }}>
-                            {quiz[activeQuestion].question}
-                        </h3>
-
-                        <div className="quiz-options" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                            {quiz[activeQuestion].options.map((opt, idx) => {
-                                let bgColor = '#f8fafc';
-                                let borderColor = '#e2e8f0';
-                                let color = '#334155';
-
-                                if (selectedAnswer) {
-                                    if (opt === quiz[activeQuestion].correctAnswer) {
-                                        bgColor = '#dcfce7';
-                                        borderColor = '#22c55e';
-                                        color = '#15803d';
-                                    } else if (opt === selectedAnswer) {
-                                        bgColor = '#fee2e2';
-                                        borderColor = '#ef4444';
-                                        color = '#b91c1c';
-                                    }
+                    <motion.div 
+                        key={activeIdx}
+                        className="question-card-premium"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                    >
+                        <h3>{quiz[activeIdx].question}</h3>
+                        <div className="options-grid">
+                            {quiz[activeIdx].options.map((opt, i) => {
+                                let state = '';
+                                if (selectedAns) {
+                                    if (opt === quiz[activeIdx].correctAnswer) state = 'correct';
+                                    else if (opt === selectedAns) state = 'wrong';
+                                    else state = 'disabled';
                                 }
-
                                 return (
-                                    <button
-                                        key={idx}
-                                        onClick={() => handleAnswerSelect(opt)}
-                                        disabled={!!selectedAnswer}
-                                        style={{
-                                            padding: '15px',
-                                            borderRadius: '8px',
-                                            border: `2px solid ${borderColor}`,
-                                            background: bgColor,
-                                            color: color,
-                                            textAlign: 'left',
-                                            cursor: selectedAnswer ? 'default' : 'pointer',
-                                            fontSize: '1.1rem',
-                                            transition: 'all 0.2s',
-                                            width: '100%'
-                                        }}
+                                    <button 
+                                        key={i}
+                                        className={`option-btn ${state}`}
+                                        onClick={() => handleAnswer(opt)}
+                                        disabled={!!selectedAns}
                                     >
-                                        {opt}
+                                        <div className="opt-letter">{String.fromCharCode(65 + i)}</div>
+                                        <div className="opt-text">{opt}</div>
+                                        {state === 'correct' && <CheckCircle2 size={18} className="status-icon" />}
+                                        {state === 'wrong' && <XCircle size={18} className="status-icon" />}
                                     </button>
                                 );
                             })}
                         </div>
+                    </motion.div>
 
-                        {selectedAnswer && (
-                            <div className="quiz-explanation" style={{ marginTop: '20px', padding: '15px', background: '#f1f5f9', borderRadius: '8px', borderLeft: '4px solid #3b82f6', color: '#334155' }}>
-                                <strong>Explanation:</strong> {quiz[activeQuestion].explanation}
-                            </div>
-                        )}
-
-                        {selectedAnswer && (
-                            <div style={{ marginTop: '30px', textAlign: 'right' }}>
-                                <button className="timer-btn primary" onClick={nextQuestion}>
-                                    {activeQuestion < quiz.length - 1 ? 'Next Question →' : 'See Results'}
+                    <AnimatePresence>
+                        {selectedAns && (
+                            <motion.div 
+                                className="explanation-drawer"
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: 'auto', opacity: 1 }}
+                            >
+                                <div className="explanation-content">
+                                    <strong>Insight:</strong> {quiz[activeIdx].explanation}
+                                </div>
+                                <button className="premium-btn primary-btn" onClick={handleNext}>
+                                    {activeIdx === quiz.length - 1 ? 'Finish Quiz' : 'Next Question'}
                                 </button>
-                            </div>
+                            </motion.div>
                         )}
-                    </div>
+                    </AnimatePresence>
                 </div>
             )}
         </div>
     );
 };
 
+const LoaderAnimation = () => (
+    <div className="premium-loader">
+        <div className="loader-dot" />
+        <div className="loader-dot" />
+        <div className="loader-dot" />
+    </div>
+);
+
 // Main Study Workspace Component
 const StudyWorkspace = ({ uploadedFiles = [] }) => {
     const [activeTab, setActiveTab] = useState('pomodoro');
 
     const tabs = [
-        { id: 'pomodoro', icon: '⏱️', label: 'Focus Timer' },
-        { id: 'flashcards', icon: '📇', label: 'Flashcards' },
-        { id: 'quiz', icon: '📝', label: 'Quiz' },
+        { id: 'pomodoro', icon: <Timer size={18} />, label: 'Deep Focus' },
+        { id: 'flashcards', icon: <BookOpen size={18} />, label: 'Flashcards' },
+        { id: 'quiz', icon: <Brain size={18} />, label: 'Master Quiz' },
     ];
 
     return (
-        <div className="study-workspace">
-            <div className="study-header">
-                <h1>RovexAI Study Studio</h1>
-                <p>Master your materials with AI-powered study tools and focus workstations.</p>
+        <div className="study-workspace-root">
+            <div className="study-sidebar">
+                <div className="sidebar-brand">
+                    <Sparkles className="brand-sparkle" size={20} />
+                    <span>Study Studio</span>
+                </div>
+                <div className="study-nav">
+                    {tabs.map((tab) => (
+                        <button
+                            key={tab.id}
+                            className={`nav-item ${activeTab === tab.id ? 'active' : ''}`}
+                            onClick={() => setActiveTab(tab.id)}
+                        >
+                            <span className="nav-icon">{tab.icon}</span>
+                            <span className="nav-label">{tab.label}</span>
+                            {activeTab === tab.id && <motion.div layoutId="nav-glow" className="nav-glow" />}
+                        </button>
+                    ))}
+                </div>
+                <div className="study-stats-mini">
+                    <div className="stat-item">
+                        <Flame size={14} className="text-orange" />
+                        <span>3 Day Streak</span>
+                    </div>
+                </div>
             </div>
 
-            <div className="study-tabs">
-                {tabs.map((tab) => (
-                    <button
-                        key={tab.id}
-                        className={`study-tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-                        onClick={() => setActiveTab(tab.id)}
+            <main className="study-content-area">
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={activeTab}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="study-tab-wrapper"
                     >
-                        <span className="tab-icon">{tab.icon}</span>
-                        {tab.label}
-                    </button>
-                ))}
-            </div>
-
-            <div className="study-content">
-                {activeTab === 'pomodoro' && <PomodoroPanel />}
-                {activeTab === 'flashcards' && <FlashcardPanel uploadedFiles={uploadedFiles} />}
-                {activeTab === 'quiz' && <QuizPanel uploadedFiles={uploadedFiles} />}
-            </div>
+                        {activeTab === 'pomodoro' && <PomodoroPanel />}
+                        {activeTab === 'flashcards' && <FlashcardPanel uploadedFiles={uploadedFiles} />}
+                        {activeTab === 'quiz' && <QuizPanel uploadedFiles={uploadedFiles} />}
+                    </motion.div>
+                </AnimatePresence>
+            </main>
         </div>
     );
 };

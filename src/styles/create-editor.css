@@ -82,7 +82,7 @@
 .text-style-card {
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  background: var(--bg-card);
+  background: var(--bg-secondary);
   padding: 12px 14px;
   cursor: pointer;
   text-align: left;
@@ -90,7 +90,7 @@
 }
 
 .text-style-card:hover {
-  background: #f8fafc;
+  background: var(--bg-hover);
   border-color: var(--accent);
 }
 
@@ -103,7 +103,7 @@
 
 .text-style-sub {
   font-size: 11px;
-  color: var(--text-primary);
+  color: var(--text-secondary);
 }
 
 .text-style-body .text-style-main {
@@ -117,24 +117,23 @@
   padding: 10px 16px;
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  background: var(--bg-card);
+  background: var(--bg-secondary);
   font-size: 0.95rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .sidebar-pill-btn:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
-  color: var(--text-primary);
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
 }
 
 .sidebar-bottom {
   margin-top: auto;
   padding: 0 6px 4px;
-  /* ⬅ inset Export from border */
 }
 
 .sidebar-export-btn {
@@ -145,17 +144,16 @@
   font-size: 1rem;
   font-weight: 600;
   text-align: center;
-  background: #111827;
-  color: #ffffff;
+  background: var(--text-primary);
+  color: var(--bg-primary);
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
 }
 
 .sidebar-export-btn:hover {
-  background: #1f2937;
+  filter: brightness(0.9);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* ---------- Main area ---------- */
@@ -166,6 +164,7 @@
   flex-direction: column;
   position: relative;
   min-width: 0;
+  background: var(--bg-secondary);
 }
 
 /* Toolbar */
@@ -199,23 +198,23 @@
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  color: var(--text-primary);
+  color: var(--text-muted);
 }
 
 .toolbar-input {
   width: 56px;
   border-radius: 999px;
-  border: none;
-  background: #f0f0f0;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
   padding: 4px 8px;
   font-size: 12px;
   color: var(--text-primary);
   outline: none;
-  transition: background 0.2s ease-out;
+  transition: all 0.2s ease-out;
 }
 
 .toolbar-input:focus {
-  background: #e0e0e0;
+  border-color: var(--accent);
 }
 
 .toolbar-toggle-group {
@@ -239,13 +238,13 @@
 }
 
 .toolbar-toggle:hover {
-  background: #e5e7eb;
+  background: var(--bg-hover);
   color: var(--text-primary);
 }
 
 .toolbar-toggle.active {
-  background: var(--bg-card);
-  color: var(--text-primary);
+  background: var(--accent);
+  color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -267,106 +266,18 @@
   height: 800px;
   min-width: 600px;
   min-height: 800px;
-  background: var(--bg-card);
+  background: #ffffff; /* Page always stays white like paper */
+  color: #000000; /* Text on white paper is black by default */
   border-radius: 4px;
-  /* Real paper look */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   overflow: hidden;
-  transition: box-shadow 0.2s ease;
-}
-
-.create-page:hover {
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 /* Heading + body – NORMAL textareas (no frame) */
 
-.heading-textarea,
-.body-textarea {
-  width: 100%;
-  border: none !important;
-  outline: none !important;
-  resize: none;
-  background: transparent !important;
-  box-shadow: none !important;
-  color: var(--text-primary);
-  box-sizing: border-box;
-  position: relative;
-  z-index: 1;
-}
-
-.heading-textarea:focus,
-.body-textarea:focus {
-  border: none !important;
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* heading at top */
-.heading-textarea {
-  min-height: 40px;
-  margin-bottom: 16px;
-  overflow: visible;
-}
-
-/* body fills rest of page */
-.body-textarea {
-  min-height: calc(100% - 60px);
-  overflow: visible;
-  /* no inner scrollbar frame */
-}
-
-/* ---------- Images: multiple per page ---------- */
-
-.page-image {
-  position: absolute;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  cursor: move;
-  user-select: none;
-  z-index: 3;
-  transition: box-shadow 0.2s ease-out;
-}
-
-.page-image:hover {
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
-}
-
-.page-image:active {
-  cursor: grabbing;
-}
-
-.image-block-inner {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.image-block-img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-}
-
-/* little red corner dot for resize */
-.resize-handle {
-  position: absolute;
-  right: -6px;
-  bottom: -6px;
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--accent);
-  cursor: nwse-resize;
-  z-index: 4;
-  transition: transform 0.2s ease-out;
-}
-
-.resize-handle:hover {
-  transform: scale(1.2);
+.create-page .heading-textarea,
+.create-page .body-textarea {
+  color: #000000 !important; /* Force black text on white paper regardless of theme */
 }
 
 /* ---------- Pages bar ---------- */
@@ -383,13 +294,6 @@
   z-index: 10;
 }
 
-.pages-list {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
 .page-pill {
   border-radius: 999px;
   border: 1px solid var(--border-color);
@@ -398,60 +302,36 @@
   padding: 5px 12px;
   font-size: 12px;
   cursor: pointer;
-  transition: background 0.2s ease-out, border-color 0.2s ease-out,
-    transform 0.1s ease-out;
+  transition: all 0.2s ease-out;
 }
 
 .page-pill:hover {
-  background: #f0f0f0;
+  background: var(--bg-hover);
   transform: translateY(-1px);
 }
 
 .page-pill.active {
-  background: linear-gradient(90deg, #EF4444, #FCA5A5);
+  background: var(--accent);
   border-color: transparent;
   color: #ffffff;
-}
-
-.add-page-pill {
-  border-style: dashed;
-}
-
-.delete-page-btn {
-  border-radius: 999px;
-  border: 1px solid rgba(239, 68, 68, 0.8);
-  background: rgba(239, 68, 68, 0.05);
-  color: #EF4444;
-  padding: 5px 12px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: background 0.2s ease-out, border-color 0.2s ease-out,
-    opacity 0.1s ease-out;
-  margin-right: 4px;
-  /* ⬅ not stuck to the very edge */
-}
-
-.delete-page-btn:hover {
-  background: rgba(239, 68, 68, 0.1);
 }
 
 /* ---------- Context menu ---------- */
 
 .pdf-context-menu {
   position: fixed;
-  z-index: 50;
+  z-index: 100;
   min-width: 140px;
   padding: 4px;
   border-radius: 10px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 0.3s ease-out;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .context-item {
   width: 100%;
-  padding: 6px 10px;
+  padding: 8px 12px;
   border-radius: 7px;
   font-size: 12px;
   border: none;
@@ -459,342 +339,62 @@
   color: var(--text-primary);
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s ease-out, color 0.2s ease-out;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .context-item:hover {
-  background: #f0f0f0;
+  background: var(--bg-hover);
 }
 
-.context-item.context-danger:hover {
-  background: rgba(239, 68, 68, 0.1);
-  color: #EF4444;
-}
+/* ---------------- Mobile / handle fixes ---------------- */
 
-/* ---------- Responsive ---------- */
-
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .create-editor-root {
     flex-direction: column;
+    max-height: none;
+    height: auto;
   }
 
   .create-editor-sidebar {
     width: 100%;
-    flex-direction: row;
-    align-items: flex-start;
-    overflow-x: auto;
+    order: 2;
+    border-right: none;
+    border-top: 1px solid var(--border-color);
+    padding: 16px;
   }
 
   .create-editor-main {
-    width: 100%;
+    order: 1;
+    height: 70vh;
   }
 
   .create-page {
-    max-height: 70vh;
-  }
-}
-
-/* --- HARD REMOVE ANY TEXT FRAMES INSIDE THE PAGE --- */
-
-.create-page textarea,
-.create-page textarea:focus,
-.create-page textarea:active {
-  border: 0 !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-
-/* also catch heading/body classes just in case */
-.create-page .heading-textarea,
-.create-page .body-textarea,
-.create-page .heading-textarea:focus,
-.create-page .body-textarea:focus {
-  border: 0 !important;
-  outline: 0 !important;
-  box-shadow: none !important;
-  background: transparent !important;
-}
-
-/* remove any debug/selection outline from anything in the page */
-.create-page * {
-  outline: 0 !important;
-}
-
-.pdf-canvas-wrapper {
-  position: relative;
-}
-
-/* keep the slider visible, pinned just below the page */
-.zoom-slider {
-  position: absolute;
-  left: 50%;
-  bottom: 16px;
-  /* move it up from the very bottom */
-  transform: translateX(-50%);
-  width: 40%;
-  /* or whatever width you like */
-  z-index: 10;
-}
-
-/* ---------------- Mobile / handle fixes (APPEND ONLY) ---------------- */
-
-/* allow handles to be visible (parent containers) */
-.create-editor-root,
-.create-editor-main,
-.create-page,
-.create-page-shell,
-.pdf-canvas-wrapper {
-  position: relative !important;
-  overflow: visible !important;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* make the page allow extra room for handles at the bottom */
-.create-page {
-  padding-bottom: 56px;
-  /* keeps bottom area free for handles / sliders */
-}
-
-/* enlarge the small pink handle and make it touch-friendly */
-.resize-handle {
-  right: -10px;
-  bottom: -10px;
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
-  background: var(--accent);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  z-index: 60;
-  touch-action: none;
-}
-
-/* react-rnd internal handle fallback (if used) */
-.rnd-resize-handle,
-.rnd-resize-handle * {
-  width: 18px !important;
-  height: 18px !important;
-  min-width: 18px !important;
-  min-height: 18px !important;
-  background: #EF4444 !important;
-  border-radius: 6px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-  z-index: 60 !important;
-  touch-action: none !important;
-}
-
-/* ensure images / page-image elements don't clip handles */
-.page-image,
-.image-block-inner {
-  overflow: visible !important;
-}
-
-/* Floating export button on small screens:
-   Reuses the existing sidebar-export-btn visual style but becomes a small FAB */
-@media (max-width: 768px) {
-
-  /* allow the sidebar to become a horizontal scrollable strip at the top instead of hiding it */
-  .create-editor-sidebar {
-    width: 100% !important;
-    height: auto !important;
-    display: flex !important;
-    flex-direction: row !important;
-    overflow-x: auto !important;
-    padding: 12px !important;
-    border-right: none !important;
-    border-bottom: 1px solid var(--border-color);
-    /* hiding the title helps save space */
+    width: 90vw !important;
+    min-width: 0;
+    transform: scale(0.6);
+    transform-origin: top center;
   }
 
-  .create-editor-sidebar .sidebar-section {
-    flex-direction: row !important;
-    align-items: center !important;
-    margin-right: 16px;
-  }
-
-  .sidebar-bottom {
-    margin-top: 0 !important;
-    margin-left: auto !important;
+  .zoom-slider {
+    width: 80% !important;
+    bottom: 20px;
   }
 
   .sidebar-export-btn {
-    width: auto !important;
-    padding: 8px 16px !important;
-    white-space: nowrap;
-  }
-
-  /* toolbar stays but compact */
-  .create-toolbar {
-    padding: 8px 10px;
-    gap: 8px;
-  }
-
-  /* canvas needs to keep its aspect ratio so elements don't squeeze incorrectly */
-  .create-page {
-    width: 100% !important;
-    height: auto !important;
-    /* let height match the content or ratio */
-    aspect-ratio: 3 / 4;
-    /* Standard A4-ish ratio for mobile scaling */
-    padding: 16px !important;
-    margin: 8px auto !important;
-    /* center it */
-    border-radius: 12px;
-  }
-
-  /* increase canvas bottom padding so handles / slider visible */
-  .create-page,
-  .create-page-shell,
-  .create-editor-main {
-    padding-bottom: 120px !important;
-  }
-
-  /* We keep the FAB export button approach if users prefer, but since we added it to top scroll, we can just hide it as FAB or keep it. Let's keep it as FAB for quick access. */
-  .sidebar-export-btn.fab-mode {
-    position: fixed !important;
-    right: 16px !important;
-    bottom: 80px !important;
-    /* Above bottom nav */
-    width: 56px !important;
-    height: 56px !important;
-    padding: 0 !important;
-    border-radius: 999px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
-    z-index: 9999 !important;
-    font-size: 20px !important;
-  }
-
-  /* keep the export button reachable (no accidental overlap) */
-  .pages-bar,
-  .zoom-slider {
-    z-index: 30;
-  }
-
-  /* Adjust root padding for mobile */
-  .create-editor-root {
-    padding: 8px 0;
-    gap: 8px;
-    min-height: calc(100vh - 80px);
-  }
-
-  /* Make textareas touch-friendly */
-  .heading-textarea {
-    min-height: 60px;
-    font-size: 18px;
-    padding: 12px;
-  }
-
-  .body-textarea {
-    min-height: 200px;
-    font-size: 16px;
-    padding: 12px;
-  }
-
-  /* Compact pages bar */
-  .pages-bar {
-    padding: 8px 12px;
-    gap: 8px;
-    overflow-x: auto;
-  }
-
-  .page-pill,
-  .delete-page-btn {
-    padding: 10px 14px;
-    font-size: 14px;
-    min-width: 60px;
-  }
-
-  /* Toolbar adjustments */
-  .toolbar-input {
-    width: 48px;
-    font-size: 14px;
-    padding: 6px 8px;
-  }
-
-  .toolbar-toggle {
-    min-width: 32px;
-    height: 28px;
-    font-size: 13px;
-    padding: 0 8px;
-  }
-
-  .toolbar-label {
-    font-size: 11px;
-  }
-
-  /* Context menu wider on mobile */
-  .pdf-context-menu {
-    min-width: 160px;
-    padding: 6px;
-  }
-
-  .context-item {
-    padding: 12px 14px;
-    font-size: 14px;
-  }
-
-  /* Buttons touch-friendly */
-  .sidebar-primary-btn,
-  .sidebar-pill-btn,
-  .delete-page-btn,
-  .page-pill,
-  .toolbar-toggle,
-  button {
-    min-height: 44px;
-    touch-action: manipulation;
-  }
-
-  /* Zoom slider fixed and wider */
-  .zoom-slider {
-    position: fixed !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    bottom: 90px !important;
-    /* Above bottom nav */
-    width: calc(100% - 32px) !important;
-    max-width: 400px !important;
-    z-index: 995 !important;
-    background: rgba(255, 255, 255, 0.95);
-    padding: 12px;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  .zoom-slider input[type="range"] {
-    width: 100% !important;
-  }
-
-  /* Enlarge handles further for touch */
-  .resize-handle,
-  .rnd-resize-handle,
-  .rnd-resize-handle * {
-    width: 24px !important;
-    height: 24px !important;
-    min-width: 24px !important;
-    min-height: 24px !important;
-    right: -12px !important;
-    bottom: -12px !important;
-    border-radius: 50% !important;
-    background: #EF4444 !important;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1) !important;
-    z-index: 999 !important;
-    touch-action: none !important;
-  }
-
-  /* Prevent horizontal scroll */
-  html,
-  body,
-  .create-editor-root {
-    overflow-x: hidden !important;
-  }
-
-  /* Safe area for bottom */
-  body,
-  .create-editor-root {
-    padding-bottom: max(env(safe-area-inset-bottom), 12px);
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 1000;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
   }
 }
 

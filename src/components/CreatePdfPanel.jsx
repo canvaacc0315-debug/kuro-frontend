@@ -1,7 +1,8 @@
 // src/components/CreatePdfPanel.jsx
 import { useState, useRef, useCallback } from "react";
 import "../styles/create-editor.css";
-import { jsPDF } from "jspdf"; // for frontend PDF export
+import { jsPDF } from "jspdf"; 
+import { Download, Plus, Minus, Type, Image as ImageIcon, Square, Circle, Undo2, Redo2, Trash2, AlignLeft, AlignCenter, AlignRight, Bold, Italic, Underline } from "lucide-react";
 
 const defaultTextStyle = {
   fontSize: 16,
@@ -865,11 +866,12 @@ export default function CreatePdfPanel({ onExportPdf }) {
         <div className="sidebar-bottom">
           <button
             type="button"
-            className="sidebar-export-btn"
+            className="sidebar-export-btn fab-mode"
             onClick={exportToPdf}
             aria-label="Export PDF"
           >
-            Export PDF
+            <Download size={20} />
+            <span className="btn-text">Export PDF</span>
           </button>
         </div>
       </aside>
