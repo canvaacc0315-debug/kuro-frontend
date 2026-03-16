@@ -335,11 +335,27 @@
   font-size: 0.95rem;
 }
 
-.roadmap-input-row .premium-btn {
-  flex: 1;
-  padding: 12px 16px;
-  font-size: 0.9rem;
-  white-space: nowrap;
+.roadmap-input-row .roadmap-add-btn {
+  flex: 0 0 auto;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border: none;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.roadmap-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.5);
+  background: linear-gradient(135deg, #f87171, #ef4444);
+}
+
+.roadmap-add-btn:active {
+  transform: translateY(0);
 }
 
 .goals-list {

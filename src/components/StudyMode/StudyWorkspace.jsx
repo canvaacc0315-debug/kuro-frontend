@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Timer, BookOpen, Brain, Play, Pause, RotateCcw, Download, Save, 
   ChevronRight, ChevronLeft, Sparkles, CheckCircle2, XCircle, Trophy,
-  ClipboardList, Clock, Flame, Volume2, VolumeX, Music, Wind, Coffee, CloudRain, Trash2
+  ClipboardList, Clock, Flame, Volume2, VolumeX, Music, Wind, Coffee, CloudRain, Trash2, Plus
 } from 'lucide-react';
 import './StudyWorkspace.css';
 
@@ -546,7 +546,10 @@ const RoadmapPanel = () => {
                         value={newGoal}
                         onChange={(e) => setNewGoal(e.target.value)}
                     />
-                    <button type="submit" className="premium-btn primary-btn">Add Goal</button>
+                    <button type="submit" className="premium-btn primary-btn roadmap-add-btn">
+                        <Plus size={18} />
+                        <span>Add Goal</span>
+                    </button>
                 </form>
 
                 <div className="goals-list">
