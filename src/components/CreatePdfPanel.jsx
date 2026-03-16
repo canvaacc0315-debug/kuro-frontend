@@ -1,8 +1,8 @@
 // src/components/CreatePdfPanel.jsx
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import "../styles/create-editor.css";
 import { jsPDF } from "jspdf"; 
-import { Download, Plus, Minus, Type, Image as ImageIcon, Square, Circle, Undo2, Redo2, Trash2, AlignLeft, AlignCenter, AlignRight, Bold, Italic, Underline } from "lucide-react";
+import { Download, Plus, Minus, Type, Image as ImageIcon, Square, Circle, Undo2, Redo2, Trash2, AlignLeft, AlignCenter, AlignRight, Bold, Italic, Underline, Settings, Menu, ChevronDown, ChevronUp } from "lucide-react";
 
 const defaultTextStyle = {
   fontSize: 16,
@@ -57,6 +57,16 @@ export default function CreatePdfPanel({ onExportPdf }) {
 
   const [contextMenu, setContextMenu] = useState(null); // { x, y, type, id }
   const [imageClipboard, setImageClipboard] = useState(null); // { src, scale, format }
+
+  const [showTools, setShowTools] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  // Re-check mobile on resize
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const pageRef = useRef(null);
 
@@ -684,9 +694,20 @@ export default function CreatePdfPanel({ onExportPdf }) {
   /* ------------ render ------------ */
 
   return (
-    <div className="create-editor-root">
+    <div className={`create-editor-root ${!showTools ? 'tools-hidden' : ''}`}>
+      {/* Mobile Toggle Button */}
+      <button 
+        className="mobile-tools-toggle"
+        onClick={() => setShowTools(!showTools)}
+        aria-label={showTools ? "Hide Tools" : "Show Tools"}
+      >
+        {showTools ? <ChevronUp size={20} /> : <Settings size={20} />}
+        <span>{showTools ? "Hide Tools" : "Show Tools"}</span>
+      </button>
+
       {/* SIDEBAR */}
-      <aside className="create-editor-sidebar">
+      {(showTools || !isMobile) && (
+        <aside className="create-editor-sidebar">
         <div className="sidebar-section">
           <div className="sidebar-title">Text Options</div>
           <button
@@ -875,14 +896,16 @@ export default function CreatePdfPanel({ onExportPdf }) {
           </button>
         </div>
       </aside>
+      )}
 
       {/* MAIN AREA */}
       <section className="create-editor-main">
         {/* Toolbar */}
-        <div
-          className="create-toolbar"
-          onMouseDown={(e) => e.stopPropagation()}
-        >
+        {(showTools || !isMobile) && (
+          <div
+            className="create-toolbar"
+            onMouseDown={(e) => e.stopPropagation()}
+          >
           <div className="toolbar-group">
             <span className="toolbar-label">Size</span>
             <input
@@ -979,6 +1002,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
             </button>
           </div>
         </div>
+      )}
 
         {/* PAGE */}
         <div
@@ -1150,8 +1174,9 @@ export default function CreatePdfPanel({ onExportPdf }) {
         </div>
 
         {/* Pages bar */}
-        <div
-          className="pages-bar"
+        {(showTools || !isMobile) && (
+          <div
+            className="pages-bar"
           onMouseDown={(e) => e.stopPropagation()}
           role="navigation"
           aria-label="Page navigation"
@@ -1166,8 +1191,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
                 }
                 onClick={() => {
                   setActivePageIndex(idx);
-                  setActiveTextTarget("body");
-                  setToolbarStyle(pages[idx].body.style);
+                  setActiveTextId(null);
                   setActiveImageId(null);
                   setContextMenu(null);
                 }}
@@ -1197,6 +1221,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
             Delete page
           </button>
         </div>
+      )}
       </section>
 
       {/* Right-click menu */}

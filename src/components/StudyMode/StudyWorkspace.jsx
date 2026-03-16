@@ -3,10 +3,71 @@ import { studyApi } from '../../services/studyApi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Timer, BookOpen, Brain, Play, Pause, RotateCcw, Download, Save, 
-  ChevronRight, ChevronLeft, Sparkles, CheckCircle2, XCircle, Trophy,
-  ClipboardList, Clock, Flame
+  ClipboardList, Clock, Flame, Volume2, VolumeX, Music, Wind, Coffee, CloudRain
 } from 'lucide-react';
 import './StudyWorkspace.css';
+
+// --- Premium Shared Components ---
+
+// 0. Mesh Background for Immersive Feel
+const MeshBackground = () => (
+  <div className="study-mesh-container">
+    <div className="mesh-gradient mesh-1" />
+    <div className="mesh-gradient mesh-2" />
+    <div className="mesh-gradient mesh-3" />
+    <div className="mesh-noise" />
+  </div>
+);
+
+// 1. Ambient Audio Station
+const AmbientAudioStation = () => {
+  const [activeSound, setActiveSound] = useState(null);
+  const [volume, setVolume] = useState(0.5);
+  const audioRef = useRef(null);
+
+  const sounds = [
+    { id: 'lofi', icon: <Music size={16} />, label: 'Lofi Beats', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+    { id: 'rain', icon: <CloudRain size={16} />, label: 'Rainfall', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+    { id: 'cafe', icon: <Coffee size={16} />, label: 'Quiet Cafe', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+    { id: 'wind', icon: <Wind size={16} />, label: 'White Noise', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
+  ];
+
+  const toggleSound = (sound) => {
+    if (activeSound?.id === sound.id) {
+      setActiveSound(null);
+      if (audioRef.current) audioRef.current.pause();
+    } else {
+      setActiveSound(sound);
+      if (audioRef.current) {
+        audioRef.current.src = sound.url;
+        audioRef.current.volume = volume;
+        audioRef.current.play();
+      }
+    }
+  };
+
+  return (
+    <div className="ambient-station">
+      <div className="station-header">
+        <Volume2 size={14} />
+        <span>Focus Sounds</span>
+      </div>
+      <div className="sound-grid">
+        {sounds.map(s => (
+          <button 
+            key={s.id} 
+            className={`sound-btn ${activeSound?.id === s.id ? 'active' : ''}`}
+            onClick={() => toggleSound(s)}
+            title={s.label}
+          >
+            {s.icon}
+          </button>
+        ))}
+      </div>
+      <audio ref={audioRef} loop />
+    </div>
+  );
+};
 
 // 1. Pomodoro Timer Panel Component
 const PomodoroPanel = () => {
@@ -434,6 +495,7 @@ const StudyWorkspace = ({ uploadedFiles = [] }) => {
                     <Sparkles className="brand-sparkle" size={20} />
                     <span>Study Studio</span>
                 </div>
+                
                 <div className="study-nav">
                     {tabs.map((tab) => (
                         <button
@@ -447,6 +509,9 @@ const StudyWorkspace = ({ uploadedFiles = [] }) => {
                         </button>
                     ))}
                 </div>
+
+                <AmbientAudioStation />
+
                 <div className="study-stats-mini">
                     <div className="stat-item">
                         <Flame size={14} className="text-orange" />
@@ -456,6 +521,7 @@ const StudyWorkspace = ({ uploadedFiles = [] }) => {
             </div>
 
             <main className="study-content-area">
+                <MeshBackground />
                 <AnimatePresence mode="wait">
                     <motion.div
                         key={activeTab}
