@@ -1000,7 +1000,7 @@ export default function KuroWorkspacePage() {
                                   display: "flex", 
                                   alignItems: "flex-end", 
                                   gap: "10px",
-                                  maxWidth: "85%",
+                                  maxWidth: "95%",
                                   flexDirection: m.role === "user" ? "row-reverse" : "row"
                                 }}>
                                   {/* Avatar */}
