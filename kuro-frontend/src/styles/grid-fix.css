@@ -1,0 +1,20 @@
+/* FORCE 3-COLUMN GRID – OVERRIDE EVERYTHING */
+
+.why-choose-section .why-choose-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 28px !important;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .why-choose-section .why-choose-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .why-choose-section .why-choose-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

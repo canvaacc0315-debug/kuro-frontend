@@ -1,0 +1,140 @@
+/* src/components/animations/AnimatedCard.css */
+
+.premium-bento-card {
+    position: relative;
+    background: var(--bg-off);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+    /* Ambient dark shadow */
+}
+
+/* The sleek top highlight associated with premium dark mode cards (Linear style) */
+.card-top-light {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
+}
+
+.premium-bento-card:hover .card-top-light {
+    opacity: 1;
+    background: linear-gradient(90deg, transparent, var(--brand-red), transparent);
+}
+
+.premium-bento-card:hover {
+    background: var(--bg-dark-secondary);
+    border-color: rgba(255, 51, 51, 0.3);
+    box-shadow: 0 10px 40px -10px rgba(255, 51, 51, 0.15);
+}
+
+.card-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(255, 51, 51, 0.1);
+    color: var(--brand-red);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 51, 51, 0.2);
+}
+
+.card-icon-wrapper {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000000;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1.5rem;
+}
+
+.card-icon-glow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--brand-red);
+    filter: blur(16px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.premium-bento-card:hover .card-icon-glow {
+    opacity: 0.35;
+}
+
+.card-icon {
+    position: relative;
+    z-index: 2;
+    color: var(--text-inverse-secondary);
+    /* Dim icon by default */
+    transition: color 0.4s ease;
+    display: flex;
+}
+
+.premium-bento-card:hover .card-icon {
+    color: #ffffff;
+    /* Bright on hover */
+}
+
+/* Override lucide icon strictly if stroke color is not fully dynamic */
+.premium-bento-card .card-icon svg {
+    stroke: var(--text-tertiary);
+    transition: stroke 0.4s ease;
+}
+
+.premium-bento-card:hover .card-icon svg {
+    stroke: var(--brand-red);
+}
+
+.card-title {
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.01em;
+}
+
+.card-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.card-footer {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.card-action {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    transition: all 0.3s ease;
+}
+
+.premium-bento-card:hover .card-action {
+    color: var(--brand-red);
+    transform: translateX(4px);
+}

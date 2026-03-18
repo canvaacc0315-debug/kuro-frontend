@@ -1,0 +1,9 @@
+/* Suggestions tab (smaller than main chat) */
+.suggestions-tab {
+  flex: 1;
+  max-width: 100px; /* Make it smaller as per screenshot */
+  background-color: #f8f9fc;
+  padding: 16px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}

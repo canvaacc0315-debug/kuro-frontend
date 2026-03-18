@@ -1,0 +1,797 @@
+/* ===========================
+   RESET - Enhanced for Auth Pages
+=========================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===========================
+   BASE PAGE - Refined Auth Theme
+=========================== */
+
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  background: linear-gradient(180deg, #ffffff 0%, #fff5f5 100%);
+  color: #000;
+  line-height: 1.6;
+}
+
+/* ===========================
+   LOGIN PAGE LAYOUT - Enhanced Full-Screen
+=========================== */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  background: linear-gradient(180deg, #ffffff 0%, #fff5f5 100%);
+  color: #000;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    sans-serif;
+  padding: 0 16px;
+  position: relative;
+  /* For overlays */
+  animation: pageEntry 0.8s ease-out;
+  /* Smooth page load */
+}
+
+@keyframes pageEntry {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.login-container {
+  width: 100%;
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 90vh;
+  margin: 32px auto;
+  box-shadow: 0 20px 60px rgba(220, 38, 38, 0.15);
+  border-radius: 24px;
+  /* Softer global radius */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.login-container:hover {
+  box-shadow: 0 30px 80px rgba(220, 38, 38, 0.2);
+  /* Glow on hover */
+  transform: translateY(-4px);
+  /* Subtle lift */
+}
+
+/* ===========================
+   LEFT – HERO SECTION - Enhanced with Dynamic Elements
+=========================== */
+
+.login-hero-section {
+  background: linear-gradient(180deg, #fff5f5 0%, #ffffff 100%);
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.login-hero-section::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle,
+      rgba(220, 38, 38, 0.12) 0%,
+      transparent 70%);
+  animation: login-float 20s ease-in-out infinite;
+  z-index: 1;
+}
+
+@keyframes login-float {
+
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+
+  33% {
+    transform: translate(30px, -30px) rotate(120deg);
+  }
+
+  66% {
+    transform: translate(-20px, 20px) rotate(240deg);
+  }
+}
+
+.login-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 480px;
+  /* Constrain content */
+}
+
+.login-hero-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  transition: transform 0.3s ease;
+  /* Logo hover */
+}
+
+.login-hero-logo:hover {
+  transform: translateY(-2px);
+}
+
+.login-logo-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: white;
+  box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  animation: logoPulse 2s ease-in-out infinite;
+  /* Added pulsing animation */
+}
+
+@keyframes logoPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(220, 38, 38, 0.3);
+  }
+
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+  }
+}
+
+.login-logo-icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s ease;
+}
+
+.login-logo-icon:hover::after {
+  width: 100px;
+  height: 100px;
+}
+
+.login-logo-icon:hover {
+  transform: scale(1.1) rotate(360deg);
+  box-shadow: 0 15px 40px rgba(220, 38, 38, 0.4);
+  animation: none;
+  /* Pause pulse on hover */
+}
+
+.login-logo-text {
+  font-size: 30px;
+  font-weight: 700;
+  color: #000;
+  background: linear-gradient(135deg, #000 0%, #000 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-hero-title {
+  font-size: 44px;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 16px;
+  line-height: 1.2;
+  position: relative;
+  z-index: 2;
+  animation: titleFadeIn 1s ease-out;
+  /* Staggered entry */
+}
+
+@keyframes titleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-hero-title-accent {
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: accentGlow 2s ease-in-out infinite alternate;
+  /* Added glow animation */
+}
+
+@keyframes accentGlow {
+  from {
+    text-shadow: 0 0 5px rgba(220, 38, 38, 0.3);
+  }
+
+  to {
+    text-shadow: 0 0 15px rgba(220, 38, 38, 0.6);
+  }
+}
+
+.login-hero-description {
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 32px;
+  line-height: 1.7;
+  max-width: 480px;
+  opacity: 0;
+  animation: descFadeIn 1.2s ease-out forwards;
+  /* Delayed entry */
+}
+
+@keyframes descFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  opacity: 0;
+  animation: featuresSlideIn 1.4s ease-out forwards;
+  /* Latest entry */
+}
+
+@keyframes featuresSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.login-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: transform 0.3s ease;
+  /* Item hover */
+  animation: featureBounce 0.5s ease-out;
+  /* Added bounce on load */
+}
+
+@keyframes featureBounce {
+  0% {
+    transform: translateY(10px);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.login-feature-item:hover {
+  transform: translateX(8px);
+}
+
+.login-feature-icon {
+  width: 24px;
+  height: 24px;
+  background: rgba(220, 38, 38, 0.2);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc2626;
+  font-size: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: all 0.3s ease;
+  animation: iconSpin 1s ease-in-out infinite alternate;
+  /* Added spin animation */
+}
+
+@keyframes iconSpin {
+  from {
+    transform: rotate(-5deg);
+  }
+
+  to {
+    transform: rotate(5deg);
+  }
+}
+
+.login-feature-item:hover .login-feature-icon {
+  background: rgba(220, 38, 38, 0.4);
+  transform: scale(1.1);
+  animation: none;
+  /* Pause on hover */
+}
+
+.login-feature-text {
+  font-size: 14px;
+  color: #000;
+  line-height: 1.5;
+}
+
+/* ===========================
+   RIGHT – AUTH / CLERK SECTION - Enhanced Glassmorphism
+=========================== */
+
+.login-auth-section {
+  background: #ffffff;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-auth-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 80%, rgba(220, 38, 38, 0.06) 0%, transparent 50%);
+  opacity: 0.5;
+  z-index: 0;
+  animation: radialPulse 5s ease-in-out infinite;
+  /* Added pulsing radial gradient */
+}
+
+@keyframes radialPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.login-auth-container {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-auth-header {
+  text-align: center;
+  margin-bottom: 24px;
+  animation: headerSlideIn 0.8s ease-out;
+}
+
+@keyframes headerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-auth-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #000;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.login-auth-title-accent {
+  color: #dc2626;
+  animation: accentGlow 2s ease-in-out infinite alternate;
+  /* Added glow */
+}
+
+.login-auth-subtitle {
+  font-size: 14px;
+  color: #000;
+}
+
+.login-last-used {
+  font-size: 12px;
+  color: #000;
+  margin-top: 6px;
+  opacity: 0.8;
+}
+
+/* White card wrapper: enhanced glass effect, removed border to avoid frame look */
+.login-signin-wrapper {
+  width: 100%;
+  padding: 24px 24px 20px;
+  background: #ffffff;
+  border-radius: 20px;
+  /* Match container */
+  box-shadow:
+    0 18px 40px rgba(220, 38, 38, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  /* Inner highlight */
+  margin: 0 auto;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(20px);
+  /* Stronger blur */
+  position: relative;
+}
+
+.login-signin-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(220, 38, 38, 0.3), transparent);
+}
+
+.login-signin-wrapper:hover {
+  box-shadow:
+    0 25px 50px rgba(220, 38, 38, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Let Clerk fill the wrapper */
+.login-signin-wrapper>div {
+  width: 100%;
+}
+
+/* Security / footer badges: refined positioning */
+.login-security-badge {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 11px;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
+  opacity: 0;
+  animation: badgeFadeIn 1s ease-out 0.5s forwards;
+  /* Delayed entry */
+}
+
+@keyframes badgeFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.login-security-icon {
+  font-size: 12px;
+  color: #dc2626;
+  animation: lockShake 2s ease-in-out infinite;
+  /* Added shake animation */
+}
+
+@keyframes lockShake {
+
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+
+  25% {
+    transform: rotate(-5deg);
+  }
+
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+.login-clerk-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #000;
+}
+
+.login-dev-mode {
+  display: inline-block;
+  padding: 2px 8px;
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 4px;
+  color: #dc2626;
+  font-size: 10px;
+  font-weight: 600;
+  animation: devPulse 2s ease-in-out infinite;
+  /* Subtle dev indicator */
+}
+
+@keyframes devPulse {
+
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ===========================
+   RESPONSIVE - Enhanced with Fluid Scaling
+=========================== */
+
+@media (max-width: 1024px) {
+  .login-container {
+    grid-template-columns: 1fr;
+    /* Stack on tablet */
+    margin: 16px auto;
+    border-radius: 16px;
+    /* Smaller radius */
+  }
+
+  .login-hero-section {
+    padding: 40px 30px;
+    min-height: auto;
+  }
+
+  .login-hero-title {
+    font-size: 36px;
+  }
+
+  .login-auth-section {
+    padding: 40px 30px;
+  }
+
+  .login-auth-title {
+    font-size: 28px;
+  }
+
+  .login-hero-logo {
+    margin-bottom: 24px;
+  }
+
+  .login-logo-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+  }
+
+  .login-logo-text {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 768px) {
+  .login-page {
+    padding: 0;
+  }
+
+  .login-container {
+    border-radius: 0;
+    min-height: 100vh;
+    margin: 0;
+    box-shadow: none;
+    /* Remove shadow on mobile */
+  }
+
+  .login-hero-section {
+    padding: 30px 20px;
+    display: none;
+    /* Hide hero on small mobile for focus on auth */
+  }
+
+  .login-hero-title {
+    font-size: 28px;
+  }
+
+  .login-hero-description {
+    font-size: 14px;
+  }
+
+  .login-hero-features {
+    display: none;
+    /* Hide features on mobile */
+  }
+
+  .login-auth-section {
+    padding: 30px 20px;
+  }
+
+  .login-auth-container {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+
+  .login-auth-title {
+    font-size: 24px;
+  }
+
+  .login-signin-wrapper {
+    border-radius: 12px;
+    margin: 0 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-hero-logo {
+    margin-bottom: 20px;
+  }
+
+  .login-logo-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  .login-logo-text {
+    font-size: 20px;
+  }
+
+  .login-hero-title {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .login-auth-section {
+    padding: 22px 16px;
+  }
+
+  .login-auth-title {
+    font-size: 22px;
+  }
+
+  .login-signin-wrapper {
+    padding: 20px 16px;
+    margin: 0 4px;
+  }
+}
+
+/* ===========================
+   STICKY / FIXED FOOTER - Refined
+=========================== */
+
+.login-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 60px;
+  /* Reserve space for footer */
+}
+
+.login-page>footer {
+  position: fixed;
+  /* Fixed for always-visible */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #000;
+  /* Darker for better contrast */
+  backdrop-filter: blur(20px);
+  /* Stronger blur */
+  border-top: 1px solid rgba(220, 38, 38, 0.2);
+  /* Accent border */
+  z-index: 20;
+  padding: 12px 20px;
+  /* Compact padding */
+  text-align: center;
+  font-size: 12px;
+  color: #fff;
+  transition: background 0.3s ease;
+}
+
+.login-page>footer:hover {
+  background: #000;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #000;
+  backdrop-filter: blur(10px);
+  z-index: 20;
+}
+
+/* ===========================
+   ACCESSIBILITY & PERFORMANCE
+=========================== */
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast */
+@media (prefers-contrast: high) {
+
+  .login-signin-wrapper,
+  .login-hero-section {
+    border-width: 2px;
+  }
+
+  .login-auth-title-accent {
+    text-shadow: 0 0 2px #dc2626;
+  }
+}
+
+/* Focus visibility */
+*:focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
+  border-radius: 4px;
+}

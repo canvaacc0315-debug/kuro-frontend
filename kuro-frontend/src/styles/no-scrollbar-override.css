@@ -1,0 +1,143 @@
+/* Global Scrollbar Hider - Refined to Preserve Animations & Backgrounds */
+
+/* Target only html and body for core scrolling */
+html,
+body {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE and Edge */
+  overflow-x: hidden !important; /* Prevent horizontal scroll, but allow vertical */
+  overflow-y: auto !important; /* Preserve vertical scrolling */
+}
+
+/* WebKit browsers (Chrome, Safari, Opera) for html and body */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Global pseudo-elements for scrollbars (non-universal to avoid conflicts) */
+::-webkit-scrollbar,
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-corner {
+  display: none !important;
+  background: transparent !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Targeted fallback for common overflow classes (avoid universal *) */
+.overflow-auto,
+.overflow-scroll,
+.overflow-y-auto,
+.overflow-x-auto {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.overflow-auto::-webkit-scrollbar,
+.overflow-scroll::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar,
+.overflow-x-auto::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* App-specific scrollable containers (expand as needed for login/signup/pages) */
+.chat-messages,
+.sidebar,
+.pages-list,
+.create-editor-sidebar,
+.pages-bar,
+.pdf-context-menu,
+.modal-content,
+.login-form,
+.signup-form,
+.workspace-root > .main-container,
+.tab-content,
+.history-list,
+.export-options-grid,
+.uploaded-files,
+.scope-options,
+.chat-subtabs-nav,
+.tabs-nav,
+.pages-bar,
+.public-hero,
+.features-grid,
+.hero-cta,
+.public-card,
+.feature-card,
+.vision-card,
+/* Add login/signup specific if needed */
+.login-container,
+.signup-container,
+.auth-form,
+.form-group {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.chat-messages::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar,
+.pages-list::-webkit-scrollbar,
+.create-editor-sidebar::-webkit-scrollbar,
+.pages-bar::-webkit-scrollbar,
+.pdf-context-menu::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar,
+.login-form::-webkit-scrollbar,
+.signup-form::-webkit-scrollbar,
+.workspace-root > .main-container::-webkit-scrollbar,
+.tab-content::-webkit-scrollbar,
+.history-list::-webkit-scrollbar,
+.export-options-grid::-webkit-scrollbar,
+.uploaded-files::-webkit-scrollbar,
+.scope-options::-webkit-scrollbar,
+.chat-subtabs-nav::-webkit-scrollbar,
+.tabs-nav::-webkit-scrollbar,
+.pages-bar::-webkit-scrollbar,
+.public-hero::-webkit-scrollbar,
+.features-grid::-webkit-scrollbar,
+.hero-cta::-webkit-scrollbar,
+.public-card::-webkit-scrollbar,
+.feature-card::-webkit-scrollbar,
+.vision-card::-webkit-scrollbar,
+.login-container::-webkit-scrollbar,
+.signup-container::-webkit-scrollbar,
+.auth-form::-webkit-scrollbar,
+.form-group::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Ensure smooth touch scrolling on mobile (non-universal) */
+html,
+body {
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* PROTECT ANIMATED BACKGROUNDS: Explicitly preserve animations and backgrounds */
+body,
+html,
+body::before,
+body::after,
+html::before,
+html::after,
+.global-background,
+.global-background > div,
+.animated-background,
+.public-hero,
+.features-grid {
+  animation: inherit !important;
+  background: inherit !important;
+  background-image: inherit !important;
+  background-position: inherit !important;
+  background-size: inherit !important;
+  transform: inherit !important;
+  overflow: visible !important; /* Allow scaled backgrounds to show fully */
+  scrollbar-width: visible !important; /* Don't hide if somehow applied */
+}
+
+/* Ensure fixed backgrounds aren't clipped */
+body > div[position="fixed"][style*="position: fixed"] {
+  overflow: visible !important;
+  z-index: inherit !important;
+}
