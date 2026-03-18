@@ -74,7 +74,7 @@ const AmbientAudioStation = () => {
 const PomodoroPanel = () => {
     const [timeLeft, setTimeLeft] = useState(25 * 60);
     const [isRunning, setIsRunning] = useState(false);
-    const [mode, setMode] = useState('focus'); // 'focus', 'shortBreak', 'longBreak'
+    const [mode, setMode] = useState('focus');
     const [notes, setNotes] = useState('');
     const [saveStatus, setSaveStatus] = useState('');
 
@@ -551,6 +551,7 @@ const RoadmapPanel = () => {
                         value={newGoal}
                         onChange={(e) => setNewGoal(e.target.value)}
                     />
+                    {/* FIXED: removed premium-btn primary-btn classes — primary-btn has width:100% which hides the input */}
                     <button type="submit" className="roadmap-add-btn">
                         <Plus size={18} />
                         <span>Add Goal</span>
