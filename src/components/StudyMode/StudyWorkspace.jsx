@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { studyApi } from '../../services/studyApi';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Timer, BookOpen, Brain, Play, Pause, RotateCcw, Download, Save, 
-  ChevronRight, ChevronLeft, Sparkles, CheckCircle2, XCircle, Trophy,
-  ClipboardList, Clock, Flame, Volume2, VolumeX, Music, Wind, Coffee, CloudRain, Trash2, Plus
+import {
+    Timer, BookOpen, Brain, Play, Pause, RotateCcw, Download, Save,
+    ChevronRight, ChevronLeft, Sparkles, CheckCircle2, XCircle, Trophy,
+    ClipboardList, Clock, Flame, Volume2, VolumeX, Music, Wind, Coffee, CloudRain, Trash2, Plus
 } from 'lucide-react';
 import './StudyWorkspace.css';
 
@@ -12,62 +12,62 @@ import './StudyWorkspace.css';
 
 // 0. Mesh Background for Immersive Feel
 const MeshBackground = () => (
-  <div className="study-mesh-container">
-    <div className="mesh-gradient mesh-1" />
-    <div className="mesh-gradient mesh-2" />
-    <div className="mesh-gradient mesh-3" />
-    <div className="mesh-noise" />
-  </div>
+    <div className="study-mesh-container">
+        <div className="mesh-gradient mesh-1" />
+        <div className="mesh-gradient mesh-2" />
+        <div className="mesh-gradient mesh-3" />
+        <div className="mesh-noise" />
+    </div>
 );
 
 // 1. Ambient Audio Station
 const AmbientAudioStation = () => {
-  const [activeSound, setActiveSound] = useState(null);
-  const [volume, setVolume] = useState(0.5);
-  const audioRef = useRef(null);
+    const [activeSound, setActiveSound] = useState(null);
+    const [volume, setVolume] = useState(0.5);
+    const audioRef = useRef(null);
 
-  const sounds = [
-    { id: 'lofi-1', icon: <Music size={16} />, label: 'Deep Focus Lo-fi', url: 'https://live.lofirelax.com/8000/stream' },
-    { id: 'lofi-2', icon: <Wind size={16} />, label: 'Chill Study lofi', url: 'https://live.lofirelax.com/8002/stream' },
-    { id: 'rain', icon: <CloudRain size={16} />, label: 'Cozy Rain', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
-    { id: 'cafe', icon: <Coffee size={16} />, label: 'Ambient Cafe', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
-  ];
+    const sounds = [
+        { id: 'lofi-1', icon: <Music size={16} />, label: 'Deep Focus Lo-fi', url: 'https://live.lofirelax.com/8000/stream' },
+        { id: 'lofi-2', icon: <Wind size={16} />, label: 'Chill Study lofi', url: 'https://live.lofirelax.com/8002/stream' },
+        { id: 'rain', icon: <CloudRain size={16} />, label: 'Cozy Rain', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+        { id: 'cafe', icon: <Coffee size={16} />, label: 'Ambient Cafe', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+    ];
 
-  const toggleSound = (sound) => {
-    if (activeSound?.id === sound.id) {
-      setActiveSound(null);
-      if (audioRef.current) audioRef.current.pause();
-    } else {
-      setActiveSound(sound);
-      if (audioRef.current) {
-        audioRef.current.src = sound.url;
-        audioRef.current.volume = volume;
-        audioRef.current.play();
-      }
-    }
-  };
+    const toggleSound = (sound) => {
+        if (activeSound?.id === sound.id) {
+            setActiveSound(null);
+            if (audioRef.current) audioRef.current.pause();
+        } else {
+            setActiveSound(sound);
+            if (audioRef.current) {
+                audioRef.current.src = sound.url;
+                audioRef.current.volume = volume;
+                audioRef.current.play();
+            }
+        }
+    };
 
-  return (
-    <div className="ambient-station">
-      <div className="station-header">
-        <Volume2 size={14} />
-        <span>Focus Sounds</span>
-      </div>
-      <div className="sound-grid">
-        {sounds.map(s => (
-          <button 
-            key={s.id} 
-            className={`sound-btn ${activeSound?.id === s.id ? 'active' : ''}`}
-            onClick={() => toggleSound(s)}
-            title={s.label}
-          >
-            {s.icon}
-          </button>
-        ))}
-      </div>
-      <audio ref={audioRef} loop />
-    </div>
-  );
+    return (
+        <div className="ambient-station">
+            <div className="station-header">
+                <Volume2 size={14} />
+                <span>Focus Sounds</span>
+            </div>
+            <div className="sound-grid">
+                {sounds.map(s => (
+                    <button
+                        key={s.id}
+                        className={`sound-btn ${activeSound?.id === s.id ? 'active' : ''}`}
+                        onClick={() => toggleSound(s)}
+                        title={s.label}
+                    >
+                        {s.icon}
+                    </button>
+                ))}
+            </div>
+            <audio ref={audioRef} loop />
+        </div>
+    );
 };
 
 // 1. Pomodoro Timer Panel Component
@@ -130,7 +130,7 @@ const PomodoroPanel = () => {
                 <div className="pomodoro-header">
                     <div className="mode-badges">
                         {['focus', 'shortBreak', 'longBreak'].map((m) => (
-                            <button 
+                            <button
                                 key={m}
                                 className={`mode-badge ${mode === m ? 'active' : ''}`}
                                 onClick={() => handleModeChange(m)}
@@ -144,10 +144,10 @@ const PomodoroPanel = () => {
                 <div className={`timer-visual ${isRunning ? 'running' : ''}`}>
                     <svg className="progress-ring" viewBox="0 0 100 100">
                         <circle className="progress-ring-bg" cx="50" cy="50" r="45" />
-                        <motion.circle 
-                            className="progress-ring-bar" 
+                        <motion.circle
+                            className="progress-ring-bar"
                             cx="50" cy="50" r="45"
-                            style={{ 
+                            style={{
                                 strokeDasharray: 283,
                                 strokeDashoffset: 283 - (283 * progress) / 100
                             }}
@@ -160,14 +160,14 @@ const PomodoroPanel = () => {
                 </div>
 
                 <div className="timer-controls">
-                    <motion.button 
+                    <motion.button
                         whileTap={{ scale: 0.9 }}
-                        className="timer-action reset" 
+                        className="timer-action reset"
                         onClick={() => handleModeChange(mode)}
                     >
                         <RotateCcw size={20} />
                     </motion.button>
-                    <motion.button 
+                    <motion.button
                         whileTap={{ scale: 0.9 }}
                         className={`timer-action toggle ${isRunning ? 'running' : ''}`}
                         onClick={() => setIsRunning(!isRunning)}
@@ -196,7 +196,7 @@ const PomodoroPanel = () => {
                         </button>
                     </div>
                 </div>
-                <textarea 
+                <textarea
                     className="scratchpad-input"
                     placeholder="Capture your thoughts here while you study..."
                     value={notes}
@@ -244,7 +244,7 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                     <div className="setup-form">
                         <div className="form-group">
                             <label>Source Document</label>
-                            <select 
+                            <select
                                 className="premium-select-study"
                                 value={selectedPdfId}
                                 onChange={(e) => setSelectedPdfId(e.target.value)}
@@ -263,15 +263,15 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                                 <label>Card Count</label>
                                 <span>{flashcardCount}</span>
                             </div>
-                            <input 
-                                type="range" min="5" max="30" 
-                                value={flashcardCount} 
+                            <input
+                                type="range" min="5" max="30"
+                                value={flashcardCount}
                                 onChange={(e) => setFlashcardCount(parseInt(e.target.value))}
                                 className="premium-range"
                             />
                         </div>
 
-                        <button 
+                        <button
                             className="premium-btn primary-btn"
                             disabled={!selectedPdfId || loading}
                             onClick={handleGenerate}
@@ -286,7 +286,7 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                         <div className="deck-progress">
                             <span className="count">{activeCard + 1} / {flashcards.length}</span>
                             <div className="progress-track">
-                                <motion.div 
+                                <motion.div
                                     className="progress-fill"
                                     initial={{ width: 0 }}
                                     animate={{ width: `${((activeCard + 1) / flashcards.length) * 100}%` }}
@@ -297,7 +297,7 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                     </div>
 
                     <div className="flashcard-wrapper" onClick={() => setIsFlipped(!isFlipped)}>
-                        <motion.div 
+                        <motion.div
                             className={`flashcard-3d ${isFlipped ? 'flipped' : ''}`}
                             animate={{ rotateY: isFlipped ? 180 : 0 }}
                             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
@@ -316,14 +316,14 @@ const FlashcardPanel = ({ uploadedFiles = [] }) => {
                     </div>
 
                     <div className="deck-controls">
-                        <button 
-                            className="nav-btn" 
+                        <button
+                            className="nav-btn"
                             disabled={activeCard === 0}
                             onClick={(e) => { e.stopPropagation(); setActiveCard(prev => prev - 1); setIsFlipped(false); }}
                         >
                             <ChevronLeft size={18} /> <span>Previous</span>
                         </button>
-                        <button 
+                        <button
                             className="nav-btn primary"
                             disabled={activeCard === flashcards.length - 1}
                             onClick={(e) => { e.stopPropagation(); setActiveCard(prev => prev + 1); setIsFlipped(false); }}
@@ -393,7 +393,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                     <div className="setup-form">
                         <div className="form-group">
                             <label>Source Document</label>
-                            <select 
+                            <select
                                 className="premium-select-study"
                                 value={selectedPdfId}
                                 onChange={(e) => setSelectedPdfId(e.target.value)}
@@ -411,9 +411,9 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                                 <label>Question Count</label>
                                 <span>{quizCount}</span>
                             </div>
-                            <input 
-                                type="range" min="5" max="30" 
-                                value={quizCount} 
+                            <input
+                                type="range" min="5" max="30"
+                                value={quizCount}
                                 onChange={(e) => setQuizCount(parseInt(e.target.value))}
                                 className="premium-range"
                             />
@@ -424,7 +424,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                     </div>
                 </div>
             ) : finished ? (
-                <motion.div 
+                <motion.div
                     className="quiz-results-premium"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -435,7 +435,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                         <span className="final">{score}</span>
                         <span className="total">/ {quiz.length}</span>
                     </div>
-                    <p>Accuracy: {Math.round((score/quiz.length)*100)}%</p>
+                    <p>Accuracy: {Math.round((score / quiz.length) * 100)}%</p>
                     <button className="premium-btn primary-btn" onClick={() => setQuiz(null)}>Try Another</button>
                 </motion.div>
             ) : quiz.length > 0 && quiz[activeIdx] ? (
@@ -443,11 +443,11 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                     <div className="quiz-header">
                         <div className="quiz-progress-bar">
                             <div className="progress-label">Question {activeIdx + 1} of {quiz.length}</div>
-                            <div className="track"><div className="fill" style={{ width: `${((activeIdx+1)/quiz.length)*100}%` }} /></div>
+                            <div className="track"><div className="fill" style={{ width: `${((activeIdx + 1) / quiz.length) * 100}%` }} /></div>
                         </div>
                     </div>
 
-                    <motion.div 
+                    <motion.div
                         key={activeIdx}
                         className="question-card-premium"
                         initial={{ opacity: 0, x: 20 }}
@@ -463,7 +463,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
                                     else state = 'disabled';
                                 }
                                 return (
-                                    <button 
+                                    <button
                                         key={i}
                                         className={`option-btn ${state}`}
                                         onClick={() => handleAnswer(opt)}
@@ -481,7 +481,7 @@ const QuizPanel = ({ uploadedFiles = [] }) => {
 
                     <AnimatePresence>
                         {selectedAns && (
-                            <motion.div 
+                            <motion.div
                                 className="explanation-drawer"
                                 initial={{ height: 0, opacity: 0 }}
                                 animate={{ height: 'auto', opacity: 1 }}
@@ -545,13 +545,13 @@ const RoadmapPanel = () => {
 
             <div className="roadmap-card study-main-card">
                 <form className="roadmap-input-row" onSubmit={addGoal}>
-                    <input 
-                        type="text" 
-                        placeholder="What's your next study goal?" 
+                    <input
+                        type="text"
+                        placeholder="What's your next study goal?"
                         value={newGoal}
                         onChange={(e) => setNewGoal(e.target.value)}
                     />
-                    <button type="submit" className="premium-btn primary-btn roadmap-add-btn">
+                    <button type="submit" className="roadmap-add-btn">
                         <Plus size={18} />
                         <span>Add Goal</span>
                     </button>
@@ -601,7 +601,7 @@ const StudyWorkspace = ({ uploadedFiles = [] }) => {
                     <Sparkles className="brand-sparkle" size={20} />
                     <span>Study Studio</span>
                 </div>
-                
+
                 <div className="study-nav">
                     {tabs.map((tab) => (
                         <button
