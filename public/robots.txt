@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /login
+Disallow: /sign-up
+Sitemap: https://rovexai.com/sitemap.xml
