@@ -10,7 +10,7 @@ import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import OcrPanel from "../components/OcrPanel";
 import logoIcon from "../assets/logo.svg";
-import ReactMarkdown from "react-markdown"; // ✅ ADDED
+// ❌ REMOVED: import ReactMarkdown from "react-markdown";
 
 import { useClerk } from "@clerk/clerk-react";
 import KuroHeader from "../components/layout/KuroHeader.jsx";
@@ -46,154 +46,60 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
-// ✅ Markdown renderer for bot replies
+// ✅ ZERO-DEPENDENCY Markdown renderer
+const parseMarkdownToHTML = (text) => {
+  if (!text) return '';
+  
+  let html = text
+    // Escape HTML to prevent XSS
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    // Code blocks (```code```)
+    .replace(/```([\s\S]*?)```/g, '<pre style="background:var(--bg-tertiary);padding:12px 16px;border-radius:8px;overflow-x:auto;margin:10px 0;border:1px solid var(--border-color);"><code style="font-size:0.85em;font-family:monospace;color:var(--text-primary);white-space:pre;">$1</code></pre>')
+    // Headers (###, ##, #)
+    .replace(/^### (.*$)/gim, '<h3 style="font-size:1rem;font-weight:600;margin:10px 0 4px;color:var(--text-primary);">$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2 style="font-size:1.1rem;font-weight:600;margin:12px 0 6px;color:var(--text-primary);">$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1 style="font-size:1.2rem;font-weight:600;margin:14px 0 6px;color:var(--text-primary);border-bottom:1px solid var(--border-color);padding-bottom:4px;">$1</h1>')
+    // Bold (**text**)
+    .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight:600;color:var(--text-primary);">$1</strong>')
+    // Italic (*text*)
+    .replace(/\*(.*?)\*/g, '<em style="color:var(--text-secondary);font-style:italic;">$1</em>')
+    // Inline code (`code`)
+    .replace(/`([^`]+)`/g, '<code style="background:var(--bg-tertiary);color:var(--accent);padding:2px 6px;border-radius:4px;font-size:0.85em;font-family:monospace;border:1px solid var(--border-color);">$1</code>')
+    // Blockquote (> text)
+    .replace(/^&gt; (.*$)/gim, '<blockquote style="border-left:3px solid var(--accent);padding-left:12px;margin:10px 0;color:var(--text-secondary);font-style:italic;background:var(--bg-secondary);border-radius:0 6px 6px 0;padding:8px 8px 8px 14px;">$1</blockquote>')
+    // Bullet points (- item)
+    .replace(/^- (.*$)/gim, '<li style="margin-bottom:4px;line-height:1.6;color:var(--text-primary);list-style-type:disc;margin-left:1.5em;">$1</li>')
+    // Numbered lists (1. item)
+    .replace(/^\d+\. (.*$)/gim, '<li style="margin-bottom:4px;line-height:1.6;color:var(--text-primary);list-style-type:decimal;margin-left:1.5em;">$1</li>')
+    // Horizontal rule (---)
+    .replace(/^---$/gim, '<hr style="border:none;border-top:1px solid var(--border-color);margin:12px 0;">')
+    // Line breaks
+    .replace(/\n/g, '<br>');
+
+  // Wrap in paragraph if not already wrapped
+  if (!html.startsWith('<')) {
+    html = `<p style="margin:0 0 8px 0;line-height:1.7;color:var(--text-primary);">${html}</p>`;
+  }
+
+  return html;
+};
+
+// ✅ Bot Markdown Component (Zero Dependencies)
 function BotMarkdown({ content }) {
+  const html = parseMarkdownToHTML(content);
+  
   return (
-    <ReactMarkdown
-      components={{
-        p: ({ children }) => (
-          <p style={{ margin: "0 0 8px 0", lineHeight: "1.7", color: "var(--text-primary)" }}>
-            {children}
-          </p>
-        ),
-        strong: ({ children }) => (
-          <strong style={{ fontWeight: "600", color: "var(--text-primary)" }}>
-            {children}
-          </strong>
-        ),
-        em: ({ children }) => (
-          <em style={{ color: "var(--text-secondary)", fontStyle: "italic" }}>
-            {children}
-          </em>
-        ),
-        h1: ({ children }) => (
-          <h1 style={{ fontSize: "1.2rem", fontWeight: "600", margin: "14px 0 6px", color: "var(--text-primary)", borderBottom: "1px solid var(--border-color)", paddingBottom: "4px" }}>
-            {children}
-          </h1>
-        ),
-        h2: ({ children }) => (
-          <h2 style={{ fontSize: "1.1rem", fontWeight: "600", margin: "12px 0 6px", color: "var(--text-primary)" }}>
-            {children}
-          </h2>
-        ),
-        h3: ({ children }) => (
-          <h3 style={{ fontSize: "1rem", fontWeight: "600", margin: "10px 0 4px", color: "var(--text-primary)" }}>
-            {children}
-          </h3>
-        ),
-        ul: ({ children }) => (
-          <ul style={{ paddingLeft: "20px", margin: "6px 0 10px", listStyleType: "disc" }}>
-            {children}
-          </ul>
-        ),
-        ol: ({ children }) => (
-          <ol style={{ paddingLeft: "20px", margin: "6px 0 10px", listStyleType: "decimal" }}>
-            {children}
-          </ol>
-        ),
-        li: ({ children }) => (
-          <li style={{ marginBottom: "4px", lineHeight: "1.6", color: "var(--text-primary)" }}>
-            {children}
-          </li>
-        ),
-        code: ({ inline, children }) =>
-          inline ? (
-            <code style={{
-              background: "var(--bg-tertiary)",
-              color: "var(--accent)",
-              padding: "2px 6px",
-              borderRadius: "4px",
-              fontSize: "0.85em",
-              fontFamily: "monospace",
-              border: "1px solid var(--border-color)"
-            }}>
-              {children}
-            </code>
-          ) : (
-            <pre style={{
-              background: "var(--bg-tertiary)",
-              padding: "12px 16px",
-              borderRadius: "8px",
-              overflowX: "auto",
-              margin: "10px 0",
-              border: "1px solid var(--border-color)"
-            }}>
-              <code style={{
-                fontSize: "0.85em",
-                fontFamily: "monospace",
-                color: "var(--text-primary)",
-                whiteSpace: "pre"
-              }}>
-                {children}
-              </code>
-            </pre>
-          ),
-        blockquote: ({ children }) => (
-          <blockquote style={{
-            borderLeft: "3px solid var(--accent)",
-            paddingLeft: "12px",
-            margin: "10px 0",
-            color: "var(--text-secondary)",
-            fontStyle: "italic",
-            background: "var(--bg-secondary)",
-            borderRadius: "0 6px 6px 0",
-            padding: "8px 8px 8px 14px"
-          }}>
-            {children}
-          </blockquote>
-        ),
-        hr: () => (
-          <hr style={{
-            border: "none",
-            borderTop: "1px solid var(--border-color)",
-            margin: "12px 0"
-          }} />
-        ),
-        a: ({ href, children }) => (
-          <a href={href} target="_blank" rel="noopener noreferrer" style={{
-            color: "var(--accent)",
-            textDecoration: "underline",
-            textUnderlineOffset: "3px"
-          }}>
-            {children}
-          </a>
-        ),
-        table: ({ children }) => (
-          <div style={{ overflowX: "auto", margin: "10px 0" }}>
-            <table style={{
-              borderCollapse: "collapse",
-              width: "100%",
-              fontSize: "0.9em"
-            }}>
-              {children}
-            </table>
-          </div>
-        ),
-        th: ({ children }) => (
-          <th style={{
-            border: "1px solid var(--border-color)",
-            padding: "6px 12px",
-            background: "var(--bg-secondary)",
-            fontWeight: "600",
-            color: "var(--text-primary)",
-            textAlign: "left"
-          }}>
-            {children}
-          </th>
-        ),
-        td: ({ children }) => (
-          <td style={{
-            border: "1px solid var(--border-color)",
-            padding: "6px 12px",
-            color: "var(--text-primary)"
-          }}>
-            {children}
-          </td>
-        ),
+    <div 
+      className="markdown-content"
+      dangerouslySetInnerHTML={{ __html: html }}
+      style={{
+        maxWidth: '100%',
+        overflowWrap: 'break-word',
+        lineHeight: '1.6'
       }}
-    >
-      {content}
-    </ReactMarkdown>
+    />
   );
 }
 
@@ -1066,7 +972,7 @@ export default function KuroWorkspacePage() {
                                     )}
                                   </div>
 
-                                  {/* ✅ FIXED: Bubble with ReactMarkdown for bot messages */}
+                                  {/* ✅ FIXED: Bubble with custom Markdown renderer */}
                                   <div
                                     className={`message-bubble ${m.role === "user" ? "user-bubble" : "bot-bubble"}`}
                                     style={{
@@ -1085,7 +991,6 @@ export default function KuroWorkspacePage() {
                                       margin: "0"
                                     }}
                                   >
-                                    {/* ✅ Bot messages use ReactMarkdown, user messages stay plain */}
                                     {m.role === "bot" ? (
                                       <BotMarkdown content={m.content} />
                                     ) : (
