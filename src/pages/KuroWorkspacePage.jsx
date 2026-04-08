@@ -509,18 +509,11 @@ export default function KuroWorkspacePage() {
 
   // ---------------- render ----------------
   const chatMessagesRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const scrollToBottomAuto = () => {
-      if (chatMessagesRef.current) {
-        chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
-      }
-      window.setTimeout(() => {
-        window.scrollTo({
-          top: document.documentElement.scrollHeight,
-          behavior: "smooth"
-        });
-      }, 50);
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     };
     scrollToBottomAuto();
     const timeoutId = setTimeout(scrollToBottomAuto, 150);
@@ -1105,6 +1098,7 @@ export default function KuroWorkspacePage() {
                               </motion.div>
                             )}
                           </AnimatePresence>
+                          <div ref={messagesEndRef} style={{ float: "left", clear: "both", height: "1px" }} />
                         </div>
                       </div>
                     </div>
