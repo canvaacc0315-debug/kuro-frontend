@@ -1,18 +1,20 @@
 // src/components/CreatePdfPanel.jsx
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../styles/create-editor.css";
 import { jsPDF } from "jspdf";
 import * as fabric from "fabric";
 import {
   Download, Type, Square, Circle, Trash2, Settings,
-  ChevronUp, ChevronDown, Image as ImageIcon, Triangle,
+  ChevronDown, Image as ImageIcon, Triangle,
   Minus, Star, RotateCw, Layers, Eye, Palette,
-  ZoomIn, ZoomOut, Undo2, Redo2, Copy
+  Copy, Plus, ArrowLeft, ArrowRight
 } from "lucide-react";
 
 // Base canvas dimensions (A4-ish ratio)
 const BASE_W = 600;
 const BASE_H = 800;
+
+const generateId = () => Math.random().toString(36).substr(2, 9);
 
 export default function CreatePdfPanel({ onExportPdf }) {
   // states
@@ -23,13 +25,16 @@ export default function CreatePdfPanel({ onExportPdf }) {
   });
   const [showTools, setShowTools] = useState(true);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [pageBg, setPageBg] = useState("#ffffff");
   const [canvasScale, setCanvasScale] = useState(1);
   const [activeSection, setActiveSection] = useState("text"); // mobile section tabs
 
+  // Multi-page state
+  const [pages, setPages] = useState([{ id: generateId(), data: null, bg: "#ffffff" }]);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
+  const [isExporting, setIsExporting] = useState(false);
+
   const canvasRef = useRef(null);
   const fabricRef = useRef(null);
-  const containerRef = useRef(null);
   const wrapperRef = useRef(null);
 
   // Responsive detection
@@ -43,10 +48,22 @@ export default function CreatePdfPanel({ onExportPdf }) {
   useEffect(() => {
     if (!canvasRef.current) return;
 
+    // Set globally visible Canva-style selection styles
+    fabric.Object.prototype.set({
+      transparentCorners: false,
+      cornerColor: '#ffffff',
+      cornerStrokeColor: '#dc2626', // Red accent
+      borderColor: '#dc2626',
+      cornerSize: 10,
+      padding: 8,
+      cornerStyle: 'circle',
+      borderDashArray: [4, 4]
+    });
+
     const canvas = new fabric.Canvas(canvasRef.current, {
       width: BASE_W,
       height: BASE_H,
-      backgroundColor: pageBg,
+      backgroundColor: pages[currentPageIndex].bg,
       preserveObjectStacking: true,
       allowTouchScrolling: false,
       selection: true,
@@ -87,6 +104,13 @@ export default function CreatePdfPanel({ onExportPdf }) {
     canvas.on("object:rotating", updateToolbar);
     canvas.on("object:scaling", updateToolbar);
 
+    // Initial load of current page
+    if (pages[currentPageIndex].data) {
+      canvas.loadFromJSON(pages[currentPageIndex].data).then(() => {
+        canvas.renderAll();
+      });
+    }
+
     return () => {
       canvas.dispose();
       fabricRef.current = null;
@@ -101,20 +125,111 @@ export default function CreatePdfPanel({ onExportPdf }) {
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
-        const padX = isMobile ? 20 : 80;
-        const padY = isMobile ? 20 : 80;
+        // Adjusted padding for safe areas on mobile
+        const padX = isMobile ? 32 : 80;
+        const padY = isMobile ? 64 : 80;
         const availW = width - padX;
         const availH = height - padY;
         const scaleW = availW / BASE_W;
         const scaleH = availH / BASE_H;
-        const scale = Math.min(scaleW, scaleH, 1.2);
-        setCanvasScale(Math.max(0.3, scale));
+        let scale = Math.min(scaleW, scaleH, 1.2);
+        
+        // Prevent extreme tiny scales on weird resizes
+        scale = Math.max(0.2, scale);
+        setCanvasScale(scale);
       }
     });
 
     ro.observe(wrapperRef.current);
     return () => ro.disconnect();
   }, [isMobile]);
+
+  // --- MULTI PAGE LOGIC ---
+  const saveCurrentPage = () => {
+    const canvas = fabricRef.current;
+    if (!canvas) return;
+    setPages(prev => {
+      const newPages = [...prev];
+      newPages[currentPageIndex] = {
+        ...newPages[currentPageIndex],
+        data: canvas.toJSON(),
+        bg: canvas.backgroundColor
+      };
+      return newPages;
+    });
+  };
+
+  const switchPage = (newIndex) => {
+    if (newIndex < 0 || newIndex >= pages.length || newIndex === currentPageIndex) return;
+    
+    // 1. Save current
+    saveCurrentPage();
+    
+    // 2. Prepare switch
+    setCurrentPageIndex(newIndex);
+    const canvas = fabricRef.current;
+    if (!canvas) return;
+    
+    // 3. Clear and load
+    canvas.clear();
+    const nextBg = pages[newIndex].bg || "#ffffff";
+    canvas.backgroundColor = nextBg;
+    
+    if (pages[newIndex].data) {
+      canvas.loadFromJSON(pages[newIndex].data).then(() => {
+        canvas.renderAll();
+      });
+    } else {
+      canvas.renderAll();
+    }
+    setActiveObject(null);
+  };
+
+  const addPage = () => {
+    saveCurrentPage();
+    const newPage = { id: generateId(), data: null, bg: "#ffffff" };
+    setPages(prev => [...prev, newPage]);
+    setTimeout(() => switchPage(pages.length), 0); // Switch to the newly added page
+  };
+
+  const deletePage = () => {
+    if (pages.length <= 1) {
+      // Cannot delete last page, just clear it
+      const canvas = fabricRef.current;
+      if (canvas) {
+        canvas.clear();
+        canvas.backgroundColor = "#ffffff";
+        canvas.renderAll();
+      }
+      setPages([{ id: generateId(), data: null, bg: "#ffffff" }]);
+      return;
+    }
+
+    setPages(prev => {
+      const newPages = prev.filter((_, idx) => idx !== currentPageIndex);
+      return newPages;
+    });
+    
+    // Switch logic
+    const nextIndex = currentPageIndex > 0 ? currentPageIndex - 1 : 0;
+    setTimeout(() => {
+        setCurrentPageIndex(nextIndex);
+        const canvas = fabricRef.current;
+        if (!canvas) return;
+        canvas.clear();
+        setPages(latestPages => {
+            const currentBg = latestPages[nextIndex].bg || "#ffffff";
+            canvas.backgroundColor = currentBg;
+            if (latestPages[nextIndex].data) {
+                canvas.loadFromJSON(latestPages[nextIndex].data).then(() => canvas.renderAll());
+            } else {
+                canvas.renderAll();
+            }
+            return latestPages;
+        });
+        setActiveObject(null);
+    }, 0);
+  };
 
   const updateObjectStyle = (styles) => {
     const canvas = fabricRef.current;
@@ -141,6 +256,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
       } else {
         setToolbarStyle(prev => ({ ...prev, ...base }));
       }
+      saveCurrentPage(); // auto-save on style change
     }
   };
 
@@ -159,6 +275,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
     canvas.add(text);
     canvas.setActiveObject(text);
     canvas.renderAll();
+    saveCurrentPage();
     if (isMobile) setShowTools(false);
   };
 
@@ -171,28 +288,18 @@ export default function CreatePdfPanel({ onExportPdf }) {
 
     switch (type) {
       case "rect":
-        shape = new fabric.Rect({
-          left: baseLeft, top: baseTop, fill: "#3b82f6", width: 120, height: 80, rx: 8, ry: 8
-        });
+        shape = new fabric.Rect({ left: baseLeft, top: baseTop, fill: "#3b82f6", width: 120, height: 80, rx: 8, ry: 8 });
         break;
       case "circle":
-        shape = new fabric.Circle({
-          left: baseLeft, top: baseTop, fill: "#ef4444", radius: 50
-        });
+        shape = new fabric.Circle({ left: baseLeft, top: baseTop, fill: "#ef4444", radius: 50 });
         break;
       case "triangle":
-        shape = new fabric.Triangle({
-          left: baseLeft, top: baseTop, fill: "#f59e0b", width: 100, height: 100
-        });
+        shape = new fabric.Triangle({ left: baseLeft, top: baseTop, fill: "#f59e0b", width: 100, height: 100 });
         break;
       case "line":
-        shape = new fabric.Line([0, 0, 200, 0], {
-          left: baseLeft, top: baseTop, stroke: "#6366f1", strokeWidth: 3,
-          fill: "", selectable: true
-        });
+        shape = new fabric.Line([0, 0, 200, 0], { left: baseLeft, top: baseTop, stroke: "#6366f1", strokeWidth: 3, fill: "", selectable: true });
         break;
       case "star": {
-        // 5-pointed star using polygon
         const points = [];
         const outerR = 50, innerR = 22;
         for (let i = 0; i < 10; i++) {
@@ -200,10 +307,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
           const angle = (Math.PI / 5) * i - Math.PI / 2;
           points.push({ x: r * Math.cos(angle), y: r * Math.sin(angle) });
         }
-        shape = new fabric.Polygon(points, {
-          left: baseLeft, top: baseTop, fill: "#eab308",
-          strokeWidth: 0
-        });
+        shape = new fabric.Polygon(points, { left: baseLeft, top: baseTop, fill: "#eab308", strokeWidth: 0 });
         break;
       }
       default: return;
@@ -212,6 +316,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
       canvas.add(shape);
       canvas.setActiveObject(shape);
       canvas.renderAll();
+      saveCurrentPage();
       if (isMobile) setShowTools(false);
     }
   };
@@ -233,6 +338,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
         canvas.add(img);
         canvas.setActiveObject(img);
         canvas.renderAll();
+        saveCurrentPage();
       };
       imgObj.src = data;
     };
@@ -249,6 +355,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
       activeObjects.forEach(obj => canvas.remove(obj));
       canvas.discardActiveObject();
       canvas.requestRenderAll();
+      saveCurrentPage();
     }
   };
 
@@ -262,6 +369,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
       canvas.add(cloned);
       canvas.setActiveObject(cloned);
       canvas.renderAll();
+      saveCurrentPage();
     });
   };
 
@@ -270,7 +378,6 @@ export default function CreatePdfPanel({ onExportPdf }) {
     const handleKeyDown = (e) => {
       const tag = document.activeElement?.tagName?.toLowerCase();
       if (tag === "input" || tag === "textarea") return;
-      // Check if the active fabric object is being edited (typing text)
       const canvas = fabricRef.current;
       if (canvas) {
         const activeObj = canvas.getActiveObject();
@@ -294,29 +401,74 @@ export default function CreatePdfPanel({ onExportPdf }) {
     const canvas = fabricRef.current;
     if (!canvas) return;
     const activeObj = canvas.getActiveObject();
-    if (activeObj) { canvas.bringObjectToFront(activeObj); canvas.renderAll(); }
+    if (activeObj) { canvas.bringObjectToFront(activeObj); canvas.renderAll(); saveCurrentPage(); }
   };
   
   const sendToBack = () => {
     const canvas = fabricRef.current;
     if (!canvas) return;
     const activeObj = canvas.getActiveObject();
-    if (activeObj) { canvas.sendObjectToBack(activeObj); canvas.renderAll(); }
+    if (activeObj) { canvas.sendObjectToBack(activeObj); canvas.renderAll(); saveCurrentPage(); }
   };
 
-  const exportToPdf = () => {
+  // Multi-page Async Export
+  const exportToPdf = async () => {
+    if (isExporting) return;
+    setIsExporting(true);
+    saveCurrentPage(); // Ensure latest state is flushed to pages array
+
     const canvas = fabricRef.current;
-    if (!canvas) return;
+    if (!canvas) return setIsExporting(false);
+
+    // Initial discard
     canvas.discardActiveObject();
     canvas.renderAll();
-    const dataUrl = canvas.toDataURL({ format: 'png', multiplier: 2 });
+
     const pdf = new jsPDF("p", "pt", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const scale = pdfWidth / BASE_W;
     const finalHeight = BASE_H * scale;
-    pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, finalHeight);
-    pdf.save("rovexai-design.pdf");
-    if (onExportPdf) onExportPdf();
+
+    // Use a try catch to ensure we always restore UI state
+    try {
+        setPages(currentPages => {
+            // Need to wrap in an async IIFE to avoid stale state issues and properly await
+            (async () => {
+                for (let i = 0; i < currentPages.length; i++) {
+                    const p = currentPages[i];
+                    canvas.clear();
+                    canvas.backgroundColor = p.bg || "#ffffff";
+                    
+                    if (p.data) {
+                        await canvas.loadFromJSON(p.data);
+                    }
+                    canvas.renderAll();
+            
+                    const dataUrl = canvas.toDataURL({ format: 'png', multiplier: 2 });
+                    
+                    if (i > 0) pdf.addPage();
+                    pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, finalHeight);
+                }
+            
+                pdf.save("rovexai-design.pdf");
+                if (onExportPdf) onExportPdf();
+                
+                // Restore the original viewed page
+                canvas.clear();
+                canvas.backgroundColor = currentPages[currentPageIndex].bg || "#ffffff";
+                if (currentPages[currentPageIndex].data) {
+                    await canvas.loadFromJSON(currentPages[currentPageIndex].data);
+                }
+                canvas.renderAll();
+                setIsExporting(false);
+            })();
+            
+            return currentPages;
+        });
+    } catch(err) {
+        console.error("PDF Export failed", err);
+        setIsExporting(false);
+    }
   };
 
   const handleColorChange = (e) => {
@@ -324,7 +476,11 @@ export default function CreatePdfPanel({ onExportPdf }) {
     if (activeObject) {
       updateObjectStyle({ fill: color });
     } else {
-      setPageBg(color);
+      setPages(prev => {
+          const newPages = [...prev];
+          newPages[currentPageIndex] = { ...newPages[currentPageIndex], bg: color };
+          return newPages;
+      });
       const canvas = fabricRef.current;
       if (canvas) {
         canvas.backgroundColor = color;
@@ -430,11 +586,7 @@ export default function CreatePdfPanel({ onExportPdf }) {
               {/* Background Color */}
               <div className="style-row">
                 <span className="style-label">Page BG</span>
-                <input type="color" value={pageBg} onChange={(e) => {
-                  setPageBg(e.target.value);
-                  const canvas = fabricRef.current;
-                  if (canvas) { canvas.backgroundColor = e.target.value; canvas.renderAll(); }
-                }} className="toolbar-color-picker" />
+                <input type="color" value={pages[currentPageIndex]?.bg || "#ffffff"} onChange={handleColorChange} className="toolbar-color-picker" />
               </div>
 
               {/* Object Color */}
@@ -494,8 +646,8 @@ export default function CreatePdfPanel({ onExportPdf }) {
 
           {/* Export - always visible */}
           <div className="sidebar-bottom">
-            <button className="sidebar-export-btn" onClick={exportToPdf}>
-              <Download size={20} /> <span className="btn-text">Export PDF</span>
+            <button className="sidebar-export-btn" onClick={exportToPdf} disabled={isExporting}>
+              <Download size={20} /> <span className="btn-text">{isExporting ? "Exporting..." : "Export PDF"}</span>
             </button>
           </div>
         </aside>
@@ -548,19 +700,55 @@ export default function CreatePdfPanel({ onExportPdf }) {
           )}
         </div>
 
-        {/* Canvas wrapper */}
+        {/* Canvas wrapper - CRITICAL FIX FOR MULTI-PAGE & OVERFLOW */}
         <div className="create-page-shell" ref={wrapperRef}>
+          {/* Inner constraint wrapper forces scrollable area bounds exactly equal to scaled canvas */}
           <div 
-            className="canvas-frame"
-            style={{ transform: `scale(${canvasScale})`, transformOrigin: "top center" }}
+            className="canvas-bounding-box"
+            style={{ 
+              width: BASE_W * canvasScale, 
+              height: BASE_H * canvasScale,
+              position: 'relative',
+              margin: '0 auto', /* Center canvas horizontally in scrolling area */
+              flexShrink: 0  /* Ensure flex parent doesn't squish */
+            }}
           >
-            <canvas ref={canvasRef} />
+            <div 
+              className="canvas-frame"
+              style={{ 
+                transform: `scale(${canvasScale})`, 
+                transformOrigin: "top left",
+                position: 'absolute',
+                top: 0,
+                left: 0
+              }}
+            >
+              <canvas ref={canvasRef} />
+            </div>
+          </div>
+          
+          {/* Page Navigation Overlay */}
+          <div className="page-navigation-bar">
+             <button title="Previous Page" className="page-nav-btn" disabled={currentPageIndex === 0} onClick={() => switchPage(currentPageIndex - 1)}>
+                <ArrowLeft size={16} />
+             </button>
+             <span className="page-nav-text">Page {currentPageIndex + 1} / {pages.length}</span>
+             <button title="Next Page" className="page-nav-btn" disabled={currentPageIndex === pages.length - 1} onClick={() => switchPage(currentPageIndex + 1)}>
+                <ArrowRight size={16} />
+             </button>
+             <div className="page-nav-divider"></div>
+             <button title="Add Page" className="page-nav-btn success" onClick={addPage}>
+                <Plus size={16} />
+             </button>
+             <button title="Delete Page" className="page-nav-btn danger" onClick={deletePage}>
+                <Trash2 size={16} />
+             </button>
           </div>
         </div>
 
         {/* Mobile: floating export button */}
         {isMobile && !showTools && (
-          <button className="mobile-fab-export" onClick={exportToPdf}>
+          <button className="mobile-fab-export" onClick={exportToPdf} disabled={isExporting}>
             <Download size={22} />
           </button>
         )}
