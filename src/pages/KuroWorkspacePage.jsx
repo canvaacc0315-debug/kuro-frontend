@@ -1132,24 +1132,24 @@ export default function KuroWorkspacePage() {
                             exit={{ opacity: 0, scale: 0.8 }}
                             onClick={scrollToBottomManual}
                             style={{
-                              position: "absolute",
-                              bottom: "120px",
-                              right: "20px",
+                              position: "fixed",
+                              bottom: "140px",
+                              right: "30px",
                               width: "44px",
                               height: "44px",
                               borderRadius: "50%",
-                              background: "rgba(0, 0, 0, 0.4)",
+                              background: "var(--bg-tertiary, rgba(0, 0, 0, 0.4))",
                               backdropFilter: "blur(10px)",
                               color: "var(--text-primary)",
                               border: "1px solid var(--border-color)",
-                              boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
                               cursor: "pointer",
-                              zIndex: 50
+                              zIndex: 1100
                             }}
-                            whileHover={{ scale: 1.05, background: "var(--bg-tertiary)" }}
+                            whileHover={{ scale: 1.05, background: "var(--accent)" }}
                             whileTap={{ scale: 0.95 }}
                             aria-label="Scroll to bottom"
                           >
