@@ -1055,7 +1055,11 @@ export default function KuroWorkspacePage() {
                                       margin: "0"
                                     }}
                                   >
-                                    {m.content}
+                                    <div className="markdown-content">
+                                      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                                        {m.content}
+                                      </ReactMarkdown>
+                                    </div>
                                     <div style={{ 
                                       fontSize: "0.7rem", 
                                       opacity: 0.6, 
