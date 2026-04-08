@@ -525,11 +525,13 @@ export default function KuroWorkspacePage() {
   }, [conversation]);
 
   const handleChatScroll = () => {
-    if (chatMessagesRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = chatMessagesRef.current;
-      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
-      setShowScrollBottom(!isNearBottom);
-    }
+    const winScrollToBottom = document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
+    const chatScrollToBottom = chatMessagesRef.current 
+      ? chatMessagesRef.current.scrollHeight - chatMessagesRef.current.scrollTop - chatMessagesRef.current.clientHeight
+      : 0;
+    
+    const isNearBottom = winScrollToBottom < 150 && chatScrollToBottom < 150;
+    setShowScrollBottom(!isNearBottom);
   };
 
   const scrollToBottomManual = () => {
@@ -538,8 +540,12 @@ export default function KuroWorkspacePage() {
         top: chatMessagesRef.current.scrollHeight,
         behavior: "smooth"
       });
-      setShowScrollBottom(false);
     }
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "smooth"
+    });
+    setShowScrollBottom(false);
   };
 
   const [scrolled, setScrolled] = useState(false);
@@ -548,8 +554,10 @@ export default function KuroWorkspacePage() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
+      handleChatScroll();
     };
     window.addEventListener('scroll', handleScroll);
+    handleChatScroll(); // initialize on load
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
