@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useApiClient } from "../api/client";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { 
   FileText, 
   List, 
@@ -316,7 +318,11 @@ export default function AnalysisPanel({
                   className="analysis-rich-text"
                 >
                   {saveStatus && <div className="toast-subtle">{saveStatus}</div>}
-                  <pre>{result}</pre>
+                  <div className="markdown-content analysis-markdown">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {result}
+                    </ReactMarkdown>
+                  </div>
                 </motion.div>
               ) : (
                 <motion.div 

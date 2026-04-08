@@ -1,31 +1,33 @@
+/* ============================================================
+   CREATE PDF EDITOR - Canva-Style Canvas
+   ============================================================ */
+
 /* Root layout */
 .create-editor-root {
   display: flex;
   height: calc(100vh - 100px);
   min-height: 500px;
-  /* Fill screen minus header */
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--text-primary);
   background: transparent;
-  /* Canva-like gray background */
   border-radius: 12px;
   border: 1px solid var(--border-color);
   overflow: hidden;
-  /* sleek contained look */
   animation: fadeIn 0.4s ease-out;
+  position: relative;
 }
 
-/* ---------- Sidebar ---------- */
+/* ============ SIDEBAR ============ */
 
 .create-editor-sidebar {
   width: 280px;
   flex-shrink: 0;
-  padding: 24px 16px;
+  padding: 20px 16px;
   background: var(--bg-card);
   border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
   overflow-y: auto;
   z-index: 10;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.02);
@@ -41,45 +43,48 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--text-primary);
+  color: var(--text-muted);
+  font-weight: 700;
 }
 
+/* Primary button (Add Heading) */
 .sidebar-primary-btn {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: none;
   background: var(--accent);
-  /* matching the theme red */
   color: #ffffff;
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
 }
 
 .sidebar-primary-btn:hover {
   background: #dc2626;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
 }
 
 .sidebar-primary-icon {
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.3);
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 800;
 }
 
+/* Text style card button */
 .text-style-card {
-  border-radius: 8px;
+  border-radius: 10px;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
   padding: 12px 14px;
@@ -109,53 +114,175 @@
   font-weight: 500;
 }
 
-.sidebar-pill-btn {
-  display: inline-flex;
+/* ============ SHAPES GRID ============ */
+
+.shapes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.shape-btn {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 10px 16px;
-  border-radius: 8px;
+  gap: 6px;
+  padding: 14px 8px;
+  border-radius: 10px;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
-  font-size: 0.95rem;
+  color: var(--text-secondary);
+  font-size: 11px;
   font-weight: 500;
-  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.sidebar-pill-btn:hover {
+.shape-btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* ============ STYLE ROWS ============ */
+
+.style-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.style-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 75px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.style-slider {
+  flex: 1;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border-color);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.style-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+}
+
+.style-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: none;
+}
+
+.style-slider:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.style-value {
+  font-size: 11px;
+  color: var(--text-muted);
+  min-width: 32px;
+  text-align: right;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============ ACTIONS GRID ============ */
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.action-mini-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-mini-btn:hover:not(:disabled) {
   background: var(--bg-hover);
   border-color: var(--accent);
   color: var(--accent);
 }
 
+.action-mini-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.action-mini-btn.danger:hover:not(:disabled) {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+
+/* ============ SIDEBAR BOTTOM ============ */
+
 .sidebar-bottom {
   margin-top: auto;
-  padding: 0 6px 4px;
+  padding: 8px 0 0;
 }
 
 .sidebar-export-btn {
   width: 100%;
-  padding: 12px 16px;
-  border-radius: 8px;
+  padding: 14px 16px;
+  border-radius: 12px;
   border: none;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   background: var(--text-primary);
   color: var(--bg-primary);
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
   transition: all 0.2s ease;
 }
 
 .sidebar-export-btn:hover {
   filter: brightness(0.9);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* ---------- Main area ---------- */
+/* ============ MAIN AREA ============ */
 
 .create-editor-main {
   flex: 1;
@@ -166,18 +293,19 @@
   background: var(--bg-secondary);
 }
 
-/* Toolbar */
+/* ============ TOP TOOLBAR ============ */
 
 .create-toolbar {
-  height: 56px;
-  padding: 0 24px;
+  height: 52px;
+  padding: 0 20px;
   background: var(--bg-card);
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
-  gap: 20px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   z-index: 10;
+  flex-shrink: 0;
 }
 
 .toolbar-group {
@@ -190,50 +318,59 @@
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .toolbar-label {
   font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.15em;
   color: var(--text-muted);
+  font-weight: 600;
 }
 
 .toolbar-input {
-  width: 56px;
-  border-radius: 999px;
+  width: 52px;
+  border-radius: 8px;
   border: 1px solid var(--border-color);
   background: var(--bg-secondary);
-  padding: 4px 8px;
+  padding: 5px 8px;
   font-size: 12px;
   color: var(--text-primary);
   outline: none;
   transition: all 0.2s ease-out;
+  font-weight: 600;
 }
 
 .toolbar-input:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+
+.toolbar-input:disabled {
+  opacity: 0.4;
 }
 
 .toolbar-toggle-group {
   display: inline-flex;
   padding: 2px;
-  border-radius: 6px;
-  background: transparent;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
 }
 
 .toolbar-toggle {
-  min-width: 32px;
-  height: 28px;
-  border-radius: 4px;
+  min-width: 30px;
+  height: 26px;
+  border-radius: 5px;
   border: none;
   font-size: 13px;
-  padding: 0 8px;
+  padding: 0 6px;
   background: transparent;
   color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  font-weight: 600;
 }
 
 .toolbar-toggle:hover {
@@ -244,10 +381,10 @@
 .toolbar-toggle.active {
   background: var(--accent);
   color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 4px rgba(239, 68, 68, 0.3);
 }
 
-/* ---------- Page ---------- */
+/* ============ CANVAS AREA ============ */
 
 .create-page-shell {
   flex: 1;
@@ -255,289 +392,303 @@
   justify-content: center;
   align-items: flex-start;
   padding: 32px 24px;
-  overflow-y: auto;
+  overflow: auto;
   min-height: 0;
 }
 
-.create-page {
-  position: relative;
-  width: 600px;
-  height: 800px;
-  min-width: 600px;
-  min-height: 800px;
-  background: #ffffff; /* Page always stays white like paper */
-  color: #000000; /* Text on white paper is black by default */
+.canvas-frame {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15), 0 2px 8px rgba(0, 0, 0, 0.08);
   border-radius: 4px;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+  transition: transform 0.2s ease-out;
+  line-height: 0; /* remove gap under canvas */
+  will-change: transform;
 }
 
-/* Heading + body – NORMAL textareas (no frame) */
-
-.create-page .heading-textarea,
-.create-page .body-textarea {
-  color: #000000 !important; /* Force black text on white paper regardless of theme */
+.canvas-frame canvas {
+  display: block;
 }
 
-/* ---------- Pages bar ---------- */
-
-.pages-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 24px;
-  flex-shrink: 0;
-  background: var(--bg-card);
-  border-top: 1px solid var(--border-color);
-  z-index: 10;
-}
-
-.page-pill {
-  border-radius: 999px;
-  border: 1px solid var(--border-color);
+/* Color picker */
+.toolbar-color-picker {
+  width: 32px;
+  height: 28px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 2px;
   background: var(--bg-secondary);
-  color: var(--text-primary);
-  padding: 5px 12px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease-out;
+  transition: border-color 0.2s ease;
 }
 
-.page-pill:hover {
-  background: var(--bg-hover);
-  transform: translateY(-1px);
+.toolbar-color-picker:hover {
+  border-color: var(--accent);
 }
 
-.page-pill.active {
-  background: var(--accent);
-  border-color: transparent;
-  color: #ffffff;
+/* ============ MOBILE TOOLS TOGGLE ============ */
+
+.mobile-tools-toggle {
+  display: none;
 }
 
-/* ---------- Context menu ---------- */
+/* ============ MOBILE FAB ============ */
 
-.pdf-context-menu {
-  position: fixed;
-  z-index: 100;
-  min-width: 140px;
-  padding: 4px;
-  border-radius: 10px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+.mobile-fab-export {
+  display: none;
 }
 
-.context-item {
-  width: 100%;
-  padding: 8px 12px;
-  border-radius: 7px;
-  font-size: 12px;
-  border: none;
-  background: transparent;
-  color: var(--text-primary);
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+/* ============ MOBILE SECTION TABS ============ */
+
+.mobile-section-tabs {
+  display: none;
 }
 
-.context-item:hover {
-  background: var(--bg-hover);
-}
-
-/* ---------------- Mobile / handle fixes ---------------- */
+/* ============================================================
+   MOBILE RESPONSIVE
+   ============================================================ */
 
 @media (max-width: 768px) {
   .create-editor-root {
     flex-direction: column;
-    max-height: none;
-    height: auto;
+    height: calc(100vh - 140px);
+    border-radius: 0;
+    border: none;
   }
 
-  .create-editor-sidebar {
-    width: 100%;
-    order: 2;
-    border-right: none;
-    border-top: 1px solid var(--border-color);
-    /* Safe area for bottom */
-  body,
-  .create-editor-root {
-    padding-bottom: max(env(safe-area-inset-bottom), 12px);
-  }
-
-  /* Mobile Tools Toggle Button */
+  /* Toggle button */
   .mobile-tools-toggle {
-    display: flex !important;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    position: fixed;
-    top: 70px; /* Below the main header */
+    gap: 6px;
+    position: absolute;
+    top: 60px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
-    padding: 8px 16px;
+    z-index: 100;
+    padding: 8px 20px;
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: 999px;
     color: var(--text-primary);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
     transition: all 0.3s ease;
+    cursor: pointer;
   }
 
   .mobile-tools-toggle:active {
     transform: translateX(-50%) scale(0.95);
   }
 
-  /* When tools are hidden, ensure main area takes full space */
-  .create-editor-root.tools-hidden .create-editor-main {
-    height: calc(100vh - 80px); /* Fill screen height */
-    order: 1;
+  /* Sidebar becomes bottom sheet */
+  .create-editor-sidebar {
+    width: 100%;
+    max-height: 55vh;
+    order: 2;
+    border-right: none;
+    border-top: 1px solid var(--border-color);
+    padding: 12px 16px 24px;
+    gap: 14px;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: max(env(safe-area-inset-bottom, 20px), 24px);
   }
 
-  .create-editor-root.tools-hidden .create-page {
-    transform: scale(0.85); /* Zoom in page slightly more when tools hidden */
-    margin-top: -20px;
+  /* Section tabs */
+  .mobile-section-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 4px;
+    flex-shrink: 0;
   }
 
-  /* Hide zoom slider and pages bar if needed when tools hidden, or move them */
-  .create-editor-root.tools-hidden .pages-bar,
-  .create-editor-root.tools-hidden .zoom-slider {
-    opacity: 0.5; /* Fade them out but keep visible for control */
-  }
-    padding: 16px;
-  }
-
-  .create-editor-main {
-    order: 1;
-    height: 70vh;
-  }
-
-  .create-page {
-    width: 90vw !important;
-    min-width: 0;
-    transform: scale(0.6);
-    transform-origin: top center;
-  }
-
-  .zoom-slider {
-    width: 80% !important;
-    bottom: 20px;
-  }
-
-  .sidebar-export-btn {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
+  .mobile-section-tab {
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    z-index: 1000;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    gap: 6px;
+    padding: 10px 8px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-section-tab.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+  }
+
+  /* Main canvas area */
+  .create-editor-main {
+    order: 1;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* Toolbar compact */
+  .create-toolbar {
+    height: 44px;
+    padding: 0 12px;
+    gap: 8px;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .create-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .toolbar-label {
+    display: none;
+  }
+
+  .toolbar-input {
+    width: 44px;
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+
+  /* Canvas shell */
+  .create-page-shell {
+    padding: 12px 8px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .canvas-frame {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  /* Shapes grid on mobile */
+  .shapes-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+  }
+
+  .shape-btn {
+    padding: 10px 4px;
+    gap: 4px;
+  }
+
+  .shape-btn span {
+    font-size: 10px;
+  }
+
+  /* Actions grid compact */
+  .actions-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .action-mini-btn {
+    padding: 8px 6px;
+    font-size: 10px;
+    gap: 4px;
+  }
+
+  /* Style rows compact */
+  .style-label {
+    min-width: 60px;
+    font-size: 11px;
+  }
+
+  /* Sidebar bottom */
+  .sidebar-bottom {
+    padding-top: 4px;
+  }
+
+  .sidebar-export-btn {
+    padding: 12px;
+    font-size: 0.9rem;
+    border-radius: 10px;
+  }
+
+  /* Tools hidden state */
+  .create-editor-root.tools-hidden .create-editor-main {
+    flex: 1;
+  }
+
+  /* FAB Export button when tools hidden */
+  .mobile-fab-export {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 24px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: none;
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 6px 24px rgba(239, 68, 68, 0.4);
+    cursor: pointer;
+    z-index: 50;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-fab-export:hover {
+    transform: scale(1.05);
+  }
+
+  .mobile-fab-export:active {
+    transform: scale(0.95);
+  }
+
+  /* Hide export text on mobile */
+  .sidebar-export-btn .btn-text {
+    display: inline;
   }
 }
 
-/* Slight improvement for medium screens (tablet) */
+/* ============ TABLET ============ */
+
 @media (max-width: 1024px) and (min-width: 769px) {
   .create-editor-sidebar {
-    width: 100%;
-    display: flex;
-    overflow-x: auto;
+    width: 240px;
   }
 
-  .create-page {
-    max-height: 70vh;
-    padding: 20px;
+  .shapes-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .create-page-shell {
-    padding: 12px 4px 8px;
+    padding: 20px 16px;
   }
 }
 
-/* Small utility: ensure any element that might clip handles allows overflow visible */
-.allow-overflow {
-  overflow: visible !important;
-}
-
-.toolbar-color-picker {
-  width: 32px;
-  height: 22px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  padding: 0;
-}
-
-.page-image-active .resize-handle {
-  display: block;
-  /* Assuming it's hidden by default in your CSS */
-}
-
-.image-size-controls {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(255, 255, 255, 0.7);
-  color: var(--text-primary);
-  padding: 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.image-size-label {
-  white-space: nowrap;
-}
-
-.image-size-range {
-  flex: 1;
-  max-width: 100px;
-}
+/* ============ ANIMATIONS ============ */
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes fadeInCard {
-  from {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 /* End of file */
