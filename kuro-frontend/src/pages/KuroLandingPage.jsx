@@ -53,7 +53,7 @@ export default function KuroLandingPage() {
 
       if (code === "session_exists") {
         // already logged in → go to dashboard
-        navigate("/homepage", { replace: true });
+        navigate("", { replace: true });
         return;
       }
 
@@ -131,54 +131,54 @@ export default function KuroLandingPage() {
         </div>
 
 
-          <h1 className="hero-title">Chat with Your PDFs Instantly</h1>
+        <h1 className="hero-title">Chat with Your PDFs Instantly</h1>
 
-          <p className="hero-description">
-            RovexAI is an intelligent PDF chatbot that understands your
-            documents, answers questions, and extracts insights in seconds.
-          </p>
+        <p className="hero-description">
+          RovexAI is an intelligent PDF chatbot that understands your
+          documents, answers questions, and extracts insights in seconds.
+        </p>
 
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon" style={{ background: "rgba(59, 130, 246, 0.1)", color: "#3b82f6", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
-                <MessageSquare size={24} />
-              </div>
-              <div className="feature-title">Smart Q&amp;A</div>
-              <div className="feature-desc">
-                Ask questions about your PDF content and get instant answers.
-              </div>
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon" style={{ background: "rgba(59, 130, 246, 0.1)", color: "#3b82f6", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
+              <MessageSquare size={24} />
             </div>
-
-            <div className="feature-card">
-              <div className="feature-icon" style={{ background: "rgba(245, 158, 11, 0.1)", color: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
-                <BarChart3 size={24} />
-              </div>
-              <div className="feature-title">Data Extraction</div>
-              <div className="feature-desc">
-                Extract tables, charts, and structured data automatically.
-              </div>
-            </div>
-
-            <div className="feature-card">
-              <div className="feature-icon" style={{ background: "rgba(168, 85, 247, 0.1)", color: "#a855f7", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
-                <Zap size={24} />
-              </div>
-              <div className="feature-title">Summarization</div>
-              <div className="feature-desc">
-                Get concise summaries of lengthy documents in seconds.
-              </div>
-            </div>
-
-            <div className="feature-card">
-              <div className="feature-icon" style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10b981", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
-                <Search size={24} />
-              </div>
-              <div className="feature-title">OCR &amp; Vision</div>
-              <div className="feature-desc">
-                Understand scanned documents and complex layouts.
-              </div>
+            <div className="feature-title">Smart Q&amp;A</div>
+            <div className="feature-desc">
+              Ask questions about your PDF content and get instant answers.
             </div>
           </div>
+
+          <div className="feature-card">
+            <div className="feature-icon" style={{ background: "rgba(245, 158, 11, 0.1)", color: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
+              <BarChart3 size={24} />
+            </div>
+            <div className="feature-title">Data Extraction</div>
+            <div className="feature-desc">
+              Extract tables, charts, and structured data automatically.
+            </div>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon" style={{ background: "rgba(168, 85, 247, 0.1)", color: "#a855f7", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
+              <Zap size={24} />
+            </div>
+            <div className="feature-title">Summarization</div>
+            <div className="feature-desc">
+              Get concise summaries of lengthy documents in seconds.
+            </div>
+          </div>
+
+          <div className="feature-card">
+            <div className="feature-icon" style={{ background: "rgba(16, 185, 129, 0.1)", color: "#10b981", display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "12px", width: "48px", height: "48px", marginBottom: "1rem" }}>
+              <Search size={24} />
+            </div>
+            <div className="feature-title">OCR &amp; Vision</div>
+            <div className="feature-desc">
+              Understand scanned documents and complex layouts.
+            </div>
+          </div>
+        </div>
         {/* RIGHT: auth form */}
         <div className="auth-section">
           <div className="auth-header">
@@ -235,8 +235,8 @@ export default function KuroLandingPage() {
                     {sending
                       ? "Sending..."
                       : sent
-                      ? "✅ Code sent! Check your email"
-                      : "📨 Send Code"}
+                        ? "✅ Code sent! Check your email"
+                        : "📨 Send Code"}
                   </button>
                 </div>
               </>
@@ -269,16 +269,16 @@ export default function KuroLandingPage() {
                     {sending ? "Verifying..." : "✅ Verify & Continue"}
                   </button>
 
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={() => {
-                        setStep("email");
-                        setCode("");
-                      }}
-                    >
-                      ← Change email
-                    </button>
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={() => {
+                      setStep("email");
+                      setCode("");
+                    }}
+                  >
+                    ← Change email
+                  </button>
                 </div>
               </>
             )}
