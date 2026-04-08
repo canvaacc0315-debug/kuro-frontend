@@ -10,13 +10,14 @@ import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import OcrPanel from "../components/OcrPanel";
 import logoIcon from "../assets/logo.svg";
-// ❌ REMOVED: import ReactMarkdown from "react-markdown";
 
 import { useClerk } from "@clerk/clerk-react";
 import KuroHeader from "../components/layout/KuroHeader.jsx";
 import UploadPanel from "../components/UploadPanel";
 import FixedChatInput from "../components/FixedChatInput";
+// ✅ NEW: Import PDF Tools
 import PDFWorkspace from "../components/PDFTools/PDFWorkspace.jsx";
+// ✅ NEW: Import Study Mode
 import StudyWorkspace from "../components/StudyMode/StudyWorkspace.jsx";
 import ChatHistory from "../components/ChatHistory.jsx";
 import ChatExport from "../components/ChatExport.jsx";
@@ -40,68 +41,12 @@ import {
   History,
   MessageCircle,
   ChevronUp,
-  ChevronDown
+  ChevronDown,
+  ArrowDown
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
-
-// ✅ ZERO-DEPENDENCY Markdown renderer
-const parseMarkdownToHTML = (text) => {
-  if (!text) return '';
-  
-  let html = text
-    // Escape HTML to prevent XSS
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    // Code blocks (```code```)
-    .replace(/```([\s\S]*?)```/g, '<pre style="background:var(--bg-tertiary);padding:12px 16px;border-radius:8px;overflow-x:auto;margin:10px 0;border:1px solid var(--border-color);"><code style="font-size:0.85em;font-family:monospace;color:var(--text-primary);white-space:pre;">$1</code></pre>')
-    // Headers (###, ##, #)
-    .replace(/^### (.*$)/gim, '<h3 style="font-size:1rem;font-weight:600;margin:10px 0 4px;color:var(--text-primary);">$1</h3>')
-    .replace(/^## (.*$)/gim, '<h2 style="font-size:1.1rem;font-weight:600;margin:12px 0 6px;color:var(--text-primary);">$1</h2>')
-    .replace(/^# (.*$)/gim, '<h1 style="font-size:1.2rem;font-weight:600;margin:14px 0 6px;color:var(--text-primary);border-bottom:1px solid var(--border-color);padding-bottom:4px;">$1</h1>')
-    // Bold (**text**)
-    .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight:600;color:var(--text-primary);">$1</strong>')
-    // Italic (*text*)
-    .replace(/\*(.*?)\*/g, '<em style="color:var(--text-secondary);font-style:italic;">$1</em>')
-    // Inline code (`code`)
-    .replace(/`([^`]+)`/g, '<code style="background:var(--bg-tertiary);color:var(--accent);padding:2px 6px;border-radius:4px;font-size:0.85em;font-family:monospace;border:1px solid var(--border-color);">$1</code>')
-    // Blockquote (> text)
-    .replace(/^&gt; (.*$)/gim, '<blockquote style="border-left:3px solid var(--accent);padding-left:12px;margin:10px 0;color:var(--text-secondary);font-style:italic;background:var(--bg-secondary);border-radius:0 6px 6px 0;padding:8px 8px 8px 14px;">$1</blockquote>')
-    // Bullet points (- item)
-    .replace(/^- (.*$)/gim, '<li style="margin-bottom:4px;line-height:1.6;color:var(--text-primary);list-style-type:disc;margin-left:1.5em;">$1</li>')
-    // Numbered lists (1. item)
-    .replace(/^\d+\. (.*$)/gim, '<li style="margin-bottom:4px;line-height:1.6;color:var(--text-primary);list-style-type:decimal;margin-left:1.5em;">$1</li>')
-    // Horizontal rule (---)
-    .replace(/^---$/gim, '<hr style="border:none;border-top:1px solid var(--border-color);margin:12px 0;">')
-    // Line breaks
-    .replace(/\n/g, '<br>');
-
-  // Wrap in paragraph if not already wrapped
-  if (!html.startsWith('<')) {
-    html = `<p style="margin:0 0 8px 0;line-height:1.7;color:var(--text-primary);">${html}</p>`;
-  }
-
-  return html;
-};
-
-// ✅ Bot Markdown Component (Zero Dependencies)
-function BotMarkdown({ content }) {
-  const html = parseMarkdownToHTML(content);
-  
-  return (
-    <div 
-      className="markdown-content"
-      dangerouslySetInnerHTML={{ __html: html }}
-      style={{
-        maxWidth: '100%',
-        overflowWrap: 'break-word',
-        lineHeight: '1.6'
-      }}
-    />
-  );
-}
 
 export default function KuroWorkspacePage() {
   const { user, isLoaded } = useUser();
@@ -109,6 +54,7 @@ export default function KuroWorkspacePage() {
   const { uploadPdf } = useApiClient();
   const { openUserProfile } = useClerk();
 
+  // --- URL tab wiring ---
   const [searchParams, setSearchParams] = useSearchParams();
   const getInitialTab = () => {
     const tabFromUrl = searchParams.get("tab");
@@ -154,8 +100,10 @@ export default function KuroWorkspacePage() {
   const [showMobileControls, setShowMobileControls] = useState(false);
   const selectedFile = uploadedFiles.find((f) => f.backendId === selectedPdfId) || null;
 
+  // SESSION STATE
   const [sessionId, setSessionId] = useState(null);
 
+  // ---------------- helpers ----------------
   const showStatus = (message, type = "success") => {
     setExportStatus({ message, type });
     setTimeout(() => setExportStatus(null), 3000);
@@ -173,6 +121,7 @@ export default function KuroWorkspacePage() {
     }
   };
 
+  // ----- history <-> localStorage helpers -----
   const HISTORY_KEY = "kuroChatHistory";
   const loadHistoryFromStorage = () => {
     try {
@@ -194,6 +143,7 @@ export default function KuroWorkspacePage() {
     }
   };
 
+  // load history on mount
   useEffect(() => {
     const stored = loadHistoryFromStorage();
     if (stored.length) {
@@ -201,6 +151,7 @@ export default function KuroWorkspacePage() {
     }
   }, []);
 
+  // ---------------- tabs ----------------
   useEffect(() => {
     const tabFromUrl = searchParams.get("tab");
     if (
@@ -227,6 +178,7 @@ export default function KuroWorkspacePage() {
     setActiveChatSubTab(sub);
   };
 
+  // Session management with proper auth
   useEffect(() => {
     async function startSession() {
       try {
@@ -256,6 +208,7 @@ export default function KuroWorkspacePage() {
     }
   }, [user, isLoaded, getToken]);
 
+  // Session cleanup
   useEffect(() => {
     return () => {
       if (sessionId) {
@@ -267,6 +220,7 @@ export default function KuroWorkspacePage() {
     };
   }, [sessionId]);
 
+  // ---------------- chat ----------------
   const handleClearConversation = () => {
     setConversation([
       {
@@ -350,6 +304,7 @@ export default function KuroWorkspacePage() {
     }
   };
 
+  // ---------------- export helpers ----------------
   const conversationAsPlainText = () => {
     if (!conversation.length) return "No active conversation.";
     let txt = "RovexAI - CHAT CONVERSATION EXPORT\n";
@@ -496,6 +451,7 @@ export default function KuroWorkspacePage() {
     }
   };
 
+  // ---------------- history actions ----------------
   const handleSaveConversation = () => {
     const realMessages = conversation.filter(
       (m) => m.role === "user" || m.role === "bot"
@@ -552,18 +508,39 @@ export default function KuroWorkspacePage() {
     showStatus("All history cleared.");
   };
 
+  // ---------------- render ----------------
   const chatMessagesRef = useRef(null);
+  const [showScrollBottom, setShowScrollBottom] = useState(false);
+
   useEffect(() => {
-    const scrollToBottom = () => {
-      if (chatMessagesRef.current) {
+    const scrollToBottomAuto = () => {
+      if (chatMessagesRef.current && !showScrollBottom) {
         const element = chatMessagesRef.current;
         element.scrollTop = element.scrollHeight;
       }
     };
-    scrollToBottom();
-    const timeoutId = setTimeout(scrollToBottom, 100);
+    scrollToBottomAuto();
+    const timeoutId = setTimeout(scrollToBottomAuto, 100);
     return () => clearTimeout(timeoutId);
   }, [conversation]);
+
+  const handleChatScroll = () => {
+    if (chatMessagesRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = chatMessagesRef.current;
+      const isNearBottom = scrollHeight - scrollTop - clientHeight < 100;
+      setShowScrollBottom(!isNearBottom);
+    }
+  };
+
+  const scrollToBottomManual = () => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTo({
+        top: chatMessagesRef.current.scrollHeight,
+        behavior: "smooth"
+      });
+      setShowScrollBottom(false);
+    }
+  };
 
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
@@ -576,6 +553,7 @@ export default function KuroWorkspacePage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // NEW STATES FOR HISTORY TAB
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -592,6 +570,7 @@ export default function KuroWorkspacePage() {
     setCurrentPage(1);
   }, [searchQuery]);
 
+  // Full-screen state
   const [isFullScreen, setIsFullScreen] = useState(false);
 
   useEffect(() => {
@@ -610,19 +589,20 @@ export default function KuroWorkspacePage() {
 
   return (
     <RovexProvider>
+      
       <div className="workspace-root">
         <div style={{ display: isFullScreen ? "none" : "block" }}>
           <KuroHeader />
         </div>
 
-        <motion.aside
+        <motion.aside 
           className="sidebar"
           initial={false}
           animate={{ width: isSidebarOpen ? 260 : 80 }}
           style={{ display: isFullScreen ? "none" : "flex", "--sidebar-width": isSidebarOpen ? "260px" : "80px" }}
         >
-          <button
-            className="sidebar-toggle-btn"
+          <button 
+            className="sidebar-toggle-btn" 
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             aria-label="Toggle Sidebar"
           >
@@ -630,46 +610,150 @@ export default function KuroWorkspacePage() {
           </button>
 
           <nav className="sidebar-nav">
-            {[
-              { id: "upload", label: "Upload PDF!", icon: <FileUp size={20} /> },
-              { id: "chat", label: "Chat", icon: <MessageSquare size={20} /> },
-              { id: "analysis", label: "Analysis", icon: <BarChart2 size={20} /> },
-              { id: "ocr", label: "OCR", icon: <ScanSearch size={20} /> },
-              { id: "create", label: "PDF Creator", icon: <PenTool size={20} /> },
-              { id: "pdftools", label: "PDF Tools", icon: <Wrench size={20} /> },
-              { id: "study", label: "Study Mode", icon: <GraduationCap size={20} /> },
-            ].map((item) => (
-              <button
-                key={item.id}
-                className={`sidebar-item sidebar-item-${item.id} ${activeTab === item.id ? "active" : ""}`}
-                onClick={() => handleTabClick(item.id)}
-              >
-                <span className="sidebar-icon">{item.icon}</span>
-                <AnimatePresence>
-                  {isSidebarOpen && (
-                    <motion.span
-                      className="sidebar-label"
-                      initial={{ opacity: 0, width: 0 }}
-                      animate={{ opacity: 1, width: "auto" }}
-                      exit={{ opacity: 0, width: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      {item.label}
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </button>
-            ))}
+            <button
+              className={`sidebar-item sidebar-item-upload ${activeTab === "upload" ? "active" : ""}`}
+              onClick={() => handleTabClick("upload")}
+            >
+              <span className="sidebar-icon"><FileUp size={20} /></span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Upload PDF!
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+            <button
+              className={`sidebar-item sidebar-item-chat ${activeTab === "chat" ? "active" : ""}`}
+              onClick={() => handleTabClick("chat")}
+            >
+              <span className="sidebar-icon"><MessageSquare size={20} /></span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Chat
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+            <button
+              className={`sidebar-item sidebar-item-analysis ${activeTab === "analysis" ? "active" : ""}`}
+              onClick={() => handleTabClick("analysis")}
+            >
+              <span className="sidebar-icon"><BarChart2 size={20} /></span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Analysis
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+            <button
+              className={`sidebar-item sidebar-item-ocr ${activeTab === "ocr" ? "active" : ""}`}
+              onClick={() => handleTabClick("ocr")}
+            >
+              <span className="sidebar-icon"><ScanSearch size={20} /></span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    OCR
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+            <button
+              className={`sidebar-item sidebar-item-create ${activeTab === "create" ? "active" : ""}`}
+              onClick={() => handleTabClick("create")}
+            >
+              <span className="sidebar-icon"><PenTool size={20} /></span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    PDF Creator
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+            <button
+              className={`sidebar-item sidebar-item-pdftools ${activeTab === "pdftools" ? "active" : ""}`}
+              onClick={() => handleTabClick("pdftools")}
+            >
+              <span className="sidebar-icon"><Wrench size={20} /></span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    PDF Tools
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+            <button
+              className={`sidebar-item sidebar-item-study ${activeTab === "study" ? "active" : ""}`}
+              onClick={() => handleTabClick("study")}
+            >
+              <span className="sidebar-icon"><GraduationCap size={20} /></span>
+              <AnimatePresence>
+                {isSidebarOpen && (
+                  <motion.span 
+                    className="sidebar-label"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Study Mode
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
           </nav>
         </motion.aside>
 
-        <main
-          className="main-container"
-          style={{
-            display: isFullScreen ? "none" : "flex",
-            "--sidebar-width": isSidebarOpen ? "260px" : "80px"
+        <main 
+          className="main-container" 
+          style={{ 
+            display: isFullScreen ? "none" : "flex", 
+            "--sidebar-width": isSidebarOpen ? "260px" : "80px" 
           }}
         >
+
           <div className="content-wrapper">
             <section
               id="uploadTab"
@@ -769,7 +853,6 @@ export default function KuroWorkspacePage() {
                 </div>
               </div>
 
-              {/* CURRENT CHAT */}
               <div
                 className="chat-subtab-content"
                 style={{
@@ -780,6 +863,7 @@ export default function KuroWorkspacePage() {
                   opacity: activeChatSubTab === "current" ? 1 : 0
                 }}
               >
+                {/* Mobile toggle button */}
                 <button
                   className="mobile-controls-toggle"
                   onClick={() => setShowMobileControls(!showMobileControls)}
@@ -796,12 +880,12 @@ export default function KuroWorkspacePage() {
                       className="premium-select"
                       value={selectedPdfId}
                       onChange={(e) => setSelectedPdfId(e.target.value)}
-                      style={{
-                        background: "var(--bg-input)",
-                        border: "1px solid var(--border-color)",
-                        color: "var(--text-primary)",
-                        padding: "5px 12px",
-                        borderRadius: "8px",
+                      style={{ 
+                        background: "var(--bg-input)", 
+                        border: "1px solid var(--border-color)", 
+                        color: "var(--text-primary)", 
+                        padding: "5px 12px", 
+                        borderRadius: "8px", 
                         fontSize: "13px",
                         outline: "none",
                         maxWidth: "180px"
@@ -875,19 +959,19 @@ export default function KuroWorkspacePage() {
                       </div>
                     )}
                   </div>
-
+                  
                   <div className="control-group" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                     <span style={{ fontSize: "12px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: "600" }}>Style:</span>
                     <select
                       className="premium-select"
                       value={answerStyle}
                       onChange={(e) => setAnswerStyle(e.target.value)}
-                      style={{
-                        background: "var(--bg-input)",
-                        border: "1px solid var(--border-color)",
-                        color: "var(--text-primary)",
-                        padding: "5px 12px",
-                        borderRadius: "8px",
+                      style={{ 
+                        background: "var(--bg-input)", 
+                        border: "1px solid var(--border-color)", 
+                        color: "var(--text-primary)", 
+                        padding: "5px 12px", 
+                        borderRadius: "8px", 
                         fontSize: "13px",
                         outline: "none"
                       }}
@@ -902,10 +986,12 @@ export default function KuroWorkspacePage() {
 
                 <div className="chat-layout" style={{ backgroundColor: "transparent", display: "flex", flexDirection: "column", flex: 1, width: "100%", gap: "24px" }}>
                   <div className="chat-main" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
-                    <div className="chat-wrapper" style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0 }}>
+                    
+                    <div className="chat-wrapper" style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0, position: "relative" }}>
                       <div
                         ref={chatMessagesRef}
                         className="chat-messages no-scrollbar"
+                        onScroll={handleChatScroll}
                         style={{
                           msOverflowStyle: 'none',
                           scrollbarWidth: 'none',
@@ -932,9 +1018,9 @@ export default function KuroWorkspacePage() {
                                   width: "100%"
                                 }}
                               >
-                                <div style={{
-                                  display: "flex",
-                                  alignItems: "flex-end",
+                                <div style={{ 
+                                  display: "flex", 
+                                  alignItems: "flex-end", 
                                   gap: "10px",
                                   maxWidth: "95%",
                                   flexDirection: m.role === "user" ? "row-reverse" : "row"
@@ -942,10 +1028,10 @@ export default function KuroWorkspacePage() {
                                   {/* Avatar */}
                                   <div className="avatar-wrapper" style={{ flexShrink: 0, marginBottom: "4px" }}>
                                     {m.role === "bot" ? (
-                                      <div style={{
-                                        width: "32px",
-                                        height: "32px",
-                                        borderRadius: "10px",
+                                      <div style={{ 
+                                        width: "32px", 
+                                        height: "32px", 
+                                        borderRadius: "10px", 
                                         background: "var(--bg-tertiary)",
                                         display: "flex",
                                         alignItems: "center",
@@ -961,29 +1047,30 @@ export default function KuroWorkspacePage() {
                                         src={user?.imageUrl}
                                         alt="User"
                                         className="user-avatar"
-                                        style={{
-                                          width: "32px",
-                                          height: "32px",
-                                          borderRadius: "10px",
+                                        style={{ 
+                                          width: "32px", 
+                                          height: "32px", 
+                                          borderRadius: "10px", 
                                           border: "1px solid var(--border-color)",
                                           objectFit: "cover"
                                         }}
                                       />
                                     )}
                                   </div>
-
-                                  {/* ✅ FIXED: Bubble with custom Markdown renderer */}
-                                  <div
+  
+                                  {/* Bubble */}
+                                  <div 
                                     className={`message-bubble ${m.role === "user" ? "user-bubble" : "bot-bubble"}`}
-                                    style={{
-                                      padding: m.role === "bot" ? "0" : "12px 18px",
-                                      borderRadius: m.role === "bot" ? "0" : (m.role === "user" ? "20px 20px 4px 20px" : "20px 20px 20px 4px"),
-                                      boxShadow: m.role === "bot" ? "none" : "var(--shadow-md)",
+                                    style={{ 
+                                      padding: m.role === "bot" ? "0" : "12px 18px", 
+                                      borderRadius: m.role === "bot" ? "0" : (m.role === "user" ? "20px 20px 4px 20px" : "20px 20px 20px 4px"), 
+                                      boxShadow: m.role === "bot" ? "none" : "var(--shadow-md)", 
                                       border: m.role === "bot" ? "none" : "1px solid var(--border-color)",
-                                      background: m.role === "user"
-                                        ? "linear-gradient(135deg, var(--accent), var(--accent-dark))"
-                                        : "transparent",
-                                      color: m.role === "user" ? "white" : "var(--text-primary)",
+                                      background: m.role === "user" 
+                                        ? "linear-gradient(135deg, var(--accent), var(--accent-dark))" 
+                                        : (m.role === "bot" ? "transparent" : "var(--bg-card)"),
+                                      backdropFilter: m.role === "bot" ? "none" : (m.role === "bot" ? "blur(10px)" : "none"),
+                                      color: m.role === "user" ? "white" : "var(--text-primary)", 
                                       fontSize: "1rem",
                                       lineHeight: "1.6",
                                       position: "relative",
@@ -991,16 +1078,11 @@ export default function KuroWorkspacePage() {
                                       margin: "0"
                                     }}
                                   >
-                                    {m.role === "bot" ? (
-                                      <BotMarkdown content={m.content} />
-                                    ) : (
-                                      m.content
-                                    )}
-
-                                    <div style={{
-                                      fontSize: "0.7rem",
-                                      opacity: 0.6,
-                                      marginTop: "6px",
+                                    {m.content}
+                                    <div style={{ 
+                                      fontSize: "0.7rem", 
+                                      opacity: 0.6, 
+                                      marginTop: "6px", 
                                       textAlign: m.role === "user" ? "right" : "left",
                                       color: m.role === "user" ? "rgba(255,255,255,0.8)" : "var(--text-secondary)"
                                     }}>
@@ -1010,7 +1092,7 @@ export default function KuroWorkspacePage() {
                                 </div>
                               </motion.div>
                             ))}
-
+                            
                             {isSending && (
                               <motion.div
                                 initial={{ opacity: 0, y: 10 }}
@@ -1019,7 +1101,7 @@ export default function KuroWorkspacePage() {
                                 style={{ display: "flex", alignItems: "flex-end", gap: "10px", marginBottom: "20px" }}
                               >
                                 <div className="avatar-wrapper" style={{ flexShrink: 0, marginBottom: "4px" }}>
-                                  <div style={{
+                                  <div style={{ 
                                     width: "32px", height: "32px", borderRadius: "10px", background: "rgba(255, 255, 255, 0.05)",
                                     display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden"
                                   }}>
@@ -1041,6 +1123,40 @@ export default function KuroWorkspacePage() {
                           </AnimatePresence>
                         </div>
                       </div>
+
+                      <AnimatePresence>
+                        {showScrollBottom && (
+                          <motion.button
+                            initial={{ opacity: 0, y: 10, scale: 0.8 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            onClick={scrollToBottomManual}
+                            style={{
+                              position: "absolute",
+                              bottom: "120px",
+                              right: "20px",
+                              width: "44px",
+                              height: "44px",
+                              borderRadius: "50%",
+                              background: "rgba(0, 0, 0, 0.4)",
+                              backdropFilter: "blur(10px)",
+                              color: "var(--text-primary)",
+                              border: "1px solid var(--border-color)",
+                              boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              cursor: "pointer",
+                              zIndex: 50
+                            }}
+                            whileHover={{ scale: 1.05, background: "var(--bg-tertiary)" }}
+                            whileTap={{ scale: 0.95 }}
+                            aria-label="Scroll to bottom"
+                          >
+                            <ArrowDown size={22} />
+                          </motion.button>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </div>
                 </div>
@@ -1058,7 +1174,7 @@ export default function KuroWorkspacePage() {
                   boxSizing: "border-box"
                 }}
               >
-                <ChatHistory
+                <ChatHistory 
                   paginatedHistory={paginatedHistory}
                   searchQuery={searchQuery}
                   setSearchQuery={setSearchQuery}
@@ -1083,7 +1199,7 @@ export default function KuroWorkspacePage() {
                   boxSizing: "border-box"
                 }}
               >
-                <ChatExport
+                <ChatExport 
                   exports={{
                     handleExportPDF,
                     handleExportDOCX,
@@ -1099,6 +1215,7 @@ export default function KuroWorkspacePage() {
               </div>
             </section>
 
+            {/* OTHER TABS */}
             <section
               id="analysisTab"
               className={`tab-content ${activeTab === "analysis" ? "active" : ""}`}
@@ -1125,6 +1242,7 @@ export default function KuroWorkspacePage() {
               <CreatePdfPanel />
             </section>
 
+            {/* ✅ NEW: PDF Tools Tab */}
             <section
               id="pdftoolsTab"
               className={`tab-content ${activeTab === "pdftools" ? "active" : ""}`}
@@ -1132,6 +1250,7 @@ export default function KuroWorkspacePage() {
               <PDFWorkspace />
             </section>
 
+            {/* ✅ NEW: Study Mode Tab */}
             <section
               id="studyTab"
               className={`tab-content ${activeTab === "study" ? "active" : ""}`}
