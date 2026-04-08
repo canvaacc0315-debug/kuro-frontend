@@ -41,8 +41,7 @@ import {
   History,
   MessageCircle,
   ChevronUp,
-  ChevronDown,
-  ArrowDown
+  ChevronDown
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -510,43 +509,23 @@ export default function KuroWorkspacePage() {
 
   // ---------------- render ----------------
   const chatMessagesRef = useRef(null);
-  const [showScrollBottom, setShowScrollBottom] = useState(false);
 
   useEffect(() => {
     const scrollToBottomAuto = () => {
-      if (chatMessagesRef.current && !showScrollBottom) {
-        const element = chatMessagesRef.current;
-        element.scrollTop = element.scrollHeight;
+      if (chatMessagesRef.current) {
+        chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
       }
+      window.setTimeout(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: "smooth"
+        });
+      }, 50);
     };
     scrollToBottomAuto();
-    const timeoutId = setTimeout(scrollToBottomAuto, 100);
+    const timeoutId = setTimeout(scrollToBottomAuto, 150);
     return () => clearTimeout(timeoutId);
   }, [conversation]);
-
-  const handleChatScroll = () => {
-    const winScrollToBottom = document.documentElement.scrollHeight - window.scrollY - window.innerHeight;
-    const chatScrollToBottom = chatMessagesRef.current 
-      ? chatMessagesRef.current.scrollHeight - chatMessagesRef.current.scrollTop - chatMessagesRef.current.clientHeight
-      : 0;
-    
-    const isNearBottom = winScrollToBottom < 150 && chatScrollToBottom < 150;
-    setShowScrollBottom(!isNearBottom);
-  };
-
-  const scrollToBottomManual = () => {
-    if (chatMessagesRef.current) {
-      chatMessagesRef.current.scrollTo({
-        top: chatMessagesRef.current.scrollHeight,
-        behavior: "smooth"
-      });
-    }
-    window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: "smooth"
-    });
-    setShowScrollBottom(false);
-  };
 
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
@@ -554,10 +533,8 @@ export default function KuroWorkspacePage() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-      handleChatScroll();
     };
     window.addEventListener('scroll', handleScroll);
-    handleChatScroll(); // initialize on load
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -999,7 +976,6 @@ export default function KuroWorkspacePage() {
                       <div
                         ref={chatMessagesRef}
                         className="chat-messages no-scrollbar"
-                        onScroll={handleChatScroll}
                         style={{
                           msOverflowStyle: 'none',
                           scrollbarWidth: 'none',
@@ -1131,40 +1107,6 @@ export default function KuroWorkspacePage() {
                           </AnimatePresence>
                         </div>
                       </div>
-
-                      <AnimatePresence>
-                        {showScrollBottom && (
-                          <motion.button
-                            initial={{ opacity: 0, y: 10, scale: 0.8 }}
-                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                            exit={{ opacity: 0, scale: 0.8 }}
-                            onClick={scrollToBottomManual}
-                            style={{
-                              position: "fixed",
-                              bottom: "140px",
-                              right: "30px",
-                              width: "44px",
-                              height: "44px",
-                              borderRadius: "50%",
-                              background: "var(--bg-tertiary, rgba(0, 0, 0, 0.4))",
-                              backdropFilter: "blur(10px)",
-                              color: "var(--text-primary)",
-                              border: "1px solid var(--border-color)",
-                              boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              cursor: "pointer",
-                              zIndex: 1100
-                            }}
-                            whileHover={{ scale: 1.05, background: "var(--accent)" }}
-                            whileTap={{ scale: 0.95 }}
-                            aria-label="Scroll to bottom"
-                          >
-                            <ArrowDown size={22} />
-                          </motion.button>
-                        )}
-                      </AnimatePresence>
                     </div>
                   </div>
                 </div>
