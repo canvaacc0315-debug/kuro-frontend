@@ -44,6 +44,8 @@ import {
   ChevronDown
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000";
 
