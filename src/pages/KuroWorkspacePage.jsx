@@ -956,10 +956,10 @@ export default function KuroWorkspacePage() {
                         outline: "none"
                       }}
                     >
-                      <option value="default" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>Default</option>
-                      <option value="summary" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>Concise</option>
-                      <option value="exam" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>Exam Mode</option>
-                      <option value="bullet" style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}>Bullet Points</option>
+                      <option value="default">Default</option>
+                      <option value="summary">Concise</option>
+                      <option value="exam">Exam Mode</option>
+                      <option value="bullet">Bullet Points</option>
                     </select>
                   </div>
                 </div>

@@ -938,6 +938,65 @@ input[type="number"]:focus {
   padding: 0 !important;
 }
 
+/* ========== PREMIUM SELECT DROPDOWN (Dark + Light) ========== */
+.premium-select {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  padding: 8px 14px !important;
+  border-radius: 10px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  outline: none !important;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a1a1aa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+  padding-right: 30px !important;
+  transition: all 0.2s ease;
+}
+
+.premium-select:hover {
+  border-color: var(--accent) !important;
+}
+
+.premium-select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px var(--accent-subtle) !important;
+}
+
+.premium-select option {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+  padding: 8px 12px !important;
+  font-size: 13px !important;
+}
+
+/* Dark theme specific overrides */
+[data-theme="dark"] .premium-select,
+:root .premium-select {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme="dark"] .premium-select option,
+:root .premium-select option {
+  background-color: #18181b !important;
+  color: #f9fafb !important;
+}
+
+/* Light theme specific overrides */
+[data-theme="light"] .premium-select {
+  background-color: #f4f4f5 !important;
+}
+
+[data-theme="light"] .premium-select option {
+  background-color: #ffffff !important;
+  color: #09090b !important;
+}
+
 /* =========================================================================
    MOBILE RESPONSIVENESS
    ========================================================================= */
