@@ -29,8 +29,8 @@ const AmbientAudioStation = () => {
     const sounds = [
         { id: 'lofi-1', icon: <Music size={16} />, label: 'Lofi Girl / Chill', url: 'https://streams.ilovemusic.de/iloveradio17.mp3' },
         { id: 'lofi-2', icon: <Wind size={16} />, label: 'Lofi Beats', url: 'https://stream.zeno.fm/f3wvbbqmdg8uv' },
-        { id: 'rain', icon: <CloudRain size={16} />, label: 'Cozy Rain', url: 'https://stream.zeno.fm/zndn2vea4wzuv' },
-        { id: 'cafe', icon: <Coffee size={16} />, label: 'Jazz Cafe', url: 'https://stream.zeno.fm/5yzh917cbg8uv' },
+        { id: 'rain', icon: <CloudRain size={16} />, label: 'Cozy Rain', url: 'https://assets.mixkit.co/active_storage/sfx/2526/2526-preview.mp3' },
+        { id: 'cafe', icon: <Coffee size={16} />, label: 'Jazz Cafe', url: 'https://stream.srg-ssr.ch/m/rsj/mp3_128' },
     ];
 
     const toggleSound = (sound) => {
