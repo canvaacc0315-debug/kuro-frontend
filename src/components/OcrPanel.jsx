@@ -1,7 +1,8 @@
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
 import { useAuth } from "@clerk/clerk-react";
+import { createWorker } from "tesseract.js";
 import {
   Upload,
   ScanSearch,
@@ -13,11 +14,20 @@ import {
   Sparkles,
   Check,
   AlertCircle,
-  FileUp
+  FileUp,
+  Image as ImageIcon,
+  FileIcon,
 } from "lucide-react";
 import "/src/styles/ocr-override.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "https://canvaacc0315-debug-canvaacc0315-debug.hf.space";
+
+const ACCEPTED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/jpg", "image/webp", "image/bmp", "image/gif", "image/tiff"];
+const ACCEPTED_TYPES = [...ACCEPTED_IMAGE_TYPES, "application/pdf"];
+
+function isImageFile(file) {
+  return file && ACCEPTED_IMAGE_TYPES.includes(file.type);
+}
 
 export default function OcrPanel() {
   const [files, setFiles] = useState([]);
@@ -28,6 +38,9 @@ export default function OcrPanel() {
   const [isDragging, setIsDragging] = useState(false);
   const [sessionId, setSessionId] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
+  const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+  const [tesseractProgress, setTesseractProgress] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const { getToken } = useAuth();
   const fileInputRef = useRef(null);
@@ -36,6 +49,8 @@ export default function OcrPanel() {
     if (selectedFileIndex === null) return null;
     return files[selectedFileIndex] || null;
   }, [files, selectedFileIndex]);
+
+  const fileIsImage = useMemo(() => isImageFile(selectedFile), [selectedFile]);
 
   /* ================= SESSION MANAGEMENT ================= */
   async function startSession() {
@@ -62,19 +77,40 @@ export default function OcrPanel() {
   async function handleFiles(inputFiles) {
     const file = inputFiles[0];
     if (!file) return;
-    if (!file.type.includes("pdf")) {
-      alert("Only PDF supported");
+
+    setErrorMsg("");
+
+    // Validate type
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      setErrorMsg("Unsupported file type. Please upload a PDF or image (PNG, JPG, WEBP, BMP, GIF, TIFF).");
       return;
+    }
+
+    // Clear previous state
+    setFiles([file]);
+    setSelectedFileIndex(0);
+    setOcrResult("");
+    setProgress(0);
+    setTesseractProgress(0);
+
+    if (isImageFile(file)) {
+      // For images, create a local preview URL
+      if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
+      setImagePreviewUrl(URL.createObjectURL(file));
+      // No backend upload needed for images
+      return;
+    }
+
+    // PDF flow — upload to backend
+    if (imagePreviewUrl) {
+      URL.revokeObjectURL(imagePreviewUrl);
+      setImagePreviewUrl(null);
     }
 
     let currentSessionId = sessionId;
     if (!currentSessionId) {
       currentSessionId = await startSession();
     }
-
-    setFiles([file]);
-    setSelectedFileIndex(0);
-    setOcrResult("");
 
     const formData = new FormData();
     formData.append("files", file);
@@ -98,12 +134,13 @@ export default function OcrPanel() {
         file.pdf_id = data.pdfs[0].pdf_id;
         file.backendId = data.pdfs[0].pdf_id;
         file.status = data.pdfs[0].status;
+        setFiles([file]);
       } else {
         throw new Error("No PDF data in response");
       }
     } catch (err) {
       console.error("Upload error:", err);
-      alert(err.message || "Failed to upload PDF");
+      setErrorMsg(err.message || "Failed to upload PDF");
       setFiles([]);
       setSelectedFileIndex(null);
     }
@@ -120,14 +157,48 @@ export default function OcrPanel() {
   function handleDragEnter(e) { e.preventDefault(); setIsDragging(true); }
   function handleDragLeave(e) { e.preventDefault(); setIsDragging(false); }
 
-  /* ================= OCR ================= */
-  async function startOcr() {
-    if (!selectedFile?.pdf_id) { alert("Please upload a PDF first"); return; }
-    if (!sessionId) { alert("No active session. Please refresh the page."); return; }
+  /* ================= OCR — IMAGE (Tesseract.js) ================= */
+  async function startImageOcr() {
+    if (!selectedFile) return;
+    setIsRunning(true);
+    setProgress(5);
+    setTesseractProgress(0);
+    setOcrResult("");
+    setErrorMsg("");
+
+    try {
+      const worker = await createWorker("eng", 1, {
+        logger: (m) => {
+          if (m.status === "recognizing text") {
+            const pct = Math.round(m.progress * 100);
+            setTesseractProgress(pct);
+            setProgress(10 + Math.round(pct * 0.88));
+          }
+        },
+      });
+
+      const { data: { text } } = await worker.recognize(selectedFile);
+      await worker.terminate();
+
+      setOcrResult(text.trim() || "No text found in image.");
+      setProgress(100);
+    } catch (err) {
+      console.error("Image OCR error:", err);
+      setErrorMsg(`Image OCR failed: ${err.message}`);
+    } finally {
+      setIsRunning(false);
+    }
+  }
+
+  /* ================= OCR — PDF (Backend) ================= */
+  async function startPdfOcr() {
+    if (!selectedFile?.pdf_id) { setErrorMsg("Please upload a PDF first"); return; }
+    if (!sessionId) { setErrorMsg("No active session. Please refresh the page."); return; }
 
     setIsRunning(true);
     setProgress(15);
     setOcrResult("");
+    setErrorMsg("");
 
     const formData = new FormData();
     formData.append("pdf_id", selectedFile.pdf_id);
@@ -152,10 +223,15 @@ export default function OcrPanel() {
       setProgress(100);
     } catch (err) {
       console.error("OCR error:", err);
-      setOcrResult(`Error: ${err.message}`);
+      setErrorMsg(err.message || "OCR failed");
     } finally {
       setIsRunning(false);
     }
+  }
+
+  function startOcr() {
+    if (fileIsImage) return startImageOcr();
+    return startPdfOcr();
   }
 
   /* ================= EXPORT ACTIONS ================= */
@@ -199,11 +275,17 @@ export default function OcrPanel() {
   }
 
   function resetOcr() {
+    if (imagePreviewUrl) {
+      URL.revokeObjectURL(imagePreviewUrl);
+      setImagePreviewUrl(null);
+    }
     setFiles([]);
     setSelectedFileIndex(null);
     setOcrResult("");
     setProgress(0);
+    setTesseractProgress(0);
     setIsRunning(false);
+    setErrorMsg("");
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
 
@@ -213,6 +295,8 @@ export default function OcrPanel() {
     { icon: <FileDown size={18} />, label: "Save as PDF", handler: downloadPdf, color: "#f59e0b" },
     { icon: copySuccess ? <Check size={18} /> : <Clipboard size={18} />, label: copySuccess ? "Copied!" : "Copy Text", handler: copyText, color: "#8b5cf6" },
   ];
+
+  const canStartOcr = selectedFile && !isRunning && (fileIsImage || (selectedFile.pdf_id && sessionId));
 
   /* ================= UI ================= */
   return (
@@ -228,7 +312,18 @@ export default function OcrPanel() {
             OCR Engine
           </div>
           <h1>Text Recognition</h1>
-          <p>Upload a PDF and extract all readable text with AI-powered OCR.</p>
+          <p>Upload a <strong>PDF</strong> or an <strong>image</strong> and extract all readable text with AI-powered OCR.</p>
+        </div>
+
+        {/* Supported formats strip */}
+        <div className="ocr-format-strip">
+          <span className="ocr-format-tag pdf-tag"><FileIcon size={11} /> PDF</span>
+          <span className="ocr-format-tag img-tag"><ImageIcon size={11} /> PNG</span>
+          <span className="ocr-format-tag img-tag"><ImageIcon size={11} /> JPG</span>
+          <span className="ocr-format-tag img-tag"><ImageIcon size={11} /> WEBP</span>
+          <span className="ocr-format-tag img-tag"><ImageIcon size={11} /> BMP</span>
+          <span className="ocr-format-tag img-tag"><ImageIcon size={11} /> GIF</span>
+          <span className="ocr-format-tag img-tag"><ImageIcon size={11} /> TIFF</span>
         </div>
       </motion.div>
 
@@ -251,15 +346,18 @@ export default function OcrPanel() {
             <input
               id="ocrFileInput"
               type="file"
-              accept=".pdf"
+              accept=".pdf,.png,.jpg,.jpeg,.webp,.bmp,.gif,.tiff,.tif"
               hidden
               ref={fileInputRef}
               onChange={(e) => handleFiles(e.target.files)}
             />
             {selectedFile ? (
               <div className="ocr-file-info">
-                <div className="ocr-file-icon-wrap">
-                  <FileUp size={32} />
+                <div className={`ocr-file-icon-wrap ${fileIsImage ? "img-mode" : "pdf-mode"}`}>
+                  {fileIsImage ? <ImageIcon size={32} /> : <FileUp size={32} />}
+                </div>
+                <div className={`ocr-file-type-badge ${fileIsImage ? "img-badge" : "pdf-badge"}`}>
+                  {fileIsImage ? "🖼 Image" : "📄 PDF"}
                 </div>
                 <span className="ocr-file-name">{selectedFile.name}</span>
                 <span className="ocr-file-size">{(selectedFile.size / 1024).toFixed(1)} KB</span>
@@ -269,23 +367,47 @@ export default function OcrPanel() {
                 <div className="ocr-upload-glow-icon">
                   <Upload size={36} />
                 </div>
-                <p className="ocr-drop-title">Drop your PDF here</p>
-                <span className="ocr-drop-hint">or click to browse files</span>
+                <p className="ocr-drop-title">Drop your file here</p>
+                <span className="ocr-drop-hint">PDF, PNG, JPG, WEBP, BMP, GIF, TIFF — or click to browse</span>
               </div>
             )}
           </div>
 
+          {/* Error message */}
+          <AnimatePresence>
+            {errorMsg && (
+              <motion.div
+                className="ocr-error-banner"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+              >
+                <AlertCircle size={16} />
+                {errorMsg}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Preview */}
           {selectedFile && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               className="ocr-preview-wrapper"
             >
-              <iframe
-                src={URL.createObjectURL(selectedFile)}
-                className="ocr-preview-frame-modern"
-                title="preview"
-              />
+              {fileIsImage ? (
+                <img
+                  src={imagePreviewUrl}
+                  alt="Preview"
+                  className="ocr-preview-image"
+                />
+              ) : (
+                <iframe
+                  src={URL.createObjectURL(selectedFile)}
+                  className="ocr-preview-frame-modern"
+                  title="preview"
+                />
+              )}
             </motion.div>
           )}
         </motion.div>
@@ -299,13 +421,30 @@ export default function OcrPanel() {
         >
           {/* Start OCR Button */}
           <button
-            className={`ocr-run-button ${isRunning ? "running" : ""}`}
+            className={`ocr-run-button ${isRunning ? "running" : ""} ${fileIsImage ? "img-mode-btn" : ""}`}
             onClick={startOcr}
-            disabled={!selectedFile || isRunning || !sessionId}
+            disabled={!canStartOcr}
           >
-            <Sparkles size={20} />
-            {isRunning ? "Processing…" : "Start OCR"}
+            {fileIsImage ? <ImageIcon size={20} /> : <Sparkles size={20} />}
+            {isRunning
+              ? (fileIsImage ? `Scanning… ${tesseractProgress}%` : "Processing…")
+              : (fileIsImage ? "Scan Image" : "Start OCR")}
           </button>
+
+          {/* Mode indicator */}
+          {selectedFile && (
+            <motion.div
+              className={`ocr-mode-indicator ${fileIsImage ? "img-mode-indicator" : "pdf-mode-indicator"}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              {fileIsImage ? (
+                <><ImageIcon size={13} /> Client-side OCR via Tesseract.js</>
+              ) : (
+                <><FileIcon size={13} /> Server-side OCR via Backend API</>
+              )}
+            </motion.div>
+          )}
 
           {/* Progress Bar */}
           <AnimatePresence>
@@ -321,7 +460,7 @@ export default function OcrPanel() {
                     className="ocr-progress-fill-modern"
                     initial={{ width: 0 }}
                     animate={{ width: `${progress}%` }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.4 }}
                   />
                 </div>
                 <span className="ocr-progress-label">{progress}% complete</span>
@@ -358,7 +497,7 @@ export default function OcrPanel() {
           <div className="ocr-result-section">
             <div className="ocr-result-header-bar">
               <h3>Extracted Text</h3>
-              {ocrResult && (
+              {(ocrResult || selectedFile) && (
                 <button className="ocr-reset-btn" onClick={resetOcr}>
                   <RefreshCw size={14} />
                   New File
@@ -380,6 +519,7 @@ export default function OcrPanel() {
                     <div className="skeleton-strip medium" />
                     <div className="skeleton-strip short" />
                     <div className="skeleton-strip long" />
+                    <div className="skeleton-strip medium" />
                   </motion.div>
                 ) : ocrResult ? (
                   <motion.pre
@@ -398,7 +538,7 @@ export default function OcrPanel() {
                     className="ocr-empty-state"
                   >
                     <ScanSearch size={48} />
-                    <p>Upload a document and run OCR to see extracted text here.</p>
+                    <p>Upload a PDF or image, then click "Start OCR" to extract text.</p>
                   </motion.div>
                 )}
               </AnimatePresence>
