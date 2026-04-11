@@ -31,17 +31,25 @@ function ProtectedRoute({ children }) {
 }
 
 export default function App() {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.async = true;
-    script.src =
-      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9545152753392718 ";
-    script.crossOrigin = "anonymous";
-    document.head.appendChild(script);
-  }, []);
-
   const { isSignedIn } = useUser();
   const location = useLocation();
+
+  // Only load AdSense on content-rich public pages (not login, signup, dashboard, workspace)
+  const contentPages = ["/", "/about", "/contact", "/privacy-policy"];
+  const isContentPage = contentPages.includes(location.pathname);
+
+  useEffect(() => {
+    const existingScript = document.querySelector('script[src*="adsbygoogle"]');
+
+    if (isContentPage && !existingScript) {
+      const script = document.createElement("script");
+      script.async = true;
+      script.src =
+        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9545152753392718";
+      script.crossOrigin = "anonymous";
+      document.head.appendChild(script);
+    }
+  }, [isContentPage]);
 
   if (isSignedIn && (location.pathname.startsWith("/login") || location.pathname.startsWith("/sign-up"))) {
     return <Navigate to="/dashboard" replace />;
