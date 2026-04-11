@@ -27,10 +27,10 @@ const AmbientAudioStation = () => {
     const audioRef = useRef(null);
 
     const sounds = [
-        { id: 'lofi-1', icon: <Music size={16} />, label: 'Deep Focus Lo-fi', url: 'https://live.lofirelax.com/8000/stream' },
-        { id: 'lofi-2', icon: <Wind size={16} />, label: 'Chill Study lofi', url: 'https://live.lofirelax.com/8002/stream' },
-        { id: 'rain', icon: <CloudRain size={16} />, label: 'Cozy Rain', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
-        { id: 'cafe', icon: <Coffee size={16} />, label: 'Ambient Cafe', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+        { id: 'lofi-1', icon: <Music size={16} />, label: 'Lofi Girl / Chill', url: 'https://streams.ilovemusic.de/iloveradio17.mp3' },
+        { id: 'lofi-2', icon: <Wind size={16} />, label: 'Lofi Beats', url: 'https://stream.zeno.fm/f3wvbbqmdg8uv' },
+        { id: 'rain', icon: <CloudRain size={16} />, label: 'Cozy Rain', url: 'https://actions.google.com/sounds/v1/weather/rain_heavy_loud.ogg' },
+        { id: 'cafe', icon: <Coffee size={16} />, label: 'Ambient Cafe', url: 'https://actions.google.com/sounds/v1/crowds/cafe_restaurant.ogg' },
     ];
 
     const toggleSound = (sound) => {
