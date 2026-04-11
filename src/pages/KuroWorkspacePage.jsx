@@ -9,7 +9,6 @@ import CreatePdfPanel from "../components/CreatePdfPanel.jsx";
 import { useApiClient } from "../api/client";
 import { jsPDF } from "jspdf";
 import OcrPanel from "../components/OcrPanel";
-import logoIcon from "../assets/logo.svg";
 
 import { useClerk } from "@clerk/clerk-react";
 import KuroHeader from "../components/layout/KuroHeader.jsx";
@@ -1019,7 +1018,7 @@ export default function KuroWorkspacePage() {
                                         border: "1px solid var(--border-color)",
                                         overflow: "hidden"
                                       }}>
-                                        <img src={logoIcon} alt="Rovex" style={{ width: "20px", height: "20px", objectFit: "contain" }} />
+                                        <img src="/kuro.png" alt="Rovex" style={{ width: "20px", height: "20px", objectFit: "contain" }} />
                                       </div>
                                     ) : (
                                       <img
@@ -1088,7 +1087,7 @@ export default function KuroWorkspacePage() {
                                     width: "32px", height: "32px", borderRadius: "10px", background: "rgba(255, 255, 255, 0.05)",
                                     display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden"
                                   }}>
-                                    <img src={logoIcon} alt="Rovex" style={{ width: "20px", height: "20px", objectFit: "contain" }} />
+                                    <img src="/kuro.png" alt="Rovex" style={{ width: "20px", height: "20px", objectFit: "contain" }} />
                                   </div>
                                 </div>
                                 <div className="bot-bubble" style={{ padding: "0", borderRadius: "0", background: "transparent", border: "none", display: "flex", gap: "4px", width: "fit-content", boxShadow: "none", margin: "0" }}>
