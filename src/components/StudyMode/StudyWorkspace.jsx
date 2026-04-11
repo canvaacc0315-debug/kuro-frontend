@@ -29,7 +29,7 @@ const AmbientAudioStation = () => {
     const sounds = [
         { id: 'lofi-1', icon: <Music size={16} />, label: 'Lofi Girl / Chill', url: 'https://streams.ilovemusic.de/iloveradio17.mp3' },
         { id: 'lofi-2', icon: <Wind size={16} />, label: 'Lofi Beats', url: 'https://stream.zeno.fm/f3wvbbqmdg8uv' },
-        { id: 'rain', icon: <CloudRain size={16} />, label: 'Cozy Rain', url: '/rain.m4a' },
+        { id: 'rain', icon: <CloudRain size={16} />, label: 'One Piece', url: '/rain.m4a' },
         { id: 'cafe', icon: <Coffee size={16} />, label: 'Jazz Cafe', url: 'https://stream.srg-ssr.ch/m/rsj/mp3_128' },
     ];
 

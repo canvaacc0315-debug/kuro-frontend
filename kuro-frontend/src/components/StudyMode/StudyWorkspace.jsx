@@ -29,7 +29,7 @@ const AmbientAudioStation = () => {
     const sounds = [
         { id: 'lofi-1', icon: <Music size={16} />, label: 'Deep Focus Lo-fi', url: 'https://live.lofirelax.com/8000/stream' },
         { id: 'lofi-2', icon: <Wind size={16} />, label: 'Chill Study lofi', url: 'https://live.lofirelax.com/8002/stream' },
-        { id: 'rain', icon: <CloudRain size={16} />, label: 'Cozy Rain', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+        { id: 'rain', icon: <CloudRain size={16} />, label: 'One Piece', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
         { id: 'cafe', icon: <Coffee size={16} />, label: 'Ambient Cafe', url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
     ];
 
