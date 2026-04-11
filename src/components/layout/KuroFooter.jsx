@@ -1,8 +1,18 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import logoIcon from "../../assets/logo.svg";
 
 export default function KuroFooter() {
     const navigate = useNavigate();
+    const location = useLocation();
+
+    function scrollToSection(sectionId) {
+        if (location.pathname === "/") {
+            const el = document.getElementById(sectionId);
+            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+            navigate(`/#${sectionId}`);
+        }
+    }
 
     return (
         <footer className="hp-footer">
@@ -18,8 +28,8 @@ export default function KuroFooter() {
                 <div className="hp-footer-cols">
                     <div className="hp-footer-col">
                         <h4>Product</h4>
-                        <a href="/homepage#features">Features</a>
-                        <a href="/homepage#how">How it Works</a>
+                        <button onClick={() => scrollToSection("features")} style={{ background: "none", border: "none", color: "inherit", padding: 0, font: "inherit", cursor: "pointer", textAlign: "left" }}>Features</button>
+                        <button onClick={() => scrollToSection("how")} style={{ background: "none", border: "none", color: "inherit", padding: 0, font: "inherit", cursor: "pointer", textAlign: "left" }}>How it Works</button>
                     </div>
                     <div className="hp-footer-col">
                         <h4>Company</h4>

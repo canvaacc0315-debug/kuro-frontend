@@ -34,8 +34,26 @@ export default function KuroHeader() {
                 </div>
 
                 <nav className={`hp-nav ${mobileOpen ? "open" : ""}`}>
-                    <a href="/homepage#features" className="hp-nav-link" onClick={() => setMobileOpen(false)}>Features</a>
-                    <a href="/homepage#how" className="hp-nav-link" onClick={() => setMobileOpen(false)}>How it Works</a>
+                    <a href="/#features" className="hp-nav-link" onClick={(e) => {
+                        e.preventDefault();
+                        setMobileOpen(false);
+                        if (location.pathname === "/") {
+                            const el = document.getElementById("features");
+                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        } else {
+                            navigate("/#features");
+                        }
+                    }}>Features</a>
+                    <a href="/#how" className="hp-nav-link" onClick={(e) => {
+                        e.preventDefault();
+                        setMobileOpen(false);
+                        if (location.pathname === "/") {
+                            const el = document.getElementById("how");
+                            if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                        } else {
+                            navigate("/#how");
+                        }
+                    }}>How it Works</a>
                     <a href="/about" className="hp-nav-link" onClick={() => setMobileOpen(false)}>About</a>
                     <a href="/contact" className="hp-nav-link" onClick={() => setMobileOpen(false)}>Contact</a>
                 </nav>
