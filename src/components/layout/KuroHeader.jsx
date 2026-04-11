@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sun, Moon, Menu, X, ArrowRight } from "lucide-react";
 import { useTheme } from "../../context/ThemeContext";
-import logoIcon from "../../assets/logo.svg";
 
 export default function KuroHeader() {
     const navigate = useNavigate();
@@ -26,7 +25,7 @@ export default function KuroHeader() {
         <header className={`hp-header ${scrolled ? "scrolled" : ""}`}>
             <div className="hp-header-inner">
                 <div className="hp-logo" onClick={() => navigate("/")}>
-                    <img src={logoIcon} alt="RovexAI" className="hp-logo-img" />
+                    <img src="/kuro.png" alt="RovexAI" className="hp-logo-img" />
                     <span className="hp-logo-text">
                         <span className="hp-logo-red">Rovex</span>
                         <span className="hp-logo-ai">AI</span>

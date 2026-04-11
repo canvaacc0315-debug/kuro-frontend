@@ -1,5 +1,4 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import logoIcon from "../../assets/logo.svg";
 
 export default function KuroFooter() {
     const navigate = useNavigate();
@@ -19,7 +18,7 @@ export default function KuroFooter() {
             <div className="hp-footer-inner">
                 <div className="hp-footer-brand">
                     <div className="hp-logo" onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
-                        <img src={logoIcon} alt="RovexAI Logo" className="hp-logo-img" width="24" height="24" />
+                        <img src="/kuro.png" alt="RovexAI Logo" className="hp-logo-img" width="24" height="24" />
                         <span className="hp-logo-text">Rovex<span className="hp-logo-red">AI</span></span>
                     </div>
                     <p className="hp-footer-tagline">Transforming how you work with documents through AI.</p>
