@@ -563,6 +563,11 @@
     overflow: hidden;
   }
 
+  .file-name {
+    white-space: normal !important;
+    word-break: break-all !important;
+  }
+
   .pdf-icon-wrapper {
     width: 36px;
     height: 36px;
