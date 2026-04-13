@@ -15,6 +15,10 @@
   box-sizing: border-box;
 }
 
+.upload-panel-container * {
+  box-sizing: border-box;
+}
+
 /* ── Typography & Headers ── */
 .upload-header-text {
   text-align: center;
@@ -554,7 +558,9 @@
   /* File Row Mobile Stacking */
   .file-row {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    width: 100%;
+    overflow: hidden;
   }
 
   .pdf-icon-wrapper {
