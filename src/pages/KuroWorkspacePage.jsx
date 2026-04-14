@@ -451,20 +451,8 @@ export default function KuroWorkspacePage() {
       const encoded = LZString.compressToEncodedURIComponent(JSON.stringify(realMessages));
       const shareUrl = `${window.location.origin}/shared-chat#${encoded}`;
 
-      showStatus("Generating short link...");
-
-      try {
-        const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(shareUrl)}`);
-        if (!response.ok) throw new Error("TinyURL API failed");
-
-        const shortUrl = await response.text();
-        await navigator.clipboard.writeText(shortUrl);
-        showStatus("TinyURL copied to clipboard!");
-      } catch (apiErr) {
-        console.warn("TinyURL failed, falling back to full length link.", apiErr);
-        await navigator.clipboard.writeText(shareUrl);
-        showStatus("Full shareable link copied (Shortener failed)");
-      }
+      await navigator.clipboard.writeText(shareUrl);
+      showStatus("Shareable link copied to clipboard.");
 
     } catch (err) {
       console.error(err);
