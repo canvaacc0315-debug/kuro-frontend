@@ -447,16 +447,16 @@ export default function KuroWorkspacePage() {
         showStatus("No chat history to share.", "error");
         return;
       }
-      
+
       const encoded = LZString.compressToEncodedURIComponent(JSON.stringify(realMessages));
       const shareUrl = `${window.location.origin}/shared-chat#${encoded}`;
-      
+
       showStatus("Generating short link...");
-      
+
       try {
         const response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(shareUrl)}`);
         if (!response.ok) throw new Error("TinyURL API failed");
-        
+
         const shortUrl = await response.text();
         await navigator.clipboard.writeText(shortUrl);
         showStatus("TinyURL copied to clipboard!");
@@ -465,7 +465,7 @@ export default function KuroWorkspacePage() {
         await navigator.clipboard.writeText(shareUrl);
         showStatus("Full shareable link copied (Shortener failed)");
       }
-      
+
     } catch (err) {
       console.error(err);
       showStatus("Failed to generate shareable link.", "error");
@@ -863,7 +863,7 @@ export default function KuroWorkspacePage() {
                   opacity: activeChatSubTab === "current" ? 1 : 0
                 }}
               >
-                {/* Mobile toggle button */}
+                {/* Mobile Toggle button */}
                 <button
                   className="mobile-controls-toggle"
                   onClick={() => setShowMobileControls(!showMobileControls)}
