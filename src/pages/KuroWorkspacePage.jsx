@@ -442,20 +442,12 @@ export default function KuroWorkspacePage() {
 
   const handleGenerateShareableLink = async () => {
     try {
-      const realMessages = conversation.filter(m => m.role === "user" || m.role === "bot");
-      if (realMessages.length === 0) {
-        showStatus("No chat history to share.", "error");
-        return;
-      }
-
-      const encoded = LZString.compressToEncodedURIComponent(JSON.stringify(realMessages));
-      const shareUrl = `${window.location.origin}/shared-chat#${encoded}`;
-
-      await navigator.clipboard.writeText(shareUrl);
+      const txt = conversationAsPlainText();
+      const encoded = btoa(unescape(encodeURIComponent(txt)));
+      const dataUrl = `data:text/plain;charset=utf-8;base64,${encoded}`;
+      await navigator.clipboard.writeText(dataUrl);
       showStatus("Shareable link copied to clipboard.");
-
-    } catch (err) {
-      console.error(err);
+    } catch {
       showStatus("Failed to generate shareable link.", "error");
     }
   };
