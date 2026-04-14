@@ -60,8 +60,8 @@ export default function SharedChatViewerPage() {
           align-items: center;
           justify-content: center;
           padding: clamp(10px, 3vw, 32px);
-          background: radial-gradient(circle at top right, rgba(var(--accent-rgb, 99, 102, 241), 0.1), transparent 40%),
-                      radial-gradient(circle at bottom left, rgba(var(--accent-rgb, 99, 102, 241), 0.05), transparent 40%);
+          background: radial-gradient(circle at top right, rgba(var(--accent-rgb, 220, 38, 38), 0.1), transparent 40%),
+                      radial-gradient(circle at bottom left, rgba(var(--accent-rgb, 220, 38, 38), 0.05), transparent 40%);
         }
 
         .shared-chat-card {
@@ -158,11 +158,11 @@ export default function SharedChatViewerPage() {
             <div className="shared-chat-header">
               <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
                 <div style={{ 
-                  background: "linear-gradient(135deg, var(--accent, #6366f1) 0%, var(--accent-hover, #4f46e5) 100%)", 
+                  background: "linear-gradient(135deg, var(--accent, #dc2626) 0%, var(--accent-hover, #991b1b) 100%)", 
                   padding: "10px", 
                   borderRadius: "12px", 
                   color: "white",
-                  boxShadow: "0 4px 12px rgba(99, 102, 241, 0.3)"
+                  boxShadow: "0 4px 12px rgba(220, 38, 38, 0.3)"
                 }}>
                   <MessageSquare size={18} strokeWidth={2.5} />
                 </div>
@@ -276,7 +276,7 @@ export default function SharedChatViewerPage() {
                             boxShadow: m.role === "bot" ? "none" : "0 4px 15px rgba(0,0,0,0.05)", 
                             border: m.role === "bot" ? "none" : "1px solid rgba(255,255,255,0.05)",
                             background: m.role === "user" 
-                              ? "linear-gradient(135deg, var(--accent, #6366f1), var(--accent-hover, #4f46e5))" 
+                              ? "linear-gradient(135deg, var(--accent, #dc2626), var(--accent-hover, #991b1b))" 
                               : "transparent",
                             color: m.role === "user" ? "#ffffff" : "var(--text-primary)", 
                             fontSize: "1rem",
