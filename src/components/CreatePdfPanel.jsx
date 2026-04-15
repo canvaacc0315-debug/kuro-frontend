@@ -148,12 +148,14 @@ export default function CreatePdfPanel({ onExportPdf }) {
   const saveCurrentPage = () => {
     const canvas = fabricRef.current;
     if (!canvas) return;
+    const data = canvas.toJSON();
+    const bg = canvas.backgroundColor;
     setPages(prev => {
       const newPages = [...prev];
       newPages[currentPageIndex] = {
         ...newPages[currentPageIndex],
-        data: canvas.toJSON(),
-        bg: canvas.backgroundColor
+        data,
+        bg
       };
       return newPages;
     });
@@ -186,49 +188,59 @@ export default function CreatePdfPanel({ onExportPdf }) {
   };
 
   const addPage = () => {
-    saveCurrentPage();
-    const newPage = { id: generateId(), data: null, bg: "#ffffff" };
-    setPages(prev => [...prev, newPage]);
-    setTimeout(() => switchPage(pages.length), 0); // Switch to the newly added page
+    const canvas = fabricRef.current;
+    if (!canvas) return;
+    const data = canvas.toJSON();
+    const bg = canvas.backgroundColor;
+    setPages(prev => {
+      const newPages = [...prev];
+      newPages[currentPageIndex] = {
+        ...newPages[currentPageIndex],
+        data,
+        bg
+      };
+      return [...newPages, { id: generateId(), data: null, bg: "#ffffff" }];
+    });
+    const newIndex = pages.length;
+    setCurrentPageIndex(newIndex);
+    canvas.clear();
+    canvas.backgroundColor = "#ffffff";
+    canvas.renderAll();
+    setActiveObject(null);
   };
 
   const deletePage = () => {
+    const canvas = fabricRef.current;
+    if (!canvas) return;
+
     if (pages.length <= 1) {
       // Cannot delete last page, just clear it
-      const canvas = fabricRef.current;
-      if (canvas) {
-        canvas.clear();
-        canvas.backgroundColor = "#ffffff";
-        canvas.renderAll();
-      }
+      canvas.clear();
+      canvas.backgroundColor = "#ffffff";
+      canvas.renderAll();
       setPages([{ id: generateId(), data: null, bg: "#ffffff" }]);
       return;
     }
 
-    setPages(prev => {
-      const newPages = prev.filter((_, idx) => idx !== currentPageIndex);
-      return newPages;
-    });
-    
-    // Switch logic
     const nextIndex = currentPageIndex > 0 ? currentPageIndex - 1 : 0;
-    setTimeout(() => {
-        setCurrentPageIndex(nextIndex);
-        const canvas = fabricRef.current;
-        if (!canvas) return;
-        canvas.clear();
-        setPages(latestPages => {
-            const currentBg = latestPages[nextIndex].bg || "#ffffff";
-            canvas.backgroundColor = currentBg;
-            if (latestPages[nextIndex].data) {
-                canvas.loadFromJSON(latestPages[nextIndex].data).then(() => canvas.renderAll());
-            } else {
-                canvas.renderAll();
-            }
-            return latestPages;
-        });
-        setActiveObject(null);
-    }, 0);
+    let targetPage;
+    if (currentPageIndex > 0) {
+        targetPage = pages[currentPageIndex - 1]; // Next index is the previous page
+    } else {
+        targetPage = pages[1]; // We are deleting 0, so next page is old index 1
+    }
+
+    canvas.clear();
+    canvas.backgroundColor = targetPage.bg || "#ffffff";
+    if (targetPage.data) {
+        canvas.loadFromJSON(targetPage.data).then(() => canvas.renderAll());
+    } else {
+        canvas.renderAll();
+    }
+    
+    setPages(prev => prev.filter((_, idx) => idx !== currentPageIndex));
+    setCurrentPageIndex(nextIndex);
+    setActiveObject(null);
   };
 
   const updateObjectStyle = (styles) => {
@@ -415,7 +427,6 @@ export default function CreatePdfPanel({ onExportPdf }) {
   const exportToPdf = async () => {
     if (isExporting) return;
     setIsExporting(true);
-    saveCurrentPage(); // Ensure latest state is flushed to pages array
 
     const canvas = fabricRef.current;
     if (!canvas) return setIsExporting(false);
@@ -424,49 +435,54 @@ export default function CreatePdfPanel({ onExportPdf }) {
     canvas.discardActiveObject();
     canvas.renderAll();
 
+    const latestData = canvas.toJSON();
+    const latestBg = canvas.backgroundColor;
+
+    const finalPages = pages.map((page, index) => {
+        if (index === currentPageIndex) {
+            return { ...page, data: latestData, bg: latestBg };
+        }
+        return page;
+    });
+
+    // Eagerly sync React state
+    setPages(finalPages);
+
     const pdf = new jsPDF("p", "pt", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const scale = pdfWidth / BASE_W;
     const finalHeight = BASE_H * scale;
 
-    // Use a try catch to ensure we always restore UI state
     try {
-        setPages(currentPages => {
-            // Need to wrap in an async IIFE to avoid stale state issues and properly await
-            (async () => {
-                for (let i = 0; i < currentPages.length; i++) {
-                    const p = currentPages[i];
-                    canvas.clear();
-                    canvas.backgroundColor = p.bg || "#ffffff";
-                    
-                    if (p.data) {
-                        await canvas.loadFromJSON(p.data);
-                    }
-                    canvas.renderAll();
+        for (let i = 0; i < finalPages.length; i++) {
+            const p = finalPages[i];
+            canvas.clear();
+            canvas.backgroundColor = p.bg || "#ffffff";
             
-                    const dataUrl = canvas.toDataURL({ format: 'png', multiplier: 2 });
-                    
-                    if (i > 0) pdf.addPage();
-                    pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, finalHeight);
-                }
+            if (p.data) {
+                await canvas.loadFromJSON(p.data);
+            }
+            canvas.renderAll();
+    
+            const dataUrl = canvas.toDataURL({ format: 'png', multiplier: 2 });
             
-                pdf.save("rovexai-design.pdf");
-                if (onExportPdf) onExportPdf();
-                
-                // Restore the original viewed page
-                canvas.clear();
-                canvas.backgroundColor = currentPages[currentPageIndex].bg || "#ffffff";
-                if (currentPages[currentPageIndex].data) {
-                    await canvas.loadFromJSON(currentPages[currentPageIndex].data);
-                }
-                canvas.renderAll();
-                setIsExporting(false);
-            })();
-            
-            return currentPages;
-        });
+            if (i > 0) pdf.addPage();
+            pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, finalHeight);
+        }
+    
+        pdf.save("rovexai-design.pdf");
+        if (onExportPdf) onExportPdf();
+        
+        // Restore the original viewed page
+        canvas.clear();
+        canvas.backgroundColor = finalPages[currentPageIndex].bg || "#ffffff";
+        if (finalPages[currentPageIndex].data) {
+            await canvas.loadFromJSON(finalPages[currentPageIndex].data);
+        }
+        canvas.renderAll();
     } catch(err) {
         console.error("PDF Export failed", err);
+    } finally {
         setIsExporting(false);
     }
   };
